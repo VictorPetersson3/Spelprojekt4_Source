@@ -1,6 +1,6 @@
 #pragma once
-#include <InputManager.h>
-#include <Timer.h>
+#include "CommonUtilities/InputManager.h"
+#include "CommonUtilities/Timer.h"
 
 
 namespace Tga2D

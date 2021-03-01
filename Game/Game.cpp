@@ -27,7 +27,7 @@ LRESULT CGame::WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	lParam;
 	wParam;
 	hWnd;
-	myInputManager.UpdateInputEvents(hWnd, message, wParam, lParam);
+	myInputManager.UpdateMouseInputEvents(hWnd, message, wParam, lParam);
 	switch (message)
 	{
 		// this message is read when the window is closed
