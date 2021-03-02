@@ -27,7 +27,7 @@ LRESULT CGame::WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	lParam;
 	wParam;
 	hWnd;
-	myInputManager.UpdateMouseInputEvents(hWnd, message, wParam, lParam);
+	InputManager::GetInstance().UpdateMouseInputEvents(hWnd, message, wParam, lParam);
 	switch (message)
 	{
 		// this message is read when the window is closed
@@ -77,8 +77,7 @@ void CGame::InitCallBack()
 
 void CGame::UpdateCallBack()
 {
-	myTimer.TUpdate();
-	myInputManager.Update();
+	InputManager::GetInstance().Update();
 	myGameWorld.Update(Tga2D::CEngine::GetInstance()->GetDeltaTime());
 	myGameWorld.Render();
 }

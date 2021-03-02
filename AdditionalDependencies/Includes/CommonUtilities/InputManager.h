@@ -67,7 +67,6 @@ namespace CommonUtilities
 		std::map<int, bool> myPreviousKeyMap;
 		std::map<eMouseInput, bool> myMouseMap;
 
-		// Spelprojektbaserat - Spel 3 Grupp 5
 		std::map<int, std::vector<int>> myCustomKeyBindings;
 	};
 }

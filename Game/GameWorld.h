@@ -1,5 +1,4 @@
 #pragma once
-#include "CommonUtilities/InputManager.h"
 #include "CommonUtilities/Timer.h"
 
 
@@ -13,7 +12,7 @@ namespace Tga2D
 class CGameWorld
 {
 public:
-	CGameWorld(CommonUtilities::InputManager* aInputManager, CommonUtilities::Timer* aTimer);
+	CGameWorld();
 	~CGameWorld();
 
 	void Init();
@@ -21,7 +20,4 @@ public:
 	void Render();
 private:
 	Tga2D::CSprite* myTga2dLogoSprite;
-	CommonUtilities::InputManager* myInputManager;
-	CommonUtilities::Timer* myGameTimer;
-
 };
