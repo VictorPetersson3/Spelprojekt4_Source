@@ -134,6 +134,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Collider.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameWorld.h" />
     <ClInclude Include="InputManager.h" />
@@ -143,6 +144,7 @@
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="InputManager.cpp" />
