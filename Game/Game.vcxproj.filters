@@ -23,6 +23,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="CollisionManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -33,5 +34,6 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
   </ItemGroup>
 </Project>
