@@ -1,6 +1,7 @@
 #pragma once
 #include "CommonUtilities/Timer.h"
 
+class LevelLoader;
 
 namespace Tga2D
 {
@@ -20,4 +21,6 @@ public:
 	void Render();
 private:
 	Tga2D::CSprite* myTga2dLogoSprite;
+	LevelLoader* myLevelLoader;
+
 };
