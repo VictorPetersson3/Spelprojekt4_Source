@@ -16,9 +16,9 @@ namespace CommonUtilities
         }
         Timer(const Timer& aTimer) = delete;
         Timer& operator=(const Timer& aTimer) = delete;
-        void TUpdate();
-        float TGetDeltaTime() const;
-        double TGetTotalTime() const;
+        void Update();
+        float GetDeltaTime() const;
+        double GetTotalTime() const;
 
         void SetSpeed(float aSpeed);
         const float GetSpeed() const;

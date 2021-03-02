@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include <tga2d/Engine.h>
 #include "Game.h"
+#include "Timer.h"
 #include <tga2d/error/error_manager.h>
 
 using namespace std::placeholders;
@@ -18,6 +19,12 @@ std::wstring BUILD_NAME = L"Release";
 std::wstring BUILD_NAME = L"Retail";
 #endif // DEBUG
 
+CGame::CGame() : myGameWorld()
+{
+	InputManager::Init();
+	Timer::Init();
+}
+
 CGame::~CGame()
 {
 }
@@ -27,7 +34,7 @@ LRESULT CGame::WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	lParam;
 	wParam;
 	hWnd;
-	myInputManager.UpdateMouseInputEvents(hWnd, message, wParam, lParam);
+	InputManager::GetInstance().UpdateMouseInputEvents(hWnd, message, wParam, lParam);
 	switch (message)
 	{
 		// this message is read when the window is closed
@@ -77,8 +84,8 @@ void CGame::InitCallBack()
 
 void CGame::UpdateCallBack()
 {
-	myTimer.TUpdate();
-	myInputManager.Update();
+	Timer::GetInstance().Update();
+	InputManager::GetInstance().Update();
 	myGameWorld.Update(Tga2D::CEngine::GetInstance()->GetDeltaTime());
 	myGameWorld.Render();
 }

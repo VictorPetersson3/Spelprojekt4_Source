@@ -20,9 +20,8 @@
     <ClInclude Include="resource.h">
       <Filter>Precompiled</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Player</Filter>
-    </ClInclude>
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -30,8 +29,7 @@
     </ClCompile>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameWorld.cpp" />
-    <ClCompile Include="Player.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
+    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
 </Project>

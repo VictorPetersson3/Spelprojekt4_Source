@@ -1,12 +1,9 @@
 #include "stdafx.h"
 #include "GameWorld.h"
 #include <tga2d/sprite/sprite.h>
-#include <iostream>
-
-
-CGameWorld::CGameWorld(CommonUtilities::InputManager* aInputManager, CommonUtilities::Timer* aTimer) :
-	myInputManager(aInputManager),
-	myGameTimer(aTimer)
+#include "InputManager.h"
+#include "Timer.h"
+CGameWorld::CGameWorld()
 {
 	myTga2dLogoSprite = nullptr;
 }
@@ -27,22 +24,19 @@ void CGameWorld::Init()
 
 void CGameWorld::Update(float /*aTimeDelta*/)
 { 	
-	for (int i = 0; i < 1000000; i++)
+	if (InputManager::GetInstance().IsKeyPressed('S'))
 	{
-		int j = i;
+		printf("Was Pressed\n");
 	}
-	if (myInputManager->IsKeyPressed(VK_SPACE))
+	if (InputManager::GetInstance().IsKeyUp('S'))
 	{
-		std::cout << "Was Pressed\n";
+		printf("Was Released\n");
 	}
-	if (myInputManager->IsKeyUp('S'))
+	if (InputManager::GetInstance().IsKeyDown('S'))
 	{
-		std::cout << "Was Released\n";
+		printf("Is Held\n");
 	}
-	if (myInputManager->IsKeyDown('S'))
-	{
-		std::cout << "Is Held\n";
-	}
+	printf("Delta Time: %f\n", Timer::GetInstance().GetDeltaTime());
 }
 
 void CGameWorld::Render()
