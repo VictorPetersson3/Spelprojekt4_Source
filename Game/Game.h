@@ -7,10 +7,7 @@ class CGame
 {
 public:
 	//CGame();
-	CGame() : myGameWorld() 
-	{
-		InputManager::Init();
-	}
+	CGame();
 	~CGame();
 	bool Init(const std::wstring& aVersion = L"", HWND aHWND = nullptr);
 private:

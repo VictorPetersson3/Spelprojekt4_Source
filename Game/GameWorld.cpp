@@ -2,7 +2,7 @@
 #include "GameWorld.h"
 #include <tga2d/sprite/sprite.h>
 #include "InputManager.h"
-
+#include "Timer.h"
 CGameWorld::CGameWorld()
 {
 	myTga2dLogoSprite = nullptr;
@@ -36,6 +36,7 @@ void CGameWorld::Update(float /*aTimeDelta*/)
 	{
 		printf("Is Held\n");
 	}
+	printf("Delta Time: %f\n", Timer::GetInstance().GetDeltaTime());
 }
 
 void CGameWorld::Render()

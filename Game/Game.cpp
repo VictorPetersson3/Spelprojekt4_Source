@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include <tga2d/Engine.h>
 #include "Game.h"
+#include "Timer.h"
 #include <tga2d/error/error_manager.h>
 
 using namespace std::placeholders;
@@ -17,6 +18,12 @@ std::wstring BUILD_NAME = L"Release";
 #pragma comment(lib,"TGA2D_Retail.lib")
 std::wstring BUILD_NAME = L"Retail";
 #endif // DEBUG
+
+CGame::CGame() : myGameWorld()
+{
+	InputManager::Init();
+	Timer::Init();
+}
 
 CGame::~CGame()
 {
@@ -77,6 +84,7 @@ void CGame::InitCallBack()
 
 void CGame::UpdateCallBack()
 {
+	Timer::GetInstance().Update();
 	InputManager::GetInstance().Update();
 	myGameWorld.Update(Tga2D::CEngine::GetInstance()->GetDeltaTime());
 	myGameWorld.Render();

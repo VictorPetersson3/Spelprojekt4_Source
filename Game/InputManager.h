@@ -1,5 +1,4 @@
 #pragma once
-#include <assert.h>
 #include "CommonUtilities/InputManager.h"
 
 class InputManager

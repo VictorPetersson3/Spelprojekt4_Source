@@ -1,29 +1,28 @@
 #include "stdafx.h"
-#include "InputManager.h"
+#include "Timer.h"
 #include <assert.h>
+CommonUtilities::Timer* Timer::myInstance = nullptr;
 
-CommonUtilities::InputManager* InputManager::myInstance = nullptr;
-
-void InputManager::Init()
+void Timer::Init()
 {
     assert(myInstance == nullptr && "Input Manager have already been Created");
-    myInstance = new CommonUtilities::InputManager();
+    myInstance = new CommonUtilities::Timer();
 }
 
-void InputManager::Destroy()
+void Timer::Destroy()
 {
     assert(myInstance != nullptr && "Input Manager have already been destroyed");
     delete myInstance;
     myInstance = nullptr;
 }
 
-CommonUtilities::InputManager& InputManager::GetInstance()
+CommonUtilities::Timer& Timer::GetInstance()
 {
     assert(myInstance != nullptr && "Input Manager is Nullptr");
     return *myInstance;
 }
 
-bool InputManager::IsReady()
+bool Timer::IsReady()
 {
     return myInstance != nullptr;
 }
