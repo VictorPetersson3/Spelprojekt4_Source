@@ -28,7 +28,6 @@
       <Filter>Precompiled</Filter>
     </ClInclude>
     <ClInclude Include="Collider.h" />
-    <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Player.h">
       <Filter>Player</Filter>
     </ClInclude>
@@ -47,13 +46,15 @@
     <ClInclude Include="GameWorld.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>Singletons</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Precompiled</Filter>
     </ClCompile>
     <ClCompile Include="Collider.cpp" />
-    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Player.cpp">
       <Filter>Player</Filter>
     </ClCompile>
@@ -71,6 +72,9 @@
     </ClCompile>
     <ClCompile Include="GameWorld.cpp">
       <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>Singletons</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
