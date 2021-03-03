@@ -28,6 +28,11 @@ Collider::Collider(CommonUtilities::Vector2f aPosition, float aWidth, float aHei
 	myPosition = aPosition;
 }
 
+void Collider::UpdateCollider(CommonUtilities::Vector2f anUpdatedPosition)
+{
+	myPosition = anUpdatedPosition;
+}
+
 /// <summary>
 /// Allows you to change the size of the collider.
 /// </summary>
@@ -57,17 +62,27 @@ void Collider::SetUpperRight(CommonUtilities::Vector2f aPoint)
 	myAABB.myUpperRight = aPoint;
 }
 
-float Collider::GetRadius()
+const float& Collider::GetRadius() const
 {
 	return myRadius;
 }
 
-AABB Collider::GetAABB()
+const AABB& Collider::GetAABB() const
 {
 	return myAABB;
 }
 
-CommonUtilities::Vector2f Collider::GetSize()
+const CommonUtilities::Vector2f& Collider::GetSize() const
 {
 	return myAABB.mySize;
+}
+
+const CommonUtilities::Vector2f& Collider::GetPosition() const
+{
+	return myPosition;
+}
+
+const ECollider& Collider::GetType() const
+{
+	return myType;
 }

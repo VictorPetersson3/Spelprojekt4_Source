@@ -22,15 +22,18 @@ public:
 	Collider(CommonUtilities::Vector2f aPointLowerLeft, float aWidth, float aHeight);
 	//Collider(/*Line volumes och skit*/);
 
-	void SetRadius(float aNewRadius);
+	void UpdateCollider(CommonUtilities::Vector2f anUpdatedPosition);
 
+	void SetRadius(float aNewRadius);
 	void SetAABB(AABB anAABB);
 	void SetLowerLeft(CommonUtilities::Vector2f aPoint);
 	void SetUpperRight(CommonUtilities::Vector2f aPoint);
 
-	float GetRadius();
-	AABB GetAABB();
-	CommonUtilities::Vector2f GetSize();
+	const float& GetRadius() const;
+	const AABB& GetAABB() const;
+	const CommonUtilities::Vector2f& GetSize() const;
+	const CommonUtilities::Vector2f& GetPosition() const;
+	const ECollider& GetType() const;
 
 private:
 	ECollider myType;
