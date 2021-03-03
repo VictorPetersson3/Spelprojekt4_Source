@@ -1,5 +1,6 @@
 #pragma once
 #include "CommonUtilities/Timer.h"
+#include <memory>
 
 namespace Tga2D
 {
@@ -19,7 +20,6 @@ public:
 	void Update(float aTimeDelta); 
 	void Render();
 private:
-	Camera* myCamera;
+	std::unique_ptr<Camera> myCamera;
 	Tga2D::CSprite* myTga2dLogoSprite;
-	testObjectsWithPositions* testObjects[100];
 };

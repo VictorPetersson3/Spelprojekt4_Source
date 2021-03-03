@@ -28,6 +28,7 @@ CGame::CGame() : myGameWorld()
 CGame::~CGame()
 {
 	InputManager::Destroy();
+	Timer::Destroy();
 }
 
 LRESULT CGame::WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -60,6 +61,7 @@ bool CGame::Init(const std::wstring& aVersion, HWND /*aHWND*/)
 	createParameters.myUpdateFunctionToCall = [this] {UpdateCallBack(); };
 	createParameters.myApplicationName = L"TGA 2D " + BUILD_NAME + L"[" + aVersion + L"] ";
 	//createParameters.myPreferedMultiSamplingQuality = Tga2D::EMultiSamplingQuality_High;
+	createParameters.myClearColor = Tga2D::CColor({0,0,0, 1});
 	createParameters.myActivateDebugSystems = Tga2D::eDebugFeature_Fps |
 		Tga2D::eDebugFeature_Mem |
 		Tga2D::eDebugFeature_Drawcalls |

@@ -22,7 +22,6 @@
     </ClInclude>
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="testObjectsWithPositions.h" />
     <ClInclude Include="Player.h">
       <Filter>Player</Filter>
     </ClInclude>
@@ -36,7 +35,6 @@
     <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="testObjectsWithPositions.cpp" />
     <ClCompile Include="Player.cpp">
       <Filter>Player</Filter>
     </ClCompile>
