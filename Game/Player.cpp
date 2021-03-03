@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
-
+#include "CommonUtilities/Vector2.hpp"
 Player::Player()
 {
 }
@@ -23,8 +23,10 @@ void Player::Render()
 
 void Player::LoadJsonData()
 {
+
 }
 
 void Player::Movement()
 {
+
 }
