@@ -1,6 +1,6 @@
 #pragma once
 #include "CommonUtilities/Timer.h"
-
+class Player;
 
 namespace Tga2D
 {
@@ -18,6 +18,9 @@ public:
 	void Init();
 	void Update(float aTimeDelta); 
 	void Render();
+
 private:
+	std::unique_ptr<Player> myPlayer;
+
 	Tga2D::CSprite* myTga2dLogoSprite;
 };

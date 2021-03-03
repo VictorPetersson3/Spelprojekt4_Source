@@ -2,44 +2,32 @@
 #include "GameWorld.h"
 #include <tga2d/sprite/sprite.h>
 #include "InputManager.h"
+#include "Player.h"
 #include "Timer.h"
 CGameWorld::CGameWorld()
 {
-	myTga2dLogoSprite = nullptr;
+	
 }
 
 CGameWorld::~CGameWorld() 
 {
-	delete myTga2dLogoSprite;
-	myTga2dLogoSprite = nullptr;
+	
 }
 
 void CGameWorld::Init()  
 {
-	myTga2dLogoSprite = new Tga2D::CSprite("sprites/tga_logo.dds");
-	myTga2dLogoSprite->SetPivot({ 0.5f, 0.5f });
-	myTga2dLogoSprite->SetPosition({ 0.5f, 0.5f });
+	myPlayer = std::make_unique<Player>();
+	myPlayer->Init();
+
 }
 
 
 void CGameWorld::Update(float /*aTimeDelta*/)
 { 	
-	if (InputManager::GetInstance().IsKeyPressed('S'))
-	{
-		printf("Was Pressed\n");
-	}
-	if (InputManager::GetInstance().IsKeyUp('S'))
-	{
-		printf("Was Released\n");
-	}
-	if (InputManager::GetInstance().IsKeyDown('S'))
-	{
-		printf("Is Held\n");
-	}
-	printf("Delta Time: %f\n", Timer::GetInstance().GetDeltaTime());
+	myPlayer->Update();
 }
 
 void CGameWorld::Render()
 {
-	myTga2dLogoSprite->Render();
+	myPlayer->Render();
 }

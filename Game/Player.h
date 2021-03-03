@@ -1,20 +1,47 @@
 #pragma once
-#include <tga2d/math/vector2.h>
+#include <CommonUtilities/Vector2.hpp>
+#include <memory>
+
+namespace Tga2D 
+{
+	class CSprite;
+}
 
 class Player
 {
 public:
 	Player();
 	~Player();
-	void Init();
-	void Update(const float aDt);
-	void Render();
+	virtual void Init();
+	virtual void Update();
+	virtual void Render();
 
-private:
-	void LoadJsonData();
-	void Movement();
+protected:
+	virtual void LoadJsonData();
+	virtual void Movement();	
+	virtual void InputHandling();
+	virtual void PhysicsSimulation();
+	void JumpPhysics();
+	void ApplyDrag();
+
+
+	float myMaxVelocity = 0.75f;
+	float myAcceleration = 4.25f;
+	float myBoostAcceleration = {};
 	
-	float myAcceleration = {};
-	Tga2D::Vector2f myCurrentVelocity = {};	
+	float myJumpTimer = 0;
+	float myJumpTime = 0.5f;
+	
+	float myDrag = 3.0f;
+	
+
+	const float myJumpSpeed = 3.25f;
+	const float myGravity = 1.75f;
+
+	bool myIsGrounded = false;
+	CommonUtilities::Vector2f myPosition = {};
+	CommonUtilities::Vector2f myCurrentVelocity = {};	
+	CommonUtilities::Vector2f myInputVector = {};
+	std::shared_ptr<Tga2D::CSprite> mySprite;
 
 };
