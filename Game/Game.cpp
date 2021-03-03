@@ -27,6 +27,7 @@ CGame::CGame() : myGameWorld()
 
 CGame::~CGame()
 {
+	InputManager::Destroy();
 }
 
 LRESULT CGame::WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
