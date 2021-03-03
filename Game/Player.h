@@ -30,12 +30,12 @@ protected:
 	float myBoostAcceleration = {};
 	
 	float myJumpTimer = 0;
-	float myJumpTime = 0.5f;
+	float myJumpTime = 0.2f;
 	
 	float myDrag = 3.0f;
 	
 
-	const float myJumpSpeed = 3.25f;
+	const float myJumpSpeed = 10.f;
 	const float myGravity = 1.75f;
 
 	bool myIsGrounded = false;

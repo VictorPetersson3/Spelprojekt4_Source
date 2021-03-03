@@ -82,20 +82,20 @@ void Player::JumpPhysics()
 }
 void Player::Movement()
 {
-	float moveThisFrame = myInputVector.x * (myAcceleration * myAcceleration) * DELTA_TIME;
+	float moveThisFrameX = myInputVector.x * (myAcceleration * myAcceleration) * DELTA_TIME;
 
 	if (!myIsGrounded)
 	{
 		PhysicsSimulation();
-		moveThisFrame *= 0.125f;
+		moveThisFrameX *= 0.125f;
 	}
 	else
 	{
 		JumpPhysics();
 	}
-	if (myCurrentVelocity.Length() + moveThisFrame <= myMaxVelocity)
+	if (std::abs(myCurrentVelocity.x) + moveThisFrameX <= myMaxVelocity)
 	{
-		myCurrentVelocity.x += moveThisFrame;
+		myCurrentVelocity.x += moveThisFrameX;
 	}
 
 }
@@ -112,7 +112,7 @@ void Player::PhysicsSimulation()
 	}
 	//End Temp ground check----
 
-	if (myCurrentVelocity.y < 0)
+	if (!myIsGrounded)
 	{
 		myCurrentVelocity.y += (myGravity * 10) * DELTA_TIME;
 		return;
