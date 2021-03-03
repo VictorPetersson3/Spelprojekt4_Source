@@ -24,19 +24,19 @@ void CGameWorld::Init()
 
 void CGameWorld::Update(float /*aTimeDelta*/)
 { 	
-	if (InputManager::GetInstance().IsKeyPressed('S'))
-	{
-		printf("Was Pressed\n");
-	}
-	if (InputManager::GetInstance().IsKeyUp('S'))
-	{
-		printf("Was Released\n");
-	}
-	if (InputManager::GetInstance().IsKeyDown('S'))
-	{
-		printf("Is Held\n");
-	}
-	printf("Delta Time: %f\n", Timer::GetInstance().GetDeltaTime());
+	//if (InputManager::GetInstance().IsKeyPressed('S'))
+	//{
+	//	printf("Was Pressed\n");
+	//}
+	//if (InputManager::GetInstance().IsKeyUp('S'))
+	//{
+	//	printf("Was Released\n");
+	//}
+	//if (InputManager::GetInstance().IsKeyDown('S'))
+	//{
+	//	printf("Is Held\n");
+	//}
+	//printf("Delta Time: %f\n", Timer::GetInstance().GetDeltaTime());
 }
 
 void CGameWorld::Render()
