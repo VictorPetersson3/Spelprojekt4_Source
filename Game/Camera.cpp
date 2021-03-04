@@ -16,7 +16,7 @@ void Camera::Init(const CommonUtilities::Vector2f& aPos)
 //Here the logic for following the player will be
 void Camera::Update()
 {
-	if (InputManager::GetInstance().IsKeyDown('W'))
+	/*if (InputManager::GetInstance().IsKeyDown('W'))
 	{
 		myPosition.y -= myMovementSpeed * Timer::GetInstance().GetDeltaTime();
 	}
@@ -31,7 +31,7 @@ void Camera::Update()
 	if (InputManager::GetInstance().IsKeyDown('S'))
 	{
 		myPosition.y += myMovementSpeed * Timer::GetInstance().GetDeltaTime();
-	}
+	}*/
 }
 
 void Camera::RenderSprite(const Tga2D::CSprite aSprite)

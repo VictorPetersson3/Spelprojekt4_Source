@@ -4,6 +4,7 @@
 #include "InputManager.h"
 #include <tga2d/sprite/sprite.h>
 #include <iostream>
+#include "Camera.h"
 #define INPUT InputManager::GetInstance() 
 #define DELTA_TIME Timer::GetInstance().GetDeltaTime()
 
@@ -39,10 +40,9 @@ void Player::Update()
 	//std::cout << "Pos x: " << myPosition.x << " " << "Pos y: " << myPosition.y << std::endl;
 }
 
-void Player::Render()
+void Player::Render(std::shared_ptr<Camera> aCamera)
 {
-	mySprite->Render();
-
+	aCamera->RenderSprite(*mySprite);
 }
 
 void Player::LoadJsonData()
@@ -80,7 +80,8 @@ void Player::JumpPhysics()
 }
 void Player::Movement()
 {
-	float moveThisFrameX = myInputVector.x * (myAcceleration * myAcceleration) * DELTA_TIME;
+	const int boostInput = INPUT.IsKeyDown('F');
+	float moveThisFrameX = (((myAcceleration * myAcceleration) + (myBoostAcceleration * boostInput))  * DELTA_TIME) * myInputVector.x;
 
 	if (!myIsGrounded)
 	{
@@ -91,7 +92,7 @@ void Player::Movement()
 	{
 		JumpPhysics();
 	}
-	if (std::abs(myCurrentVelocity.x) + moveThisFrameX <= myMaxVelocity)
+	if (std::abs(myCurrentVelocity.x) + moveThisFrameX <= myMaxVelocity + (boostInput * (myBoostAcceleration * 0.35f)))
 	{
 		myCurrentVelocity.x += moveThisFrameX;
 	}
