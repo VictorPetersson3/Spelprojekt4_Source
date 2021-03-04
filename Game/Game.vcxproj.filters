@@ -45,6 +45,9 @@
     <ClInclude Include="GameWorld.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="LevelLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -68,5 +71,10 @@
     <ClCompile Include="GameWorld.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameWorld.cpp" />
+    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="LevelLoader.cpp" />
   </ItemGroup>
 </Project>
