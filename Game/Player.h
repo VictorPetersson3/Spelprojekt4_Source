@@ -21,9 +21,9 @@ protected:
 	virtual void Movement();	
 	virtual void InputHandling();
 	virtual void PhysicsSimulation();
+	
 	void JumpPhysics();
 	void ApplyDrag();
-
 
 	float myMaxVelocity = 0.75f;
 	float myAcceleration = 4.25f;
@@ -34,7 +34,6 @@ protected:
 	
 	float myDrag = 3.0f;
 	
-
 	const float myJumpSpeed = 10.f;
 	const float myGravity = 1.75f;
 

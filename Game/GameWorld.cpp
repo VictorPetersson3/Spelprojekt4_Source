@@ -25,6 +25,7 @@ void CGameWorld::Init()
 void CGameWorld::Update(float /*aTimeDelta*/)
 { 	
 	myPlayer->Update();
+
 }
 
 void CGameWorld::Render()

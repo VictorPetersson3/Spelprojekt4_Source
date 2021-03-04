@@ -22,7 +22,6 @@ void Player::Init()
 	LoadJsonData();
 	mySprite = std::make_shared<Tga2D::CSprite>("sprites/tga_logo.dds");
 	mySprite->SetSizeRelativeToImage({ 0.1f,0.1f });
-
 	myPosition = { 0.5f,0.1f };
 	mySprite->SetPosition(Tga2D::Vector2f(myPosition.x, myPosition.y));
 	mySprite->SetPivot({ 0.5f,0.5f });
@@ -68,13 +67,12 @@ void Player::JumpPhysics()
 		}
 		else
 		{
-			myCurrentVelocity.y -= myJumpSpeed * DELTA_TIME;
+			myCurrentVelocity.y -= myJumpSpeed * DELTA_TIME;;
 			myJumpTimer += DELTA_TIME;
 		}
 	}
 	if (INPUT.IsKeyUp('W'))
 	{
-		std::cout << "Key is up\n";
 		myJumpTimer = 0;
 		myIsGrounded = false;
 	}
