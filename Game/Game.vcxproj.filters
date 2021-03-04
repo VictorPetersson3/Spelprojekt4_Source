@@ -27,6 +27,7 @@
     <ClInclude Include="resource.h">
       <Filter>Precompiled</Filter>
     </ClInclude>
+    <ClInclude Include="Collider.h" />
     <ClInclude Include="Player.h">
       <Filter>Player</Filter>
     </ClInclude>
@@ -45,8 +46,9 @@
     <ClInclude Include="GameWorld.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h" />
-    <ClInclude Include="Timer.h" />
+    <ClInclude Include="CollisionManager.h">
+      <Filter>Singletons</Filter>
+    </ClInclude>
     <ClInclude Include="LevelLoader.h" />
     <ClInclude Include="AudioManager.h" />
   </ItemGroup>
@@ -54,6 +56,7 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Precompiled</Filter>
     </ClCompile>
+    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Player.cpp">
       <Filter>Player</Filter>
     </ClCompile>
@@ -72,10 +75,11 @@
     <ClCompile Include="GameWorld.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>Singletons</Filter>
+    </ClCompile>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameWorld.cpp" />
-    <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
     <ClCompile Include="AudioManager.cpp" />
   </ItemGroup>
