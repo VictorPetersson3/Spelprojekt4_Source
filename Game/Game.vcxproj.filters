@@ -49,6 +49,8 @@
     <ClInclude Include="CollisionManager.h">
       <Filter>Singletons</Filter>
     </ClInclude>
+    <ClInclude Include="LevelLoader.h" />
+    <ClInclude Include="AudioManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -76,5 +78,9 @@
     <ClCompile Include="CollisionManager.cpp">
       <Filter>Singletons</Filter>
     </ClCompile>
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameWorld.cpp" />
+    <ClCompile Include="LevelLoader.cpp" />
+    <ClCompile Include="AudioManager.cpp" />
   </ItemGroup>
 </Project>

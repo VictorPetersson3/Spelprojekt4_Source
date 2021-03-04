@@ -2,6 +2,9 @@
 #include "CommonUtilities/Timer.h"
 #include <memory>
 
+
+class LevelLoader;
+
 namespace Tga2D
 {
 	class CSprite;
@@ -22,4 +25,6 @@ public:
 private:
 	std::unique_ptr<Camera> myCamera;
 	Tga2D::CSprite* myTga2dLogoSprite;
+	LevelLoader* myLevelLoader;
+
 };
