@@ -51,6 +51,7 @@ void Player::LoadJsonData()
 }
 void Player::InputHandling()
 {
+	myBoostInput = INPUT.IsKeyDown('F');
 	float moveX = INPUT.IsKeyDown('D') + -INPUT.IsKeyDown('A');
 	myInputVector = { moveX, static_cast<float>(INPUT.IsKeyDown('W')) };
 }
@@ -67,7 +68,7 @@ void Player::JumpPhysics()
 		}
 		else
 		{
-			myCurrentVelocity.y -= myJumpSpeed * DELTA_TIME;;
+			myCurrentVelocity.y -= myJumpSpeed * DELTA_TIME;
 			myJumpTimer += DELTA_TIME;
 		}
 	}
@@ -80,8 +81,9 @@ void Player::JumpPhysics()
 }
 void Player::Movement()
 {
-	const int boostInput = INPUT.IsKeyDown('F');
-	float moveThisFrameX = (((myAcceleration * myAcceleration) + (myBoostAcceleration * boostInput))  * DELTA_TIME) * myInputVector.x;
+	
+	
+	float moveThisFrameX = (((myAcceleration * myAcceleration) + (myBoostAcceleration * myBoostInput))  * DELTA_TIME) * myInputVector.x;
 
 	if (!myIsGrounded)
 	{
@@ -92,7 +94,7 @@ void Player::Movement()
 	{
 		JumpPhysics();
 	}
-	if (std::abs(myCurrentVelocity.x) + moveThisFrameX <= myMaxVelocity + (boostInput * (myBoostAcceleration * 0.35f)))
+	if (std::abs(myCurrentVelocity.x) + moveThisFrameX <= myMaxVelocity + (myBoostInput * myMaxBoostVelocity))
 	{
 		myCurrentVelocity.x += moveThisFrameX;
 	}
@@ -127,13 +129,14 @@ void Player::PhysicsSimulation()
 
 void Player::ApplyDrag()
 {
+	float currentDrag = (myDrag * myDrag) + (myBoostDrag * myBoostInput);
 	if (myCurrentVelocity.x > 0)
 	{
-		myCurrentVelocity.x -= ((myDrag * myDrag) * DELTA_TIME) * myIsGrounded;
+		myCurrentVelocity.x -= (currentDrag * DELTA_TIME) * myIsGrounded;
 		return;
 	}
 	else if (myCurrentVelocity.x < 0)
 	{
-		myCurrentVelocity.x += ((myDrag * myDrag) * DELTA_TIME) * myIsGrounded;
+		myCurrentVelocity.x += (currentDrag * DELTA_TIME) * myIsGrounded;
 	}
 }
