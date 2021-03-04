@@ -18,8 +18,9 @@ enum class ECollider
 class Collider
 {
 public:
+	Collider();
 	Collider(float aRadius, CommonUtilities::Vector2f aPosition);
-	Collider(CommonUtilities::Vector2f aPointLowerLeft, float aWidth, float aHeight);
+	Collider(CommonUtilities::Vector2f aPosition, float aWidth, float aHeight);
 	//Collider(/*Line volumes och skit*/);
 
 	void UpdateCollider(CommonUtilities::Vector2f anUpdatedPosition);
@@ -29,6 +30,7 @@ public:
 	void SetLowerLeft(CommonUtilities::Vector2f aPoint);
 	void SetUpperRight(CommonUtilities::Vector2f aPoint);
 
+	const void Draw() const;
 	const float& GetRadius() const;
 	const AABB& GetAABB() const;
 	const CommonUtilities::Vector2f& GetSize() const;

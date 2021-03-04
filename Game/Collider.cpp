@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "Collider.h"
 
+Collider::Collider()
+{
+}
+
 /// <summary>
 /// Constructor for a circle collider.
 /// </summary>
@@ -31,6 +35,22 @@ Collider::Collider(CommonUtilities::Vector2f aPosition, float aWidth, float aHei
 void Collider::UpdateCollider(CommonUtilities::Vector2f anUpdatedPosition)
 {
 	myPosition = anUpdatedPosition;
+}
+
+const void Collider::Draw() const
+{
+	switch (myType)
+	{
+	case ECollider::Circle:
+		Tga2D::CDebugDrawer::DrawCircle({ myPosition.x, myPosition.y }, myRadius, { 0, 1, 1, 1 });
+		break;
+	case ECollider::AABB:
+		Tga2D::CDebugDrawer::DrawLine({ myAABB.myLowerLeft.x, myAABB.myLowerLeft.y }, {myAABB.myLowerLeft.x, myAABB.myUpperRight.y}, {1, 0.5, 0, 1});
+		Tga2D::CDebugDrawer::DrawLine({ myAABB.myLowerLeft.x, myAABB.myLowerLeft.y }, {myAABB.myUpperRight.x, myAABB.myLowerLeft.y}, {1, 0.5, 0, 1});
+		Tga2D::CDebugDrawer::DrawLine({ myAABB.myUpperRight.x, myAABB.myUpperRight.y }, {myAABB.myLowerLeft.x, myAABB.myUpperRight.y}, {1, 0.5, 0, 1});
+		Tga2D::CDebugDrawer::DrawLine({ myAABB.myUpperRight.x, myAABB.myUpperRight.y }, {myAABB.myUpperRight.x, myAABB.myLowerLeft.y}, {1, 0.5, 0, 1});
+		break;
+	}
 }
 
 /// <summary>
