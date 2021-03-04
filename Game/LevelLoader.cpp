@@ -8,9 +8,11 @@
 #include "rapidjson\document.h"
 #include "rapidjson\filereadstream.h"
 #include "tga2d\engine.h"
+#include "Camera.h"
 
 LevelLoader::LevelLoader()
 {
+    myCamera = std::make_unique<Camera>();
 }
 
 LevelLoader::~LevelLoader()
@@ -19,9 +21,16 @@ LevelLoader::~LevelLoader()
 
 void LevelLoader::Render()
 {
+    
+}
+
+void LevelLoader::Update()
+{
+    myCamera.get()->Update();
+
     for (Tga2D::CSprite s : mySprites)
     {
-        s.Render();
+        myCamera.get()->RenderSprite(s);
     }
 }
 
@@ -101,6 +110,5 @@ void LevelLoader::SetPosition(Tga2D::CSprite& aSprite, int aGridTileIndex, int a
 
 void LevelLoader::SetSpriteSize(Tga2D::CSprite& aSprite, float aGridSize)
 {
-    aSprite.SetSizeRelativeToImage({ 1.f / (static_cast<float>(aSprite.GetImageSize().x) / aGridSize),1.f / (static_cast<float>(aSprite.GetImageSize().y) / aGridSize) });
-
+     aSprite.SetSizeRelativeToImage({ 1.f / (static_cast<float>(aSprite.GetImageSize().x) / aGridSize),1.f / (static_cast<float>(aSprite.GetImageSize().y) / aGridSize) });
 }

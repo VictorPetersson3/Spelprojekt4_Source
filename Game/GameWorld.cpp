@@ -39,6 +39,7 @@ void CGameWorld::Init()
 void CGameWorld::Update(float /*aTimeDelta*/)
 { 	
 	myCamera->Update();
+	myLevelLoader->Update();
 	//If you want to render something send in the sprite to the Camera
 
 	if (InputManager::GetInstance().IsKeyPressed('S'))
@@ -62,5 +63,4 @@ void CGameWorld::Render()
 	//myTga2dLogoSprite->Render();
 
 	myTga2dLogoSprite->Render();
-	myLevelLoader->Render();
 }

@@ -3,9 +3,11 @@
 #include "rapidjson\document.h"
 #include <iostream>
 #include <vector>
+#include <memory>
 #include "tga2d\sprite\sprite.h"
 
 
+class Camera;
 
 class LevelLoader
 {
@@ -14,11 +16,13 @@ public:
 	~LevelLoader();
 
 	void Render();
+	void Update();
 
 	bool LoadLevel(const char* aLevelPath);
 
 private:
 	std::vector<Tga2D::CSprite> mySprites;
+	std::unique_ptr< Camera> myCamera;
 
 	void SetRect(Tga2D::CSprite& aSprite, int gridTileindex, int layerIndex);
 	void SetPosition(Tga2D::CSprite& aSprite, int aGridTileIndex, int aLayerIndex);
