@@ -28,7 +28,7 @@ void CGameWorld::Init()
 
 	myLevelLoader = new LevelLoader();
 
-	myLevelLoader->LoadLevel("Json/Levels/TestJson.json");
+	myLevelLoader->LoadLevel("Json/Levels/Runtfaff.json");
 
 }
 
@@ -54,4 +54,5 @@ void CGameWorld::Update(float /*aTimeDelta*/)
 void CGameWorld::Render()
 {
 	myTga2dLogoSprite->Render();
+	myLevelLoader->Render();
 }
