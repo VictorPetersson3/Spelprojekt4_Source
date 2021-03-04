@@ -48,6 +48,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="LevelLoader.h" />
+    <ClInclude Include="AudioManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -76,5 +77,6 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
+    <ClCompile Include="AudioManager.cpp" />
   </ItemGroup>
 </Project>
