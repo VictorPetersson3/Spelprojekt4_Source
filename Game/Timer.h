@@ -1,5 +1,6 @@
 #pragma once
 #include "CommonUtilities/Timer.h"
+
 class Timer
 {
 public:

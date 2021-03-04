@@ -1,6 +1,9 @@
 #pragma once
 #include "CommonUtilities/Timer.h"
-class Player;
+#include <memory>
+
+
+class LevelLoader;
 
 namespace Tga2D
 {
@@ -8,7 +11,8 @@ namespace Tga2D
 	class FBXModel;
 	class CAudio;
 }
-
+class testObjectsWithPositions;
+class Camera;
 class CGameWorld
 {
 public:
@@ -18,9 +22,9 @@ public:
 	void Init();
 	void Update(float aTimeDelta); 
 	void Render();
-
 private:
-	std::unique_ptr<Player> myPlayer;
-
+	std::unique_ptr<Camera> myCamera;
 	Tga2D::CSprite* myTga2dLogoSprite;
+	LevelLoader* myLevelLoader;
+
 };
