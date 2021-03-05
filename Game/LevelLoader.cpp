@@ -8,6 +8,14 @@
 #include "rapidjson\document.h"
 #include "rapidjson\filereadstream.h"
 #include "tga2d\engine.h"
+<<<<<<< Updated upstream
+=======
+#include "tga2d\sprite\textured_quad.h"
+
+#include "Camera.h"
+#include "Collider.h"
+#include "JsonParser.h"
+>>>>>>> Stashed changes
 
 LevelLoader::LevelLoader()
 {
@@ -21,8 +29,15 @@ void LevelLoader::Render()
 {
     for (Tga2D::CSprite s : mySprites)
     {
+<<<<<<< Updated upstream
         s.Render();
+=======
+        aCamera.get()->RenderSprite(s.mySprite);
+        s.myCollider.Draw();
+>>>>>>> Stashed changes
     }
+
+
 }
 
 bool LevelLoader::LoadLevel(const char* aLevelPath)
@@ -65,7 +80,33 @@ bool LevelLoader::LoadLevel(const char* aLevelPath)
 
             SetPosition(spriteToPushBack, i, j);
             
+<<<<<<< Updated upstream
             mySprites.push_back(spriteToPushBack);
+=======
+            std::string layerIdentifier = document["levels"][0]["layerInstances"][j]["__identifier"].GetString();
+
+            if (layerIdentifier != "Background" || layerIdentifier != "background")
+            {
+                CommonUtilities::Vector2f aColliderPosition = { spriteToPushBack.GetPosition().x,spriteToPushBack.GetPosition().y};
+
+                float width =  spriteToPushBack.GetSize().x;
+                float height = spriteToPushBack.GetSize().y * Tga2D::CEngine::GetInstance()->GetWindowRatio();
+
+                
+
+                Collider colliderToPushBack = Collider(aColliderPosition, width*0.5f, height*0.5f);
+
+
+                myTiles.push_back(TerrainTile(spriteToPushBack, colliderToPushBack));
+
+            }
+            else
+            {
+                myTiles.push_back(TerrainTile(spriteToPushBack));
+            }
+            
+
+>>>>>>> Stashed changes
         }
     }
     return false;
@@ -95,12 +136,16 @@ void LevelLoader::SetPosition(Tga2D::CSprite& aSprite, int aGridTileIndex, int a
     float posX = document["levels"][0]["layerInstances"][aLayerIndex]["gridTiles"][aGridTileIndex]["px"][0].GetFloat();
     float posY = document["levels"][0]["layerInstances"][aLayerIndex]["gridTiles"][aGridTileIndex]["px"][1].GetFloat();
 
-    aSprite.SetPosition({ posX / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().x), posY / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().y) });
+    aSprite.SetPivot({ 0.5f,0.5f });
+    aSprite.SetPosition({ posX / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().x) + 0.2f, posY / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().y) + 0.2f });
 
 }
 
 void LevelLoader::SetSpriteSize(Tga2D::CSprite& aSprite, float aGridSize)
 {
     aSprite.SetSizeRelativeToImage({ 1.f / (static_cast<float>(aSprite.GetImageSize().x) / aGridSize),1.f / (static_cast<float>(aSprite.GetImageSize().y) / aGridSize) });
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 }
