@@ -9,6 +9,7 @@
 #include "rapidjson\filereadstream.h"
 #include "tga2d\engine.h"
 #include "Camera.h"
+#include "Collider.h"
 
 LevelLoader::LevelLoader()
 {
@@ -27,9 +28,13 @@ void LevelLoader::Render()
 void LevelLoader::Update(const std::shared_ptr<Camera> aCamera)
 {
 
-    for (Tga2D::CSprite s : mySprites)
+    for (TerrainTile s : myTiles)
     {
+<<<<<<< Updated upstream
         aCamera.get()->RenderSprite(s);
+=======
+        myCamera.get()->RenderSprite(s.mySprite);
+>>>>>>> Stashed changes
     }
 }
 
@@ -73,7 +78,11 @@ bool LevelLoader::LoadLevel(const char* aLevelPath)
 
             SetPosition(spriteToPushBack, i, j);
             
-            mySprites.push_back(spriteToPushBack);
+            CommonUtilities::Vector2f aColliderPosition = { spriteToPushBack.GetPosition().x + gridSize / worldSize.x / 2,spriteToPushBack.GetPosition().y + gridSize / worldSize.y / 2 };
+
+            Collider colliderToPushBack = Collider(aColliderPosition, gridSize / worldSize.x, gridSize / worldSize.y);
+
+            myTiles.push_back(TerrainTile(spriteToPushBack, colliderToPushBack));
         }
     }
     return false;

@@ -51,6 +51,7 @@
     </ClInclude>
     <ClInclude Include="LevelLoader.h" />
     <ClInclude Include="AudioManager.h" />
+    <ClInclude Include="TerrainTile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
