@@ -45,6 +45,11 @@
     <ClInclude Include="GameWorld.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="RenderCommand.h" />
+    <ClInclude Include="UIElement.h" />
+    <ClInclude Include="UIButton.h" />
+    <ClInclude Include="MenuObject.h" />
+    <ClInclude Include="UIImage.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -68,5 +73,10 @@
     <ClCompile Include="GameWorld.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="RenderCommand.cpp" />
+    <ClCompile Include="UIElement.cpp" />
+    <ClCompile Include="UIButton.cpp" />
+    <ClCompile Include="MenuObject.cpp" />
+    <ClCompile Include="UIImage.cpp" />
   </ItemGroup>
 </Project>

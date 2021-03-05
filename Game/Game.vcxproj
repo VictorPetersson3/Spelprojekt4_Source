@@ -138,24 +138,34 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameWorld.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="MenuObject.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="RenderCommand.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="UIButton.h" />
+    <ClInclude Include="UIElement.h" />
+    <ClInclude Include="UIImage.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="MenuObject.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RenderCommand.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="UIButton.cpp" />
+    <ClCompile Include="UIElement.cpp" />
+    <ClCompile Include="UIImage.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

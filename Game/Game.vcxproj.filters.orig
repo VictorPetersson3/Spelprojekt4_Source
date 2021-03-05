@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Precompiled">
+      <UniqueIdentifier>{b07bafa4-d21c-4674-8f50-96a0b05e15ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{df7755c6-5a62-4ea8-9f57-4d649cda0f7f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameWorld.h" />
+    <ClInclude Include="resource.h">
+      <Filter>Precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="Timer.h" />
+<<<<<<< HEAD
+    <ClInclude Include="testObjectsWithPositions.h" />
+=======
+    <ClInclude Include="Player.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+>>>>>>> main
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Precompiled</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameWorld.cpp" />
+    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Timer.cpp" />
+<<<<<<< HEAD
+    <ClCompile Include="testObjectsWithPositions.cpp" />
+=======
+    <ClCompile Include="Player.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+>>>>>>> main
+  </ItemGroup>
+</Project>

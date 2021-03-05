@@ -34,6 +34,5 @@ void CGameWorld::Update(float /*aTimeDelta*/)
 
 void CGameWorld::Render()
 {
-	
 	//myTga2dLogoSprite->Render();
 }
