@@ -21,7 +21,7 @@ Player::~Player()
 void Player::Init()
 {
 	LoadJsonData();
-	mySprite = std::make_shared<Tga2D::CSprite>("sprites/tga_logo.dds");
+	mySprite = std::make_shared<Tga2D::CSprite>("sprites/Player.dds");
 	mySprite->SetSizeRelativeToImage({ 0.1f,0.1f });
 	myPosition = { 0.5f,0.1f };
 	mySprite->SetPosition(Tga2D::Vector2f(myPosition.x, myPosition.y));
