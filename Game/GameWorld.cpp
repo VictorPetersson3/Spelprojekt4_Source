@@ -3,8 +3,10 @@
 #include <tga2d/sprite/sprite.h>
 #include "InputManager.h"
 #include "Timer.h"
+#include "CommonUtilities/Random.h"
+#include "Camera.h"
 #include "LevelLoader.h"
-
+#include "Player.h"
 CGameWorld::CGameWorld()
 {
 	myTga2dLogoSprite = nullptr;
@@ -22,10 +24,9 @@ CGameWorld::~CGameWorld()
 
 void CGameWorld::Init()  
 {
-	myTga2dLogoSprite = new Tga2D::CSprite("sprites/tga_logo.dds");
-	myTga2dLogoSprite->SetPivot({ 0.5f, 0.5f });
-	myTga2dLogoSprite->SetPosition({ 0.5f, 0.5f });
-
+	myPlayer = std::make_unique<Player>();
+	myCamera = std::make_shared<Camera>();
+	myPlayer->Init();
 	myLevelLoader = new LevelLoader();
 
 	myLevelLoader->LoadLevel("Json/Levels/Runtfaff.json");
@@ -35,7 +36,12 @@ void CGameWorld::Init()
 
 void CGameWorld::Update(float /*aTimeDelta*/)
 { 	
-	if (InputManager::GetInstance().IsKeyPressed('S'))
+	myPlayer->Update();
+	myCamera->Update(myPlayer->GetPosition());
+	myLevelLoader->Update(myCamera);
+	//If you want to render something send in the sprite to the Camera
+
+	/*if (InputManager::GetInstance().IsKeyPressed('S'))
 	{
 		printf("Was Pressed\n");
 	}
@@ -46,13 +52,14 @@ void CGameWorld::Update(float /*aTimeDelta*/)
 	if (InputManager::GetInstance().IsKeyDown('S'))
 	{
 		printf("Is Held\n");
-	}
+	}*/
 	//printf("Delta Time: %f\n", Timer::GetInstance().GetDeltaTime());
 
 }
 
 void CGameWorld::Render()
-{
-	myTga2dLogoSprite->Render();
-	myLevelLoader->Render();
+{	
+	//myTga2dLogoSprite->Render();
+	myPlayer->Render(myCamera);
+	/*myTga2dLogoSprite->Render();*/
 }

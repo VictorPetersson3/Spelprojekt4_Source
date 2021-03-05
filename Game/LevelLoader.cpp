@@ -8,17 +8,20 @@
 #include "rapidjson\document.h"
 #include "rapidjson\filereadstream.h"
 #include "tga2d\engine.h"
-<<<<<<< Updated upstream
-=======
+
 #include "tga2d\sprite\textured_quad.h"
 
 #include "Camera.h"
 #include "Collider.h"
 #include "JsonParser.h"
->>>>>>> Stashed changes
+
+#include "Camera.h"
+#include "Collider.h"
+#include "JsonParser.h"
 
 LevelLoader::LevelLoader()
 {
+    myCamera = std::make_unique<Camera>();
 }
 
 LevelLoader::~LevelLoader()
@@ -27,14 +30,18 @@ LevelLoader::~LevelLoader()
 
 void LevelLoader::Render()
 {
-    for (Tga2D::CSprite s : mySprites)
+    
+}
+
+void LevelLoader::Update(const std::shared_ptr<Camera> aCamera)
+{
+    for (TerrainTile s : myTiles)
     {
-<<<<<<< Updated upstream
-        s.Render();
-=======
+
         aCamera.get()->RenderSprite(s.mySprite);
         s.myCollider.Draw();
->>>>>>> Stashed changes
+
+
     }
 
 
@@ -42,20 +49,9 @@ void LevelLoader::Render()
 
 bool LevelLoader::LoadLevel(const char* aLevelPath)
 {
+    JsonParser jsonParser;
 
-    std::string text;
-    std::fstream file;
-
-    file.open(aLevelPath);
-    {
-        std::string line;
-        while (std::getline(file, line))
-        {
-            text.append(line);
-        }
-    }
-    file.close();
-    document.Parse(text.c_str());
+    document = jsonParser.GetDocument(aLevelPath);
 
     float gridSize = document["defs"]["layers"][0]["gridSize"].GetInt();
     Tga2D::Vector2f worldSize = { document["levels"][0]["pxWid"].GetFloat(),document["levels"][0]["pxHei"].GetFloat() };
@@ -80,33 +76,27 @@ bool LevelLoader::LoadLevel(const char* aLevelPath)
 
             SetPosition(spriteToPushBack, i, j);
             
-<<<<<<< Updated upstream
+
             mySprites.push_back(spriteToPushBack);
-=======
+
             std::string layerIdentifier = document["levels"][0]["layerInstances"][j]["__identifier"].GetString();
 
             if (layerIdentifier != "Background" || layerIdentifier != "background")
             {
+
                 CommonUtilities::Vector2f aColliderPosition = { spriteToPushBack.GetPosition().x,spriteToPushBack.GetPosition().y};
 
                 float width =  spriteToPushBack.GetSize().x;
                 float height = spriteToPushBack.GetSize().y * Tga2D::CEngine::GetInstance()->GetWindowRatio();
 
-                
-
                 Collider colliderToPushBack = Collider(aColliderPosition, width*0.5f, height*0.5f);
 
-
                 myTiles.push_back(TerrainTile(spriteToPushBack, colliderToPushBack));
-
             }
             else
             {
                 myTiles.push_back(TerrainTile(spriteToPushBack));
             }
-            
-
->>>>>>> Stashed changes
         }
     }
     return false;
@@ -143,9 +133,5 @@ void LevelLoader::SetPosition(Tga2D::CSprite& aSprite, int aGridTileIndex, int a
 
 void LevelLoader::SetSpriteSize(Tga2D::CSprite& aSprite, float aGridSize)
 {
-    aSprite.SetSizeRelativeToImage({ 1.f / (static_cast<float>(aSprite.GetImageSize().x) / aGridSize),1.f / (static_cast<float>(aSprite.GetImageSize().y) / aGridSize) });
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
+     aSprite.SetSizeRelativeToImage({ 1.f / (static_cast<float>(aSprite.GetImageSize().x) / aGridSize),1.f / (static_cast<float>(aSprite.GetImageSize().y) / aGridSize) });
 }
