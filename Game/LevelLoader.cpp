@@ -30,11 +30,7 @@ void LevelLoader::Update(const std::shared_ptr<Camera> aCamera)
 
     for (TerrainTile s : myTiles)
     {
-<<<<<<< Updated upstream
-        aCamera.get()->RenderSprite(s);
-=======
         myCamera.get()->RenderSprite(s.mySprite);
->>>>>>> Stashed changes
     }
 }
 
