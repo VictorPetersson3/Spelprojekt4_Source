@@ -10,17 +10,14 @@
 class JsonParser
 {
 public:
-	JsonParser(const JsonParser&) = delete;
+	JsonParser();
+	~JsonParser() = default;
 
-    static JsonParser& GetInstance();
 	
     rapidjson::Document GetDocument(const char* aPath);
 
 private:
-	JsonParser();
-	~JsonParser() = default;
 
-	static JsonParser myInstance;
 
 };
 

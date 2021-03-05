@@ -6,11 +6,6 @@ JsonParser::JsonParser()
 
 }
 
-JsonParser& JsonParser::GetInstance()
-{
-	return myInstance;
-}
-
 rapidjson::Document JsonParser::GetDocument(const char* aPath)
 {
     std::string text;
@@ -31,6 +26,3 @@ rapidjson::Document JsonParser::GetDocument(const char* aPath)
 
     return documentToReturn;
 }
-
-JsonParser JsonParser::myInstance;
-
