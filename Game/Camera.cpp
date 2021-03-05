@@ -5,7 +5,7 @@
 #include "tga2d/sprite/sprite.h"
 Camera::Camera()
 {
-	myMovementSpeed = 0.2;
+	myMovementSpeed = 0.4f;
 }
 
 void Camera::Init(const CommonUtilities::Vector2f& aPos)
@@ -14,21 +14,23 @@ void Camera::Init(const CommonUtilities::Vector2f& aPos)
 }
 
 //Here the logic for following the player will be
-void Camera::Update()
+void Camera::Update(const CommonUtilities::Vector2f aPositionToFollow)
 {
 	/*if (InputManager::GetInstance().IsKeyDown('W'))
 	{
 		myPosition.y -= myMovementSpeed * Timer::GetInstance().GetDeltaTime();
-	}
-	if (InputManager::GetInstance().IsKeyDown('D'))
+	}*/
+	if ( aPositionToFollow.x > myPosition.x + 0.5f)
 	{
 		myPosition.x += myMovementSpeed * Timer::GetInstance().GetDeltaTime();
+		return;
 	}
-	if (InputManager::GetInstance().IsKeyDown('A'))
+	else if (aPositionToFollow.x < myPosition.x + 0.5f)
 	{
 		myPosition.x -= myMovementSpeed * Timer::GetInstance().GetDeltaTime();
 	}
-	if (InputManager::GetInstance().IsKeyDown('S'))
+
+	/*if (InputManager::GetInstance().IsKeyDown('S'))
 	{
 		myPosition.y += myMovementSpeed * Timer::GetInstance().GetDeltaTime();
 	}*/

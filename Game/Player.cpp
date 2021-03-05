@@ -45,6 +45,11 @@ void Player::Render(std::shared_ptr<Camera> aCamera)
 	aCamera->RenderSprite(*mySprite);
 }
 
+CommonUtilities::Vector2f Player::GetPosition() const
+{
+	return myPosition;
+}
+
 void Player::LoadJsonData()
 {
 

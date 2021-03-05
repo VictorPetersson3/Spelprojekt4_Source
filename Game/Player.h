@@ -15,6 +15,8 @@ public:
 	virtual void Init();
 	virtual void Update();
 	virtual void Render(std::shared_ptr<Camera> aCamera);
+	CommonUtilities::Vector2f GetPosition() const;
+
 
 protected:
 	virtual void LoadJsonData();

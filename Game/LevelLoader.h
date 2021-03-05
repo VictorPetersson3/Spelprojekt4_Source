@@ -3,6 +3,7 @@
 #include "rapidjson\document.h"
 #include <iostream>
 #include <vector>
+#include<CommonUtilities/Vector2.hpp>
 #include <memory>
 #include "tga2d\sprite\sprite.h"
 
@@ -16,7 +17,7 @@ public:
 	~LevelLoader();
 
 	void Render();
-	void Update();
+	void Update(const std::shared_ptr<Camera> aCamera);
 
 	bool LoadLevel(const char* aLevelPath);
 

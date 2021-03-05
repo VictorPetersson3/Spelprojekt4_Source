@@ -24,13 +24,12 @@ void LevelLoader::Render()
     
 }
 
-void LevelLoader::Update()
+void LevelLoader::Update(const std::shared_ptr<Camera> aCamera)
 {
-    myCamera.get()->Update();
 
     for (Tga2D::CSprite s : mySprites)
     {
-        myCamera.get()->RenderSprite(s);
+        aCamera.get()->RenderSprite(s);
     }
 }
 
