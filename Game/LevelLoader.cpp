@@ -36,7 +36,9 @@ void LevelLoader::Update(const std::shared_ptr<Camera> aCamera)
 
 bool LevelLoader::LoadLevel(const char* aLevelPath)
 {
-    document = JsonParser::GetInstance().GetDocument(aLevelPath);
+    JsonParser jsonParser;
+
+    document = jsonParser.GetDocument(aLevelPath);
 
     float gridSize = document["defs"]["layers"][0]["gridSize"].GetInt();
     Tga2D::Vector2f worldSize = { document["levels"][0]["pxWid"].GetFloat(),document["levels"][0]["pxHei"].GetFloat() };
@@ -61,11 +63,23 @@ bool LevelLoader::LoadLevel(const char* aLevelPath)
 
             SetPosition(spriteToPushBack, i, j);
             
-            CommonUtilities::Vector2f aColliderPosition = { spriteToPushBack.GetPosition().x + gridSize / worldSize.x / 2,spriteToPushBack.GetPosition().y + gridSize / worldSize.y / 2 };
+            std::string layerIdentifier = document["levels"][0]["layerInstances"][j]["__identifier"].GetString();
 
-            Collider colliderToPushBack = Collider(aColliderPosition, gridSize / worldSize.x, gridSize / worldSize.y);
+            if (layerIdentifier != "Background" || layerIdentifier != "background")
+            {
+                CommonUtilities::Vector2f aColliderPosition = { spriteToPushBack.GetPosition().x + gridSize / worldSize.x / 2,spriteToPushBack.GetPosition().y + gridSize / worldSize.y / 2 };
 
-            myTiles.push_back(TerrainTile(spriteToPushBack, colliderToPushBack));
+                Collider colliderToPushBack = Collider(aColliderPosition, gridSize / worldSize.x, gridSize / worldSize.y);
+
+                myTiles.push_back(TerrainTile(spriteToPushBack, colliderToPushBack));
+
+            }
+            else
+            {
+                myTiles.push_back(TerrainTile(spriteToPushBack));
+            }
+            
+
         }
     }
     return false;

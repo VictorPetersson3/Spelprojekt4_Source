@@ -13,12 +13,7 @@ public:
 	JsonParser();
 	~JsonParser() = default;
 
-	
     rapidjson::Document GetDocument(const char* aPath);
-
-private:
-
-
 };
 
 

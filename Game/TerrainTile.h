@@ -10,6 +10,11 @@ struct TerrainTile
 		myCollider = aCollider;
 	}
 
+	TerrainTile(Tga2D::CSprite aSprite)
+	{
+		mySprite = aSprite;
+	}
+
 	Tga2D::CSprite mySprite;
 	Collider myCollider;
 };
