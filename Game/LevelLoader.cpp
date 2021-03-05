@@ -10,6 +10,7 @@
 #include "tga2d\engine.h"
 #include "Camera.h"
 #include "Collider.h"
+#include "JsonParser.h"
 
 LevelLoader::LevelLoader()
 {
@@ -27,7 +28,6 @@ void LevelLoader::Render()
 
 void LevelLoader::Update(const std::shared_ptr<Camera> aCamera)
 {
-
     for (TerrainTile s : myTiles)
     {
         myCamera.get()->RenderSprite(s.mySprite);
@@ -36,20 +36,7 @@ void LevelLoader::Update(const std::shared_ptr<Camera> aCamera)
 
 bool LevelLoader::LoadLevel(const char* aLevelPath)
 {
-
-    std::string text;
-    std::fstream file;
-
-    file.open(aLevelPath);
-    {
-        std::string line;
-        while (std::getline(file, line))
-        {
-            text.append(line);
-        }
-    }
-    file.close();
-    document.Parse(text.c_str());
+    document = JsonParser::GetInstance().GetDocument(aLevelPath);
 
     float gridSize = document["defs"]["layers"][0]["gridSize"].GetInt();
     Tga2D::Vector2f worldSize = { document["levels"][0]["pxWid"].GetFloat(),document["levels"][0]["pxHei"].GetFloat() };

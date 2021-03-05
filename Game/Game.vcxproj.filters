@@ -52,6 +52,7 @@
     <ClInclude Include="LevelLoader.h" />
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="TerrainTile.h" />
+    <ClInclude Include="JsonParser.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -83,5 +84,6 @@
     <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
     <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="JsonParser.cpp" />
   </ItemGroup>
 </Project>
