@@ -2,6 +2,8 @@
 #include <CommonUtilities/Vector2.hpp>
 #include <memory>
 class Camera;
+class Collider;
+
 namespace Tga2D 
 {
 	class CSprite;
@@ -47,6 +49,7 @@ protected:
 
 	bool myIsGrounded = false;
 
+	std::shared_ptr<Collider> myCollider = {};
 
 	CommonUtilities::Vector2f myPosition = {};
 	CommonUtilities::Vector2f myCurrentVelocity = {};	

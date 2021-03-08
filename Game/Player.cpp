@@ -5,6 +5,7 @@
 #include <tga2d/sprite/sprite.h>
 #include <iostream>
 #include "Camera.h"
+#include "Collider.h"
 #define INPUT InputManager::GetInstance() 
 #define DELTA_TIME Timer::GetInstance().GetDeltaTime()
 
@@ -27,6 +28,7 @@ void Player::Init()
 	mySprite->SetPosition(Tga2D::Vector2f(myPosition.x, myPosition.y));
 	mySprite->SetPivot({ 0.5f,0.5f });
 
+	myCollider = std::make_shared<Collider>(0.01f, myPosition);
 }
 
 void Player::Update()
@@ -35,8 +37,11 @@ void Player::Update()
 	InputHandling();
 	ApplyDrag();
 
+
 	myPosition += myCurrentVelocity * DELTA_TIME;
 	mySprite->SetPosition(Tga2D::Vector2f(myPosition.x, myPosition.y));
+	myCollider->Draw();
+	myCollider->UpdateCollider(myPosition);
 	//std::cout << "Pos x: " << myPosition.x << " " << "Pos y: " << myPosition.y << std::endl;
 }
 
