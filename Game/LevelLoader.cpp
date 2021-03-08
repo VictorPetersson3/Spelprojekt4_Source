@@ -77,7 +77,6 @@ bool LevelLoader::LoadLevel(const char* aLevelPath)
             SetPosition(spriteToPushBack, i, j);
             
 
-            mySprites.push_back(spriteToPushBack);
 
             std::string layerIdentifier = document["levels"][0]["layerInstances"][j]["__identifier"].GetString();
 
