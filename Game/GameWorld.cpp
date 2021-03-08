@@ -19,15 +19,17 @@ CGameWorld::~CGameWorld()
 
 void CGameWorld::Init()  
 {
+	mainMenu.Init();
+	mainMenu.Activate();
 	myTga2dLogoSprite = new Tga2D::CSprite("sprites/tga_logo.dds");
 	myTga2dLogoSprite->SetPivot({ 0.5f, 0.5f });
 	myTga2dLogoSprite->SetPosition({ 0.5f, 0.5f });
 	myCamera = std::make_unique<Camera>();
 }
 
-
 void CGameWorld::Update(float /*aTimeDelta*/)
 { 	
+	mainMenu.Update();
 	myCamera->Update();
 	//If you want to render something send in the sprite to the Camera
 }

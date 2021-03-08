@@ -1,9 +1,18 @@
 #include "stdafx.h"
 #include "RenderCommand.h"
-#include "tga2d/sprite/sprite.h"
+#include "tga2D/sprite/sprite.h"
 RenderCommand::RenderCommand(const char* aImagePath, int aLayer)
 {
-	mySprite = std::make_unique<Tga2D::CSprite>(aImagePath);
+	mySprite = std::make_shared<Tga2D::CSprite>(aImagePath);
+	mySprite->SetPivot({ 0.5f, 0.5f });
+	myLayer = aLayer;
+}
+
+RenderCommand::RenderCommand(const char* aImagePath, int aLayer, const CommonUtilities::Vector2f& aPos)
+{
+	mySprite = std::make_shared<Tga2D::CSprite>(aImagePath);
+	mySprite->SetPivot({ 0.5f, 0.5f });
+	mySprite->SetPosition({ aPos.x, aPos.y });
 	myLayer = aLayer;
 }
 

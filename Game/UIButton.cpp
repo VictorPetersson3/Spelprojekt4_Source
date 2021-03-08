@@ -15,6 +15,7 @@ void UIButton::Update()
 	if (GetIsActive())
 	{
 		ChangeSize();
+		UIElement::Update();
 		if (InputManager::GetInstance().IsKeyPressed(VK_RETURN))
 		{
 
@@ -25,6 +26,7 @@ void UIButton::Update()
 void UIButton::Init(const CommonUtilities::Vector2f& aPos, const char* aImagePath, const int aLayer)
 {
 	UIElement::Init(aPos, aImagePath, aLayer);
+	myHoverCurrentScale = 1;
 	myPosition = aPos;
 }
 
@@ -39,14 +41,14 @@ void UIButton::ChangeSize()
 	{
 		if (myHoverCurrentScale < myHoverEndScale)
 		{
-			myHoverCurrentScale += Timer::GetInstance().GetDeltaTime();
+			myHoverCurrentScale += (Timer::GetInstance().GetDeltaTime() * 4);
 		}
 	}
 	else
 	{
-		if (1.0f > myHoverCurrentScale)
+		if (1.0f < myHoverCurrentScale)
 		{
-			myHoverCurrentScale -= Timer::GetInstance().GetDeltaTime();
+			myHoverCurrentScale -= (Timer::GetInstance().GetDeltaTime() * 4);
 		}
 	}
 	myRenderCommand->SetSizeRelativeToImage({ myHoverCurrentScale , myHoverCurrentScale });

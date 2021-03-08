@@ -50,6 +50,7 @@
     <ClInclude Include="UIButton.h" />
     <ClInclude Include="MenuObject.h" />
     <ClInclude Include="UIImage.h" />
+    <ClInclude Include="MainMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -78,5 +79,6 @@
     <ClCompile Include="UIButton.cpp" />
     <ClCompile Include="MenuObject.cpp" />
     <ClCompile Include="UIImage.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
   </ItemGroup>
 </Project>

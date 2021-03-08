@@ -9,12 +9,14 @@ public:
 	~UIElement() = default;
 	virtual void Update();
 	virtual void Init(const CommonUtilities::Vector2f& aPos, const char* aImagePath, const int aLayer);
+	void Render();
+	
 	const bool GetIsActive() const;
 	void Activate();
 	void Deactivate();
 protected:
-	std::unique_ptr<RenderCommand> myRenderCommand;
 	CommonUtilities::Vector2f myPosition;
+	std::unique_ptr<RenderCommand> myRenderCommand;
 private:
 	bool myIsActive;
 };

@@ -15,7 +15,6 @@ private:
     bool myIsHovered;
     float myHoverCurrentScale;
     float myHoverEndScale;
-    CommonUtilities::Vector2f myPosition;
     void ChangeSize();
 };
 

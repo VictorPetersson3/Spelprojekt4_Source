@@ -1,6 +1,7 @@
 #pragma once
 #include "CommonUtilities/Timer.h"
 #include <memory>
+#include "MainMenu.h"
 
 namespace Tga2D
 {
@@ -20,6 +21,7 @@ public:
 	void Update(float aTimeDelta); 
 	void Render();
 private:
+	MainMenu mainMenu;
 	std::unique_ptr<Camera> myCamera;
 	Tga2D::CSprite* myTga2dLogoSprite;
 };
