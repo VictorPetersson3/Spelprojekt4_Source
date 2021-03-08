@@ -8,7 +8,16 @@
 #include "rapidjson\document.h"
 #include "rapidjson\filereadstream.h"
 #include "tga2d\engine.h"
+
+#include "tga2d\sprite\textured_quad.h"
+
 #include "Camera.h"
+#include "Collider.h"
+#include "JsonParser.h"
+
+#include "Camera.h"
+#include "Collider.h"
+#include "JsonParser.h"
 
 LevelLoader::LevelLoader()
 {
@@ -26,29 +35,23 @@ void LevelLoader::Render()
 
 void LevelLoader::Update(const std::shared_ptr<Camera> aCamera)
 {
-
-    for (Tga2D::CSprite s : mySprites)
+    for (TerrainTile s : myTiles)
     {
-        aCamera.get()->RenderSprite(s);
+
+        aCamera.get()->RenderSprite(s.mySprite);
+        s.myCollider.Draw();
+
+
     }
+
+
 }
 
 bool LevelLoader::LoadLevel(const char* aLevelPath)
 {
+    JsonParser jsonParser;
 
-    std::string text;
-    std::fstream file;
-
-    file.open(aLevelPath);
-    {
-        std::string line;
-        while (std::getline(file, line))
-        {
-            text.append(line);
-        }
-    }
-    file.close();
-    document.Parse(text.c_str());
+    document = jsonParser.GetDocument(aLevelPath);
 
     float gridSize = document["defs"]["layers"][0]["gridSize"].GetInt();
     Tga2D::Vector2f worldSize = { document["levels"][0]["pxWid"].GetFloat(),document["levels"][0]["pxHei"].GetFloat() };
@@ -73,7 +76,26 @@ bool LevelLoader::LoadLevel(const char* aLevelPath)
 
             SetPosition(spriteToPushBack, i, j);
             
-            mySprites.push_back(spriteToPushBack);
+
+
+            std::string layerIdentifier = document["levels"][0]["layerInstances"][j]["__identifier"].GetString();
+
+            if (layerIdentifier != "Background" || layerIdentifier != "background")
+            {
+
+                CommonUtilities::Vector2f aColliderPosition = { spriteToPushBack.GetPosition().x,spriteToPushBack.GetPosition().y};
+
+                float width =  spriteToPushBack.GetSize().x;
+                float height = spriteToPushBack.GetSize().y * Tga2D::CEngine::GetInstance()->GetWindowRatio();
+
+                Collider colliderToPushBack = Collider(aColliderPosition, width*0.5f, height*0.5f);
+
+                myTiles.push_back(TerrainTile(spriteToPushBack, colliderToPushBack));
+            }
+            else
+            {
+                myTiles.push_back(TerrainTile(spriteToPushBack));
+            }
         }
     }
     return false;
@@ -103,7 +125,8 @@ void LevelLoader::SetPosition(Tga2D::CSprite& aSprite, int aGridTileIndex, int a
     float posX = document["levels"][0]["layerInstances"][aLayerIndex]["gridTiles"][aGridTileIndex]["px"][0].GetFloat();
     float posY = document["levels"][0]["layerInstances"][aLayerIndex]["gridTiles"][aGridTileIndex]["px"][1].GetFloat();
 
-    aSprite.SetPosition({ posX / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().x), posY / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().y) });
+    aSprite.SetPivot({ 0.5f,0.5f });
+    aSprite.SetPosition({ posX / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().x) + 0.2f, posY / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().y) + 0.2f });
 
 }
 
