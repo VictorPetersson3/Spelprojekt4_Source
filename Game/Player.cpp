@@ -4,6 +4,7 @@
 #include "InputManager.h"
 #include <tga2d/sprite/sprite.h>
 #include <iostream>
+#include <Xinput.h>
 #include "Camera.h"
 #include "Collider.h"
 #define INPUT InputManager::GetInstance() 
@@ -35,7 +36,6 @@ void Player::Update()
 {
 	Movement();
 	InputHandling();
-	ApplyDrag();
 
 
 	myPosition += myCurrentVelocity * DELTA_TIME;
@@ -61,9 +61,13 @@ void Player::LoadJsonData()
 }
 void Player::InputHandling()
 {
-	myBoostInput = INPUT.IsKeyDown('F');
-	float moveX = INPUT.IsKeyDown('D') + -INPUT.IsKeyDown('A');
-	myInputVector = { moveX, static_cast<float>(INPUT.IsKeyDown('W')) };
+	myBoostInput = INPUT.IsKeyDown('Z') || INPUT.IsKeyDown(VK_LSHIFT);
+	float moveX = (INPUT.IsKeyDown('D') || INPUT.IsKeyDown(VK_RIGHT)) - (INPUT.IsKeyDown('A') || INPUT.IsKeyDown(VK_LEFT));
+	//Arrow keys Input
+	float moveY = INPUT.IsKeyDown('W') || INPUT.IsKeyDown(VK_UP) || INPUT.IsKeyDown(VK_SPACE) || INPUT.IsKeyDown('X');
+
+	myInputVector = { moveX,  moveY };
+
 }
 
 void Player::JumpPhysics()
@@ -82,7 +86,7 @@ void Player::JumpPhysics()
 			myJumpTimer += DELTA_TIME;
 		}
 	}
-	if (INPUT.IsKeyUp('W'))
+	if (INPUT.IsKeyUp('W') || INPUT.IsKeyUp(VK_UP) || INPUT.IsKeyUp(VK_SPACE) || INPUT.IsKeyUp('X'))
 	{
 		myJumpTimer = 0;
 		myIsGrounded = false;
@@ -91,10 +95,7 @@ void Player::JumpPhysics()
 }
 void Player::Movement()
 {
-	
-	
-	float moveThisFrameX = (((myAcceleration * myAcceleration) + (myBoostAcceleration * myBoostInput))  * DELTA_TIME) * myInputVector.x;
-
+	float moveThisFrameX = (((myAcceleration * myAcceleration) + (myBoostAcceleration * myBoostInput)) * DELTA_TIME) * myInputVector.x;
 	if (!myIsGrounded)
 	{
 		PhysicsSimulation();
@@ -104,6 +105,9 @@ void Player::Movement()
 	{
 		JumpPhysics();
 	}
+	ApplyDrag(moveThisFrameX);
+
+
 	if (std::abs(myCurrentVelocity.x) + moveThisFrameX <= myMaxVelocity + (myBoostInput * myMaxBoostVelocity))
 	{
 		myCurrentVelocity.x += moveThisFrameX;
@@ -137,8 +141,16 @@ void Player::PhysicsSimulation()
 }
 
 
-void Player::ApplyDrag()
-{
+void Player::ApplyDrag(const float aThisFrameVel)
+{	
+	float graceValue = (aThisFrameVel + 0.001f) * DELTA_TIME;
+	float absoluteVelocity = std::abs(myCurrentVelocity.x) * DELTA_TIME;
+	if (absoluteVelocity <= graceValue)
+	{
+		myCurrentVelocity.x = 0;
+		return;
+	}
+
 	float currentDrag = (myDrag * myDrag) + (myBoostDrag * myBoostInput);
 	if (myCurrentVelocity.x > 0)
 	{
@@ -149,4 +161,5 @@ void Player::ApplyDrag()
 	{
 		myCurrentVelocity.x += (currentDrag * DELTA_TIME) * myIsGrounded;
 	}
+
 }

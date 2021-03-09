@@ -27,7 +27,7 @@ protected:
 	virtual void PhysicsSimulation();
 	
 	void JumpPhysics();
-	void ApplyDrag();
+	void ApplyDrag(const float aThisFrameVel);
 
 	int myBoostInput = 0;
 

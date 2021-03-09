@@ -20,7 +20,7 @@ void Camera::Update(const CommonUtilities::Vector2f aPositionToFollow)
 	{
 		myPosition.y -= myMovementSpeed * Timer::GetInstance().GetDeltaTime();
 	}*/
-	if ( aPositionToFollow.x > myPosition.x + 0.5f)
+	/*if ( aPositionToFollow.x > myPosition.x + 0.5f)
 	{
 		myPosition.x += myMovementSpeed * Timer::GetInstance().GetDeltaTime();
 		return;
@@ -28,7 +28,7 @@ void Camera::Update(const CommonUtilities::Vector2f aPositionToFollow)
 	else if (aPositionToFollow.x < myPosition.x + 0.5f)
 	{
 		myPosition.x -= myMovementSpeed * Timer::GetInstance().GetDeltaTime();
-	}
+	}*/
 
 	/*if (InputManager::GetInstance().IsKeyDown('S'))
 	{
