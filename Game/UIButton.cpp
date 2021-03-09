@@ -5,6 +5,9 @@
 
 UIButton::UIButton() 
 {
+	myOnPressIndexIndex = -1;
+	myOnPressFunction = nullptr;
+	myOnPressIndexFunction = nullptr;
 	myIsHovered = false;
 	myHoverCurrentScale = 0;
 	myHoverEndScale = 1.25f;
@@ -16,15 +19,33 @@ void UIButton::Update()
 	{
 		ChangeSize();
 		UIElement::Update();
-		if (InputManager::GetInstance().IsKeyPressed(VK_RETURN))
+		if (InputManager::GetInstance().IsKeyUp(VK_RETURN) && myIsHovered)
 		{
-
+			if (myOnPressFunction != nullptr)
+			{
+				myOnPressFunction();
+			}
+			if (myOnPressIndexFunction != nullptr)
+			{
+				myOnPressIndexFunction(myOnPressIndexIndex);
+			}
 		}
 	}
 }
-
-void UIButton::Init(const CommonUtilities::Vector2f& aPos, const char* aImagePath, const int aLayer)
+void UIButton::Init(const CommonUtilities::Vector2f& aPos, const char* aImagePath, const int aLayer, callback_function aCallback)
 {
+	myOnPressFunction = aCallback;
+	myOnPressIndexFunction = nullptr;
+	UIElement::Init(aPos, aImagePath, aLayer);
+	myHoverCurrentScale = 1;
+	myPosition = aPos;
+}
+
+void UIButton::Init(const CommonUtilities::Vector2f& aPos, const char* aImagePath, const int aLayer, callback_function_index aCallback, int aIndex)
+{
+	myOnPressIndexIndex = aIndex;
+	myOnPressIndexFunction = aCallback;
+	myOnPressFunction = nullptr;
 	UIElement::Init(aPos, aImagePath, aLayer);
 	myHoverCurrentScale = 1;
 	myPosition = aPos;

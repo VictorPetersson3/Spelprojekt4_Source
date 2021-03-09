@@ -3,6 +3,17 @@
 #include "UIElement.h"
 #include "UIButton.h"
 #include "InputManager.h"
+
+void MainMenu::TestMe(int aVal)
+{
+	printf("Hello World %i\n", aVal);
+}
+
+void MainMenu::Test2()
+{
+	printf("Pressin Exit");
+}
+
 void MainMenu::Init()
 {
 	//Skapa rapidjsonInläsning för alla Objekt som jag Initar
@@ -15,10 +26,13 @@ void MainMenu::Init()
 	{
 		AddButton(std::make_shared<UIButton>());
 	}
-	for (int i = 0; i < GetUIElementsSize(); i++)
+	for (int i = 0; i < 3; i++)
 	{
-		GetElement(i)->Init({00.5f, 0.2f + 0.2f * i}, tempImagePaths[i].c_str(), 0);
+		GetElement(i)->Init({ 00.5f, 0.2f + 0.2f * i }, tempImagePaths[i].c_str(), 0, [this, i]() {TestMe(4);});
 	}
+	GetElement(3)->Init({ 00.5f, 0.2f + 0.2f * 3 }, tempImagePaths[3].c_str(), 0, [this]() {Test2(); });
+
+
 	myBackground = std::make_unique<UIImage>();
 	myBackground.get()->Init({0.5f, 0.5f}, "sprites/UI/MainMenu/Image_Background.dds", -1 );
 	myBackground.get()->Activate();
