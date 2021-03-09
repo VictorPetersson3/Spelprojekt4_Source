@@ -11,7 +11,7 @@ void MainMenu::TestMe(int aVal)
 
 void MainMenu::Test2()
 {
-	printf("Pressin Exit");
+	printf("Pressing Exit\n");
 }
 
 void MainMenu::Init()
@@ -28,9 +28,9 @@ void MainMenu::Init()
 	}
 	for (int i = 0; i < 3; i++)
 	{
-		GetElement(i)->Init({ 00.5f, 0.2f + 0.2f * i }, tempImagePaths[i].c_str(), 0, [this, i]() {TestMe(4);});
+		GetElement(i)->Init({ 00.5f, 0.2f + 0.2f * i }, tempImagePaths[i].c_str(), 0, [this](int index) {TestMe(index);}, i);
 	}
-	GetElement(3)->Init({ 00.5f, 0.2f + 0.2f * 3 }, tempImagePaths[3].c_str(), 0, [this]() {Test2(); });
+	GetElement(3)->Init({ 00.5f, 0.2f + 0.2f * 3 }, tempImagePaths[3].c_str(), 0, [this]() {Test2();});
 
 
 	myBackground = std::make_unique<UIImage>();
