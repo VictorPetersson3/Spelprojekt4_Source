@@ -63,11 +63,9 @@ void Player::InputHandling()
 {
 	myBoostInput = INPUT.IsKeyDown('Z') || INPUT.IsKeyDown(VK_LSHIFT);
 	float moveX = (INPUT.IsKeyDown('D') || INPUT.IsKeyDown(VK_RIGHT)) - (INPUT.IsKeyDown('A') || INPUT.IsKeyDown(VK_LEFT));
-	//Arrow keys Input
 	float moveY = INPUT.IsKeyDown('W') || INPUT.IsKeyDown(VK_UP) || INPUT.IsKeyDown(VK_SPACE) || INPUT.IsKeyDown('X');
 
 	myInputVector = { moveX,  moveY };
-
 }
 
 void Player::JumpPhysics()
@@ -107,12 +105,8 @@ void Player::Movement()
 	}
 	ApplyDrag(moveThisFrameX);
 
-
-	if (std::abs(myCurrentVelocity.x) + moveThisFrameX <= myMaxVelocity + (myBoostInput * myMaxBoostVelocity))
-	{
+	if (std::abs(myCurrentVelocity.x) + moveThisFrameX <= myMaxVelocity + (myBoostInput * myMaxBoostVelocity))	
 		myCurrentVelocity.x += moveThisFrameX;
-	}
-
 }
 
 void Player::PhysicsSimulation()
@@ -141,10 +135,11 @@ void Player::PhysicsSimulation()
 }
 
 
-void Player::ApplyDrag(const float aThisFrameVel)
+void Player::ApplyDrag(const float aFrameVel)
 {	
-	float graceValue = (aThisFrameVel + 0.001f) * DELTA_TIME;
+	float graceValue = (aFrameVel + 0.001f) * DELTA_TIME;
 	float absoluteVelocity = std::abs(myCurrentVelocity.x) * DELTA_TIME;
+	
 	if (absoluteVelocity <= graceValue)
 	{
 		myCurrentVelocity.x = 0;
