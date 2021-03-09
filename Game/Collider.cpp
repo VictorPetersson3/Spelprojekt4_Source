@@ -1,28 +1,16 @@
 #include "stdafx.h"
 #include "Collider.h"
+#include "CollisionManager.h"
 
-Collider::Collider()
-{
-}
-
-/// <summary>
-/// Constructor for a circle collider.
-/// </summary>
-/// <param name="aRadius  :  The radius of the collider"></param>
-/// <param name="aPosition  :  The coordinates of the center of the collider"></param>
 Collider::Collider(float aRadius, CommonUtilities::Vector2f aPosition)
 {
 	myType = ECollider::Circle;
 	myRadius = aRadius;
 	myPosition = aPosition;
+	CollisionManager::GetInstance().AddCollider(this);
 }
 
-/// <summary>
-/// Constructor for an AABB collider.
-/// </summary>
-/// <param name="aPosition  :  The coordinates of the center of the AABB"></param>
-/// <param name="aWidth  :  The width of the AABB"></param>
-/// <param name="aHeight  :  The height of the AABB"></param>
+
 Collider::Collider(CommonUtilities::Vector2f aPosition, float aWidth, float aHeight)
 {
 	myType = ECollider::AABB;
@@ -30,11 +18,33 @@ Collider::Collider(CommonUtilities::Vector2f aPosition, float aWidth, float aHei
 	myAABB.myUpperRight = { aPosition.x + aWidth * 0.5f, aPosition.y - aHeight * 0.5f }; 
 	myAABB.mySize = { aWidth, aHeight };
 	myPosition = aPosition;
+	CollisionManager::GetInstance().AddCollider(this);
+}
+
+void Collider::Update()
+{
+	myCollision.myNormal = CollisionManager::GetInstance().CollisonNormal(this, myCollidedWith);
+	myCollision.myPointOfIntersection = CollisionManager::GetInstance().PointOfIntersection(this, myCollidedWith);
 }
 
 void Collider::UpdateCollider(CommonUtilities::Vector2f anUpdatedPosition)
 {
 	myPosition = anUpdatedPosition;
+}
+
+Collider* Collider::GetCollidedWith()
+{
+	return myCollidedWith;
+}
+
+const CommonUtilities::Vector2f Collider::GetCollisionNormal() const
+{
+	return myCollision.myNormal;
+}
+
+const CommonUtilities::Vector2f Collider::GetPointOfIntersection() const
+{
+	return myCollision.myPointOfIntersection;
 }
 
 const void Collider::Draw() const
@@ -53,20 +63,13 @@ const void Collider::Draw() const
 	}
 }
 
-/// <summary>
-/// Allows you to change the size of the collider.
-/// </summary>
-/// <param name="aNewRadius  :  The new collider radius"></param>
+
 void Collider::SetRadius(float aNewRadius)
 {
 	myRadius = aNewRadius;
 }
 
-/// <summary>
-/// Practically a run-time copy constructor for an AABB.
-/// Does not work for a circle collider.
-/// </summary>
-/// <param name="anAABB  :  A new AABB with different values"></param>
+
 void Collider::SetAABB(AABB anAABB)
 {
 	if (myType == ECollider::AABB) myAABB = anAABB;
@@ -80,6 +83,16 @@ void Collider::SetLowerLeft(CommonUtilities::Vector2f aPoint)
 void Collider::SetUpperRight(CommonUtilities::Vector2f aPoint)
 {
 	myAABB.myUpperRight = aPoint;
+}
+
+void Collider::SetCollidedWith(Collider* aCollider)
+{
+	myCollidedWith = aCollider;
+}
+
+bool& Collider::HasCollided()
+{
+	return myHasCollided;
 }
 
 const float& Collider::GetRadius() const

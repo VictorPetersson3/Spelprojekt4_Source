@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "LevelLoader.h"
 #include "Player.h"
+#include "CollisionManager.h"
 CGameWorld::CGameWorld()
 {
 	myTga2dLogoSprite = nullptr;
@@ -24,18 +25,20 @@ CGameWorld::~CGameWorld()
 
 void CGameWorld::Init()  
 {
+	CollisionManager::Init();
+	
 	myPlayer = std::make_unique<Player>();
 	myCamera = std::make_shared<Camera>();
 	myPlayer->Init();
 	myLevelLoader = new LevelLoader();
 
 	myLevelLoader->LoadLevel("Json/Levels/Runtfaff.json");
-
 }
 
 
 void CGameWorld::Update(float /*aTimeDelta*/)
 { 	
+	CollisionManager::GetInstance().Update();
 	myPlayer->Update();
 	myCamera->Update(myPlayer->GetPosition());
 	myLevelLoader->Update(myCamera);

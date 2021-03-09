@@ -1,24 +1,33 @@
 #pragma once
+#include "CommonUtilities/Vector2.hpp"
 
 class Collider;
 
 class CollisionManager
 {
+	friend Collider;
 public:
 	static void Init();
 	static void Destroy();
 	static bool IsReady();
 	static CollisionManager& GetInstance();
-	bool CheckCollision(const Collider& aCollider, const Collider& anOtherCollider);
 
+	void Update();
 private:
-	bool AABBAABB(const Collider& aCollider, const Collider& anOtherCollider);
-	bool CircleCircle(const Collider& aCollider, const Collider& anOtherCollider);
-	bool CircleAABB(const Collider& aCollider, const Collider& anOtherCollider);
+	bool CheckCollision(Collider* aCollider, Collider* anOtherCollider);
+	CommonUtilities::Vector2f PointOfIntersection(Collider* aCollider, Collider* anOtherCollider);
+	CommonUtilities::Vector2f CollisonNormal(Collider* aCollider, Collider* anOtherCollider);
+	void AddCollider(Collider* aCollider);
+	bool AABBAABB(Collider* aCollider, Collider* anOtherCollider);
+	bool CircleCircle(Collider* aCollider, Collider* anOtherCollider);
+	bool CircleAABB(Collider* aCollider, Collider* anOtherCollider);
 
 	//bool LineVolumeCircle();
 	//bool LineVolumeLineVolume();
 	//bool LineVolumeAABB();
+
+	std::vector<Collider*> myColliders;
+	float myCollisionDetection;
 
 	CollisionManager() = default;
 	static CollisionManager* myInstance;
