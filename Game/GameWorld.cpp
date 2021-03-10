@@ -29,9 +29,9 @@ void CGameWorld::Init()
 	myPlayer = std::make_unique<Player>();
 	myGround = std::make_unique<Collider>(CommonUtilities::Vector2f(0.5f,0.9f), 1, 0.1f);
 	myCamera = std::make_shared<Camera>();
-	myPlayer->Init();
 	myLevelLoader = new LevelLoader();
 
+	myPlayer->Init();
 	myLevelLoader->LoadLevel("Json/Levels/Runtfaff.json");
 }
 
@@ -39,11 +39,11 @@ void CGameWorld::Init()
 void CGameWorld::Update(float /*aTimeDelta*/)
 { 	
 	CollisionManager::GetInstance().Update();
-	myPlayer->Update();
 	myCamera->Update(myPlayer->GetPosition());
 	myLevelLoader->Update(myCamera);
 	//If you want to render something send in the sprite to the Camera
 	myGround->Draw();
+	myPlayer->Update();
 	
 	/*if (InputManager::GetInstance().IsKeyPressed('S'))
 	{
