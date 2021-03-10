@@ -24,10 +24,13 @@ void Player::Init()
 {
 	myCanJump = true;
 	myCollider = std::make_shared<Collider>(0.01f, myPosition);
+	
+	myPosition = { 0.5f,0.1f };
+	
 	LoadJsonData();
+	
 	mySprite = std::make_shared<Tga2D::CSprite>("sprites/Player.dds");
 	mySprite->SetSizeRelativeToImage({ 0.1f,0.1f });
-	myPosition = { 0.5f,0.1f };
 	mySprite->SetPosition(Tga2D::Vector2f(myPosition.x, myPosition.y));
 	mySprite->SetPivot({ 0.5f,0.5f });
 
@@ -35,11 +38,7 @@ void Player::Init()
 
 void Player::Update()
 {
-	timer -= DELTA_TIME;
-	if (timer > 0)
-	{
-		return;
-	}
+	
 	Movement();
 	InputHandling();
 	myPosition += myCurrentVelocity * DELTA_TIME;
@@ -122,7 +121,7 @@ void Player::Movement()
 	ApplyDrag(moveThisFrameX);
 
 
-	CollisionSolver(myCurrentVelocity);
+	//CollisionSolver(myCurrentVelocity);
 
 	if (std::abs(myCurrentVelocity.x) + moveThisFrameX <= myMaxVelocity + (myBoostInput * myMaxBoostVelocity))	
 		myCurrentVelocity.x += moveThisFrameX;
