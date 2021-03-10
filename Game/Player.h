@@ -52,7 +52,7 @@ protected:
 	float myGravity = 1.75f;
 
 
-	float timer = 10.f;
+	float timer = 5.f;
 
 
 	std::shared_ptr<Collider> myCollider = {};

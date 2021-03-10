@@ -38,7 +38,12 @@ void Player::Init()
 
 void Player::Update()
 {
-	
+	timer -= DELTA_TIME;
+	if (timer >  0)
+	{
+		return;
+	}
+
 	Movement();
 	InputHandling();
 	myPosition += myCurrentVelocity * DELTA_TIME;
