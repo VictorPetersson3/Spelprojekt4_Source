@@ -5,8 +5,11 @@
 #include "Timer.h"
 #include "CommonUtilities/Random.h"
 #include "Camera.h"
+#include "StateManager.h"
+
 #include "LevelLoader.h"
 #include "Player.h"
+#include "CollisionManager.h"
 CGameWorld::CGameWorld()
 {
 	myTga2dLogoSprite = nullptr;
@@ -24,6 +27,13 @@ CGameWorld::~CGameWorld()
 
 void CGameWorld::Init()  
 {
+	StateManager::Init();
+	myTga2dLogoSprite = new Tga2D::CSprite("sprites/tga_logo.dds");
+	myTga2dLogoSprite->SetPivot({ 0.5f, 0.5f });
+	myTga2dLogoSprite->SetPosition({ 0.5f, 0.5f });
+	myCamera = std::make_unique<Camera>();
+	CollisionManager::Init();
+	
 	myPlayer = std::make_unique<Player>();
 	myCamera = std::make_shared<Camera>();
 	myPlayer->Init();
@@ -33,9 +43,10 @@ void CGameWorld::Init()
 
 }
 
-
 void CGameWorld::Update(float /*aTimeDelta*/)
 { 	
+	StateManager::GetInstance().Update();
+	CollisionManager::GetInstance().Update();
 	myPlayer->Update();
 	myCamera->Update(myPlayer->GetPosition());
 	myLevelLoader->Update(myCamera);
@@ -58,7 +69,7 @@ void CGameWorld::Update(float /*aTimeDelta*/)
 }
 
 void CGameWorld::Render()
-{	
+{
 	//myTga2dLogoSprite->Render();
 	myPlayer->Render(myCamera);
 	/*myTga2dLogoSprite->Render();*/
