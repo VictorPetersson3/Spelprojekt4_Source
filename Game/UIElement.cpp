@@ -9,7 +9,7 @@ void UIElement::Update()
 void UIElement::Init(const CommonUtilities::Vector2f& aPos, const char* aImagePath, const int aLayer)
 {
 	myPosition = aPos;
-	myRenderCommand = std::make_unique<RenderCommand>(aImagePath, aLayer);
+	myRenderCommand = std::make_unique<RenderCommand>(aImagePath, aLayer, aPos);
 }
 
 void UIElement::Render()
@@ -27,4 +27,9 @@ void UIElement::Activate()
 void UIElement::Deactivate()
 {
 	myIsActive = false;
+}
+
+const RenderCommand UIElement::GetRenderCommand() const
+{
+	return *myRenderCommand;
 }

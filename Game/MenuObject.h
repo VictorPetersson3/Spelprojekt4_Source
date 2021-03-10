@@ -1,27 +1,25 @@
 #pragma once
 #include <vector>
 #include <memory>
+#include "State.h"
+
 class UIButton;
-class MenuObject
+class MenuObject : public State
 {
 public:
     
-	MenuObject() { myIsActive = false; }
+	MenuObject() = default;
 	~MenuObject() = default;
 
-	void AddButton(const std::shared_ptr<UIButton> aElement);
-	void Render();
-	virtual void Update();
-	virtual void Init() = 0;
-	const bool GetIsActive() const;
-	void Activate();
-	void DeActivate();
+	void Render() override;
+	virtual void Update() override;
+	virtual void Init(const EStateType& aState) override;
 protected:
-	std::shared_ptr<UIButton> GetElement(const int aIndex);
-	const std::shared_ptr<UIButton> GetElement(const int aIndex) const;
-	const int GetUIElementsSize() const;
+	void AddButton(const std::shared_ptr<UIButton> aElement);
+	std::shared_ptr<UIButton> GetButtonElement(const int aIndex);
+	const std::shared_ptr<UIButton> GetButtonElement(const int aIndex) const;
+	const int GetUIButtonElementsSize() const;
 private:
 	std::vector<std::shared_ptr<UIButton>> myUiButtonElements;
-	bool myIsActive;
 };
 

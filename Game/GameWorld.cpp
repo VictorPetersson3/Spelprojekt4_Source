@@ -5,6 +5,7 @@
 #include "Timer.h"
 #include "CommonUtilities/Random.h"
 #include "Camera.h"
+#include "StateManager.h"
 
 CGameWorld::CGameWorld()
 {
@@ -19,8 +20,7 @@ CGameWorld::~CGameWorld()
 
 void CGameWorld::Init()  
 {
-	mainMenu.Init();
-	mainMenu.Activate();
+	StateManager::Init();
 	myTga2dLogoSprite = new Tga2D::CSprite("sprites/tga_logo.dds");
 	myTga2dLogoSprite->SetPivot({ 0.5f, 0.5f });
 	myTga2dLogoSprite->SetPosition({ 0.5f, 0.5f });
@@ -29,7 +29,7 @@ void CGameWorld::Init()
 
 void CGameWorld::Update(float /*aTimeDelta*/)
 { 	
-	mainMenu.Update();
+	StateManager::GetInstance().Update();
 	myCamera->Update();
 	//If you want to render something send in the sprite to the Camera
 }

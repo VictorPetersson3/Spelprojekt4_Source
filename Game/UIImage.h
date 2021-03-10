@@ -6,6 +6,7 @@ class UIImage :
 public:
     UIImage() = default;
     ~UIImage() = default;
-    void Update();
+    void Update() override;
+    void Render();
 };
 

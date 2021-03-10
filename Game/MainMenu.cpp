@@ -1,21 +1,29 @@
 #include "stdafx.h"
 #include "MainMenu.h"
-#include "UIElement.h"
 #include "UIButton.h"
 #include "InputManager.h"
+#include "StateManager.h"
 
 void MainMenu::TestMe(int aVal)
 {
 	printf("Hello World %i\n", aVal);
 }
 
-void MainMenu::Test2()
+
+void MainMenu::OptionsButtonPress()
+{
+	StateManager::GetInstance().AddOptionsOnStack();
+	printf("Pressing Options\n");
+}
+
+void MainMenu::ExitButtonPress()
 {
 	printf("Pressing Exit\n");
 }
 
-void MainMenu::Init()
+void MainMenu::Init(const EStateType& aState)
 {
+	SetStateType(aState);
 	//Skapa rapidjsonInläsning för alla Objekt som jag Initar
 	std::string tempImagePaths[4] = { 
 	"sprites/UI/MainMenu/Button_Play.dds",
@@ -26,17 +34,15 @@ void MainMenu::Init()
 	{
 		AddButton(std::make_shared<UIButton>());
 	}
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 2; i++)
 	{
-		GetElement(i)->Init({ 00.5f, 0.2f + 0.2f * i }, tempImagePaths[i].c_str(), 0, [this](int index) {TestMe(index);}, i);
+		GetButtonElement(i)->Init({ 00.5f, 0.2f + 0.2f * i }, tempImagePaths[i].c_str(), 0, [this](int index) {TestMe(index);}, i);
 	}
-	GetElement(3)->Init({ 00.5f, 0.2f + 0.2f * 3 }, tempImagePaths[3].c_str(), 0, [this]() {Test2();});
-
+	GetButtonElement(2)->Init({ 00.5f, 0.2f + 0.2f * 2 }, tempImagePaths[2].c_str(), 0, [this]() {OptionsButtonPress(); });
+	GetButtonElement(3)->Init({ 00.5f, 0.2f + 0.2f * 3 }, tempImagePaths[3].c_str(), 0, [this]() {ExitButtonPress();});
 
 	myBackground = std::make_unique<UIImage>();
 	myBackground.get()->Init({0.5f, 0.5f}, "sprites/UI/MainMenu/Image_Background.dds", -1 );
-	myBackground.get()->Activate();
-	MenuObject::Activate();
 }
 
 void MainMenu::Update()
@@ -51,17 +57,22 @@ void MainMenu::Update()
 	{
 		myCurrentHoveredButton++;
 	}
-	for (int i = 0; i < GetUIElementsSize(); i++)
+	for (int i = 0; i < GetUIButtonElementsSize(); i++)
 	{
 		if (i == myCurrentHoveredButton)
 		{
-			GetElement(i)->SetIsHovered(true);
+			GetButtonElement(i)->SetIsHovered(true);
 		}
 		else
 		{
-			GetElement(i)->SetIsHovered(false);
+			GetButtonElement(i)->SetIsHovered(false);
 		}
-		GetElement(i)->Update();
+		GetButtonElement(i)->Update();
 	}
+}
+
+void MainMenu::Render()
+{
+	myBackground.get()->Render();
 	MenuObject::Render();
 }

@@ -21,7 +21,7 @@ public:
 	void Update(float aTimeDelta); 
 	void Render();
 private:
-	MainMenu mainMenu;
 	std::unique_ptr<Camera> myCamera;
 	Tga2D::CSprite* myTga2dLogoSprite;
+
 };

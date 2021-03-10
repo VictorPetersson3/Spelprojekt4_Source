@@ -1,6 +1,5 @@
 #pragma once
 #include <memory>
-#include "CommonUtilities/Vector2.hpp"
 #include "RenderCommand.h"
 class UIElement
 {
@@ -14,9 +13,10 @@ public:
 	const bool GetIsActive() const;
 	void Activate();
 	void Deactivate();
+	const RenderCommand GetRenderCommand() const;
 protected:
 	CommonUtilities::Vector2f myPosition;
 	std::unique_ptr<RenderCommand> myRenderCommand;
 private:
-	bool myIsActive;
+	bool myIsActive = true;
 };

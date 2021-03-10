@@ -2,17 +2,18 @@
 #include "MenuObject.h"
 #include "UIImage.h"
 
-
 class MainMenu : public MenuObject
 {
 public:
 	MainMenu() = default;
 	~MainMenu() = default;
-	void Init();
-	void Update();
-	void TestMe(int aVal);
-	void Test2();
+	void Init(const EStateType& aState) final;
+	void Update() final;
+	void Render() final;
 private:
+	void TestMe(int aVal);
+	void OptionsButtonPress();
+	void ExitButtonPress();
 	std::unique_ptr<UIImage> myBackground;
 	int myCurrentHoveredButton = 0;
 };

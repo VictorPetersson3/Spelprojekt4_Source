@@ -51,6 +51,10 @@
     <ClInclude Include="MenuObject.h" />
     <ClInclude Include="UIImage.h" />
     <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="State.h" />
+    <ClInclude Include="StateManager.h" />
+    <ClInclude Include="OptionsMenu.h" />
+    <ClInclude Include="Enums.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -80,5 +84,8 @@
     <ClCompile Include="MenuObject.cpp" />
     <ClCompile Include="UIImage.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="State.cpp" />
+    <ClCompile Include="StateManager.cpp" />
+    <ClCompile Include="OptionsMenu.cpp" />
   </ItemGroup>
 </Project>

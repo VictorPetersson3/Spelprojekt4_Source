@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "MenuObject.h"
-#include "UIElement.h"
 #include "UIButton.h"
-#include "UIImage.h"
 
 
 
@@ -13,66 +11,42 @@ void MenuObject::AddButton(const std::shared_ptr<UIButton> aElement)
 
 void MenuObject::Render()
 {
-    if (GetIsActive())
+    for (int i = 0; i < myUiButtonElements.size(); i++)
     {
-        for (int i = 0; i < myUiButtonElements.size(); i++)
+        if (myUiButtonElements[i]->GetIsActive())
         {
-            if (myUiButtonElements[i]->GetIsActive())
-            {
-                myUiButtonElements[i]->Render();
-            }
+            myUiButtonElements[i]->Render();
         }
     }
 }
 
 void MenuObject::Update()
 {
-    if (GetIsActive())
+    for (int i = 0; i < myUiButtonElements.size(); i++)
     {
-        for (int i = 0; i < myUiButtonElements.size(); i++)
+        if (myUiButtonElements[i]->GetIsActive())
         {
-            if (myUiButtonElements[i]->GetIsActive())
-            {
-                myUiButtonElements[i]->Update();
-            }
+            myUiButtonElements[i]->Update();
         }
     }
 }
 
-const bool MenuObject::GetIsActive() const
+void MenuObject::Init(const EStateType& aState)
 {
-    return myIsActive;
+    printf("MenuObject Init()\n");
 }
 
-void MenuObject::Activate()
-{
-    myIsActive = true;
-    for (int i = 0; i < myUiButtonElements.size(); i++)
-    {
-        myUiButtonElements[i]->Activate();
-    }
-}
-
-void MenuObject::DeActivate()
-{
-    myIsActive = false;
-    for (int i = 0; i < myUiButtonElements.size(); i++)
-    {
-        myUiButtonElements[i]->Deactivate();
-    }
-}
-
-const int MenuObject::GetUIElementsSize() const
+const int MenuObject::GetUIButtonElementsSize() const
 {
     return myUiButtonElements.size();
 }
 
-std::shared_ptr<UIButton> MenuObject::GetElement(const int aIndex)
+std::shared_ptr<UIButton> MenuObject::GetButtonElement(const int aIndex)
 {
     return myUiButtonElements[aIndex];
 }
 
-const std::shared_ptr<UIButton> MenuObject::GetElement(const int aIndex) const
+const std::shared_ptr<UIButton> MenuObject::GetButtonElement(const int aIndex) const
 {
     return myUiButtonElements[aIndex];
 }

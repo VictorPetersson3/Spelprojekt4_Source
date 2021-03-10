@@ -7,7 +7,11 @@ void UIImage::Update()
 	if (GetIsActive())
 	{
 		UIElement::Update();
-		myRenderCommand->Render();
 	}
+}
+
+void UIImage::Render()
+{
+	UIElement::Render();
 }
 
