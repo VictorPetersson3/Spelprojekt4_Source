@@ -64,25 +64,23 @@ void Player::InputHandling()
 {
 	myBoostInput = INPUT.IsKeyDown('Z') || INPUT.IsKeyDown(VK_LSHIFT);
 
-	const float moveX = (INPUT.IsKeyDown('D') || INPUT.IsKeyDown(VK_RIGHT)) - (INPUT.IsKeyDown('A') || INPUT.IsKeyDown(VK_LEFT));
 	float moveY = INPUT.IsKeyDown('W') || INPUT.IsKeyDown(VK_UP) || INPUT.IsKeyDown(VK_SPACE) || INPUT.IsKeyDown('X');
 
 	const bool isKeyUp = INPUT.IsKeyUp('W') || INPUT.IsKeyUp(VK_UP) || INPUT.IsKeyUp(VK_SPACE) || INPUT.IsKeyUp('X');
+	const float moveX = (INPUT.IsKeyDown('D') || INPUT.IsKeyDown(VK_RIGHT)) - (INPUT.IsKeyDown('A') || INPUT.IsKeyDown(VK_LEFT));
 	
 	if (!myIsGrounded)
 		if (isKeyUp)
 			myCanJump = true;
 
 	moveY *= myCanJump;
-	
 	myInputVector = { moveX,  moveY };
 }
 
 void Player::JumpPhysics()
 {
 	if (myInputVector.y > 0)
-	{
-		
+	{		
 		if (myJumpTimer > myJumpTime)
 		{
 			myJumpTimer = 0;
