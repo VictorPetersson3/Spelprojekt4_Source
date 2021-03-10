@@ -7,7 +7,7 @@ public:
 	Camera();
 	~Camera() = default;
 	void Init(const CommonUtilities::Vector2f& aPos);
-	void Update();
+	void Update(const CommonUtilities::Vector2f aPositionToFollow);
 	void RenderSprite(const Tga2D::CSprite aSprite);
 
 private:

@@ -1,20 +1,62 @@
 #pragma once
-#include <tga2d/math/vector2.h>
+#include <CommonUtilities/Vector2.hpp>
+#include <memory>
+class Camera;
+class Collider;
+
+namespace Tga2D 
+{
+	class CSprite;
+}
 
 class Player
 {
 public:
 	Player();
 	~Player();
-	void Init();
-	void Update(const float aDt);
-	void Render();
+	virtual void Init();
+	virtual void Update();
+	virtual void Render(std::shared_ptr<Camera> aCamera);
+	CommonUtilities::Vector2f GetPosition() const;
 
-private:
-	void LoadJsonData();
-	void Movement();
+
+protected:
+	virtual void LoadJsonData();
+	virtual void Movement();	
+	virtual void InputHandling();
+	virtual void PhysicsSimulation();
 	
-	float myAcceleration = {};
-	Tga2D::Vector2f myCurrentVelocity = {};	
+	void JumpPhysics();
+	void ApplyDrag(const float aThisFrameVel);
 
+protected:
+
+	bool myIsGrounded = false;
+	bool myCanJump = false;
+	float myMaxVelocity = 0.75f;
+	float myAcceleration = 4.25f;
+	
+	float myJumpTimer = 0;
+	float myJumpTime = 0.2f;
+	
+	float myDrag = 3.0f;
+
+
+	int myBoostInput = 0;
+	float myBoostDrag = 10.0f;
+	float myMaxBoostVelocity = 2.f;
+	float myBoostAcceleration = 7.0f;
+
+	float myAirControll = 0.125f;
+	float myJumpSpeed = 10.f;
+	float myGravity = 1.75f;
+
+
+	std::shared_ptr<Collider> myCollider = {};
+
+	CommonUtilities::Vector2f myPosition = {};
+	CommonUtilities::Vector2f myCurrentVelocity = {};	
+	CommonUtilities::Vector2f myInputVector = {};
+	std::shared_ptr<Tga2D::CSprite> mySprite;
+	
 };
