@@ -26,8 +26,8 @@ CGameWorld::~CGameWorld()
 void CGameWorld::Init()  
 {
 	CollisionManager::Init();
-	
 	myPlayer = std::make_unique<Player>();
+	myGround = std::make_unique<Collider>(CommonUtilities::Vector2f(0.5f,0.9f), 1, 0.1f);
 	myCamera = std::make_shared<Camera>();
 	myPlayer->Init();
 	myLevelLoader = new LevelLoader();
@@ -43,7 +43,8 @@ void CGameWorld::Update(float /*aTimeDelta*/)
 	myCamera->Update(myPlayer->GetPosition());
 	myLevelLoader->Update(myCamera);
 	//If you want to render something send in the sprite to the Camera
-
+	myGround->Draw();
+	
 	/*if (InputManager::GetInstance().IsKeyPressed('S'))
 	{
 		printf("Was Pressed\n");

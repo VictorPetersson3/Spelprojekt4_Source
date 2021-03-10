@@ -103,6 +103,7 @@ CommonUtilities::Vector2f CollisionManager::CollisonNormal(Collider* aCollider, 
 
 void CollisionManager::AddCollider(Collider* aCollider)
 {
+	myColliders.push_back(aCollider);
 	myColliders.emplace_back(aCollider);
 }
 
