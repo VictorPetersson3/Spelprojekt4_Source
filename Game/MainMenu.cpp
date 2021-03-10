@@ -18,6 +18,7 @@ void MainMenu::OptionsButtonPress()
 
 void MainMenu::ExitButtonPress()
 {
+	Tga2D::CEngine::GetInstance()->Shutdown();
 	printf("Pressing Exit\n");
 }
 
