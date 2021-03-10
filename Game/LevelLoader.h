@@ -7,6 +7,7 @@
 #include <memory>
 #include "tga2d\sprite\sprite.h"
 #include "TerrainTile.h"
+#include "Saw.h"
 
 class Camera;
 
@@ -23,6 +24,7 @@ public:
 
 private:
 	std::vector<TerrainTile> myTiles;
+	std::vector<Saw> mySaws;
 	std::unique_ptr< Camera> myCamera;
 
 	void SetRect(Tga2D::CSprite& aSprite, int gridTileindex, int layerIndex);
