@@ -16,6 +16,24 @@
     <Filter Include="Main">
       <UniqueIdentifier>{de6b2b36-8aa0-4ad6-acf4-02ca1f7747cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="StateTypes">
+      <UniqueIdentifier>{5ffb87cf-e6f6-499b-b7b7-a942ef3deb95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI Components">
+      <UniqueIdentifier>{f4bb26d2-6980-428c-9bfc-adbfcc439483}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MenuBaseObjects">
+      <UniqueIdentifier>{8d0b9c47-89f2-477a-b9f1-46f7bec28f8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StateTypes\BaseState">
+      <UniqueIdentifier>{23d85c9b-db4e-42dc-8130-0ba516b41e0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StateTypes\MenuStates">
+      <UniqueIdentifier>{90b49778-6ac3-44d1-b5c9-3462ba8df73c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{1c59107f-a9e1-447d-8976-2b6484727e41}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -46,6 +64,36 @@
     <ClInclude Include="GameWorld.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="UIButton.h">
+      <Filter>UI Components</Filter>
+    </ClInclude>
+    <ClInclude Include="UIElement.h">
+      <Filter>UI Components</Filter>
+    </ClInclude>
+    <ClInclude Include="UIImage.h">
+      <Filter>UI Components</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuObject.h">
+      <Filter>MenuBaseObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>StateTypes\BaseState</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>StateTypes\MenuStates</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionsMenu.h">
+      <Filter>StateTypes\MenuStates</Filter>
+    </ClInclude>
+    <ClInclude Include="StateManager.h">
+      <Filter>Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderCommand.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
     <ClInclude Include="CollisionManager.h">
       <Filter>Singletons</Filter>
     </ClInclude>
@@ -71,11 +119,32 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Main</Filter>
+    <ClCompile Include="UIButton.cpp">
+      <Filter>UI Components</Filter>
     </ClCompile>
-    <ClCompile Include="GameWorld.cpp">
-      <Filter>Main</Filter>
+    <ClCompile Include="UIElement.cpp">
+      <Filter>UI Components</Filter>
+    </ClCompile>
+    <ClCompile Include="UIImage.cpp">
+      <Filter>UI Components</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuObject.cpp">
+      <Filter>MenuBaseObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>StateTypes\BaseState</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>StateTypes\MenuStates</Filter>
+    </ClCompile>
+    <ClCompile Include="OptionsMenu.cpp">
+      <Filter>StateTypes\MenuStates</Filter>
+    </ClCompile>
+    <ClCompile Include="StateManager.cpp">
+      <Filter>Singletons</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderCommand.cpp">
+      <Filter>Rendering</Filter>
     </ClCompile>
     <ClCompile Include="CollisionManager.cpp">
       <Filter>Singletons</Filter>
@@ -85,5 +154,11 @@
     <ClCompile Include="LevelLoader.cpp" />
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="JsonParser.cpp" />
+    <ClCompile Include="GameWorld.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
