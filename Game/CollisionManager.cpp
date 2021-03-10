@@ -29,10 +29,12 @@ void CollisionManager::Update()
 		{
 			for (auto& anotherCollider : myColliders)
 			{
-				if (CheckCollision(anotherCollider, collider))
+				if (anotherCollider != collider && CheckCollision(anotherCollider, collider))
 				{
 					collider->SetCollidedWith(anotherCollider);
 					anotherCollider->SetCollidedWith(collider);
+					collider->HasCollided() = true;
+					anotherCollider->HasCollided() = true;
 				}
 			}
 		collider->Update();
@@ -42,6 +44,7 @@ void CollisionManager::Update()
 
 bool CollisionManager::CheckCollision(Collider* aCollider, Collider* anOtherCollider)
 {
+	if (aCollider->GetType() == ECollider::None || anOtherCollider->GetType() == ECollider::None) return false;
 	if (aCollider->GetType() == ECollider::Circle && anOtherCollider->GetType() == ECollider::Circle) return CircleCircle(aCollider, anOtherCollider);
 	if (aCollider->GetType() == ECollider::Circle && anOtherCollider->GetType() == ECollider::AABB) return CircleAABB(aCollider, anOtherCollider);
 	if (aCollider->GetType() == ECollider::AABB && anOtherCollider->GetType() == ECollider::Circle) return CircleAABB(anOtherCollider, aCollider);
@@ -103,7 +106,6 @@ CommonUtilities::Vector2f CollisionManager::CollisonNormal(Collider* aCollider, 
 
 void CollisionManager::AddCollider(Collider* aCollider)
 {
-	myColliders.push_back(aCollider);
 	myColliders.emplace_back(aCollider);
 }
 

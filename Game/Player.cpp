@@ -126,7 +126,7 @@ void Player::Movement()
 	ApplyDrag(moveThisFrameX);
 
 
-	//CollisionSolver(myCurrentVelocity);
+	CollisionSolver(myCurrentVelocity);
 
 	if (std::abs(myCurrentVelocity.x) + moveThisFrameX <= myMaxVelocity + (myBoostInput * myMaxBoostVelocity))	
 		myCurrentVelocity.x += moveThisFrameX;
@@ -179,7 +179,6 @@ void Player::ApplyDrag(const float aFrameVel)
 	{
 		myCurrentVelocity.x += (currentDrag * DELTA_TIME) * myIsGrounded;
 	}
-
 }
 
 void Player::CollisionSolver(CommonUtilities::Vector2f aFrameDirection)

@@ -38,12 +38,12 @@ void CGameWorld::Init()
 
 void CGameWorld::Update(float /*aTimeDelta*/)
 { 	
-	CollisionManager::GetInstance().Update();
 	myCamera->Update(myPlayer->GetPosition());
 	myLevelLoader->Update(myCamera);
 	//If you want to render something send in the sprite to the Camera
 	myGround->Draw();
 	myPlayer->Update();
+	CollisionManager::GetInstance().Update();
 	
 	/*if (InputManager::GetInstance().IsKeyPressed('S'))
 	{
