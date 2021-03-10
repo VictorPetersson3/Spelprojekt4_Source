@@ -21,11 +21,11 @@ public:
 
 	void Update(float aDeltatime);
 	void Render(const std::shared_ptr<Camera> aCamera);
+	Tga2D::CSprite mySprite;
+	Collider myCollider;
 
 private:
 
-	Tga2D::CSprite mySprite;
-	Collider myCollider;
 	std::vector<Vector2> myTravelPoints;
 	int myNextPointIndex = 0;
 	Vector2 myPosition;

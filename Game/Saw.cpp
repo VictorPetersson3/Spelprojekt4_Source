@@ -7,7 +7,7 @@ Saw::Saw(Vector2 aStartPoint)
 {
 	myPosition = aStartPoint;
 	myCollider = Collider(myRadius, myPosition);
-	mySprite = Tga2D::CSprite("");
+	mySprite = Tga2D::CSprite("Sprites/tempSaw.dds");
 	myTravelPoints.push_back(aStartPoint);
 
 }
