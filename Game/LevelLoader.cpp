@@ -46,11 +46,11 @@ void LevelLoader::Update(const std::shared_ptr<Camera> aCamera)
 
 	}
 
-	for (Saw s : mySaws)
+	for (int i = 0; i < mySaws.size(); i++)
 	{
-		s.Update(0.001);
-		aCamera.get()->RenderSprite(s.mySprite);
-		s.myCollider.Draw();
+		mySaws[i].Update(0.001);
+		aCamera.get()->RenderSprite(mySaws[i].mySprite);
+		mySaws[i].myCollider.Draw();
 	}
 
 
@@ -107,21 +107,27 @@ bool LevelLoader::LoadLevel(const char* aLevelPath)
 			}
 		}
 
-	/*	int sawsArrayLength = static_cast<int>(document["levels"][0]["layerInstances"][j]["entityInstances"].Capacity());
+		int sawsArrayLength = static_cast<int>(document["levels"][0]["layerInstances"][j]["entityInstances"].Capacity());
+		float renderSizeX = static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().x);
+		float renderSizeY = static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().y);
 
 		for (int i = 0; i < sawsArrayLength; i++)
 		{
-			Saw aSawToPushBack = Saw({ document["levels"][0]["layerInstances"][j]["entityInstances"][i]["px"][0].GetFloat(),
-									   document["levels"][0]["layerInstances"][j]["entityInstances"][i]["px"][1].GetFloat() });
+			Saw aSawToPushBack = Saw({ document["levels"][0]["layerInstances"][j]["entityInstances"][i]["px"][0].GetFloat() / renderSizeX,
+									   document["levels"][0]["layerInstances"][j]["entityInstances"][i]["px"][1].GetFloat() / renderSizeY});
 
 
 			int currentSawPointAmounts = document["levels"][0]["layerInstances"][j]["entityInstances"][i]["fieldInstances"][0]["__value"].Capacity();
+
 			for (int k = 0; k < currentSawPointAmounts; k++)
 			{
-				aSawToPushBack.AddPoint({ document["levels"][0]["layerInstances"][j]["entityInstances"][i]["fieldInstances"][0]["__value"][k]["cx"].GetFloat(),
-										  document["levels"][0]["layerInstances"][j]["entityInstances"][i]["fieldInstances"][0]["__value"][k]["cy"].GetFloat() });
+				aSawToPushBack.AddPoint({ document["levels"][0]["layerInstances"][j]["entityInstances"][i]["fieldInstances"][0]["__value"][k]["cx"].GetFloat() / renderSizeX * gridSize + 0.2f,
+										  document["levels"][0]["layerInstances"][j]["entityInstances"][i]["fieldInstances"][0]["__value"][k]["cy"].GetFloat() / renderSizeY * gridSize + 0.2f });
+
 			}
-		}*/
+
+			mySaws.push_back(aSawToPushBack);
+		}
 	}
 
 

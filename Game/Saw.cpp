@@ -13,22 +13,23 @@ Saw::Saw(Vector2 aStartPoint)
 }
 
 void Saw::AddPoint(Vector2 aPoint)
-	{
-		myTravelPoints.push_back(aPoint);
-
-	}
+{
+	myTravelPoints.push_back(aPoint);
+}
 
 void Saw::Update(float aDeltatime)
 {
+
 	if (myPosition.Distance(myPosition, myTravelPoints[myNextPointIndex]) < EPSILON)
 	{
-		if (myNextPointIndex > myTravelPoints.size() -1 || myNextPointIndex < 0)
-		{
-			myDirection *= -1;
-		}
 		myNextPointIndex += myDirection;
 	}
-	myPosition += (myPosition - myTravelPoints[myNextPointIndex]).GetNormalized() * aDeltatime * mySpeed;
+	if (myNextPointIndex > myTravelPoints.size() - 1|| myNextPointIndex < 0)
+	{
+		myDirection *= -1;
+		myNextPointIndex += myDirection;
+	}
+	myPosition += (myTravelPoints[myNextPointIndex] - myPosition).GetNormalized() * aDeltatime * mySpeed;
 	myCollider.UpdateCollider(myPosition);
 	mySprite.SetPosition({ myPosition.x, myPosition.y });
 }

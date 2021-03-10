@@ -30,9 +30,9 @@ private:
 	int myNextPointIndex = 0;
 	Vector2 myPosition;
 	float myRadius;
-	float mySpeed;
+	float mySpeed = 1;
 	int myDirection = 1;
 
-	const float EPSILON = 0.000001f;
+	const float EPSILON = 0.01;
 };
 
