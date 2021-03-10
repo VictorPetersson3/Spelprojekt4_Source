@@ -27,6 +27,10 @@ private:
 	static StateManager* myInstance;
 	MainMenu myMainMenu;
 	OptionsMenu myOptionsMenu;
+	//Add States here as an object, 1 per state, Init the states after in Init
+
+
+
 	CommonUtilities::Stack<State*> myGameStates;
 };
 

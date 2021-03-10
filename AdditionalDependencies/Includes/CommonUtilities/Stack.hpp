@@ -70,7 +70,7 @@ namespace CommonUtilities
 	{
 		assert(myIterator != 0 && "Stack Empty, cannot remove from empty container");
 		T returnValue = myContainer[myIterator - 1];
-		delete myContainer[myIterator - 1];
+		//delete myContainer[myIterator - 1];
 		myIterator--;
 		return returnValue;
 	}
@@ -78,13 +78,14 @@ namespace CommonUtilities
 	inline void Stack<T, T_Size>::RemoveTop()
 	{
 		assert(myIterator != 0 && "Stack Empty, cannot remove from empty container");
-		delete myContainer[myIterator - 1];
+		//delete myContainer[myIterator - 1];
 		myIterator--;
 	}
 	template<class T, const unsigned int T_Size>
 	inline T& Stack<T, T_Size>::GetElement(const int aIndex)
 	{
 		assert(myIterator != 0 && "Stack Empty, cannot get element from empty container");
+		assert(aIndex <= myIterator && "Trying to access an element outside of range");
 		return myContainer[aIndex];
 	}
 }

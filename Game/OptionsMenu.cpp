@@ -9,7 +9,7 @@ void OptionsMenu::Init(const EStateType& aState)
 {
 	SetStateType(aState);
 	AddButton(std::make_shared<UIButton>());
-	GetButtonElement(0)->Init({ 0.5f, 0.6f }, "sprites/UI/BackButton.dds", 0, [this]() {BackButtonPress(); });
+	GetButtonElement(0)->Init({ 0.5f, 0.75f }, "sprites/UI/BackButton.dds", 0, [this]() {BackButtonPress(); });
 	myBackground = std::make_unique<UIImage>();
 	myBackground.get()->Init({ 0.5f, 0.5f }, "sprites/UI/OptionsMenu/OptionsBackground.dds", -1);
 	myBackground.get()->Activate();

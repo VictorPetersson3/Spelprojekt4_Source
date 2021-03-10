@@ -9,7 +9,12 @@ void StateManager::Init()
 	myInstance->myMainMenu.Init(EStateType::eMainMenu);
 	myInstance->myOptionsMenu.Init(EStateType::eOptionsMenu);
 	myInstance->myOptionsMenu.SetRenderThrough(true);
+	//Main Menu is the default beginning state
 	myInstance->myGameStates.Push(&GetInstance().myMainMenu);
+	//Init the states you made here, rest will work automagically,
+	//If you want to test a state, Push it on to myGameStates
+
+
 }
 
 void StateManager::Destroy()
@@ -50,12 +55,10 @@ void StateManager::AddOptionsOnStack()
 
 void StateManager::Update()
 {
-	myInstance->myGameStates.GetTop()->Update();
-	myInstance->myGameStates.GetTop()->Render();
 	//This is to render the layers that are beneath the current game state if they are renderable
 	if (myInstance->myGameStates.GetTop()->GetRenderThrough())
 	{
-		for (int i = myInstance->myGameStates.GetSize(); --i > 0;)
+		for (int i = 0; i < myInstance->myGameStates.GetSize() - 1; i++)
 		{
 			if (myInstance->myGameStates.GetElement(i + 1)->GetRenderThrough())
 			{
@@ -63,4 +66,6 @@ void StateManager::Update()
 			}
 		}
 	}
+	myInstance->myGameStates.GetTop()->Update();
+	myInstance->myGameStates.GetTop()->Render();
 }
