@@ -74,8 +74,8 @@ CommonUtilities::Vector2f CollisionManager::PointOfIntersection(Collider* aColli
 	if (aCollider->GetType() == ECollider::AABB && anOtherCollider->GetType() == ECollider::AABB)
 	{
 		///
-		// Här saknas massa kod som jag inte orkat lägga in än o__o liksom kolla ovanför, sjukt tedious
-		///
+		/// Lägger till kod här senare om det skulle behövas <3
+		/// 
 	}
 	return { 0, 0 };
 }
