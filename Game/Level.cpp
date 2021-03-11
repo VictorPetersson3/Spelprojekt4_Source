@@ -16,7 +16,7 @@ void Level::Render()
 	for (auto t : myTerrain)
 	{
 		t.get()->mySprite.get()->Render();
-		t.get()->myCollider.get()->Draw();
+		//t.get()->myCollider.get()->Draw();
 	}
 }
 

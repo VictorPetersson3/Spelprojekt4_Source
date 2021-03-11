@@ -32,7 +32,7 @@ void CGameWorld::Init()
 	myTga2dLogoSprite->SetPosition({ 0.5f, 0.5f });
 	myCamera = std::make_unique<Camera>();
 	
-
+	//myCollider = new Collider({ 0.5f, 0.9f }, 1.0f, 0.2f);
 
 	myPlayer = std::make_unique<Player>();
 	myCamera = std::make_shared<Camera>();
@@ -44,6 +44,7 @@ void CGameWorld::Update(float /*aTimeDelta*/)
 	StateManager::GetInstance().Update();
 	myCamera->Update(myPlayer->GetPosition());
 
+	//myCollider->Draw();
 	//If you want to render something send in the sprite to the Camera
 	myPlayer->Update();
 	CollisionManager::GetInstance().Update();

@@ -31,6 +31,8 @@ void CollisionManager::Update()
 			collider->HasCollided() = false;
 			for (auto& anotherCollider : myColliders)
 			{
+				if (anotherCollider->GetTag() == EColliderTag::Terrain && collider->GetTag() == EColliderTag::Terrain) break;
+
 				if (anotherCollider != collider && CheckCollision(anotherCollider, collider))
 				{
 					collider->SetCollidedWith(anotherCollider);

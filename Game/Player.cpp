@@ -24,7 +24,7 @@ void Player::Init()
 {
 	myCanJump = true;
 	myCollider = std::make_shared<Collider>(0.01f, myPosition);
-	
+	myCollider->SetTag(EColliderTag::Player);
 	myPosition = { 0.5f,0.1f };
 	
 	LoadJsonData();
@@ -100,6 +100,7 @@ void Player::JumpPhysics()
 		{
 			myCurrentVelocity.y -= myJumpSpeed * DELTA_TIME;
 			myJumpTimer += DELTA_TIME;
+
 		}
 	}
 	bool isKeyUp = INPUT.IsKeyUp('W') || INPUT.IsKeyUp(VK_UP) || INPUT.IsKeyUp(VK_SPACE) || INPUT.IsKeyUp('X');
@@ -114,6 +115,7 @@ void Player::JumpPhysics()
 void Player::Movement()
 {
 	float moveThisFrameX = (((myAcceleration * myAcceleration) + (myBoostAcceleration * myBoostInput)) * DELTA_TIME) * myInputVector.x;
+	CollisionSolver(myCurrentVelocity);
 	if (!myIsGrounded)
 	{
 		PhysicsSimulation();
@@ -126,7 +128,6 @@ void Player::Movement()
 	ApplyDrag(moveThisFrameX);
 
 
-	CollisionSolver(myCurrentVelocity);
 
 	if (std::abs(myCurrentVelocity.x) + moveThisFrameX <= myMaxVelocity + (myBoostInput * myMaxBoostVelocity))	
 		myCurrentVelocity.x += moveThisFrameX;
@@ -192,6 +193,7 @@ void Player::CollisionSolver(CommonUtilities::Vector2f aFrameDirection)
 		//myPosition -= spatialDelta * 0.5f;
 		myPosition = point + directionalRadius;
 		myCurrentVelocity *= { -normal.y, -normal.x };
+		myIsGrounded = std::abs(normal.Length());
 	}
 
 }
