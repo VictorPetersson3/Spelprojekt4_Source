@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "JsonParser.h"
+#include <fstream>
+#include <sstream>
+#include <string>
 
 JsonParser::JsonParser()
 {
@@ -22,6 +25,7 @@ rapidjson::Document JsonParser::GetDocument(const char* aPath)
         }
     }
     file.close();
+
     documentToReturn.Parse(text.c_str());
 
     return documentToReturn;
