@@ -41,7 +41,7 @@ void LevelLoader::Update(const std::shared_ptr<Camera> aCamera)
 	{
 
 		aCamera.get()->RenderSprite(s.mySprite);
-		s.myCollider.Draw();
+		s.myCollider->Draw();
 	}
 
 	for (int i = 0; i < mySaws.size(); i++)
@@ -95,7 +95,7 @@ bool LevelLoader::LoadLevel(const char* aLevelPath)
 				float width = spriteToPushBack.GetSize().x;
 				float height = spriteToPushBack.GetSize().y * Tga2D::CEngine::GetInstance()->GetWindowRatio();
 
-				Collider colliderToPushBack = Collider(aColliderPosition, width * 0.5f, height * 0.5f);
+				std::shared_ptr<Collider> colliderToPushBack = std::make_shared<Collider>(aColliderPosition, width * 0.5f, height * 0.5f);
 
 				myTiles.push_back(TerrainTile(spriteToPushBack, colliderToPushBack));
 			}
@@ -127,7 +127,7 @@ bool LevelLoader::LoadLevel(const char* aLevelPath)
 			mySaws.push_back(aSawToPushBack);
 		}
 	}
-                std::shared_ptr<Collider> colliderToPushBack = std::make_shared<Collider>(aColliderPosition, width*0.5f, height*0.5f);
+               //std::shared_ptr<Collider> colliderToPushBack = std::make_shared<Collider>(aColliderPosition, width*0.5f, height*0.5f);
 
 	return false;
 }
