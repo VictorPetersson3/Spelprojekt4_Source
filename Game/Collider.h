@@ -16,13 +16,14 @@ enum class ECollider
 {
 	Circle,
 	AABB,
-	LineVolume
+	LineVolume,
+	None
 };
 
 class Collider
 {
 public:
-	Collider() = default;
+	Collider() { myType = ECollider::None; }
 	Collider(float aRadius, CommonUtilities::Vector2f aPosition);
 	Collider(CommonUtilities::Vector2f aPosition, float aWidth, float aHeight);
 	//Collider(/*Line volumes och skit*/);

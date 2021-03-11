@@ -42,8 +42,6 @@ void LevelLoader::Update(const std::shared_ptr<Camera> aCamera)
 
 		aCamera.get()->RenderSprite(s.mySprite);
 		s.myCollider.Draw();
-
-
 	}
 
 	for (int i = 0; i < mySaws.size(); i++)
@@ -129,7 +127,7 @@ bool LevelLoader::LoadLevel(const char* aLevelPath)
 			mySaws.push_back(aSawToPushBack);
 		}
 	}
-
+                std::shared_ptr<Collider> colliderToPushBack = std::make_shared<Collider>(aColliderPosition, width*0.5f, height*0.5f);
 
 	return false;
 }

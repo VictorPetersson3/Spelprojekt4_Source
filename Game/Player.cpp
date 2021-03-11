@@ -23,26 +23,34 @@ Player::~Player()
 void Player::Init()
 {
 	myCanJump = true;
+	myCollider = std::make_shared<Collider>(0.01f, myPosition);
+	
+	myPosition = { 0.5f,0.1f };
+	
 	LoadJsonData();
+	
 	mySprite = std::make_shared<Tga2D::CSprite>("sprites/Player.dds");
 	mySprite->SetSizeRelativeToImage({ 0.1f,0.1f });
-	myPosition = { 0.5f,0.1f };
 	mySprite->SetPosition(Tga2D::Vector2f(myPosition.x, myPosition.y));
 	mySprite->SetPivot({ 0.5f,0.5f });
 
-	myCollider = std::make_shared<Collider>(0.01f, myPosition);
 }
 
 void Player::Update()
 {
+	timer -= DELTA_TIME;
+	if (timer >  0)
+	{
+		return;
+	}
+
 	Movement();
 	InputHandling();
-
-
 	myPosition += myCurrentVelocity * DELTA_TIME;
-	mySprite->SetPosition(Tga2D::Vector2f(myPosition.x, myPosition.y));
-	myCollider->Draw();
+
 	myCollider->UpdateCollider(myPosition);
+	myCollider->Draw();
+	mySprite->SetPosition(Tga2D::Vector2f(myPosition.x, myPosition.y));
 	//std::cout << "Pos x: " << myPosition.x << " " << "Pos y: " << myPosition.y << std::endl;
 }
 
@@ -117,6 +125,9 @@ void Player::Movement()
 	}
 	ApplyDrag(moveThisFrameX);
 
+
+	CollisionSolver(myCurrentVelocity);
+
 	if (std::abs(myCurrentVelocity.x) + moveThisFrameX <= myMaxVelocity + (myBoostInput * myMaxBoostVelocity))	
 		myCurrentVelocity.x += moveThisFrameX;
 }
@@ -124,13 +135,13 @@ void Player::Movement()
 void Player::PhysicsSimulation()
 {
 	// Temp ground check (waiting for collision system)---- 
-	if (mySprite->GetPosition().y > 0.9f)
+	/*if (mySprite->GetPosition().y > 0.9f)
 	{
 		myIsGrounded = true;
 		myCurrentVelocity.y = 0;
 		myPosition.y = .9f;
 		return;
-	}
+	}*/
 	//End Temp ground check----
 
 	if (!myIsGrounded)
@@ -167,6 +178,15 @@ void Player::ApplyDrag(const float aFrameVel)
 	else if (myCurrentVelocity.x < 0)
 	{
 		myCurrentVelocity.x += (currentDrag * DELTA_TIME) * myIsGrounded;
+	}
+}
+
+void Player::CollisionSolver(CommonUtilities::Vector2f aFrameDirection)
+{
+	CommonUtilities::Vector2f normal = myCollider->GetCollisionNormal();
+	if (normal != CommonUtilities::Vector2f::Zero())
+	{
+		myCurrentVelocity = CommonUtilities::Vector2f::Zero();
 	}
 
 }

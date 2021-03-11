@@ -4,7 +4,7 @@
 
 struct TerrainTile
 {
-	TerrainTile(Tga2D::CSprite aSprite, Collider aCollider)
+	TerrainTile(Tga2D::CSprite aSprite, std::shared_ptr<Collider> aCollider)
 	{
 		mySprite = aSprite;
 		myCollider = aCollider;
@@ -16,5 +16,5 @@ struct TerrainTile
 	}
 
 	Tga2D::CSprite mySprite;
-	Collider myCollider;
+	std::shared_ptr<Collider> myCollider;
 };
