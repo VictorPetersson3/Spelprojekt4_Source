@@ -35,6 +35,8 @@ private:
 	void SetPosition(std::shared_ptr<Tga2D::CSprite>, int aGridTileIndex, int aLayerIndex);
 	void SetSpriteSize(std::shared_ptr<Tga2D::CSprite> aSprite, float aGridSize);
 
+	std::shared_ptr<Saw> AddSaw(int aGridSize, int aEntityIndex, int aLayerIndex, int aRenderSizeX, int aRenderSizeY);
+
 	rapidjson::Document document;
 
 };

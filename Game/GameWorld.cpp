@@ -36,8 +36,6 @@ void CGameWorld::Init()
 
 	myPlayer = std::make_unique<Player>();
 	myCamera = std::make_shared<Camera>();
-
-	myLevelLoader->LoadLevel("Json/Levels/Saws.json");
 	myPlayer->Init();
 }
 
