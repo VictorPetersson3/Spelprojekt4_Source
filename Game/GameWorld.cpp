@@ -5,8 +5,6 @@
 #include "Timer.h"
 #include "CommonUtilities/Random.h"
 #include "Camera.h"
-#include "StateManager.h"
-
 #include "LevelLoader.h"
 #include "Player.h"
 #include "CollisionManager.h"
@@ -27,11 +25,6 @@ CGameWorld::~CGameWorld()
 
 void CGameWorld::Init()  
 {
-	StateManager::Init();
-	myTga2dLogoSprite = new Tga2D::CSprite("sprites/tga_logo.dds");
-	myTga2dLogoSprite->SetPivot({ 0.5f, 0.5f });
-	myTga2dLogoSprite->SetPosition({ 0.5f, 0.5f });
-	myCamera = std::make_unique<Camera>();
 	CollisionManager::Init();
 	myPlayer = std::make_unique<Player>();
 	myGround = std::make_unique<Collider>(CommonUtilities::Vector2f(0.5f,0.9f), 1, 0.1f);
@@ -42,15 +35,15 @@ void CGameWorld::Init()
 	myLevelLoader->LoadLevel("Json/Levels/Runtfaff.json");
 }
 
+
 void CGameWorld::Update(float /*aTimeDelta*/)
 { 	
-	StateManager::GetInstance().Update();
-	CollisionManager::GetInstance().Update();
 	myCamera->Update(myPlayer->GetPosition());
 	myLevelLoader->Update(myCamera);
 	//If you want to render something send in the sprite to the Camera
 	myGround->Draw();
 	myPlayer->Update();
+	CollisionManager::GetInstance().Update();
 	
 	/*if (InputManager::GetInstance().IsKeyPressed('S'))
 	{
@@ -69,7 +62,7 @@ void CGameWorld::Update(float /*aTimeDelta*/)
 }
 
 void CGameWorld::Render()
-{
+{	
 	//myTga2dLogoSprite->Render();
 	myPlayer->Render(myCamera);
 	/*myTga2dLogoSprite->Render();*/
