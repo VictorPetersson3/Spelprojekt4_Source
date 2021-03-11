@@ -135,7 +135,7 @@ void LevelLoader::SetPosition(std::shared_ptr<Tga2D::CSprite> aSprite, int aGrid
 	float posY = document["levels"][0]["layerInstances"][aLayerIndex]["gridTiles"][aGridTileIndex]["px"][1].GetFloat();
 
 	aSprite.get()->SetPivot({ 0.5f,0.5f });
-	aSprite.get()->SetPosition({ posX / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().x) + 0.2f, posY / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().y) + 0.2f });
+	aSprite.get()->SetPosition({ posX / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().x), posY / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().y) });
 }
 
 void LevelLoader::SetSpriteSize(std::shared_ptr<Tga2D::CSprite> aSprite, float aGridSize)
@@ -146,16 +146,16 @@ void LevelLoader::SetSpriteSize(std::shared_ptr<Tga2D::CSprite> aSprite, float a
 std::shared_ptr<Saw> LevelLoader::AddSaw(int aGridSize, int aEntityIndex, int aLayerIndex, int aRenderSizeX, int aRenderSizeY)
 {
 
-	Saw aSawToPushBack = Saw({ document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / aRenderSizeX * aGridSize + 0.2f,
-							   document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / aRenderSizeY * aGridSize + 0.2f });
+	Saw aSawToPushBack = Saw({ document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / aRenderSizeX * aGridSize ,
+							   document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / aRenderSizeY * aGridSize });
 
 
 	int currentSawPointAmounts = document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][0]["__value"].Capacity();
 
 	for (int k = 0; k < currentSawPointAmounts; k++)
 	{
-		aSawToPushBack.AddPoint({ document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][0]["__value"][k]["cx"].GetFloat() / aRenderSizeX * aGridSize + 0.2f,
-								  document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][0]["__value"][k]["cy"].GetFloat() / aRenderSizeY * aGridSize + 0.2f });
+		aSawToPushBack.AddPoint({ document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][0]["__value"][k]["cx"].GetFloat() / aRenderSizeX * aGridSize,
+								  document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][0]["__value"][k]["cy"].GetFloat() / aRenderSizeY * aGridSize });
 
 	}
 
