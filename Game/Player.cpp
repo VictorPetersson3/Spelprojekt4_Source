@@ -149,7 +149,7 @@ void Player::PhysicsSimulation()
 		myCurrentVelocity.y += (myGravity * 10) * DELTA_TIME;
 		return;
 	}
-	if (myCurrentVelocity.y > 3.0f)
+	if (myCurrentVelocity.y > 0.05f)
 	{
 		return;
 	}
@@ -183,10 +183,15 @@ void Player::ApplyDrag(const float aFrameVel)
 
 void Player::CollisionSolver(CommonUtilities::Vector2f aFrameDirection)
 {
+	CommonUtilities::Vector2f point = myCollider->GetPointOfIntersection();
 	CommonUtilities::Vector2f normal = myCollider->GetCollisionNormal();
 	if (normal != CommonUtilities::Vector2f::Zero())
 	{
-		myCurrentVelocity = CommonUtilities::Vector2f::Zero();
+		CommonUtilities::Vector2f directionalRadius = myCollider->GetRadius() * normal;
+		//CommonUtilities::Vector2f spatialDelta = point - (directionalRadius + myPosition); // lite skuttande kod
+		//myPosition -= spatialDelta * 0.5f;
+		myPosition = point + directionalRadius;
+		myCurrentVelocity *= { -normal.y, -normal.x };
 	}
 
 }
