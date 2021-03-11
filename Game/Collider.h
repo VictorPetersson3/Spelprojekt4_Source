@@ -19,6 +19,13 @@ enum class ECollider
 	LineVolume,
 	None
 };
+enum class EColliderTag
+{
+	Player,
+	KillZone,
+	EndZone,
+	Terrain
+};
 
 class Collider
 {
@@ -31,6 +38,7 @@ public:
 	void Update();
 	void UpdateCollider(CommonUtilities::Vector2f anUpdatedPosition);
 
+	void SetTag(EColliderTag aColliderTag);
 	void SetRadius(float aNewRadius);
 	void SetAABB(AABB anAABB);
 	void SetLowerLeft(CommonUtilities::Vector2f aPoint);
@@ -47,15 +55,16 @@ public:
 	const CommonUtilities::Vector2f& GetSize() const;
 	const CommonUtilities::Vector2f& GetPosition() const;
 	const ECollider& GetType() const;
+	const EColliderTag& GetTag() const;
 
 private:
 	ECollider myType;
+	EColliderTag myTag = EColliderTag::Terrain;
 
 	float myRadius;
 
 	CommonUtilities::Vector2f myPosition;
 	AABB myAABB;
-
 
 	Collider* myCollidedWith = nullptr;
 	Collision myCollision;
