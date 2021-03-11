@@ -23,9 +23,16 @@ Collider::Collider(CommonUtilities::Vector2f aPosition, float aWidth, float aHei
 
 void Collider::Update()
 {
-	if (myCollidedWith == nullptr) return;
-	myCollision.myNormal = CollisionManager::GetInstance().CollisonNormal(this, myCollidedWith);
-	myCollision.myPointOfIntersection = CollisionManager::GetInstance().PointOfIntersection(this, myCollidedWith);
+	if (myCollidedWith == nullptr)
+	{
+		myCollision.myNormal = CommonUtilities::Vector2f::Zero();
+		myCollision.myPointOfIntersection = CommonUtilities::Vector2f::Zero();
+	}
+	else
+	{
+		myCollision.myNormal = CollisionManager::GetInstance().CollisonNormal(this, myCollidedWith);
+		myCollision.myPointOfIntersection = CollisionManager::GetInstance().PointOfIntersection(this, myCollidedWith);
+	}
 }
 
 void Collider::UpdateCollider(CommonUtilities::Vector2f anUpdatedPosition)

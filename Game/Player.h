@@ -49,7 +49,7 @@ protected:
 
 	float myAirControll = 0.125f;
 	float myJumpSpeed = 10.f;
-	float myGravity = 1.75f;
+	float myGravity = 0.1f;
 
 
 	float timer = 5.f;
