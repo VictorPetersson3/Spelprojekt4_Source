@@ -8,6 +8,9 @@
 #include "tga2d\sprite\sprite.h"
 #include "TerrainTile.h"
 #include "Saw.h"
+#include "Level.h"
+#include "LevelData.h"
+
 
 class Camera;
 
@@ -17,19 +20,20 @@ public:
 	LevelLoader();
 	~LevelLoader();
 
-	void Render();
 	void Update(const std::shared_ptr<Camera> aCamera);
 
-	bool LoadLevel(const char* aLevelPath);
+	LevelData LoadLevel(const char* aLevelPath);
+	std::shared_ptr<TerrainTile> LoadTileMap(const char* aImagePath, int aGridSize, int aLayerIndex, int aTileIndex);
+
 
 private:
 	std::vector<TerrainTile> myTiles;
 	std::vector<Saw> mySaws;
-	std::unique_ptr< Camera> myCamera;
 
-	void SetRect(Tga2D::CSprite& aSprite, int gridTileindex, int layerIndex);
-	void SetPosition(Tga2D::CSprite& aSprite, int aGridTileIndex, int aLayerIndex);
-	void SetSpriteSize(Tga2D::CSprite& aSprite, float aGridSize);
+
+	void SetRect(std::shared_ptr<Tga2D::CSprite> aSprite, int gridTileindex, int layerIndex);
+	void SetPosition(std::shared_ptr<Tga2D::CSprite>, int aGridTileIndex, int aLayerIndex);
+	void SetSpriteSize(std::shared_ptr<Tga2D::CSprite> aSprite, float aGridSize);
 
 	rapidjson::Document document;
 

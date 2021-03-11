@@ -104,6 +104,8 @@
     <ClInclude Include="TerrainTile.h" />
     <ClInclude Include="JsonParser.h" />
     <ClInclude Include="Saw.h" />
+    <ClInclude Include="Level.h" />
+    <ClInclude Include="LevelData.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -164,5 +166,7 @@
     <ClCompile Include="Game.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="Level.cpp" />
+    <ClCompile Include="LevelData.cpp" />
   </ItemGroup>
 </Project>
