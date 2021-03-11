@@ -36,5 +36,5 @@ void Level::Init(const EStateType& aState)
 	
 	LevelLoader levelLoader;
 
-	Load(levelLoader.LoadLevel("Json/Levels/Runtfaff.json"));
+	Load(levelLoader.LoadLevel("Json/Levels/CollisionTest.json"));
 }
