@@ -22,7 +22,8 @@ public:
 
 	void Update(const std::shared_ptr<Camera> aCamera);
 
-	LevelData LoadLevel(const char* aLevelPath);
+
+	std::shared_ptr<LevelData> LoadLevel(const char* aLevelPath);
 	std::shared_ptr<TerrainTile> LoadTileMap(const char* aImagePath, int aGridSize, int aLayerIndex, int aTileIndex);
 
 
