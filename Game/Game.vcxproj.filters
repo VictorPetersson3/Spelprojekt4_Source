@@ -101,6 +101,9 @@
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="TerrainTile.h" />
     <ClInclude Include="JsonParser.h" />
+    <ClInclude Include="Sprite_Renderer.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -159,6 +162,9 @@
     </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite_Renderer.cpp">
+      <Filter>Rendering</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
