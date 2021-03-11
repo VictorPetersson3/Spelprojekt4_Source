@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "AudioManager.h"
 
+AudioManager AudioManager::myInstance;
+
 AudioManager::AudioManager()
 {
 	myAudioEngine = irrklang::createIrrKlangDevice();

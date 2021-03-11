@@ -9,20 +9,18 @@
 
 #include "LevelLoader.h"
 #include "Player.h"
+
 #include "CollisionManager.h"
+
 CGameWorld::CGameWorld()
 {
 	myTga2dLogoSprite = nullptr;
-	myLevelLoader = nullptr;
 }
 
 CGameWorld::~CGameWorld() 
 {
 	delete myTga2dLogoSprite;
 	myTga2dLogoSprite = nullptr;
-
-	delete myLevelLoader;
-	myLevelLoader = nullptr;
 }
 
 void CGameWorld::Init()  
@@ -33,22 +31,21 @@ void CGameWorld::Init()
 	myTga2dLogoSprite->SetPosition({ 0.5f, 0.5f });
 	myCamera = std::make_unique<Camera>();
 	CollisionManager::Init();
+	
+
+
 	myPlayer = std::make_unique<Player>();
-	myGround = std::make_unique<Collider>(CommonUtilities::Vector2f(0.5f,0.9f), 1, 0.1f);
 	myCamera = std::make_shared<Camera>();
-	myLevelLoader = new LevelLoader();
 
 	myPlayer->Init();
-	myLevelLoader->LoadLevel("Json/Levels/Runtfaff.json");
 }
 
 void CGameWorld::Update(float /*aTimeDelta*/)
 { 	
 	StateManager::GetInstance().Update();
 	myCamera->Update(myPlayer->GetPosition());
-	myLevelLoader->Update(myCamera);
+
 	//If you want to render something send in the sprite to the Camera
-	myGround->Draw();
 	myPlayer->Update();
 	CollisionManager::GetInstance().Update();
 	
