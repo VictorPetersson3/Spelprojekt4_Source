@@ -113,8 +113,8 @@ bool LevelLoader::LoadLevel(const char* aLevelPath)
 
 		for (int i = 0; i < sawsArrayLength; i++)
 		{
-			Saw aSawToPushBack = Saw({ document["levels"][0]["layerInstances"][j]["entityInstances"][i]["px"][0].GetFloat() / renderSizeX,
-									   document["levels"][0]["layerInstances"][j]["entityInstances"][i]["px"][1].GetFloat() / renderSizeY});
+			Saw aSawToPushBack = Saw({ document["levels"][0]["layerInstances"][j]["entityInstances"][i]["__grid"][0].GetFloat() / renderSizeX * gridSize + 0.2f,
+									   document["levels"][0]["layerInstances"][j]["entityInstances"][i]["__grid"][1].GetFloat() / renderSizeY * gridSize + 0.2f });
 
 
 			int currentSawPointAmounts = document["levels"][0]["layerInstances"][j]["entityInstances"][i]["fieldInstances"][0]["__value"].Capacity();
