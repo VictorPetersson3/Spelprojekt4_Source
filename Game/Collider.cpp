@@ -67,6 +67,11 @@ const void Collider::Draw() const
 }
 
 
+void Collider::SetTag(EColliderTag aColliderTag)
+{
+	myTag = aColliderTag;
+}
+
 void Collider::SetRadius(float aNewRadius)
 {
 	myRadius = aNewRadius;
@@ -121,4 +126,9 @@ const CommonUtilities::Vector2f& Collider::GetPosition() const
 const ECollider& Collider::GetType() const
 {
 	return myType;
+}
+
+const EColliderTag& Collider::GetTag() const
+{
+	return myTag;
 }
