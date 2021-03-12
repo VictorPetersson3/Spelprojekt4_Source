@@ -27,7 +27,9 @@ private:
 	//bool LineVolumeAABB();
 
 	std::vector<Collider*> myColliders;
-	float myCollisionDetection;
+	float myCollisionDetection = 0.3f;
+
+	Collider* myPlayerCollider;
 
 	CollisionManager() = default;
 	static CollisionManager* myInstance;

@@ -26,9 +26,9 @@ void Player::Init()
 	myCollider = std::make_shared<Collider>(0.01f, myPosition);
 	myCollider->SetTag(EColliderTag::Player);
 	myPosition = { 0.5f,0.1f };
-	
+
 	LoadJsonData();
-	
+
 	mySprite = std::make_shared<Tga2D::CSprite>("sprites/Player.dds");
 	mySprite->SetSizeRelativeToImage({ 0.1f,0.1f });
 	mySprite->SetPosition(Tga2D::Vector2f(myPosition.x, myPosition.y));
@@ -39,7 +39,7 @@ void Player::Init()
 void Player::Update()
 {
 	timer -= DELTA_TIME;
-	if (timer >  0)
+	if (timer > 0)
 	{
 		return;
 	}
@@ -76,7 +76,7 @@ void Player::InputHandling()
 
 	const bool isKeyUp = INPUT.IsKeyUp('W') || INPUT.IsKeyUp(VK_UP) || INPUT.IsKeyUp(VK_SPACE) || INPUT.IsKeyUp('X');
 	const float moveX = (INPUT.IsKeyDown('D') || INPUT.IsKeyDown(VK_RIGHT)) - (INPUT.IsKeyDown('A') || INPUT.IsKeyDown(VK_LEFT));
-	
+
 	if (!myIsGrounded)
 		if (isKeyUp)
 			myCanJump = true;
@@ -88,7 +88,7 @@ void Player::InputHandling()
 void Player::JumpPhysics()
 {
 	if (myInputVector.y > 0)
-	{		
+	{
 		if (myJumpTimer > myJumpTime)
 		{
 			myJumpTimer = 0;
@@ -128,8 +128,7 @@ void Player::Movement()
 	ApplyDrag(moveThisFrameX);
 
 
-
-	if (std::abs(myCurrentVelocity.x) + moveThisFrameX <= myMaxVelocity + (myBoostInput * myMaxBoostVelocity))	
+	if (std::abs(myCurrentVelocity.x) + moveThisFrameX <= myMaxVelocity + (myBoostInput * myMaxBoostVelocity))
 		myCurrentVelocity.x += moveThisFrameX;
 }
 
@@ -160,10 +159,10 @@ void Player::PhysicsSimulation()
 
 
 void Player::ApplyDrag(const float aFrameVel)
-{	
+{
 	float graceValue = (aFrameVel + 0.001f) * DELTA_TIME;
 	float absoluteVelocity = std::abs(myCurrentVelocity.x) * DELTA_TIME;
-	
+
 	if (absoluteVelocity <= graceValue)
 	{
 		myCurrentVelocity.x = 0;
@@ -184,16 +183,22 @@ void Player::ApplyDrag(const float aFrameVel)
 
 void Player::CollisionSolver(CommonUtilities::Vector2f aFrameDirection)
 {
-	CommonUtilities::Vector2f point = myCollider->GetPointOfIntersection();
-	CommonUtilities::Vector2f normal = myCollider->GetCollisionNormal();
-	if (normal != CommonUtilities::Vector2f::Zero())
+	CommonUtilities::Vector2f point;
+	CommonUtilities::Vector2f normal;
+	if (INPUT.IsKeyUp(VK_SPACE))
 	{
-		CommonUtilities::Vector2f directionalRadius = myCollider->GetRadius() * normal;
-		//CommonUtilities::Vector2f spatialDelta = point - (directionalRadius + myPosition); // lite skuttande kod
-		//myPosition -= spatialDelta * 0.5f;
-		myPosition = point + directionalRadius;
-		myCurrentVelocity *= { -normal.y, -normal.x };
-		myIsGrounded = normal.y;
+		int leet = 1337;
 	}
-
+	for (int i = 0; i < myCollider->GetCollidedWith().size(); i++)
+	{
+		point = myCollider->GetPointOfIntersection(i);
+		normal = myCollider->GetCollisionNormal(i);
+		if (normal != CommonUtilities::Vector2f::Zero())
+		{
+			CommonUtilities::Vector2f directionalRadius = myCollider->GetRadius() * normal;
+			myPosition = point + directionalRadius;
+			myCurrentVelocity *= { std::abs(normal.y), std::abs(normal.x) };
+			if (!myIsGrounded) myIsGrounded = (-normal.y > 0);
+		}
+	}
 }

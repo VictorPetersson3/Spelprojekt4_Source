@@ -7,11 +7,6 @@ struct AABB
 	CommonUtilities::Vector2f myUpperRight = {};
 	CommonUtilities::Vector2f mySize;
 };
-struct Collision
-{
-	CommonUtilities::Vector2f myNormal = {};
-	CommonUtilities::Vector2f myPointOfIntersection = {};
-};
 enum class ECollider
 {
 	Circle,
@@ -46,9 +41,9 @@ public:
 	void SetCollidedWith(Collider* aCollider);
 	bool& HasCollided();
 
-	Collider* GetCollidedWith();
-	const CommonUtilities::Vector2f GetCollisionNormal() const;
-	const CommonUtilities::Vector2f GetPointOfIntersection() const;
+	std::vector<Collider*>& GetCollidedWith();
+	const CommonUtilities::Vector2f GetCollisionNormal(const int anIndex);
+	const CommonUtilities::Vector2f GetPointOfIntersection(const int anIndex);
 	const void Draw() const;
 	const float& GetRadius() const;
 	const AABB& GetAABB() const;
@@ -66,8 +61,7 @@ private:
 	CommonUtilities::Vector2f myPosition;
 	AABB myAABB;
 
-	Collider* myCollidedWith = nullptr;
-	Collision myCollision;
+	std::vector<Collider*> myCollidedWith;
 	bool myHasCollided = false;
 };
 
