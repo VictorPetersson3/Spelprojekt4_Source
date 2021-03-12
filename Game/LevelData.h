@@ -17,6 +17,7 @@ public:
 	void AddTile(std::shared_ptr<TerrainTile> aTile);
 	void AddSaw(std::shared_ptr<Saw> aSaw);
 	std::vector<std::shared_ptr<TerrainTile>> GetTiles();
+	std::vector<std::shared_ptr<Saw>> GetSaws();
 
 private:
 	std::vector<std::shared_ptr<TerrainTile>> myTiles;

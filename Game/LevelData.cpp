@@ -14,3 +14,21 @@ std::vector<std::shared_ptr<TerrainTile>> LevelData::GetTiles()
 {
 	return myTiles;
 }
+<<<<<<< Updated upstream
+=======
+
+std::vector<std::shared_ptr<Saw>> LevelData::GetSaws()
+{
+	return mySaws;
+}
+
+void LevelData::AddPlayerStart(const Tga2D::Vector2f& aPosition)
+{
+	myPlayerStartPosition = aPosition;
+}
+
+Tga2D::Vector2f LevelData::GetPlayerStart()
+{
+	return myPlayerStartPosition;
+}
+>>>>>>> Stashed changes
