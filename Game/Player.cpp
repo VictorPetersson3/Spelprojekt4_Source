@@ -24,7 +24,7 @@ void Player::Init()
 {
 	myCanJump = true;
 	myCollider = std::make_shared<Collider>(0.01f, myPosition);
-	
+	myCollider->SetTag(EColliderTag::Player);
 	myPosition = { 0.5f,0.1f };
 	
 	LoadJsonData();
@@ -100,6 +100,7 @@ void Player::JumpPhysics()
 		{
 			myCurrentVelocity.y -= myJumpSpeed * DELTA_TIME;
 			myJumpTimer += DELTA_TIME;
+
 		}
 	}
 	bool isKeyUp = INPUT.IsKeyUp('W') || INPUT.IsKeyUp(VK_UP) || INPUT.IsKeyUp(VK_SPACE) || INPUT.IsKeyUp('X');
@@ -114,6 +115,7 @@ void Player::JumpPhysics()
 void Player::Movement()
 {
 	float moveThisFrameX = (((myAcceleration * myAcceleration) + (myBoostAcceleration * myBoostInput)) * DELTA_TIME) * myInputVector.x;
+	CollisionSolver(myCurrentVelocity);
 	if (!myIsGrounded)
 	{
 		PhysicsSimulation();
@@ -126,7 +128,6 @@ void Player::Movement()
 	ApplyDrag(moveThisFrameX);
 
 
-	CollisionSolver(myCurrentVelocity);
 
 	if (std::abs(myCurrentVelocity.x) + moveThisFrameX <= myMaxVelocity + (myBoostInput * myMaxBoostVelocity))	
 		myCurrentVelocity.x += moveThisFrameX;
@@ -149,7 +150,7 @@ void Player::PhysicsSimulation()
 		myCurrentVelocity.y += (myGravity * 10) * DELTA_TIME;
 		return;
 	}
-	if (myCurrentVelocity.y > 3.0f)
+	if (myCurrentVelocity.y > 0.05f)
 	{
 		return;
 	}
@@ -183,10 +184,16 @@ void Player::ApplyDrag(const float aFrameVel)
 
 void Player::CollisionSolver(CommonUtilities::Vector2f aFrameDirection)
 {
+	CommonUtilities::Vector2f point = myCollider->GetPointOfIntersection();
 	CommonUtilities::Vector2f normal = myCollider->GetCollisionNormal();
 	if (normal != CommonUtilities::Vector2f::Zero())
 	{
-		myCurrentVelocity = CommonUtilities::Vector2f::Zero();
+		CommonUtilities::Vector2f directionalRadius = myCollider->GetRadius() * normal;
+		//CommonUtilities::Vector2f spatialDelta = point - (directionalRadius + myPosition); // lite skuttande kod
+		//myPosition -= spatialDelta * 0.5f;
+		myPosition = point + directionalRadius;
+		myCurrentVelocity *= { -normal.y, -normal.x };
+		myIsGrounded = normal.y;
 	}
 
 }

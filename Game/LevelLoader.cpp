@@ -25,13 +25,13 @@ void LevelLoader::Update(const std::shared_ptr<Camera> aCamera)
 {
 }
 
-LevelData LevelLoader::LoadLevel(const char* aLevelPath)
+std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 {
 	JsonParser jsonParser;
 
 	document = jsonParser.GetDocument(aLevelPath);
 
-	LevelData levelToPushBack;
+	std::shared_ptr<LevelData> levelToPushBack = std::make_shared<LevelData>();
 
 	float gridSize = document["defs"]["layers"][0]["gridSize"].GetInt();
 	Tga2D::Vector2f worldSize = { document["levels"][0]["pxWid"].GetFloat(),document["levels"][0]["pxHei"].GetFloat() };
@@ -52,16 +52,26 @@ LevelData LevelLoader::LoadLevel(const char* aLevelPath)
 
 			for (int i = 0; i < tilesArrayLenght; i++)
 			{
-				levelToPushBack.AddTile(LoadTileMap("Sprites/Tilesets/Tiles.dds", gridSize, j, i));
+				levelToPushBack.get()->AddTile(LoadTileMap("Sprites/Tilesets/Tiles.dds", gridSize, j, i));
 			}
 		}
 		if (layerType == "Entities")
 		{
-			int sawsArrayLength = static_cast<int>(document["levels"][0]["layerInstances"][j]["entityInstances"].Capacity());
+			int entityArrayLength = static_cast<int>(document["levels"][0]["layerInstances"][j]["entityInstances"].Capacity());
 
-			for (int i = 0; i < sawsArrayLength; i++)
+			for (int i = 0; i < entityArrayLength; i++)
 			{
-				levelToPushBack.AddSaw(AddSaw(gridSize, i, j, renderSizeX, renderSizeY));
+				std::string entityType = document["levels"][0]["layerInstances"][j]["entityInstances"][i]["__identifier"].GetString();
+
+				if (entityType == "Saw" || entityType == "saw")
+				{
+					levelToPushBack.get()->AddSaw(AddSaw(gridSize, i, j, renderSizeX, renderSizeY));
+				}
+
+				if (entityType == "PlayerStart")
+				{
+
+				}
 			}
 		}
 	}
@@ -98,8 +108,6 @@ std::shared_ptr<TerrainTile> LevelLoader::LoadTileMap(const char* aImagePath, in
 	{
 		return std::make_shared<TerrainTile>(spriteToPushBack);
 	}
-
-	return false;
 }
 
 void LevelLoader::SetRect(std::shared_ptr<Tga2D::CSprite> aSprite, int gridTileindex, int layerIndex)
@@ -127,7 +135,7 @@ void LevelLoader::SetPosition(std::shared_ptr<Tga2D::CSprite> aSprite, int aGrid
 	float posY = document["levels"][0]["layerInstances"][aLayerIndex]["gridTiles"][aGridTileIndex]["px"][1].GetFloat();
 
 	aSprite.get()->SetPivot({ 0.5f,0.5f });
-	aSprite.get()->SetPosition({ posX / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().x) + 0.2f, posY / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().y) + 0.2f });
+	aSprite.get()->SetPosition({ posX / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().x), posY / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().y) });
 }
 
 void LevelLoader::SetSpriteSize(std::shared_ptr<Tga2D::CSprite> aSprite, float aGridSize)
@@ -138,16 +146,16 @@ void LevelLoader::SetSpriteSize(std::shared_ptr<Tga2D::CSprite> aSprite, float a
 std::shared_ptr<Saw> LevelLoader::AddSaw(int aGridSize, int aEntityIndex, int aLayerIndex, int aRenderSizeX, int aRenderSizeY)
 {
 
-	Saw aSawToPushBack = Saw({ document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / aRenderSizeX * aGridSize + 0.2f,
-							   document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / aRenderSizeY * aGridSize + 0.2f });
+	Saw aSawToPushBack = Saw({ document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / aRenderSizeX * aGridSize ,
+							   document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / aRenderSizeY * aGridSize });
 
 
 	int currentSawPointAmounts = document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][0]["__value"].Capacity();
 
 	for (int k = 0; k < currentSawPointAmounts; k++)
 	{
-		aSawToPushBack.AddPoint({ document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][0]["__value"][k]["cx"].GetFloat() / aRenderSizeX * aGridSize + 0.2f,
-								  document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][0]["__value"][k]["cy"].GetFloat() / aRenderSizeY * aGridSize + 0.2f });
+		aSawToPushBack.AddPoint({ document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][0]["__value"][k]["cx"].GetFloat() / aRenderSizeX * aGridSize,
+								  document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][0]["__value"][k]["cy"].GetFloat() / aRenderSizeY * aGridSize });
 
 	}
 

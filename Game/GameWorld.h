@@ -29,4 +29,5 @@ private:
 	std::shared_ptr<Camera> myCamera;
 	Tga2D::CSprite* myTga2dLogoSprite;
 
+	Collider* myCollider;
 };

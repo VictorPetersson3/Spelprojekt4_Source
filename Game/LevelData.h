@@ -19,6 +19,9 @@ public:
 	std::vector<std::shared_ptr<TerrainTile>> GetTiles();
 	std::vector<std::shared_ptr<Saw>> GetSaws();
 
+	void AddPlayerStart(const Tga2D::Vector2f& aPosition);
+	Tga2D::Vector2f GetPlayerStart();
+
 private:
 	std::vector<std::shared_ptr<TerrainTile>> myTiles;
 	std::vector<std::shared_ptr<Saw>> mySaws;

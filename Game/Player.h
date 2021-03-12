@@ -48,8 +48,8 @@ protected:
 	float myBoostAcceleration = 7.0f;
 
 	float myAirControll = 0.125f;
-	float myJumpSpeed = 10.f;
-	float myGravity = 1.75f;
+	float myJumpSpeed = 3.0f;
+	float myGravity = 0.1f;
 
 
 	float timer = 5.f;
