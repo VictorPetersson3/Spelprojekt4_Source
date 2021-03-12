@@ -25,18 +25,17 @@ CGameWorld::~CGameWorld()
 
 void CGameWorld::Init()  
 {
+	CollisionManager::Init();
 	StateManager::Init();
 	myTga2dLogoSprite = new Tga2D::CSprite("sprites/tga_logo.dds");
 	myTga2dLogoSprite->SetPivot({ 0.5f, 0.5f });
 	myTga2dLogoSprite->SetPosition({ 0.5f, 0.5f });
 	myCamera = std::make_unique<Camera>();
-	CollisionManager::Init();
 	
 
 
 	myPlayer = std::make_unique<Player>();
 	myCamera = std::make_shared<Camera>();
-
 	myPlayer->Init();
 }
 

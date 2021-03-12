@@ -18,7 +18,7 @@ public:
 
 	void SetSizeRelativeToImage(const CommonUtilities::Vector2f& aSize);
 private:
-
+	friend class Sprite_Renderer;
 	std::shared_ptr<Tga2D::CSprite> mySprite;
 	int myLayer;
 };

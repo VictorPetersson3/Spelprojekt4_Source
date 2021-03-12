@@ -3,6 +3,7 @@
 #include "State.h"
 #include "MainMenu.h"
 #include "OptionsMenu.h"
+#include "Level.h"
 
 class StateManager
 {
@@ -20,13 +21,14 @@ public:
 	static void RemoveDownToState(const EStateType& aStateType);
 
 	static void AddOptionsOnStack();
-
+	static void AddLevelOnStack();
 
 private:
 	StateManager() = default;
 	static StateManager* myInstance;
 	MainMenu myMainMenu;
 	OptionsMenu myOptionsMenu;
+	Level myLevel;
 	//Add States here as an object, 1 per state, Init the states after in Init
 
 
