@@ -193,7 +193,7 @@ void Player::CollisionSolver(CommonUtilities::Vector2f aFrameDirection)
 		//myPosition -= spatialDelta * 0.5f;
 		myPosition = point + directionalRadius;
 		myCurrentVelocity *= { -normal.y, -normal.x };
-		myIsGrounded = std::abs(normal.Length());
+		myIsGrounded = normal.y;
 	}
 
 }
