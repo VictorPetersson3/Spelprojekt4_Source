@@ -4,8 +4,8 @@
 #include "MainMenu.h"
 
 
-class LevelLoader;
 class Player;
+
 namespace Tga2D
 {
 	class CSprite;
@@ -13,6 +13,7 @@ namespace Tga2D
 	class CAudio;
 }
 class testObjectsWithPositions;
+class Collider;
 class Camera;
 class CGameWorld
 {
@@ -27,6 +28,5 @@ private:
 	std::unique_ptr<Player> myPlayer;
 	std::shared_ptr<Camera> myCamera;
 	Tga2D::CSprite* myTga2dLogoSprite;
-	LevelLoader* myLevelLoader;
 
 };

@@ -23,8 +23,16 @@ Collider::Collider(CommonUtilities::Vector2f aPosition, float aWidth, float aHei
 
 void Collider::Update()
 {
-	myCollision.myNormal = CollisionManager::GetInstance().CollisonNormal(this, myCollidedWith);
-	myCollision.myPointOfIntersection = CollisionManager::GetInstance().PointOfIntersection(this, myCollidedWith);
+	if (myCollidedWith == nullptr)
+	{
+		myCollision.myNormal = CommonUtilities::Vector2f::Zero();
+		myCollision.myPointOfIntersection = CommonUtilities::Vector2f::Zero();
+	}
+	else
+	{
+		myCollision.myNormal = CollisionManager::GetInstance().CollisonNormal(this, myCollidedWith);
+		myCollision.myPointOfIntersection = CollisionManager::GetInstance().PointOfIntersection(this, myCollidedWith);
+	}
 }
 
 void Collider::UpdateCollider(CommonUtilities::Vector2f anUpdatedPosition)
@@ -49,6 +57,7 @@ const CommonUtilities::Vector2f Collider::GetPointOfIntersection() const
 
 const void Collider::Draw() const
 {
+#ifdef _DEBUG
 	switch (myType)
 	{
 	case ECollider::Circle:
@@ -61,8 +70,14 @@ const void Collider::Draw() const
 		Tga2D::CDebugDrawer::DrawLine({ myAABB.myUpperRight.x, myAABB.myUpperRight.y }, {myAABB.myUpperRight.x, myAABB.myLowerLeft.y}, {1, 0.5, 0, 1});
 		break;
 	}
+#endif _DEBUG
 }
 
+
+void Collider::SetTag(EColliderTag aColliderTag)
+{
+	myTag = aColliderTag;
+}
 
 void Collider::SetRadius(float aNewRadius)
 {
@@ -118,4 +133,9 @@ const CommonUtilities::Vector2f& Collider::GetPosition() const
 const ECollider& Collider::GetType() const
 {
 	return myType;
+}
+
+const EColliderTag& Collider::GetTag() const
+{
+	return myTag;
 }

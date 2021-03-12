@@ -141,6 +141,8 @@
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Sprite_Renderer.h" />
+    <ClInclude Include="Level.h" />
+    <ClInclude Include="LevelData.h" />
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="GameWorld.h" />
     <ClInclude Include="InputManager.h" />
@@ -152,6 +154,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="RenderCommand.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Saw.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -168,6 +171,8 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Sprite_Renderer.cpp" />
+    <ClCompile Include="Level.cpp" />
+    <ClCompile Include="LevelData.cpp" />
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="InputManager.cpp" />
@@ -177,6 +182,7 @@
     <ClCompile Include="JsonParser.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Saw.cpp" />
     <ClCompile Include="RenderCommand.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="stdafx.cpp">

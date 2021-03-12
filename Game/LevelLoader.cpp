@@ -6,14 +6,7 @@
 #include <string>
 
 #include "rapidjson\document.h"
-#include "rapidjson\filereadstream.h"
 #include "tga2d\engine.h"
-
-#include "tga2d\sprite\textured_quad.h"
-
-#include "Camera.h"
-#include "Collider.h"
-#include "JsonParser.h"
 
 #include "Camera.h"
 #include "Collider.h"
@@ -21,116 +14,151 @@
 
 LevelLoader::LevelLoader()
 {
-    myCamera = std::make_unique<Camera>();
 }
 
 LevelLoader::~LevelLoader()
 {
-}
 
-void LevelLoader::Render()
-{
-    
 }
 
 void LevelLoader::Update(const std::shared_ptr<Camera> aCamera)
 {
-    for (TerrainTile s : myTiles)
-    {
-
-        aCamera.get()->RenderSprite(s.mySprite);
-        s.myCollider.Draw();
-
-
-    }
-
-
 }
 
-bool LevelLoader::LoadLevel(const char* aLevelPath)
+std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 {
-    JsonParser jsonParser;
+	JsonParser jsonParser;
 
-    document = jsonParser.GetDocument(aLevelPath);
+	document = jsonParser.GetDocument(aLevelPath);
 
-    float gridSize = document["defs"]["layers"][0]["gridSize"].GetInt();
-    Tga2D::Vector2f worldSize = { document["levels"][0]["pxWid"].GetFloat(),document["levels"][0]["pxHei"].GetFloat() };
+	std::shared_ptr<LevelData> levelToPushBack = std::make_shared<LevelData>();
 
-    std::cout << gridSize << std::endl;
-    std::cout << worldSize.x << " x " << worldSize.y << std::endl;
+	float gridSize = document["defs"]["layers"][0]["gridSize"].GetInt();
+	Tga2D::Vector2f worldSize = { document["levels"][0]["pxWid"].GetFloat(),document["levels"][0]["pxHei"].GetFloat() };
 
-
-    for (int j = 0; j < document["levels"][0]["layerInstances"].Capacity(); j++)
-    {
-        int tilesArrayLenght = static_cast<int>(document["levels"][0]["layerInstances"][j]["gridTiles"].Capacity());
-
-        for (int i = 0; i < tilesArrayLenght; i++)
-        {
-            Tga2D::CSprite spriteToPushBack = Tga2D::CSprite("Sprites/Tilesets/Tiles.dds");
-
-            spriteToPushBack.SetSamplerState(ESamplerFilter::ESamplerFilter_Point, ESamplerAddressMode::ESamplerAddressMode_Clamp);
-
-            SetRect(spriteToPushBack, i, j);
-            
-            SetSpriteSize(spriteToPushBack, gridSize);
-
-            SetPosition(spriteToPushBack, i, j);
-            
+	std::cout << gridSize << std::endl;
+	std::cout << worldSize.x << " x " << worldSize.y << std::endl;
+	float renderSizeX = static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().x);
+	float renderSizeY = static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().y);
 
 
-            std::string layerIdentifier = document["levels"][0]["layerInstances"][j]["__identifier"].GetString();
+	for (int j = 0; j < document["levels"][0]["layerInstances"].Capacity(); j++)
+	{
+		std::string layerType = document["levels"][0]["layerInstances"][j]["__type"].GetString();
 
-            if (layerIdentifier != "Background" || layerIdentifier != "background")
-            {
+		if (layerType == "Tiles")
+		{
+			int tilesArrayLenght = static_cast<int>(document["levels"][0]["layerInstances"][j]["gridTiles"].Capacity());
 
-                CommonUtilities::Vector2f aColliderPosition = { spriteToPushBack.GetPosition().x,spriteToPushBack.GetPosition().y};
+			for (int i = 0; i < tilesArrayLenght; i++)
+			{
+				levelToPushBack.get()->AddTile(LoadTileMap("Sprites/Tilesets/Tiles.dds", gridSize, j, i));
+			}
+		}
+		if (layerType == "Entities")
+		{
+			int entityArrayLength = static_cast<int>(document["levels"][0]["layerInstances"][j]["entityInstances"].Capacity());
 
-                float width =  spriteToPushBack.GetSize().x;
-                float height = spriteToPushBack.GetSize().y * Tga2D::CEngine::GetInstance()->GetWindowRatio();
+			for (int i = 0; i < entityArrayLength; i++)
+			{
+				std::string entityType = document["levels"][0]["layerInstances"][j]["entityInstances"][i]["__identifier"].GetString();
 
-                Collider colliderToPushBack = Collider(aColliderPosition, width*0.5f, height*0.5f);
+				if (entityType == "Saw" || entityType == "saw")
+				{
+					levelToPushBack.get()->AddSaw(AddSaw(gridSize, i, j, renderSizeX, renderSizeY));
+				}
 
-                myTiles.push_back(TerrainTile(spriteToPushBack, colliderToPushBack));
-            }
-            else
-            {
-                myTiles.push_back(TerrainTile(spriteToPushBack));
-            }
-        }
-    }
-    return false;
+				if (entityType == "PlayerStart")
+				{
+
+				}
+			}
+		}
+	}
+
+	return levelToPushBack;
 }
 
-void LevelLoader::SetRect(Tga2D::CSprite& aSprite, int gridTileindex, int layerIndex)
+std::shared_ptr<TerrainTile> LevelLoader::LoadTileMap(const char* aImagePath, int aGridSize, int aLayerIndex, int aTileIndex)
 {
-    const float EPSILON = 0.000001f;
+	std::shared_ptr<Tga2D::CSprite> spriteToPushBack = std::make_shared<Tga2D::CSprite>("Sprites/Tilesets/Tiles.dds");
 
-    float gridSize = document["defs"]["layers"][0]["gridSize"].GetInt();
-    Tga2D::Vector2f worldSize = { document["levels"][0]["pxWid"].GetFloat(),document["levels"][0]["pxHei"].GetFloat() };
+	spriteToPushBack.get()->SetSamplerState(ESamplerFilter::ESamplerFilter_Point, ESamplerAddressMode::ESamplerAddressMode_Clamp);
 
-    float startX = document["levels"][0]["layerInstances"][layerIndex]["gridTiles"][gridTileindex]["src"][0].GetInt();
-    float startY = document["levels"][0]["layerInstances"][layerIndex]["gridTiles"][gridTileindex]["src"][1].GetInt();
+	SetRect(spriteToPushBack, aTileIndex, aLayerIndex);
 
-    startX /= static_cast<float>(aSprite.GetImageSize().x);
-    startY /= static_cast<float>(aSprite.GetImageSize().y);
+	SetSpriteSize(spriteToPushBack, aGridSize);
 
-    startX += EPSILON;
-    startY += EPSILON;
+	SetPosition(spriteToPushBack, aTileIndex, aLayerIndex);
 
-    aSprite.SetTextureRect(startX, startY, startX + gridSize / worldSize.x, startY + gridSize / worldSize.y);
+	std::string layerIdentifier = document["levels"][0]["layerInstances"][aLayerIndex]["__identifier"].GetString();
+
+	if (layerIdentifier != "Background" || layerIdentifier != "background")
+	{
+		CommonUtilities::Vector2f aColliderPosition = { spriteToPushBack.get()->GetPosition().x,spriteToPushBack.get()->GetPosition().y };
+
+		float width = spriteToPushBack.get()->GetSize().x;
+		float height = spriteToPushBack.get()->GetSize().y * Tga2D::CEngine::GetInstance()->GetWindowRatio();
+
+		std::shared_ptr<Collider> colliderToPushBack = std::make_shared<Collider>(aColliderPosition, width * 0.5f, height * 0.5f);
+
+		return std::make_shared<TerrainTile>(spriteToPushBack, colliderToPushBack);
+	}
+	else
+	{
+		return std::make_shared<TerrainTile>(spriteToPushBack);
+	}
 }
 
-void LevelLoader::SetPosition(Tga2D::CSprite& aSprite, int aGridTileIndex, int aLayerIndex)
+void LevelLoader::SetRect(std::shared_ptr<Tga2D::CSprite> aSprite, int gridTileindex, int layerIndex)
 {
-    float posX = document["levels"][0]["layerInstances"][aLayerIndex]["gridTiles"][aGridTileIndex]["px"][0].GetFloat();
-    float posY = document["levels"][0]["layerInstances"][aLayerIndex]["gridTiles"][aGridTileIndex]["px"][1].GetFloat();
+	const float EPSILON = 0.000001f;
 
-    aSprite.SetPivot({ 0.5f,0.5f });
-    aSprite.SetPosition({ posX / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().x) + 0.2f, posY / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().y) + 0.2f });
+	float gridSize = document["defs"]["layers"][0]["gridSize"].GetInt();
+	Tga2D::Vector2f worldSize = { document["levels"][0]["pxWid"].GetFloat(),document["levels"][0]["pxHei"].GetFloat() };
 
+	float startX = document["levels"][0]["layerInstances"][layerIndex]["gridTiles"][gridTileindex]["src"][0].GetInt();
+	float startY = document["levels"][0]["layerInstances"][layerIndex]["gridTiles"][gridTileindex]["src"][1].GetInt();
+
+	startX /= static_cast<float>(aSprite.get()->GetImageSize().x);
+	startY /= static_cast<float>(aSprite.get()->GetImageSize().y);
+
+	startX += EPSILON;
+	startY += EPSILON;
+
+	aSprite.get()->SetTextureRect(startX, startY, startX + gridSize / worldSize.x, startY + gridSize / worldSize.y);
 }
 
-void LevelLoader::SetSpriteSize(Tga2D::CSprite& aSprite, float aGridSize)
+void LevelLoader::SetPosition(std::shared_ptr<Tga2D::CSprite> aSprite, int aGridTileIndex, int aLayerIndex)
 {
-     aSprite.SetSizeRelativeToImage({ 1.f / (static_cast<float>(aSprite.GetImageSize().x) / aGridSize),1.f / (static_cast<float>(aSprite.GetImageSize().y) / aGridSize) });
+	float posX = document["levels"][0]["layerInstances"][aLayerIndex]["gridTiles"][aGridTileIndex]["px"][0].GetFloat();
+	float posY = document["levels"][0]["layerInstances"][aLayerIndex]["gridTiles"][aGridTileIndex]["px"][1].GetFloat();
+
+	aSprite.get()->SetPivot({ 0.5f,0.5f });
+	aSprite.get()->SetPosition({ posX / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().x), posY / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().y) });
+}
+
+void LevelLoader::SetSpriteSize(std::shared_ptr<Tga2D::CSprite> aSprite, float aGridSize)
+{
+	aSprite.get()->SetSizeRelativeToImage({ 1.f / (static_cast<float>(aSprite.get()->GetImageSize().x) / aGridSize),1.f / (static_cast<float>(aSprite.get()->GetImageSize().y) / aGridSize) });
+}
+
+std::shared_ptr<Saw> LevelLoader::AddSaw(int aGridSize, int aEntityIndex, int aLayerIndex, int aRenderSizeX, int aRenderSizeY)
+{
+
+	Saw aSawToPushBack = Saw({ document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / aRenderSizeX * aGridSize ,
+							   document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / aRenderSizeY * aGridSize });
+
+
+	int currentSawPointAmounts = document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][0]["__value"].Capacity();
+
+	for (int k = 0; k < currentSawPointAmounts; k++)
+	{
+		aSawToPushBack.AddPoint({ document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][0]["__value"][k]["cx"].GetFloat() / aRenderSizeX * aGridSize,
+								  document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][0]["__value"][k]["cy"].GetFloat() / aRenderSizeY * aGridSize });
+
+	}
+
+	return std::make_shared<Saw>(aSawToPushBack);
+
 }

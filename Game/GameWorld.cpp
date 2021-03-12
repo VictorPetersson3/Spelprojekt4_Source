@@ -9,48 +9,45 @@
 
 #include "LevelLoader.h"
 #include "Player.h"
+
 #include "CollisionManager.h"
+
 CGameWorld::CGameWorld()
 {
 	myTga2dLogoSprite = nullptr;
-	myLevelLoader = nullptr;
 }
 
 CGameWorld::~CGameWorld() 
 {
 	delete myTga2dLogoSprite;
 	myTga2dLogoSprite = nullptr;
-
-	delete myLevelLoader;
-	myLevelLoader = nullptr;
 }
 
 void CGameWorld::Init()  
 {
+	CollisionManager::Init();
 	StateManager::Init();
 	myTga2dLogoSprite = new Tga2D::CSprite("sprites/tga_logo.dds");
 	myTga2dLogoSprite->SetPivot({ 0.5f, 0.5f });
 	myTga2dLogoSprite->SetPosition({ 0.5f, 0.5f });
 	myCamera = std::make_unique<Camera>();
-	CollisionManager::Init();
 	
+
+
 	myPlayer = std::make_unique<Player>();
 	myCamera = std::make_shared<Camera>();
 	myPlayer->Init();
-	myLevelLoader = new LevelLoader();
-
-	myLevelLoader->LoadLevel("Json/Levels/Runtfaff.json");
 }
 
 void CGameWorld::Update(float /*aTimeDelta*/)
 { 	
 	StateManager::GetInstance().Update();
-	CollisionManager::GetInstance().Update();
-	myPlayer->Update();
 	myCamera->Update(myPlayer->GetPosition());
-	myLevelLoader->Update(myCamera);
-	//If you want to render something send in the sprite to the Camera
 
+	//If you want to render something send in the sprite to the Camera
+	myPlayer->Update();
+	CollisionManager::GetInstance().Update();
+	
 	/*if (InputManager::GetInstance().IsKeyPressed('S'))
 	{
 		printf("Was Pressed\n");

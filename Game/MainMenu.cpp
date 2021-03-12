@@ -7,6 +7,7 @@
 void MainMenu::TestMe(int aVal)
 {
 	printf("Hello World %i\n", aVal);
+	StateManager::GetInstance().AddLevelOnStack();
 }
 
 
@@ -39,8 +40,8 @@ void MainMenu::Init(const EStateType& aState)
 	{
 		GetButtonElement(i)->Init({ 00.5f, 0.2f + 0.2f * i }, tempImagePaths[i].c_str(), 0, [this](int index) {TestMe(index);}, i);
 	}
-	GetButtonElement(2)->Init({ 00.5f, 0.2f + 0.2f * 2 }, tempImagePaths[2].c_str(), 0, [this]() {OptionsButtonPress(); });
-	GetButtonElement(3)->Init({ 00.5f, 0.2f + 0.2f * 3 }, tempImagePaths[3].c_str(), 0, [this]() {ExitButtonPress();});
+	GetButtonElement(2)->Init({ 00.5f, 0.2f + 0.2f * 2 }, tempImagePaths[2].c_str(), 0, [this]() { OptionsButtonPress(); });
+	GetButtonElement(3)->Init({ 00.5f, 0.2f + 0.2f * 3 }, tempImagePaths[3].c_str(), 0, [this]() { ExitButtonPress();});
 
 	myBackground = std::make_unique<UIImage>();
 	myBackground.get()->Init({0.5f, 0.5f}, "sprites/UI/MainMenu/Image_Background.dds", -1 );

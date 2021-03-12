@@ -16,6 +16,9 @@
     <Filter Include="Main">
       <UniqueIdentifier>{de6b2b36-8aa0-4ad6-acf4-02ca1f7747cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Obstacles">
+      <UniqueIdentifier>{f513fe7e-ffe5-47a9-9926-5317de454032}</UniqueIdentifier>
+    </Filter>
     <Filter Include="StateTypes">
       <UniqueIdentifier>{5ffb87cf-e6f6-499b-b7b7-a942ef3deb95}</UniqueIdentifier>
     </Filter>
@@ -104,6 +107,9 @@
     <ClInclude Include="Sprite_Renderer.h">
       <Filter>Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="Saw.h" />
+    <ClInclude Include="Level.h" />
+    <ClInclude Include="LevelData.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -157,6 +163,7 @@
     <ClCompile Include="LevelLoader.cpp" />
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="JsonParser.cpp" />
+    <ClCompile Include="Saw.cpp" />
     <ClCompile Include="GameWorld.cpp">
       <Filter>Main</Filter>
     </ClCompile>
@@ -166,5 +173,7 @@
     <ClCompile Include="Sprite_Renderer.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="Level.cpp" />
+    <ClCompile Include="LevelData.cpp" />
   </ItemGroup>
 </Project>

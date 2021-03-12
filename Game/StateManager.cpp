@@ -8,6 +8,7 @@ void StateManager::Init()
 	myInstance = new StateManager;
 	myInstance->myMainMenu.Init(EStateType::eMainMenu);
 	myInstance->myOptionsMenu.Init(EStateType::eOptionsMenu);
+	myInstance->myLevel.Init(EStateType::eGame);
 	myInstance->myOptionsMenu.SetRenderThrough(true);
 	//Main Menu is the default beginning state
 	myInstance->myGameStates.Push(&GetInstance().myMainMenu);
@@ -51,6 +52,11 @@ void StateManager::RemoveDownToState(const EStateType& aStateType)
 void StateManager::AddOptionsOnStack()
 {
 	myInstance->myGameStates.Push(&myInstance->myOptionsMenu);
+}
+
+void StateManager::AddLevelOnStack()
+{
+	myInstance->myGameStates.Push(&myInstance->myLevel);
 }
 
 void StateManager::Update()

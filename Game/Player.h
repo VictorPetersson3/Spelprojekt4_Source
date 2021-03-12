@@ -28,13 +28,13 @@ protected:
 	
 	void JumpPhysics();
 	void ApplyDrag(const float aThisFrameVel);
-
+	void CollisionSolver(CommonUtilities::Vector2f aFrameDirection);
 protected:
 
 	bool myIsGrounded = false;
 	bool myCanJump = false;
 	float myMaxVelocity = 0.75f;
-	float myAcceleration = 4.25f;
+	float myAcceleration = 4.25f; 
 	
 	float myJumpTimer = 0;
 	float myJumpTime = 0.2f;
@@ -49,7 +49,10 @@ protected:
 
 	float myAirControll = 0.125f;
 	float myJumpSpeed = 10.f;
-	float myGravity = 1.75f;
+	float myGravity = 0.1f;
+
+
+	float timer = 5.f;
 
 
 	std::shared_ptr<Collider> myCollider = {};

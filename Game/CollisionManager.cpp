@@ -27,21 +27,26 @@ void CollisionManager::Update()
 	{
 		if (collider->GetPosition().x < 1 && collider->GetPosition().x > 0 && collider->GetPosition().y < 1 && collider->GetPosition().y > 0)
 		{
+			collider->SetCollidedWith(nullptr);
+			collider->HasCollided() = false;
 			for (auto& anotherCollider : myColliders)
 			{
-				if (CheckCollision(anotherCollider, collider))
+				if (anotherCollider != collider && CheckCollision(anotherCollider, collider))
 				{
 					collider->SetCollidedWith(anotherCollider);
 					anotherCollider->SetCollidedWith(collider);
+					collider->HasCollided() = true;
+					anotherCollider->HasCollided() = true;
 				}
 			}
-		collider->Update();
+			collider->Update();
 		}
 	}
 }
 
 bool CollisionManager::CheckCollision(Collider* aCollider, Collider* anOtherCollider)
 {
+	if (aCollider->GetType() == ECollider::None || anOtherCollider->GetType() == ECollider::None) return false;
 	if (aCollider->GetType() == ECollider::Circle && anOtherCollider->GetType() == ECollider::Circle) return CircleCircle(aCollider, anOtherCollider);
 	if (aCollider->GetType() == ECollider::Circle && anOtherCollider->GetType() == ECollider::AABB) return CircleAABB(aCollider, anOtherCollider);
 	if (aCollider->GetType() == ECollider::AABB && anOtherCollider->GetType() == ECollider::Circle) return CircleAABB(anOtherCollider, aCollider);
@@ -56,10 +61,13 @@ CommonUtilities::Vector2f CollisionManager::PointOfIntersection(Collider* aColli
 	}
 	if (aCollider->GetType() == ECollider::Circle && anOtherCollider->GetType() == ECollider::AABB)
 	{
-		if (aCollider->GetPosition().x + aCollider->GetRadius() <= anOtherCollider->GetAABB().myLowerLeft.x) return { aCollider->GetPosition().x + aCollider->GetRadius(), aCollider->GetPosition().y };
-		if (aCollider->GetPosition().x - aCollider->GetRadius() >= anOtherCollider->GetAABB().myUpperRight.x) return { aCollider->GetPosition().x - aCollider->GetRadius(), aCollider->GetPosition().y };
-		if (aCollider->GetPosition().y + aCollider->GetRadius() <= anOtherCollider->GetAABB().myUpperRight.y) return { aCollider->GetPosition().x, aCollider->GetPosition().y + aCollider->GetRadius() };
-		if (aCollider->GetPosition().y - aCollider->GetRadius() >= anOtherCollider->GetAABB().myLowerLeft.y) return { aCollider->GetPosition().x, aCollider->GetPosition().y - aCollider->GetRadius() };
+		float y = aCollider->GetPosition().y + aCollider->GetRadius();
+		float colly = anOtherCollider->GetPosition().y - anOtherCollider->GetAABB().mySize.y * 0.5f;
+
+		if (aCollider->GetPosition().x + aCollider->GetRadius() <= anOtherCollider->GetAABB().myLowerLeft.x) return { anOtherCollider->GetPosition().x - anOtherCollider->GetAABB().mySize.x * 0.5f, aCollider->GetPosition().y };
+		if (aCollider->GetPosition().x - aCollider->GetRadius() >= anOtherCollider->GetAABB().myUpperRight.x) return { anOtherCollider->GetPosition().x + anOtherCollider->GetAABB().mySize.x * 0.5f, aCollider->GetPosition().y };
+		if (aCollider->GetPosition().y + aCollider->GetRadius() <= anOtherCollider->GetPosition().y) return { aCollider->GetPosition().x, anOtherCollider->GetPosition().y - anOtherCollider->GetAABB().mySize.y * 0.5f };
+		if (aCollider->GetPosition().y - aCollider->GetRadius() >= anOtherCollider->GetAABB().myLowerLeft.y) return { aCollider->GetPosition().x, anOtherCollider->GetPosition().y + anOtherCollider->GetAABB().mySize.y * 0.5f };
 	}
 	if (aCollider->GetType() == ECollider::AABB && anOtherCollider->GetType() == ECollider::Circle)
 	{
@@ -71,8 +79,8 @@ CommonUtilities::Vector2f CollisionManager::PointOfIntersection(Collider* aColli
 	if (aCollider->GetType() == ECollider::AABB && anOtherCollider->GetType() == ECollider::AABB)
 	{
 		///
-		// Här saknas massa kod som jag inte orkat lägga in än o__o liksom kolla ovanför, sjukt tedious
-		///
+		/// Lägger till kod här senare om det skulle behövas <3
+		/// 
 	}
 	return { 0, 0 };
 }

@@ -36,6 +36,5 @@ private:
 	static AudioManager myInstance;
 };
 
-AudioManager AudioManager::myInstance;
 
 
