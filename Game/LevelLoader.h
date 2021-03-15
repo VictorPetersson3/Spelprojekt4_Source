@@ -5,13 +5,16 @@
 #include <vector>
 #include<CommonUtilities/Vector2.hpp>
 #include <memory>
-#include "tga2d\sprite\sprite.h"
 #include "TerrainTile.h"
 #include "Saw.h"
 #include "Level.h"
 #include "LevelData.h"
+#include "RenderCommand.h"
 
-
+namespace Tga2D
+{
+	class CSprite;
+}
 class Camera;
 
 class LevelLoader
@@ -35,6 +38,10 @@ private:
 	void SetRect(std::shared_ptr<Tga2D::CSprite> aSprite, int gridTileindex, int layerIndex);
 	void SetPosition(std::shared_ptr<Tga2D::CSprite>, int aGridTileIndex, int aLayerIndex);
 	void SetSpriteSize(std::shared_ptr<Tga2D::CSprite> aSprite, float aGridSize);
+
+	void SetRect(RenderCommand& aRenderCommand, int gridTileindex, int layerIndex);
+	void SetPosition(RenderCommand& aRenderCommand, int aGridTileIndex, int aLayerIndex);
+	void SetSpriteSize(RenderCommand& aRenderCommand, float aGridSize);
 
 	std::shared_ptr<Saw> AddSaw(int aGridSize, int aEntityIndex, int aLayerIndex, int aRenderSizeX, int aRenderSizeY);
 

@@ -12,6 +12,8 @@
 #include "Collider.h"
 #include "JsonParser.h"
 
+#include "tga2d\sprite\sprite.h"
+
 LevelLoader::LevelLoader()
 {
 }
@@ -81,15 +83,19 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 
 std::shared_ptr<TerrainTile> LevelLoader::LoadTileMap(const char* aImagePath, int aGridSize, int aLayerIndex, int aTileIndex)
 {
+	RenderCommand tempRenderCommand = RenderCommand(aImagePath, aLayerIndex);
 	std::shared_ptr<Tga2D::CSprite> spriteToPushBack = std::make_shared<Tga2D::CSprite>("Sprites/Tilesets/Tiles.dds");
 
 	spriteToPushBack.get()->SetSamplerState(ESamplerFilter::ESamplerFilter_Point, ESamplerAddressMode::ESamplerAddressMode_Clamp);
-
+	tempRenderCommand.SetSamplerState(ESamplerFilter::ESamplerFilter_Point, ESamplerAddressMode::ESamplerAddressMode_Clamp);
 	SetRect(spriteToPushBack, aTileIndex, aLayerIndex);
+	SetRect(tempRenderCommand, aTileIndex, aLayerIndex);
 
 	SetSpriteSize(spriteToPushBack, aGridSize);
+	SetSpriteSize(tempRenderCommand, aGridSize);
 
 	SetPosition(spriteToPushBack, aTileIndex, aLayerIndex);
+	SetPosition(tempRenderCommand, aTileIndex, aLayerIndex);
 
 	std::string layerIdentifier = document["levels"][0]["layerInstances"][aLayerIndex]["__identifier"].GetString();
 
@@ -102,11 +108,11 @@ std::shared_ptr<TerrainTile> LevelLoader::LoadTileMap(const char* aImagePath, in
 
 		std::shared_ptr<Collider> colliderToPushBack = std::make_shared<Collider>(aColliderPosition, width * 0.5f, height * 0.5f);
 
-		return std::make_shared<TerrainTile>(spriteToPushBack, colliderToPushBack);
+		return std::make_shared<TerrainTile>(colliderToPushBack, tempRenderCommand);
 	}
 	else
 	{
-		return std::make_shared<TerrainTile>(spriteToPushBack);
+		return std::make_shared<TerrainTile>(tempRenderCommand);
 	}
 }
 
@@ -123,8 +129,8 @@ void LevelLoader::SetRect(std::shared_ptr<Tga2D::CSprite> aSprite, int gridTilei
 	startX /= static_cast<float>(aSprite.get()->GetImageSize().x);
 	startY /= static_cast<float>(aSprite.get()->GetImageSize().y);
 
-	startX += EPSILON;
-	startY += EPSILON;
+	startX -= EPSILON;
+	startY -= EPSILON;
 
 	aSprite.get()->SetTextureRect(startX, startY, startX + gridSize / worldSize.x, startY + gridSize / worldSize.y);
 }
@@ -141,6 +147,39 @@ void LevelLoader::SetPosition(std::shared_ptr<Tga2D::CSprite> aSprite, int aGrid
 void LevelLoader::SetSpriteSize(std::shared_ptr<Tga2D::CSprite> aSprite, float aGridSize)
 {
 	aSprite.get()->SetSizeRelativeToImage({ 1.f / (static_cast<float>(aSprite.get()->GetImageSize().x) / aGridSize),1.f / (static_cast<float>(aSprite.get()->GetImageSize().y) / aGridSize) });
+}
+
+void LevelLoader::SetRect(RenderCommand& aRenderCommand, int gridTileindex, int layerIndex)
+{
+	const float EPSILON = 0.000001f;
+
+	float gridSize = document["defs"]["layers"][0]["gridSize"].GetInt();
+	Tga2D::Vector2f worldSize = { document["levels"][0]["pxWid"].GetFloat(),document["levels"][0]["pxHei"].GetFloat() };
+
+	float startX = document["levels"][0]["layerInstances"][layerIndex]["gridTiles"][gridTileindex]["src"][0].GetInt();
+	float startY = document["levels"][0]["layerInstances"][layerIndex]["gridTiles"][gridTileindex]["src"][1].GetInt();
+
+	startX /= static_cast<float>(aRenderCommand.GetImageSize().x);
+	startY /= static_cast<float>(aRenderCommand.GetImageSize().y);
+
+	startX -= EPSILON;
+	startY -= EPSILON;
+
+	aRenderCommand.SetTextureRect(startX, startY, startX + gridSize / worldSize.x, startY + gridSize / worldSize.y);
+}
+
+void LevelLoader::SetPosition(RenderCommand& aRenderCommand, int aGridTileIndex, int aLayerIndex)
+{
+	float posX = document["levels"][0]["layerInstances"][aLayerIndex]["gridTiles"][aGridTileIndex]["px"][0].GetFloat();
+	float posY = document["levels"][0]["layerInstances"][aLayerIndex]["gridTiles"][aGridTileIndex]["px"][1].GetFloat();
+
+	aRenderCommand.SetPivot({ 0.5f,0.5f });
+	aRenderCommand.Update({ posX / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().x), posY / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().y) });
+}
+
+void LevelLoader::SetSpriteSize(RenderCommand& aRenderCommand, float aGridSize)
+{
+	aRenderCommand.SetSizeRelativeToImage({ 1.f / (static_cast<float>(aRenderCommand.GetImageSize().x) / aGridSize),1.f / (static_cast<float>(aRenderCommand.GetImageSize().y) / aGridSize) });
 }
 
 std::shared_ptr<Saw> LevelLoader::AddSaw(int aGridSize, int aEntityIndex, int aLayerIndex, int aRenderSizeX, int aRenderSizeY)

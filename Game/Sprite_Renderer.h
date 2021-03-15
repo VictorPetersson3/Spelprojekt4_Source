@@ -10,7 +10,10 @@ namespace Tga2D
 }
 class Sprite_Renderer
 {
-	void AddToRenderBatch(const RenderCommand& aRenderCommand);
+public:
+	Sprite_Renderer() = default;
+	~Sprite_Renderer() = default;
+	void AddRenderCommandToRenderer(const RenderCommand& aRenderCommand);
 	void Render();
 
 private:

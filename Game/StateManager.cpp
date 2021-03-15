@@ -8,8 +8,8 @@ void StateManager::Init()
 	myInstance = new StateManager;
 	myInstance->myMainMenu.Init(EStateType::eMainMenu);
 	myInstance->myOptionsMenu.Init(EStateType::eOptionsMenu);
-	myInstance->myLevel.Init(EStateType::eGame);
 	myInstance->myOptionsMenu.SetRenderThrough(true);
+	myInstance->myLevel.Init(EStateType::eGame);
 	//Main Menu is the default beginning state
 	myInstance->myGameStates.Push(&GetInstance().myMainMenu);
 	//Init the states you made here, rest will work automagically,
@@ -61,6 +61,7 @@ void StateManager::AddLevelOnStack()
 
 void StateManager::Update()
 {
+	myInstance->myGameStates.GetTop()->Update();
 	//This is to render the layers that are beneath the current game state if they are renderable
 	if (myInstance->myGameStates.GetTop()->GetRenderThrough())
 	{
@@ -72,6 +73,5 @@ void StateManager::Update()
 			}
 		}
 	}
-	myInstance->myGameStates.GetTop()->Update();
 	myInstance->myGameStates.GetTop()->Render();
 }
