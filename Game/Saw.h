@@ -3,7 +3,7 @@
 #include <vector>
 #include <CommonUtilities/Vector2.hpp>
 #include <memory>
-#include "tga2d\sprite\sprite.h"
+#include "RenderCommand.h"
 #include "Collider.h"
 
 
@@ -21,11 +21,13 @@ public:
 
 	void Update(float aDeltatime);
 	void Render(const std::shared_ptr<Camera> aCamera);
-	Tga2D::CSprite mySprite;
+	const std::shared_ptr<RenderCommand> GetRenderCommand() const;
+
 	Collider myCollider;
 
 private:
 
+	std::shared_ptr<RenderCommand> myRenderCommand;
 	std::vector<Vector2> myTravelPoints;
 	int myNextPointIndex = 0;
 	Vector2 myPosition;

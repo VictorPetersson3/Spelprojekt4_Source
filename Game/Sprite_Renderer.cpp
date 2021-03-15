@@ -4,7 +4,7 @@
 #include "tga2d/sprite/sprite_batch.h"
 #include <set>
 
-void Sprite_Renderer::AddToRenderBatch(const RenderCommand& aRenderCommand)
+void Sprite_Renderer::AddRenderCommandToRenderer(const RenderCommand& aRenderCommand)
 {
 	myRenderCommands.push_back(aRenderCommand);
 }
@@ -36,6 +36,7 @@ void Sprite_Renderer::Render()
 			batch->ClearAll();
 		}
 	}
+	myRenderCommands.clear();
 }
 
 void Sprite_Renderer::SortAllSprites()

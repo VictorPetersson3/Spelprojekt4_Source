@@ -8,6 +8,8 @@
 #include "LevelData.h"
 
 class Player;
+class Camera;
+class Sprite_Renderer;
 
 class Level : public State
 {
@@ -23,9 +25,9 @@ public:
 	virtual void Init(const EStateType& aState) override;
 
 private:
-
+	std::unique_ptr<Camera> myCamera;
 	std::unique_ptr<Player> myPlayer;
-
+	std::shared_ptr<Sprite_Renderer> mySpriteRenderer;
 	std::vector<std::shared_ptr<TerrainTile>> myTerrain;
 	std::vector<std::shared_ptr<Saw>> mySaws;
 
