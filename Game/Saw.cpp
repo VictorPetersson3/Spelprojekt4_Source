@@ -7,10 +7,8 @@ Saw::Saw(Vector2 aStartPoint)
 {
 	myPosition = aStartPoint;
 	myCollider = Collider(myRadius, myPosition);
-	mySprite = Tga2D::CSprite("Sprites/tempSaw.dds");
-	mySprite.SetPivot({ 0.5f, 0.5f });
+	myRenderCommand = std::make_shared<RenderCommand>("Sprites/tempSaw.dds", 0);
 	myTravelPoints.push_back(aStartPoint);
-
 }
 
 void Saw::AddPoint(Vector2 aPoint)
@@ -31,13 +29,18 @@ void Saw::Update(float aDeltatime)
 		myNextPointIndex += myDirection;
 	}
 	myPosition += (myTravelPoints[myNextPointIndex] - myPosition).GetNormalized() * aDeltatime * mySpeed;
-	myCollider.UpdateCollider(myPosition);
-	mySprite.SetPosition({ myPosition.x, myPosition.y });
+	myCollider.UpdateCollider(myPosition); 
+	myRenderCommand->Update(myPosition);
 }
 
 void Saw::Render(const std::shared_ptr<Camera> aCamera)
 {
-	aCamera.get()->RenderSprite(mySprite);
+	myRenderCommand->Render();
+}
+
+const std::shared_ptr<RenderCommand> Saw::GetRenderCommand() const
+{
+	return myRenderCommand;
 }
 
 
