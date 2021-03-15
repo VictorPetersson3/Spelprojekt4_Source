@@ -25,7 +25,7 @@ RenderCommand::RenderCommand(const char* aImagePath, int aLayer, const CommonUti
 	mySprite->SetPosition({ aPos.x, aPos.y });
 	myLayer = aLayer;
 }
-
+//Sets position of sprite and if animated will animate
 void RenderCommand::Update(const CommonUtilities::Vector2f& aPos)
 {
 	mySprite->SetPosition({ aPos.x, aPos.y });

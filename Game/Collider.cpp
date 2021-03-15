@@ -23,16 +23,8 @@ Collider::Collider(CommonUtilities::Vector2f aPosition, float aWidth, float aHei
 
 void Collider::Update()
 {
-	if (myCollidedWith == nullptr)
-	{
-		myCollision.myNormal = CommonUtilities::Vector2f::Zero();
-		myCollision.myPointOfIntersection = CommonUtilities::Vector2f::Zero();
-	}
-	else
-	{
-		myCollision.myNormal = CollisionManager::GetInstance().CollisonNormal(this, myCollidedWith);
-		myCollision.myPointOfIntersection = CollisionManager::GetInstance().PointOfIntersection(this, myCollidedWith);
-	}
+	myCollidedWith.clear();
+	myHasCollided = false;
 }
 
 void Collider::UpdateCollider(CommonUtilities::Vector2f anUpdatedPosition)
@@ -40,19 +32,19 @@ void Collider::UpdateCollider(CommonUtilities::Vector2f anUpdatedPosition)
 	myPosition = anUpdatedPosition;
 }
 
-Collider* Collider::GetCollidedWith()
+std::vector<Collider*>& Collider::GetCollidedWith()
 {
 	return myCollidedWith;
 }
 
-const CommonUtilities::Vector2f Collider::GetCollisionNormal() const
+const CommonUtilities::Vector2f Collider::GetCollisionNormal(const int anIndex)
 {
-	return myCollision.myNormal;
+	return CollisionManager::GetInstance().CollisonNormal(this, myCollidedWith[anIndex]);
 }
 
-const CommonUtilities::Vector2f Collider::GetPointOfIntersection() const
+const CommonUtilities::Vector2f Collider::GetPointOfIntersection(const int anIndex)
 {
-	return myCollision.myPointOfIntersection;
+	return CollisionManager::GetInstance().PointOfIntersection(this, myCollidedWith[anIndex]);
 }
 
 const void Collider::Draw() const
@@ -102,7 +94,7 @@ void Collider::SetUpperRight(CommonUtilities::Vector2f aPoint)
 
 void Collider::SetCollidedWith(Collider* aCollider)
 {
-	myCollidedWith = aCollider;
+	myCollidedWith.emplace_back(aCollider);
 }
 
 bool& Collider::HasCollided()

@@ -16,15 +16,20 @@ public:
 
 	RenderCommand(const char* aImagePath, int aLayer);
 	RenderCommand(const char* aImagePath, int aLayer, const CommonUtilities::Vector2f& aPos);
+	
 	~RenderCommand() = default;
 	void Update(const CommonUtilities::Vector2f& aPos);
 	void Render();
+
+
+
+	//Getters
 	const RenderCommand& GetRenderCommand() const;
 	const int GetLayer() const;
 	const Tga2D::Vector2ui& GetImageSize() const;
 	const CommonUtilities::Vector2f& GetSize() const;
-
 	const CommonUtilities::Vector2f& GetPosition() const;
+	//Setters
 	void SetTextureRect(float aStartX, float aStartY, float aEndX, float aEndY);
 	void SetSizeRelativeToImage(const CommonUtilities::Vector2f& aSize);
 	void SetSamplerState(ESamplerFilter aFilter, ESamplerAddressMode aAddressMode);

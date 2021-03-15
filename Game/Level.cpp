@@ -5,6 +5,9 @@
 #include "Camera.h"
 #include "Sprite_Renderer.h"
 #include "Camera.h"
+#include "Timer.h"
+#include "LevelLoader.h"
+#include "Player.h"
 
 Level::Level()
 {
@@ -21,17 +24,25 @@ void Level::Render()
 
 void Level::Update()
 {
+	//Player
 	myCamera->Update({ 0,0 });
 	for (auto t : myTerrain)
 	{
 		myCamera->BatchRenderSprite(t.get()->myRenderCommand);
-		//t.get()->myRenderCommand.Render();
+	}
+	float deltaTime = Timer::GetInstance().GetDeltaTime();
+
+	for (auto t : mySaws)
+	{
+		t.get()->Update(deltaTime);
+		//Push in render command to camera 
 	}
 }
 
 void Level::Load(std::shared_ptr<LevelData> aData)
 {
 	myTerrain = aData.get()->GetTiles();
+	mySaws = aData.get()->GetSaws();
 }
 
 void Level::Init(const EStateType& aState)
@@ -45,7 +56,5 @@ void Level::Init(const EStateType& aState)
 	//Load Level Routine
 	LevelLoader levelLoader;
 	Load(levelLoader.LoadLevel("Json/Levels/CollisionTest.json"));
-	RenderCommand tempRenderCommand = RenderCommand("Sprites/Tilesets/Tiles.dds", 1);
-	tempRenderCommand.Update({ 0.5f,0.5f });
-	myTerrain.push_back(std::make_shared<TerrainTile>(tempRenderCommand));
+
 }

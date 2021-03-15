@@ -60,7 +60,7 @@ void Camera::RenderSprite(const Tga2D::CSprite aSprite)
 		renderSprite.Render();
 	}
 }
-//Inte constat RenderCommandet då jag behöver arbeta på en kopia så jag kan ändra spriten
+
 void Camera::BatchRenderSprite(const RenderCommand& aRenderCommand)
 {
 	CommonUtilities::Vector2f spritePos;
