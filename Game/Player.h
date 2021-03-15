@@ -4,6 +4,12 @@
 class Camera;
 class Collider;
 
+enum class PlayerStates {
+	eFalling,
+	eJumping,
+	eRunning,
+
+};
 namespace Tga2D 
 {
 	class CSprite;
@@ -48,13 +54,13 @@ protected:
 	float myBoostAcceleration = 7.0f;
 
 	float myAirControll = 0.125f;
-	float myJumpSpeed = 3.0f;
-	float myGravity = 0.1f;
+	float myJumpSpeed = 10.0f;
+	float myGravity = 1.5f;
 
 
-	float timer = 5.f;
+	float timer = 3.f;
 
-
+	PlayerStates myPlayerState;
 	std::shared_ptr<Collider> myCollider = {};
 
 	CommonUtilities::Vector2f myPosition = {};

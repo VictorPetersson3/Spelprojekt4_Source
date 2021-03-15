@@ -56,7 +56,7 @@ void Player::Update()
 
 void Player::Render(std::shared_ptr<Camera> aCamera)
 {
-	//aCamera->RenderSprite(*mySprite);
+	aCamera->RenderSprite(*mySprite);
 }
 
 CommonUtilities::Vector2f Player::GetPosition() const
@@ -119,7 +119,7 @@ void Player::Movement()
 	if (!myIsGrounded)
 	{
 		PhysicsSimulation();
-		moveThisFrameX *= 0.125f;
+		moveThisFrameX *= myAirControll;
 	}
 	else
 	{
@@ -186,13 +186,20 @@ void Player::CollisionSolver(CommonUtilities::Vector2f aFrameDirection)
 	CommonUtilities::Vector2f point;
 	CommonUtilities::Vector2f normal;
 	CommonUtilities::Vector2f directionalRadius;
+
+	//if (myCollider->GetCollidedWith().size() == 0 && myIsGrounded)
+	//{
+	//	myIsGrounded = false;
+	//}
+
 	for (int i = 0; i < myCollider->GetCollidedWith().size(); i++)
 	{
+		
 		myCollider->GetPointOfIntersection(i, point);
 		normal = myCollider->GetCollisionNormal(i);
-		
+
 		directionalRadius = myCollider->GetRadius() * 0.5f * normal;
-		myPosition += directionalRadius;
+		myPosition += directionalRadius/2;
 		myCollider->UpdateCollider(myPosition);
 
 		if (normal.x != 0 && normal.y == 0)
@@ -202,8 +209,13 @@ void Player::CollisionSolver(CommonUtilities::Vector2f aFrameDirection)
 		else if (normal.x == 0 && normal.y != 0)
 		{
 			myCurrentVelocity.y = 0;
-
-			if (!myIsGrounded) myIsGrounded = (-normal.y > 0);
+			
+			if (!myIsGrounded)
+			{
+				myIsGrounded = (-normal.y > 0);
+				
+			}	
 		}
 	}
+	
 }
