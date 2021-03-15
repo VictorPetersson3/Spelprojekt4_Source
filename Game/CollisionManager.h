@@ -11,20 +11,15 @@ public:
 	static void Destroy();
 	static bool IsReady();
 	static CollisionManager& GetInstance();
+	bool CheckCollision(Collider* aCollider, Collider* anOtherCollider);
 
 	void Update();
 private:
-	bool CheckCollision(Collider* aCollider, Collider* anOtherCollider);
-	void PointOfIntersection(Collider* aCollider, Collider* anOtherCollider, CommonUtilities::Vector2f& aVariable);
 	CommonUtilities::Vector2f CollisonNormal(Collider* aCollider, Collider* anOtherCollider);
 	void AddCollider(Collider* aCollider);
 	bool AABBAABB(Collider* aCollider, Collider* anOtherCollider);
 	bool CircleCircle(Collider* aCollider, Collider* anOtherCollider);
 	bool CircleAABB(Collider* aCollider, Collider* anOtherCollider);
-
-	//bool LineVolumeCircle();
-	//bool LineVolumeLineVolume();
-	//bool LineVolumeAABB();
 
 	std::vector<Collider*> myColliders;
 	float myCollisionDetection = 0.3f;

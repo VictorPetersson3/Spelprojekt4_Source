@@ -7,6 +7,8 @@
 #include <Xinput.h>
 #include "Camera.h"
 #include "Collider.h"
+#include "CollisionManager.h"
+
 #define INPUT InputManager::GetInstance() 
 #define DELTA_TIME Timer::GetInstance().GetDeltaTime()
 
@@ -22,41 +24,32 @@ Player::~Player()
 
 void Player::Init()
 {
-	myCanJump = true;
-	myCollider = std::make_shared<Collider>(0.01f, myPosition);
-	myCollider->SetTag(EColliderTag::Player);
 	myPosition = { 0.5f,0.1f };
-
-	LoadJsonData();
 
 	mySprite = std::make_shared<Tga2D::CSprite>("sprites/Player.dds");
 	mySprite->SetSizeRelativeToImage({ 0.1f,0.1f });
 	mySprite->SetPosition(Tga2D::Vector2f(myPosition.x, myPosition.y));
 	mySprite->SetPivot({ 0.5f,0.5f });
 
+	auto wideboi = mySprite->GetSize().x * Tga2D::CEngine::GetInstance()->GetRenderSize().x;
+	auto heity = mySprite->GetSize().y * Tga2D::CEngine::GetInstance()->GetRenderSize().y;
+
+	myCollider = std::make_shared<Collider>(myPosition, mySprite->GetSize().x * (9.0f / 16.0f), mySprite->GetSize().y);
+	myCollider->SetTag(EColliderTag::Player);
 }
 
 void Player::Update()
 {
-	timer -= DELTA_TIME;
-	if (timer > 0)
-	{
-		return;
-	}
-
 	Movement();
-	InputHandling();
-	myPosition += myCurrentVelocity * DELTA_TIME;
 
-	myCollider->UpdateCollider(myPosition);
-	myCollider->Draw();
-	mySprite->SetPosition(Tga2D::Vector2f(myPosition.x, myPosition.y));
-	//std::cout << "Pos x: " << myPosition.x << " " << "Pos y: " << myPosition.y << std::endl;
+	UpdatePhysics();
+
+	mySprite->SetPosition({ myPosition.x, myPosition.y });
 }
 
 void Player::Render(std::shared_ptr<Camera> aCamera)
 {
-	//aCamera->RenderSprite(*mySprite);
+	aCamera->RenderSprite(*mySprite);
 }
 
 CommonUtilities::Vector2f Player::GetPosition() const
@@ -64,146 +57,201 @@ CommonUtilities::Vector2f Player::GetPosition() const
 	return myPosition;
 }
 
-void Player::LoadJsonData()
+void Player::ChangeInput(EInputType anInputType)
 {
-
-}
-void Player::InputHandling()
-{
-	myBoostInput = INPUT.IsKeyDown('Z') || INPUT.IsKeyDown(VK_LSHIFT);
-
-	float moveY = INPUT.IsKeyDown('W') || INPUT.IsKeyDown(VK_UP) || INPUT.IsKeyDown(VK_SPACE) || INPUT.IsKeyDown('X');
-
-	const bool isKeyUp = INPUT.IsKeyUp('W') || INPUT.IsKeyUp(VK_UP) || INPUT.IsKeyUp(VK_SPACE) || INPUT.IsKeyUp('X');
-	const float moveX = (INPUT.IsKeyDown('D') || INPUT.IsKeyDown(VK_RIGHT)) - (INPUT.IsKeyDown('A') || INPUT.IsKeyDown(VK_LEFT));
-
-	if (!myIsGrounded)
-		if (isKeyUp)
-			myCanJump = true;
-
-	moveY *= myCanJump;
-	myInputVector = { moveX,  moveY };
-}
-
-void Player::JumpPhysics()
-{
-	if (myInputVector.y > 0)
+	switch (anInputType)
 	{
-		if (myJumpTimer > myJumpTime)
-		{
-			myJumpTimer = 0;
-			myIsGrounded = false;
-			myCanJump = false;
-			return;
-		}
-		else
-		{
-			myCurrentVelocity.y -= myJumpSpeed * DELTA_TIME;
-			myJumpTimer += DELTA_TIME;
+	case EInputType::ArrowKeys:
+		myUp = VK_UP;
+		myLeft = VK_LEFT;
+		myDown = VK_DOWN;
+		myRight = VK_RIGHT;
+		myJump = 'X';
+		myBoost = 'Z';
+		break;
+	case EInputType::WASD:
+		myUp = 'W';
+		myLeft = 'A';
+		myDown = 'S';
+		myRight = 'D';
+		myJump = VK_SPACE;
+		myBoost = VK_SHIFT;
+		break;
+	case EInputType::Controller:
+		myUp = XINPUT_GAMEPAD_DPAD_UP;
+		myLeft = XINPUT_GAMEPAD_DPAD_LEFT;
+		myDown = XINPUT_GAMEPAD_DPAD_DOWN;
+		myRight = XINPUT_GAMEPAD_DPAD_RIGHT;
+		myJump = XINPUT_GAMEPAD_A;
+		myBoost = XINPUT_GAMEPAD_B;
+		break;
+	}
+}
 
+void Player::UpdatePhysics()
+{
+	CacheCurrentValues();
+
+	myPosition += myCurrentVelocity * Timer::GetInstance().GetDeltaTime();
+	myCollider->UpdateCollider(myPosition);
+
+	CollisionManager::GetInstance().Update();
+	bool shouldRevert = false;
+	for (int i = 0; i < myCollider->GetCollidedWith().size(); i++)
+	{
+		if (CollisionManager::GetInstance().CheckCollision(myCollider.get(), myCollider->GetCollidedWith()[i]))
+		{
+			shouldRevert = true;
 		}
 	}
-	bool isKeyUp = INPUT.IsKeyUp('W') || INPUT.IsKeyUp(VK_UP) || INPUT.IsKeyUp(VK_SPACE) || INPUT.IsKeyUp('X');
-	if (isKeyUp)
+	if (shouldRevert)
 	{
-		myCanJump = true;
-		myJumpTimer = 0;
-		myIsGrounded = false;
-	}
-
-}
-void Player::Movement()
-{
-	float moveThisFrameX = (((myAcceleration * myAcceleration) + (myBoostAcceleration * myBoostInput)) * DELTA_TIME) * myInputVector.x;
-	CollisionSolver(myCurrentVelocity);
-	if (!myIsGrounded)
-	{
-		PhysicsSimulation();
-		moveThisFrameX *= 0.125f;
+		myPosition = myOldPosition;
+		myIsGrounded = true;
+		myMoveState = EMovementState::Idle;
 	}
 	else
 	{
-		JumpPhysics();
+		myIsGrounded = false;
 	}
-	ApplyDrag(moveThisFrameX);
-
-
-	if (std::abs(myCurrentVelocity.x) + moveThisFrameX <= myMaxVelocity + (myBoostInput * myMaxBoostVelocity))
-		myCurrentVelocity.x += moveThisFrameX;
 }
 
-void Player::PhysicsSimulation()
+void Player::CacheCurrentValues()
 {
-	// Temp ground check (waiting for collision system)---- 
-	/*if (mySprite->GetPosition().y > 0.9f)
+	myOldPosition = myPosition;
+	myOldVelocity = myCurrentVelocity;
+	myWasGrounded = myIsGrounded;
+	myHuggedRightWall = myHugsRightWall;
+	myHuggedLeftWall = myHugsLeftWall;
+	myWasRoofied = myIsRoofied;
+}
+
+void Player::Movement()
+{
+	switch (myMoveState)
 	{
-		myIsGrounded = true;
-		myCurrentVelocity.y = 0;
-		myPosition.y = .9f;
-		return;
-	}*/
-	//End Temp ground check----
+	case EMovementState::Idle:
+		Idle();
+		break;
+	case EMovementState::Walk:
+		Walk();
+		break;
+	case EMovementState::Falling:
+		Falling();
+		break;
+	case EMovementState::Ledge:
+		break;
+	}
+}
+
+void Player::Idle()
+{
+	myCurrentVelocity = CommonUtilities::Vector2f::Zero();
+	//Idle anim
 
 	if (!myIsGrounded)
 	{
-		myCurrentVelocity.y += (myGravity * 10) * DELTA_TIME;
+		myMoveState = EMovementState::Falling;
 		return;
 	}
-	if (myCurrentVelocity.y > 0.05f)
+	if (INPUT.IsKeyDown(myLeft) != INPUT.IsKeyDown(myRight))
 	{
+		myMoveState = EMovementState::Walk;
 		return;
 	}
-	myCurrentVelocity.y += std::abs((myCurrentVelocity.y + (myGravity * myGravity))) * DELTA_TIME;
-
+	else if (INPUT.IsKeyDown(myJump))
+	{
+		myCurrentVelocity.y = -myJumpSpeed;
+		myMoveState = EMovementState::Falling;
+		return;
+	}
 }
 
-
-void Player::ApplyDrag(const float aFrameVel)
+void Player::Walk()
 {
-	float graceValue = (aFrameVel + 0.001f) * DELTA_TIME;
-	float absoluteVelocity = std::abs(myCurrentVelocity.x) * DELTA_TIME;
+	//walk anim
 
-	if (absoluteVelocity <= graceValue)
+	if (INPUT.IsKeyDown(myLeft) == INPUT.IsKeyDown(myRight))
+	{
+		myMoveState = EMovementState::Idle;
+		myCurrentVelocity = CommonUtilities::Vector2f::Zero();
+		return;
+	}
+	else if (INPUT.IsKeyDown(myRight))
+	{
+		if (myHugsRightWall)
+		{
+			myCurrentVelocity.x = 0.0f;
+		}
+		else
+		{
+			myCurrentVelocity.x = myWalkSpeed;
+		}
+	}
+	else if (INPUT.IsKeyDown(myLeft))
+	{
+		if (myHugsLeftWall)
+		{
+			myCurrentVelocity.x = 0.0f;
+		}
+		else
+		{
+			myCurrentVelocity.x = -myWalkSpeed;
+		}
+	}
+
+	if (INPUT.IsKeyDown(myJump))
+	{
+		myCurrentVelocity.y = -myJumpSpeed;
+		//jump sfx ?
+		myMoveState = EMovementState::Falling;
+		return;
+	}
+	else if (!myIsGrounded)
+	{
+		myMoveState = EMovementState::Falling;
+		return;
+	}
+}
+
+void Player::Falling()
+{
+	//anim
+
+	if (myCurrentVelocity.y >= myMaxVelocity) myCurrentVelocity.y = myMaxVelocity;
+	else myCurrentVelocity.y += myGravity * DELTA_TIME;
+
+	if (INPUT.IsKeyDown(myLeft) == INPUT.IsKeyDown(myRight))
 	{
 		myCurrentVelocity.x = 0;
-		return;
 	}
-
-	float currentDrag = (myDrag * myDrag) + (myBoostDrag * myBoostInput);
-	if (myCurrentVelocity.x > 0)
+	else if (INPUT.IsKeyDown(myRight))
 	{
-		myCurrentVelocity.x -= (currentDrag * DELTA_TIME) * myIsGrounded;
-		return;
+		if (myHugsRightWall)
+		{
+			myCurrentVelocity.x = 0.0f;
+		}
+		else
+		{
+			if (myCurrentVelocity.x >= myMaxAirSpeed) myCurrentVelocity.x = myMaxAirSpeed;
+			else myCurrentVelocity.x += myAirAcceleration;
+		}
 	}
-	else if (myCurrentVelocity.x < 0)
+	else if (INPUT.IsKeyDown(myLeft))
 	{
-		myCurrentVelocity.x += (currentDrag * DELTA_TIME) * myIsGrounded;
+		if (myHugsLeftWall)
+		{
+			myCurrentVelocity.x = 0.0f;
+		}
+		else
+		{
+			if (myCurrentVelocity.x <= -myMaxAirSpeed) myCurrentVelocity.x = -myMaxAirSpeed;
+			else myCurrentVelocity.x -= myAirAcceleration;
+		}
+	}
+	if (!INPUT.IsKeyDown(myJump) && myCurrentVelocity.y < 0.0f)
+	{
+		myCurrentVelocity.y += myJumpDecceleration;
 	}
 }
 
-void Player::CollisionSolver(CommonUtilities::Vector2f aFrameDirection)
-{
-	CommonUtilities::Vector2f point;
-	CommonUtilities::Vector2f normal;
-	CommonUtilities::Vector2f directionalRadius;
-	for (int i = 0; i < myCollider->GetCollidedWith().size(); i++)
-	{
-		myCollider->GetPointOfIntersection(i, point);
-		normal = myCollider->GetCollisionNormal(i);
-		
-		directionalRadius = myCollider->GetRadius() * 0.5f * normal;
-		myPosition += directionalRadius;
-		myCollider->UpdateCollider(myPosition);
-
-		if (normal.x != 0 && normal.y == 0)
-		{
-			myCurrentVelocity.x = 0;
-		}
-		else if (normal.x == 0 && normal.y != 0)
-		{
-			myCurrentVelocity.y = 0;
-
-			if (!myIsGrounded) myIsGrounded = (-normal.y > 0);
-		}
-	}
-}

@@ -43,7 +43,6 @@ public:
 
 	std::vector<Collider*>& GetCollidedWith();
 	const CommonUtilities::Vector2f GetCollisionNormal(const int anIndex);
-	void GetPointOfIntersection(const int anIndex, CommonUtilities::Vector2f& aVariable);
 	const void Draw() const;
 	const float& GetRadius() const;
 	const AABB& GetAABB() const;

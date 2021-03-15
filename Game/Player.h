@@ -1,13 +1,29 @@
 #pragma once
 #include <CommonUtilities/Vector2.hpp>
 #include <memory>
-class Camera;
-class Collider;
 
-namespace Tga2D 
+namespace Tga2D
 {
 	class CSprite;
 }
+
+class Camera;
+class Collider;
+
+enum class EMovementState
+{
+	Idle,
+	Walk,
+	Falling,
+	Ledge
+};
+
+enum class EInputType
+{
+	Controller,
+	WASD,
+	ArrowKeys
+};
 
 class Player
 {
@@ -18,48 +34,57 @@ public:
 	virtual void Update();
 	virtual void Render(std::shared_ptr<Camera> aCamera);
 	CommonUtilities::Vector2f GetPosition() const;
-
+	void ChangeInput(const EInputType anInputType);
 
 protected:
-	virtual void LoadJsonData();
-	virtual void Movement();	
-	virtual void InputHandling();
-	virtual void PhysicsSimulation();
-	
-	void JumpPhysics();
-	void ApplyDrag(const float aThisFrameVel);
-	void CollisionSolver(CommonUtilities::Vector2f aFrameDirection);
+	virtual void UpdatePhysics();
+	virtual void CacheCurrentValues();
+	virtual void Movement();
+
+	void Idle();
+	void Walk();
+	void Falling();
+	void Ledge();
+
 protected:
+	EMovementState myMoveState = EMovementState::Idle;
 
-	bool myIsGrounded = false;
-	bool myCanJump = false;
-	float myMaxVelocity = 0.75f;
-	float myAcceleration = 4.25f; 
-	
-	float myJumpTimer = 0;
-	float myJumpTime = 0.2f;
-	
-	float myDrag = 3.0f;
-
-
-	int myBoostInput = 0;
-	float myBoostDrag = 10.0f;
-	float myMaxBoostVelocity = 2.f;
-	float myBoostAcceleration = 7.0f;
-
-	float myAirControll = 0.125f;
-	float myJumpSpeed = 3.0f;
-	float myGravity = 0.1f;
-
-
-	float timer = 5.f;
-
-
-	std::shared_ptr<Collider> myCollider = {};
-
+	CommonUtilities::Vector2f myOldPosition = {};
 	CommonUtilities::Vector2f myPosition = {};
-	CommonUtilities::Vector2f myCurrentVelocity = {};	
-	CommonUtilities::Vector2f myInputVector = {};
-	std::shared_ptr<Tga2D::CSprite> mySprite;
+
+	CommonUtilities::Vector2f myOldVelocity = {};
+	CommonUtilities::Vector2f myCurrentVelocity = {};
+
+	bool myHuggedRightWall = false;
+	bool myHugsRightWall = false;
+
+	bool myHuggedLeftWall = false;
+	bool myHugsLeftWall = false;
+
+	bool myWasGrounded = false;
+	bool myIsGrounded = false;
+
+	bool myWasRoofied = false;
+	bool myIsRoofied = false;
+
+	const float myWalkSpeed = 0.5f;
+	const float myJumpSpeed = 1.5f;
+
+	const float myAirAcceleration = 0.05f;
+	const float myMaxAirSpeed = 0.5f;
+	const float myJumpDecceleration = 0.01f;
+
+	const float myMaxVelocity = 1.5f;
+	const float myGravity = 4.0f;
+
+	int myUp = 'W';
+	int myLeft = 'A';
+	int myDown = 'S';
+	int myRight = 'D';
+	int myJump = VK_SPACE;
+	int myBoost = VK_SHIFT;
 	
+
+	std::shared_ptr<Collider> myCollider;
+	std::shared_ptr<Tga2D::CSprite> mySprite;
 };

@@ -62,72 +62,6 @@ bool CollisionManager::CheckCollision(Collider* aCollider, Collider* anOtherColl
 	if (aCollider->GetType() == ECollider::AABB && anOtherCollider->GetType() == ECollider::AABB) return AABBAABB(aCollider, anOtherCollider);
 }
 
-void CollisionManager::PointOfIntersection(Collider* aCollider, Collider* anOtherCollider, CommonUtilities::Vector2f& aVariable)
-{
-	if (aCollider->GetType() == ECollider::Circle && anOtherCollider->GetType() == ECollider::Circle)
-	{
-		aVariable =  aCollider->GetPosition() + CommonUtilities::Vector2f::Distance(aCollider->GetPosition(), anOtherCollider->GetPosition()) * 0.5f;
-	}
-	if (aCollider->GetType() == ECollider::Circle && anOtherCollider->GetType() == ECollider::AABB)
-	{
-		CommonUtilities::Vector2f circlePos = aCollider->GetPosition();
-		float radius = aCollider->GetRadius();
-		CommonUtilities::Vector2f LL = anOtherCollider->GetAABB().myLowerLeft;
-		CommonUtilities::Vector2f UR = anOtherCollider->GetAABB().myUpperRight;
-
-		/// om center är i aabbn
-		if (circlePos.x > LL.x && circlePos.x < UR.x && circlePos.y < LL.y && circlePos.y > UR.y)
-		{
-			auto delta = (circlePos - anOtherCollider->GetPosition()).GetNormalized();
-			aVariable =  anOtherCollider->GetPosition() + delta * CommonUtilities::Vector2f((UR.x - LL.x) * 0.5f, (LL.y - UR.y) * 0.5f);
-		}
-
-		/// annars
-		if (aCollider->GetPosition().x + aCollider->GetRadius() <= anOtherCollider->GetAABB().myLowerLeft.x) aVariable =  { anOtherCollider->GetPosition().x - anOtherCollider->GetAABB().mySize.x * 0.5f, aCollider->GetPosition().y };
-		if (aCollider->GetPosition().x - aCollider->GetRadius() >= anOtherCollider->GetAABB().myUpperRight.x) aVariable =  { anOtherCollider->GetPosition().x + anOtherCollider->GetAABB().mySize.x * 0.5f, aCollider->GetPosition().y };
-		if (aCollider->GetPosition().y + aCollider->GetRadius() <= anOtherCollider->GetAABB().myUpperRight.y) aVariable =  { aCollider->GetPosition().x, anOtherCollider->GetPosition().y - anOtherCollider->GetAABB().mySize.y * 0.5f };
-		if (aCollider->GetPosition().y - aCollider->GetRadius() >= anOtherCollider->GetAABB().myLowerLeft.y) aVariable =  { aCollider->GetPosition().x, anOtherCollider->GetPosition().y + anOtherCollider->GetAABB().mySize.y * 0.5f };
-
-		/// om center är mer/mindre än båda x o y
-		if (circlePos.x < LL.x && circlePos.y < UR.y) aVariable =  { LL.x, UR.y };
-		if (circlePos.x < LL.x && circlePos.y > LL.y) aVariable =  { LL.x, LL.y };
-		if (circlePos.x > UR.x && circlePos.y < UR.y) aVariable =  { UR.x, UR.y };
-		if (circlePos.x > UR.x && circlePos.y > LL.y) aVariable =  { UR.x, LL.y };
-	}
-	if (aCollider->GetType() == ECollider::AABB && anOtherCollider->GetType() == ECollider::Circle)
-	{
-		CommonUtilities::Vector2f circlePos = anOtherCollider->GetPosition();
-		float radius = anOtherCollider->GetRadius();
-		CommonUtilities::Vector2f LL = aCollider->GetAABB().myLowerLeft;
-		CommonUtilities::Vector2f UR = aCollider->GetAABB().myUpperRight;
-
-		/// om center är i aabbn
-		if (circlePos.x > LL.x && circlePos.x < UR.x && circlePos.y < LL.y && circlePos.y > UR.y)
-		{
-			auto delta = (circlePos - aCollider->GetPosition()).GetNormalized();
-			aVariable =  aCollider->GetPosition() + delta * CommonUtilities::Vector2f((UR.x - LL.x) * 0.5f, (LL.y - UR.y) * 0.5f);
-		}
-
-
-		/// annars
-		if (anOtherCollider->GetPosition().x + anOtherCollider->GetRadius() <= aCollider->GetAABB().myLowerLeft.x) aVariable =  { anOtherCollider->GetPosition().x + anOtherCollider->GetRadius(), anOtherCollider->GetPosition().y };
-		if (anOtherCollider->GetPosition().x - anOtherCollider->GetRadius() >= aCollider->GetAABB().myUpperRight.x) aVariable =  { anOtherCollider->GetPosition().x - anOtherCollider->GetRadius(), anOtherCollider->GetPosition().y };
-		if (anOtherCollider->GetPosition().y + anOtherCollider->GetRadius() <= aCollider->GetAABB().myUpperRight.y) aVariable =  { anOtherCollider->GetPosition().x, anOtherCollider->GetPosition().y + anOtherCollider->GetRadius() };
-		if (anOtherCollider->GetPosition().y - anOtherCollider->GetRadius() >= aCollider->GetAABB().myLowerLeft.y) aVariable =  { anOtherCollider->GetPosition().x, anOtherCollider->GetPosition().y - anOtherCollider->GetRadius() };
-		/// om center är mer/mindre än båda x o y
-		if (circlePos.x < LL.x && circlePos.y < UR.y) aVariable =  { LL.x, UR.y };
-		if (circlePos.x < LL.x && circlePos.y > LL.y) aVariable =  { LL.x, LL.y };
-		if (circlePos.x > UR.x && circlePos.y < UR.y) aVariable =  { UR.x, UR.y };
-		if (circlePos.x > UR.x && circlePos.y > LL.y) aVariable =  { UR.x, LL.y };
-	}
-	if (aCollider->GetType() == ECollider::AABB && anOtherCollider->GetType() == ECollider::AABB)
-	{
-		///
-		/// Lägger till kod här senare om det skulle behövas <3
-		/// 
-	}
-}
-
 CommonUtilities::Vector2f CollisionManager::CollisonNormal(Collider* aCollider, Collider* anOtherCollider)
 {
 	if (aCollider->GetType() == ECollider::Circle && anOtherCollider->GetType() == ECollider::Circle) return (aCollider->GetPosition() - anOtherCollider->GetPosition()).GetNormalized();
@@ -168,7 +102,7 @@ CommonUtilities::Vector2f CollisionManager::CollisonNormal(Collider* aCollider, 
 	}
 	if (aCollider->GetType() == ECollider::AABB && anOtherCollider->GetType() == ECollider::AABB)
 	{
-		//meh pallar inte fixa den här delen idag ;D
+		// tomt tillsvidare
 	}
 	return { 0, 0 };
 }
@@ -178,19 +112,11 @@ void CollisionManager::AddCollider(Collider* aCollider)
 	myColliders.emplace_back(aCollider);
 }
 
-
 bool CollisionManager::AABBAABB(Collider* aCollider, Collider* anOtherCollider)
 {
-	CommonUtilities::Vector2f pos0 = aCollider->GetPosition();
-	CommonUtilities::Vector2f size0 = aCollider->GetPosition();
-	CommonUtilities::Vector2f pos1 = anOtherCollider->GetPosition();
-	CommonUtilities::Vector2f size1 = anOtherCollider->GetPosition();
-	return (
-		pos0.x + size0.x / 2 >= pos1.x - size1.x / 2 &&
-		pos0.x - size0.x / 2 <= pos1.x + size1.x / 2 &&
-		pos0.y + size0.y / 2 >= pos1.y - size1.y / 2 &&
-		pos0.y - size0.y / 2 <= pos1.y + size1.y / 2
-		);
+	if (std::abs(aCollider->GetPosition().x - anOtherCollider->GetPosition().x) > aCollider->GetSize().x * 0.5f + anOtherCollider->GetSize().x * 0.5f) return false;
+	if (std::abs(aCollider->GetPosition().y - anOtherCollider->GetPosition().y) > aCollider->GetSize().y * 0.5f + anOtherCollider->GetSize().y * 0.5f) return false;
+	return true;
 }
 bool CollisionManager::CircleCircle(Collider* aCollider, Collider* anOtherCollider)
 {
