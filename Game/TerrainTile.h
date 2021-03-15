@@ -2,20 +2,19 @@
 #include "tga2d\sprite\sprite.h"
 #include "Collider.h"
 #include <memory>
-
+#include "RenderCommand.h"
 struct TerrainTile
 {
-	TerrainTile(std::shared_ptr<Tga2D::CSprite> aSprite,std::shared_ptr<Collider> aCollider)
+	TerrainTile(std::shared_ptr<Collider> aCollider, const RenderCommand& aRenderCommand)
 	{
-		mySprite = aSprite;
+		myRenderCommand = aRenderCommand;
 		myCollider = aCollider;
 	}
 
-	TerrainTile(std::shared_ptr<Tga2D::CSprite> aSprite)
+	TerrainTile(const RenderCommand& aRenderCommand)
 	{
-		mySprite = aSprite;
+		myRenderCommand = aRenderCommand;
 	}
-
-	std::shared_ptr<Tga2D::CSprite> mySprite;
+	RenderCommand myRenderCommand;
 	std::shared_ptr<Collider> myCollider;
 };

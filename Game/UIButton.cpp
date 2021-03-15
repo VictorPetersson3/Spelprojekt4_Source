@@ -58,9 +58,14 @@ void UIButton::SetIsHovered(const bool aHoverStatus)
 
 void UIButton::ChangeSize()
 {
+	
 	if (myIsHovered)
 	{
-		if (myHoverCurrentScale < myHoverEndScale)
+		if (myHoverCurrentScale > myHoverEndScale)
+		{
+			myHoverCurrentScale = myHoverEndScale;
+		}
+		else if (myHoverCurrentScale < myHoverEndScale)
 		{
 			myHoverCurrentScale += (Timer::GetInstance().GetDeltaTime() * 4);
 		}
