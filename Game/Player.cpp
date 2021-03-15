@@ -56,7 +56,7 @@ void Player::Update()
 
 void Player::Render(std::shared_ptr<Camera> aCamera)
 {
-	aCamera->RenderSprite(*mySprite);
+	//aCamera->RenderSprite(*mySprite);
 }
 
 CommonUtilities::Vector2f Player::GetPosition() const
@@ -185,19 +185,24 @@ void Player::CollisionSolver(CommonUtilities::Vector2f aFrameDirection)
 {
 	CommonUtilities::Vector2f point;
 	CommonUtilities::Vector2f normal;
-	if (INPUT.IsKeyUp(VK_SPACE))
-	{
-		int leet = 1337;
-	}
+	CommonUtilities::Vector2f directionalRadius;
 	for (int i = 0; i < myCollider->GetCollidedWith().size(); i++)
 	{
-		point = myCollider->GetPointOfIntersection(i);
+		myCollider->GetPointOfIntersection(i, point);
 		normal = myCollider->GetCollisionNormal(i);
-		if (normal != CommonUtilities::Vector2f::Zero())
+		
+		directionalRadius = myCollider->GetRadius() * 0.5f * normal;
+		myPosition += directionalRadius;
+		myCollider->UpdateCollider(myPosition);
+
+		if (normal.x != 0 && normal.y == 0)
 		{
-			CommonUtilities::Vector2f directionalRadius = myCollider->GetRadius() * normal;
-			myPosition = point + directionalRadius;
-			myCurrentVelocity *= { std::abs(normal.y), std::abs(normal.x) };
+			myCurrentVelocity.x = 0;
+		}
+		else if (normal.x == 0 && normal.y != 0)
+		{
+			myCurrentVelocity.y = 0;
+
 			if (!myIsGrounded) myIsGrounded = (-normal.y > 0);
 		}
 	}
