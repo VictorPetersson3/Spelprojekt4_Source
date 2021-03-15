@@ -42,9 +42,9 @@ const CommonUtilities::Vector2f Collider::GetCollisionNormal(const int anIndex)
 	return CollisionManager::GetInstance().CollisonNormal(this, myCollidedWith[anIndex]);
 }
 
-const CommonUtilities::Vector2f Collider::GetPointOfIntersection(const int anIndex)
+void Collider::GetPointOfIntersection(const int anIndex, CommonUtilities::Vector2f& aVariable)
 {
-	return CollisionManager::GetInstance().PointOfIntersection(this, myCollidedWith[anIndex]);
+	CollisionManager::GetInstance().PointOfIntersection(this, myCollidedWith[anIndex], aVariable);
 }
 
 const void Collider::Draw() const

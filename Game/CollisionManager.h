@@ -15,7 +15,7 @@ public:
 	void Update();
 private:
 	bool CheckCollision(Collider* aCollider, Collider* anOtherCollider);
-	CommonUtilities::Vector2f PointOfIntersection(Collider* aCollider, Collider* anOtherCollider);
+	void PointOfIntersection(Collider* aCollider, Collider* anOtherCollider, CommonUtilities::Vector2f& aVariable);
 	CommonUtilities::Vector2f CollisonNormal(Collider* aCollider, Collider* anOtherCollider);
 	void AddCollider(Collider* aCollider);
 	bool AABBAABB(Collider* aCollider, Collider* anOtherCollider);
