@@ -198,6 +198,11 @@ std::shared_ptr<Saw> LevelLoader::AddSaw(int aGridSize, int aEntityIndex, int aL
 
 	}
 
+	aSawToPushBack.myCollider = Collider(16, { document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / aRenderSizeX * aGridSize,
+											   document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / aRenderSizeY * aGridSize }); 
+
+	aSawToPushBack.myCollider.SetTag(EColliderTag::KillZone);
+
 	return std::make_shared<Saw>(aSawToPushBack);
 
 }
