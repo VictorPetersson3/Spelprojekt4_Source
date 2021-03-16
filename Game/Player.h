@@ -70,12 +70,15 @@ protected:
 	const float myWalkSpeed = 0.5f;
 	const float myJumpSpeed = 1.5f;
 
-	const float myAirAcceleration = 0.05f;
-	const float myMaxAirSpeed = 0.5f;
+	const float myAirAcceleration = 0.005f;
+	const float myMaxAirSpeed = 0.25f;
 	const float myJumpDecceleration = 0.01f;
 
 	const float myMaxVelocity = 1.5f;
 	const float myGravity = 4.0f;
+
+	const float myBoostFactor = 2.0f;
+	const float myMaxWallSlideSpeed = 0.1f;
 
 	int myUp = 'W';
 	int myLeft = 'A';

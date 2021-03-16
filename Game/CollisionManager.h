@@ -12,10 +12,13 @@ public:
 	static bool IsReady();
 	static CollisionManager& GetInstance();
 	bool CheckCollision(Collider* aCollider, Collider* anOtherCollider);
+	CommonUtilities::Vector2f AABBOverlap(Collider* aCollider, Collider* anOtherCollider);
+	void Clear();
 
 	void Update();
 private:
 	CommonUtilities::Vector2f CollisonNormal(Collider* aCollider, Collider* anOtherCollider);
+	
 	void AddCollider(Collider* aCollider);
 	bool AABBAABB(Collider* aCollider, Collider* anOtherCollider);
 	bool CircleCircle(Collider* aCollider, Collider* anOtherCollider);

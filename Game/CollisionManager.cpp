@@ -40,12 +40,15 @@ void CollisionManager::Update()
 		myPlayerCollider->Update();
 		for (auto& collider : myColliders)
 		{
-			if ((collider->GetPosition() - myPlayerCollider->GetPosition()).Length() < myCollisionDetection)
+			if (myPlayerCollider != collider)
 			{
-				if (myPlayerCollider != collider && CheckCollision(myPlayerCollider, collider))
+				if ((collider->GetPosition() - myPlayerCollider->GetPosition()).Length() < myCollisionDetection)
 				{
-					myPlayerCollider->SetCollidedWith(collider);
-					myPlayerCollider->HasCollided() = true;
+					if (CheckCollision(myPlayerCollider, collider))
+					{
+						myPlayerCollider->SetCollidedWith(collider);
+						myPlayerCollider->HasCollided() = true;
+					}
 				}
 			}
 		}
@@ -102,9 +105,48 @@ CommonUtilities::Vector2f CollisionManager::CollisonNormal(Collider* aCollider, 
 	}
 	if (aCollider->GetType() == ECollider::AABB && anOtherCollider->GetType() == ECollider::AABB)
 	{
-		// tomt tillsvidare
+		CommonUtilities::Vector2f delta = anOtherCollider->GetPosition() - aCollider->GetPosition();
+		if (aCollider->GetSize().x * 0.5f + anOtherCollider->GetSize().x * 0.5f - std::abs(anOtherCollider->GetPosition().x - aCollider->GetPosition().x) <
+			aCollider->GetSize().y * 0.5f + anOtherCollider->GetSize().y * 0.5f - std::abs(anOtherCollider->GetPosition().y - aCollider->GetPosition().y))
+		{
+			if (delta.x < 0)
+			{
+				return { 1, 0 };
+			}
+			else return{ -1, 0 };
+		}
+		else
+		{
+			if (delta.y < 0)
+			{
+				return { 0, 1 };
+			}
+			else return{ 0, -1 };
+		}
 	}
 	return { 0, 0 };
+}
+
+CommonUtilities::Vector2f CollisionManager::AABBOverlap(Collider* aCollider, Collider* anOtherCollider)
+{
+	CommonUtilities::Vector2f A1 = { aCollider->GetPosition().x - aCollider->GetSize().x * 0.5f, aCollider->GetPosition().y - aCollider->GetSize().y * 0.5f };
+	CommonUtilities::Vector2f A2 = { aCollider->GetPosition().x + aCollider->GetSize().x * 0.5f, aCollider->GetPosition().y + aCollider->GetSize().y * 0.5f };
+
+	CommonUtilities::Vector2f B1 = { anOtherCollider->GetPosition().x - anOtherCollider->GetSize().x * 0.5f, anOtherCollider->GetPosition().y - anOtherCollider->GetSize().y * 0.5f };
+	CommonUtilities::Vector2f B2 = { anOtherCollider->GetPosition().x + anOtherCollider->GetSize().x * 0.5f, anOtherCollider->GetPosition().y + anOtherCollider->GetSize().y * 0.5f };
+
+	CommonUtilities::Vector2f overlap =
+	{
+		std::fminf(A2.x, B2.x) - std::fmaxf(A1.x, B1.x),
+		std::fminf(A2.y, B2.y) - std::fmaxf(A1.y, B1.y)
+	};
+
+	return overlap;
+}
+
+void CollisionManager::Clear()
+{
+	myColliders.clear();
 }
 
 void CollisionManager::AddCollider(Collider* aCollider)
