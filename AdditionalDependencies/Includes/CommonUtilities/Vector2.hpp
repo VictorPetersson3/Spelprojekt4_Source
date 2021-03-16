@@ -195,6 +195,8 @@ namespace CommonUtilities
 	}; 
 
 	typedef Vector2<float> Vector2f;
+	typedef Vector2<int> Vector2i;
+	typedef Vector2<unsigned int> Vector2ui;
 	template <class T>
 	Vector2<T> operator*(const T& aScaler, const Vector2<T>& aVector)
 	{

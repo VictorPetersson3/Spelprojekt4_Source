@@ -110,6 +110,7 @@
     <ClInclude Include="Saw.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelData.h" />
+    <ClInclude Include="AnimationClip.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -175,5 +176,6 @@
     </ClCompile>
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelData.cpp" />
+    <ClCompile Include="AnimationClip.cpp" />
   </ItemGroup>
 </Project>
