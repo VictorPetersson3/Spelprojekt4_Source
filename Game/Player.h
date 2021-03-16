@@ -9,6 +9,7 @@ namespace Tga2D
 
 class Camera;
 class Collider;
+class AnimationClip;
 
 enum class EMovementState
 {
@@ -23,6 +24,20 @@ enum class EInputType
 	Controller,
 	WASD,
 	ArrowKeys
+};
+
+enum class EAnimationState
+{
+	Idle,
+	Run,
+	Sprint,
+	Jump,
+	Land,
+	W_Idle,
+	W_Down,
+	W_Up,
+	W_Jump,
+	Death
 };
 
 class Player
@@ -45,6 +60,8 @@ protected:
 	void Walk();
 	void Falling();
 	void Ledge();
+
+	void PlayAnimation(EAnimationState anAnimEnum);
 
 protected:
 	EMovementState myMoveState = EMovementState::Idle;
@@ -87,7 +104,9 @@ protected:
 	int myJump = VK_SPACE;
 	int myBoost = VK_SHIFT;
 	
-
+	int myDirection = 1;
+	EAnimationState myCurrentAnimation = EAnimationState::Idle;
 	std::shared_ptr<Collider> myCollider;
 	std::shared_ptr<Tga2D::CSprite> mySprite;
+	std::vector<std::shared_ptr<AnimationClip>> myAnimations;
 };

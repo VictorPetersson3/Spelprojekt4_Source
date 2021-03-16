@@ -8,6 +8,9 @@
 #include "Camera.h"
 #include "Collider.h"
 #include "CollisionManager.h"
+#include "AnimationClip.h"
+#include "RenderCommand.h"
+#include "Enums.h"
 
 #define INPUT InputManager::GetInstance() 
 #define DELTA_TIME Timer::GetInstance().GetDeltaTime()
@@ -26,13 +29,55 @@ void Player::Init()
 {
 	myPosition = { 0.5f,0.1f };
 
+
+
+	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_idle_R.dds", 0, (int)EPlayerAnimationClips::eIdleR));
+	myAnimations[0]->Init({ 8, 1 }, { 7, 1 });
+	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_idle_L.dds", 0, (int)EPlayerAnimationClips::eIdleL));
+	myAnimations[1]->Init({ 8, 1 }, { 7, 1 });
+	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_run_R.dds", 0, (int)EPlayerAnimationClips::eRunR));
+	myAnimations[2]->Init({ 8, 1 }, { 5, 1 });
+	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_run_L.dds", 0, (int)EPlayerAnimationClips::eRunL));
+	myAnimations[3]->Init({ 8, 1 }, { 5, 1 });
+	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_sprint_R.dds", 0, (int)EPlayerAnimationClips::eSprintR));
+	myAnimations[4]->Init({ 8, 1 }, { 5, 1 });
+	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_sprint_L.dds", 0, (int)EPlayerAnimationClips::eSprintL));
+	myAnimations[5]->Init({ 8, 1 }, { 5, 1 });
+	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_jump_R.dds", 0, (int)EPlayerAnimationClips::eJumpR));
+	myAnimations[6]->Init({ 8, 1 }, { 5, 1 });
+	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_jump_L.dds", 0, (int)EPlayerAnimationClips::eJumpL));
+	myAnimations[7]->Init({ 8, 1 }, { 5, 1 });
+	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_land_R.dds", 0, (int)EPlayerAnimationClips::eLandR));
+	myAnimations[8]->Init({ 8, 1 }, { 5, 1 });
+	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_land_L.dds", 0, (int)EPlayerAnimationClips::eLandL));
+	myAnimations[9]->Init({ 8, 1 }, { 5, 1 });
+	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallidle_R.dds", 0, (int)EPlayerAnimationClips::eWallIdleR));
+	myAnimations[10]->Init({ 4, 1 }, { 4, 1 });
+	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallidle_L.dds", 0, (int)EPlayerAnimationClips::eWallIdleL));
+	myAnimations[11]->Init({ 4, 1 }, { 4, 1 });
+	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallDown_R.dds", 0, (int)EPlayerAnimationClips::eWallDownR));
+	myAnimations[12]->Init({ 4, 1 }, { 4, 1 });
+	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallDown_L.dds", 0, (int)EPlayerAnimationClips::eWallDownL));
+	myAnimations[13]->Init({ 4, 1 }, { 4, 1 });
+	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallUp_R.dds", 0, (int)EPlayerAnimationClips::eWallUpR));
+	myAnimations[14]->Init({ 4, 1 }, { 4, 1 });
+	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallUp_L.dds", 0, (int)EPlayerAnimationClips::eWallUpL));
+	myAnimations[15]->Init({ 4, 1 }, { 4, 1 });
+	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallJump_R.dds", 0, (int)EPlayerAnimationClips::eWallJumpR));
+	myAnimations[16]->Init({ 8, 1 }, { 6, 1 });
+	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallJump_L.dds", 0, (int)EPlayerAnimationClips::eWallJumpL));
+	myAnimations[17]->Init({ 8, 1 }, { 6, 1 });
+	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_death_R.dds", 0, (int)EPlayerAnimationClips::eDeathR));
+	myAnimations[18]->Init({ 16, 1 }, { 9, 1 });
+	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_death_L.dds", 0, (int)EPlayerAnimationClips::eDeathL));
+	myAnimations[19]->Init({ 16, 1 }, { 9, 1 });
+
+	myAnimations[(int)EPlayerAnimationClips::eIdleR]->PlayAnimLoop();
+
 	mySprite = std::make_shared<Tga2D::CSprite>("sprites/Player.dds");
 	mySprite->SetSizeRelativeToImage({ 0.1f,0.1f });
 	mySprite->SetPosition(Tga2D::Vector2f(myPosition.x, myPosition.y));
 	mySprite->SetPivot({ 0.5f,0.5f });
-
-	auto wideboi = mySprite->GetSize().x * Tga2D::CEngine::GetInstance()->GetRenderSize().x;
-	auto heity = mySprite->GetSize().y * Tga2D::CEngine::GetInstance()->GetRenderSize().y;
 
 	myCollider = std::make_shared<Collider>(myPosition, mySprite->GetSize().x * (9.0f / 16.0f), mySprite->GetSize().y);
 	myCollider->SetTag(EColliderTag::Player);
@@ -44,12 +89,17 @@ void Player::Update()
 	std::printf("%d", myMoveState);
 	UpdatePhysics();
 
-	mySprite->SetPosition({ myPosition.x, myPosition.y });
+	for (auto& anim : myAnimations)
+	{
+		anim->UpdateAnimation(myPosition);
+	}
+	PlayAnimation(myCurrentAnimation);
+	//aCamera->BatchRenderSprite(myAnimations[(int)myCurrentAnimation]->GetRenderCommand());
 }
 
 void Player::Render(std::shared_ptr<Camera> aCamera)
 {
-	aCamera->RenderSprite(*mySprite);
+	myAnimations[(int)myCurrentAnimation]->Render();
 }
 
 CommonUtilities::Vector2f Player::GetPosition() const
@@ -111,7 +161,7 @@ void Player::UpdatePhysics()
 		{
 			positionCorrection = CollisionManager::GetInstance().AABBOverlap(myCollider.get(), myCollider->GetCollidedWith()[i]);
 			normal += myCollider->GetCollisionNormal(i);
-			
+
 			/*positionCorrection.x += 1.0f / Tga2D::CEngine::GetInstance()->GetRenderSize().x * normal.GetNormalized().x;
 			positionCorrection.y += 1.0f / Tga2D::CEngine::GetInstance()->GetRenderSize().y * normal.GetNormalized().y;*/
 
@@ -180,7 +230,8 @@ void Player::Movement()
 void Player::Idle()
 {
 	myCurrentVelocity = CommonUtilities::Vector2f::Zero();
-	//Idle anim
+
+	myCurrentAnimation = EAnimationState::Idle;
 
 	if (!myIsGrounded)
 	{
@@ -203,7 +254,7 @@ void Player::Idle()
 
 void Player::Walk()
 {
-	//walk anim
+	myCurrentAnimation = EAnimationState::Run;
 
 	if (INPUT.IsKeyDown(myLeft) == INPUT.IsKeyDown(myRight))
 	{
@@ -212,6 +263,7 @@ void Player::Walk()
 	}
 	else if (INPUT.IsKeyDown(myRight))
 	{
+		myDirection = 1;
 		if (myHugsRightWall)
 		{
 			myCurrentVelocity.x = 0.0f;
@@ -220,6 +272,7 @@ void Player::Walk()
 		{
 			if (INPUT.IsKeyDown(myBoost))
 			{
+				myCurrentAnimation = EAnimationState::Sprint;
 				myCurrentVelocity.x = myWalkSpeed * myBoostFactor;
 			}
 			else myCurrentVelocity.x += myWalkSpeed;
@@ -227,6 +280,7 @@ void Player::Walk()
 	}
 	else if (INPUT.IsKeyDown(myLeft))
 	{
+		myDirection = -1;
 		if (myHugsLeftWall)
 		{
 			myCurrentVelocity.x = 0.0f;
@@ -235,6 +289,7 @@ void Player::Walk()
 		{
 			if (INPUT.IsKeyDown(myBoost))
 			{
+				myCurrentAnimation = EAnimationState::Sprint;
 				myCurrentVelocity.x = -myWalkSpeed * myBoostFactor;
 			}
 			else myCurrentVelocity.x += -myWalkSpeed;
@@ -269,6 +324,8 @@ void Player::Falling()
 	}
 	else if (INPUT.IsKeyDown(myRight))
 	{
+		myDirection = 1;
+
 		if (myHugsRightWall && !myIsGrounded)
 		{
 			myMoveState = EMovementState::Ledge;
@@ -285,6 +342,8 @@ void Player::Falling()
 	}
 	else if (INPUT.IsKeyDown(myLeft))
 	{
+		myDirection = -1;
+
 		if (myHugsLeftWall && !myIsGrounded)
 		{
 			myMoveState = EMovementState::Ledge;
@@ -296,7 +355,7 @@ void Player::Falling()
 			{
 				if (myCurrentVelocity.x >= -myMaxAirSpeed * myBoostFactor) myCurrentVelocity.x -= myAirAcceleration * myBoostFactor;
 			}
-			else if(myCurrentVelocity.x >= -myMaxAirSpeed) myCurrentVelocity.x -= myAirAcceleration;
+			else if (myCurrentVelocity.x >= -myMaxAirSpeed) myCurrentVelocity.x -= myAirAcceleration;
 		}
 	}
 	if (!INPUT.IsKeyDown(myJump) && myCurrentVelocity.y < 0.0f)
@@ -325,6 +384,8 @@ void Player::Ledge()
 	}
 	else if (INPUT.IsKeyDown(myRight))
 	{
+		myDirection = 1;
+
 		if (myHugsRightWall)
 		{
 			myCurrentVelocity.x = 0.0f;
@@ -340,6 +401,7 @@ void Player::Ledge()
 	}
 	else if (INPUT.IsKeyDown(myLeft))
 	{
+		myDirection = -1;
 		if (myHugsLeftWall)
 		{
 			myCurrentVelocity.x = 0.0f;
@@ -353,6 +415,29 @@ void Player::Ledge()
 			return;
 		}
 	}
+}
 
+void Player::PlayAnimation(EAnimationState anAnimEnum)
+{
+	for (auto& anim : myAnimations)
+	{
+		if (anim->GetAnimIsPlaying())
+		{
+			if (anim->GetAnimationTypeIndex() == (int)anAnimEnum * 2 || anim->GetAnimationTypeIndex() == (int)anAnimEnum * 2 + 1)
+			{
+				return;
+			}
+			if (myDirection > 0)
+			{
+				myAnimations[(int)anAnimEnum * 2]->PlayAnimLoop();
+			}
+			return;
+			if (myDirection < 0)
+			{
+				myAnimations[(int)anAnimEnum * 2 + 1]->PlayAnimLoop();
+			}
+			return;
+		}
+	}
 }
 
