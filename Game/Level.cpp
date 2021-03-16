@@ -32,9 +32,10 @@ void Level::Update()
 	}
 	float deltaTime = Timer::GetInstance().GetDeltaTime();
 
-	for (auto t : mySaws)
+	for (auto saw : mySaws)
 	{
-		t.get()->Update(deltaTime);
+		saw.get()->Update(deltaTime);
+		myCamera->BatchRenderSprite(*saw.get()->GetRenderCommand());
 		//Push in render command to camera 
 	}
 }
