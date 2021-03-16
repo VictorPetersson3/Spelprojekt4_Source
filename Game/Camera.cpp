@@ -63,9 +63,7 @@ void Camera::RenderSprite(const Tga2D::CSprite aSprite)
 
 void Camera::BatchRenderSprite(const RenderCommand& aRenderCommand)
 {
-	CommonUtilities::Vector2f spritePos;
-	spritePos.x = aRenderCommand.GetPosition().x;
-	spritePos.y = aRenderCommand.GetPosition().y;
+	CommonUtilities::Vector2f spritePos;	
 	spritePos.x = aRenderCommand.GetPosition().x - myPosition.x;
 	spritePos.y = aRenderCommand.GetPosition().y - myPosition.y;
 	if (spritePos.x < 1.0f && spritePos.x > 0.0f && spritePos.y < 1.0f && spritePos.y > 0.0f)
