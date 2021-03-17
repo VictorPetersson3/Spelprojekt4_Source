@@ -21,3 +21,8 @@ void Shooter::Render()
 {
 	myRenderCommand->Render();
 }
+
+const void Shooter::Shoot() const
+{
+	myBulletManager->CallBullet(myPosition, myFireDirection);
+}

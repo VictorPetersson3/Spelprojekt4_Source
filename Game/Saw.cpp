@@ -18,7 +18,6 @@ void Saw::AddPoint(Vector2 aPoint)
 
 void Saw::Update(float aDeltatime)
 {
-
 	if (myPosition.Distance(myPosition, myTravelPoints[myNextPointIndex]) < EPSILON)
 	{
 		myNextPointIndex += myDirection;
