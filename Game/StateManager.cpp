@@ -2,6 +2,15 @@
 #include "StateManager.h"
 StateManager* StateManager::myInstance = nullptr;
 
+uint32_t globalAllocCounter = 0ui32;
+void* operator new(size_t aSize)
+{
+	++globalAllocCounter;
+	return malloc(aSize);
+}
+
+
+
 void StateManager::Init()
 {
 	assert(myInstance == nullptr && "Input Manager have already been Created");
@@ -74,4 +83,6 @@ void StateManager::Update()
 		}
 	}
 	myInstance->myGameStates.GetTop()->Render();
+	globalAllocCounter = 0ui32;
+
 }

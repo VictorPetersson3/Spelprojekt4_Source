@@ -29,7 +29,7 @@ void UIElement::Deactivate()
 	myIsActive = false;
 }
 
-const RenderCommand UIElement::GetRenderCommand() const
+RenderCommand& UIElement::GetRenderCommand()
 {
 	return *myRenderCommand;
 }

@@ -4,6 +4,9 @@
 #include <map>
 #include <memory>
 #include "RenderCommand.h"
+#include "LinkString.h"
+#include <set>
+
 namespace Tga2D
 {
 	class CSpriteBatch;
@@ -20,6 +23,7 @@ private:
 	void SortAllSprites();
 	std::vector<RenderCommand> myRenderCommands;
 	std::map < signed int, std::unordered_map 
-		<std::string, Tga2D::CSpriteBatch* >> myLayeredSpriteBatches;
+		<std::string, Tga2D::CSpriteBatch*>> myLayeredSpriteBatches;
+	std::map<signed int, std::set<Tga2D::CSpriteBatch*>> myFilledLayeredBatches;
 };
 

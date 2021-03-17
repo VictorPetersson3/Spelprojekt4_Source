@@ -13,7 +13,7 @@ public:
 	const bool GetIsActive() const;
 	void Activate();
 	void Deactivate();
-	const RenderCommand GetRenderCommand() const;
+	RenderCommand& GetRenderCommand();
 protected:
 	CommonUtilities::Vector2f myPosition;
 	std::unique_ptr<RenderCommand> myRenderCommand;

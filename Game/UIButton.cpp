@@ -2,6 +2,8 @@
 #include "UIButton.h"
 #include "Timer.h"
 #include "InputManager.h"
+#include "AudioManager.h"
+#include "CommonUtilities/Math.h"
 
 UIButton::UIButton() 
 {
@@ -29,6 +31,7 @@ void UIButton::Update()
 			{
 				myOnPressIndexFunction(myOnPressIndexIndex);
 			}
+			AudioManager::GetInstance().Play2D("Audio/UI/Button/on_Click.mp3");
 		}
 	}
 }
@@ -58,7 +61,7 @@ void UIButton::SetIsHovered(const bool aHoverStatus)
 
 void UIButton::ChangeSize()
 {
-	
+	const Tga2D::CColor hoverColor{1.1f, 1.1f, 1.1f, 1.0f};
 	if (myIsHovered)
 	{
 		if (myHoverCurrentScale > myHoverEndScale)
@@ -77,5 +80,11 @@ void UIButton::ChangeSize()
 			myHoverCurrentScale -= (Timer::GetInstance().GetDeltaTime() * 4);
 		}
 	}
+	float lerpT = (myHoverCurrentScale - 1) * 4;
+	myRenderCommand->SetColor(Tga2D::CColor{ 
+	CommonUtilities::Lerp(1.0f, hoverColor.myR, lerpT),
+	CommonUtilities::Lerp(1.0f, hoverColor.myG, lerpT),
+	CommonUtilities::Lerp(1.0f, hoverColor.myB, lerpT) ,
+	1.0f });
 	myRenderCommand->SetSizeRelativeToImage({ myHoverCurrentScale , myHoverCurrentScale });
 }
