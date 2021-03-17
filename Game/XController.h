@@ -27,6 +27,14 @@ public:
 	const bool IsButton_Y_Pressed();
 
 
+	// Shoulder buttons
+	const bool IsButton_RS_Pressed();
+	const bool IsButton_LS_Pressed();
+	const bool IsButton_RT_Pressed();
+	const bool IsButton_LT_Pressed();
+
+	const bool IsButton_Start_Pressed();
+	const bool IsButton_Back_Pressed();
 
 private:
 	

@@ -53,12 +53,6 @@ void CGameWorld::Update(float /*aTimeDelta*/)
 	
 	if (myController->IsConnected())
 	{
-
-		if (!t)
-		{
-			myController->Vibrate(1, 1);
-			t = true;
-		}
 		if (myController->IsButton_A_Pressed())
 		{
 			std::cout << "A is pressed " << sm << std::endl;
@@ -95,8 +89,27 @@ void CGameWorld::Update(float /*aTimeDelta*/)
 			std::cout << "DPad Input: " << myController->GetDPadInput().x << " " << myController->GetDPadInput().y << std::endl;
 			
 		}
+		if (myController->IsButton_LS_Pressed())
+		{
+			std::cout << "LS Is Pressed " << sm << std::endl;
+			sm++;
+		}
+		if (myController->IsButton_RS_Pressed())
+		{
+			std::cout << "RS Is Pressed " << sm << std::endl;
+			sm++;
+		}
+		if (myController->IsButton_RT_Pressed())
+		{
+			std::cout << "RT Is Pressed " << sm << std::endl;
+			sm++;
+		}
 
-
+		if (myController->IsButton_LT_Pressed())
+		{
+			std::cout << "LT Is Pressed " << sm << std::endl;
+			sm++;
+		}
 
 	}
 

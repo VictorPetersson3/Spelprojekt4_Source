@@ -55,8 +55,8 @@ void XController::Vibrate(float leftVib, float rightVib)
 
 CommonUtilities::Vector2f XController::GetLeftTumbStick()
 {
-    const int x = this->GetControllerState().Gamepad.sThumbLX;
-    const int y = this->GetControllerState().Gamepad.sThumbLY;
+    const float x = this->GetControllerState().Gamepad.sThumbLX;
+    const float y = this->GetControllerState().Gamepad.sThumbLY;
    
     if (std::abs(x) > myJoystickDeadZone && std::abs(y) > myJoystickDeadZone) return CommonUtilities::Vector2f(x, y).GetNormalized();
 
@@ -68,8 +68,8 @@ CommonUtilities::Vector2f XController::GetLeftTumbStick()
 
 CommonUtilities::Vector2f XController::GetRightTumbStick()
 {
-    const int x = this->GetControllerState().Gamepad.sThumbRX;
-    const int y = this->GetControllerState().Gamepad.sThumbRY;
+    const float x = this->GetControllerState().Gamepad.sThumbRX;
+    const float y = this->GetControllerState().Gamepad.sThumbRY;
   
     if (std::abs(x) > myJoystickDeadZone && std::abs(y) > myJoystickDeadZone) return CommonUtilities::Vector2f(x, y).GetNormalized();  
    
@@ -97,6 +97,51 @@ const bool XController::IsButton_X_Pressed()
 const bool XController::IsButton_Y_Pressed()
 {
     return this->GetControllerState().Gamepad.wButtons & XINPUT_GAMEPAD_Y;
+}
+
+const bool XController::IsButton_RS_Pressed()
+{
+    return this->GetControllerState().Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER;
+}
+
+const bool XController::IsButton_LS_Pressed()
+{
+    return this->GetControllerState().Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER;
+}
+
+const bool XController::IsButton_RT_Pressed()
+{
+    const float v = this->GetControllerState().Gamepad.bRightTrigger;
+    const float deadZone = 0.2f;
+
+    if (v / 255 > deadZone)
+    {
+        return true;
+    }
+    return false;
+
+}
+
+const bool XController::IsButton_LT_Pressed()
+{
+    const float v = this->GetControllerState().Gamepad.bLeftTrigger;
+    const float deadZone = 0.2f;
+
+    if (v / 255 > deadZone)
+    {
+        return true;
+    }
+    return false;
+}
+
+const bool XController::IsButton_Start_Pressed()
+{
+    return this->GetControllerState().Gamepad.wButtons & XINPUT_GAMEPAD_START;
+}
+
+const bool XController::IsButton_Back_Pressed()
+{
+    return this->GetControllerState().Gamepad.wButtons & XINPUT_GAMEPAD_BACK;
 }
 
 CommonUtilities::Vector2f XController::GetDPadInput()
