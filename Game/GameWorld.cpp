@@ -33,7 +33,7 @@ void CGameWorld::Init()
 
 	myPlayer = std::make_unique<Player>();
 	myCamera = std::make_shared<Camera>();
-	myPlayer->Init();
+	//myPlayer->Init();
 }
 
 void CGameWorld::Update(float /*aTimeDelta*/)
@@ -43,7 +43,7 @@ void CGameWorld::Update(float /*aTimeDelta*/)
 
 	//myCollider->Draw();
 	//If you want to render something send in the sprite to the Camera
-	myPlayer->Update();
+	//myPlayer->Update();
 	CollisionManager::GetInstance().Update();
 	
 
@@ -129,7 +129,7 @@ void CGameWorld::Update(float /*aTimeDelta*/)
 
 void CGameWorld::Render()
 {
-	
-	myPlayer->Render(myCamera);
-	
+	//myTga2dLogoSprite->Render();
+	//myPlayer->Render(myCamera);
+	/*myTga2dLogoSprite->Render();*/
 }

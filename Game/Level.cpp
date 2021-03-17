@@ -6,15 +6,19 @@
 #include "Sprite_Renderer.h"
 #include "Camera.h"
 #include "Timer.h"
-#include "LevelLoader.h"
-#include "Player.h"
+#include "InputManager.h"
+#include "RenderCommand.h"
+#include "Collider.h"
 
 Level::Level()
 {
+	myPlayer = std::make_unique<Player>();
+
 }
 
 Level::~Level()
 {
+
 }
 
 void Level::Render()
@@ -38,12 +42,81 @@ void Level::Update()
 		myCamera->BatchRenderSprite(*saw.get()->GetRenderCommand());
 		//Push in render command to camera 
 	}
+
+	if (InputManager::GetInstance().IsKeyPressed(VK_F5))
+	{
+		Restart();
+	}
+
+	if (InputManager::GetInstance().IsKeyPressed(VK_F4))
+	{
+		Load(1);
+	}
+
+	for (auto t : myTerrain)
+	{
+		t.get()->myCollider.get()->Draw();
+	}
+
+	if (myPlayer.get() != nullptr)
+	{
+		myPlayer.get()->Update();
+		myPlayer.get()->GetCollider().get()->Draw();
+		//myCamera.get()->RenderSprite(*myPlayer.get()->GetSprite().get());
+	}
+	
+
+	
 }
 
 void Level::Load(std::shared_ptr<LevelData> aData)
 {
+	if (myPlayer.get()->GetCollider().get() != nullptr)
+	{
+		myPlayer.get()->GetCollider().get()->RemoveFromManager();
+	}
+
+	for (auto t : myTerrain)
+	{
+		t.get()->myCollider.get()->RemoveFromManager();
+	}
+
+	
+
+	myTerrain.clear();
+
 	myTerrain = aData.get()->GetTiles();
-	mySaws = aData.get()->GetSaws();
+
+	//mySaws = aData.get()->GetSaws();
+
+	for (auto t : myTerrain)
+	{
+		t.get()->myCollider.get()->AddToManager();
+	}
+
+	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y });
+
+	if (myPlayer.get()->GetCollider().get() != nullptr)
+	{
+		myPlayer.get()->GetCollider().get()->AddToManager();
+	}
+}
+
+void Level::Load(int aIndex)
+{
+	LevelLoader levelLoader;
+
+	Load(levelLoader.LoadLevel(aIndex));
+	currentLevelIndex = aIndex;
+}
+
+void Level::Restart()
+{
+	//myPlayer.reset();
+	LevelLoader levelLoader;
+	Load(levelLoader.LoadLevel(currentLevelIndex));
+
+	//Load(myCurrentLevelData);
 }
 
 void Level::Init(const EStateType& aState)
@@ -55,7 +128,10 @@ void Level::Init(const EStateType& aState)
 	myCamera->Init({0.0f, 0.0f}, mySpriteRenderer.get());
 
 	//Load Level Routine
-	LevelLoader levelLoader;
-	Load(levelLoader.LoadLevel("Json/Levels/CollisionTest.json"));
+	//LevelLoader levelLoader;
+
+	currentLevelIndex = 0;
+
+	//Load(levelLoader.LoadLevel(0));
 
 }

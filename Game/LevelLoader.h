@@ -28,7 +28,7 @@ public:
 
 	std::shared_ptr<LevelData> LoadLevel(const char* aLevelPath);
 	std::shared_ptr<TerrainTile> LoadTileMap(const char* aImagePath, int aGridSize, int aLayerIndex, int aTileIndex);
-
+	std::shared_ptr<LevelData> LoadLevel(int aLevelIndex);
 
 private:
 	std::vector<TerrainTile> myTiles;
@@ -38,6 +38,8 @@ private:
 	void SetRect(std::shared_ptr<Tga2D::CSprite> aSprite, int gridTileindex, int layerIndex);
 	void SetPosition(std::shared_ptr<Tga2D::CSprite>, int aGridTileIndex, int aLayerIndex);
 	void SetSpriteSize(std::shared_ptr<Tga2D::CSprite> aSprite, float aGridSize);
+
+	Tga2D::Vector2f GetPlayerStartPosition();
 
 	void SetRect(RenderCommand& aRenderCommand, int gridTileindex, int layerIndex);
 	void SetPosition(RenderCommand& aRenderCommand, int aGridTileIndex, int aLayerIndex);

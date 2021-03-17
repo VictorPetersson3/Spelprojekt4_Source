@@ -20,12 +20,13 @@ Player::~Player()
 
 }
 
-void Player::Init()
+void Player::Init(CommonUtilities::Vector2f aPosition)
 {
 	myCanJump = true;
 	myCollider = std::make_shared<Collider>(0.01f, myPosition);
 	myCollider->SetTag(EColliderTag::Player);
-	myPosition = { 0.5f,0.1f };
+	myPosition = aPosition;
+	myIsGrounded = false;
 
 	LoadJsonData();
 
@@ -62,6 +63,21 @@ void Player::Render(std::shared_ptr<Camera> aCamera)
 CommonUtilities::Vector2f Player::GetPosition() const
 {
 	return myPosition;
+}
+
+std::shared_ptr<Tga2D::CSprite> Player::GetSprite()
+{
+	return mySprite;
+}
+
+std::shared_ptr<Collider> Player::GetCollider()
+{
+	return myCollider;
+}
+
+void Player::SetPosition(const Tga2D::Vector2f aPosition)
+{
+	mySprite.get()->SetPosition(aPosition);
 }
 
 void Player::LoadJsonData()
