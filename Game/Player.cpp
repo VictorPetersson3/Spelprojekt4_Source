@@ -24,9 +24,9 @@ Player::~Player()
 
 }
 
-void Player::Init()
+void Player::Init(CommonUtilities::Vector2f aPosition)
 {
-	myPosition = { 0.5f,0.1f };
+	myPosition = aPosition;
 
 	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_idle_R.dds", 0, (int)EPlayerAnimationClips::eIdleR));
 	myAnimations[0]->Init({ 8, 1 }, { 7, 1 });
@@ -103,6 +103,15 @@ void Player::Render(std::shared_ptr<Camera> aCamera)
 CommonUtilities::Vector2f Player::GetPosition() const
 {
 	return myPosition;
+}
+void Player::SetPosition(const Tga2D::Vector2f aPosition)
+{
+	myPosition = aPosition;
+}
+
+std::shared_ptr<Collider> Player::GetCollider()
+{
+	return myCollider;
 }
 
 void Player::ChangeInput(EInputType anInputType)
@@ -271,7 +280,7 @@ void Player::Idle()
 		else PlaySpecificAnimation(EPlayerAnimationClips::eLandR);
 	}
 	//myCurrentVelocity = CommonUtilities::Vector2f::Zero();
-	if (myCurrentVelocity.x > 0) myCurrentVelocity.x -= 0.001f; // gånger deltatime? ??
+	if (myCurrentVelocity.x > 0) myCurrentVelocity.x -= 0.001f; // gï¿½nger deltatime? ??
 	if (myCurrentVelocity.x < 0) myCurrentVelocity.x += 0.001f;
 
 	myCurrentAnimation = EAnimationState::Idle;
@@ -289,7 +298,7 @@ void Player::Idle()
 	}
 	else if (INPUT.IsKeyDown(myJump))
 	{
-		printf("jag borde bara skrivas ut en gång per hopp\n");
+		printf("jag borde bara skrivas ut en gï¿½ng per hopp\n");
 		myCurrentVelocity.y = -myJumpSpeed;
 		myMoveState = EMovementState::Falling;
 		return;
@@ -352,7 +361,7 @@ void Player::Walk()
 		//jump sfx ?
 		myMoveState = EMovementState::Falling;
 		//myCurrentAnimation = EAnimationState::Jump;
-		printf("jag borde bara skrivas ut en gång per hopp\n");
+		printf("jag borde bara skrivas ut en gï¿½ng per hopp\n");
 
 		if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eJumpL);
 		else PlaySpecificAnimation(EPlayerAnimationClips::eJumpR);
@@ -459,7 +468,7 @@ void Player::Ledge()
 			myCurrentVelocity.x = -myJumpSpeed;
 			myCurrentVelocity.y = -myJumpSpeed;
 
-			printf("jag borde bara skrivas ut en gång per hopp\n");
+			printf("jag borde bara skrivas ut en gï¿½ng per hopp\n");
 			//jump sfx ?
 			PlaySpecificAnimation(EPlayerAnimationClips::eWallJumpL);
 
@@ -479,7 +488,7 @@ void Player::Ledge()
 			myCurrentVelocity.x = myJumpSpeed;
 			myCurrentVelocity.y = -myJumpSpeed;
 
-			printf("jag borde bara skrivas ut en gång per hopp\n");
+			printf("jag borde bara skrivas ut en gï¿½ng per hopp\n");
 			//jump sfx ?
 			PlaySpecificAnimation(EPlayerAnimationClips::eWallJumpR);
 

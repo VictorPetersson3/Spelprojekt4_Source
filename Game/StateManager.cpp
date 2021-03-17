@@ -54,9 +54,10 @@ void StateManager::AddOptionsOnStack()
 	myInstance->myGameStates.Push(&myInstance->myOptionsMenu);
 }
 
-void StateManager::AddLevelOnStack()
+void StateManager::AddLevelOnStack(int aLevelIndex)
 {
 	myInstance->myGameStates.Push(&myInstance->myLevel);
+	myInstance->myLevel.Load(aLevelIndex);
 }
 
 void StateManager::Update()

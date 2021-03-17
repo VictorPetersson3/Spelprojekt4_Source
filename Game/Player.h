@@ -46,11 +46,16 @@ class Player
 public:
 	Player();
 	~Player();
-	virtual void Init();
+	virtual void Init(CommonUtilities::Vector2f aPosition);
 	virtual void Update();
 	virtual void Render(std::shared_ptr<Camera> aCamera);
-	CommonUtilities::Vector2f GetPosition() const;
+	
 	void ChangeInput(const EInputType anInputType);
+
+	std::shared_ptr<Collider> GetCollider();
+	CommonUtilities::Vector2f GetPosition() const;
+	
+	void SetPosition(const Tga2D::Vector2f aPosition);
 
 protected:
 	virtual void UpdatePhysics();

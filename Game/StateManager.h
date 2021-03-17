@@ -21,7 +21,7 @@ public:
 	static void RemoveDownToState(const EStateType& aStateType);
 
 	static void AddOptionsOnStack();
-	static void AddLevelOnStack();
+	static void AddLevelOnStack(int aLevelIndex);
 
 private:
 	StateManager() = default;

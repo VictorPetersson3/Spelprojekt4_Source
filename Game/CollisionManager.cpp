@@ -161,12 +161,20 @@ CommonUtilities::Vector2f CollisionManager::AABBOverlap(Collider* aCollider, Col
 void CollisionManager::Clear()
 {
 	myColliders.clear();
+	myPlayerCollider = nullptr;
 }
 
 void CollisionManager::AddCollider(Collider* aCollider)
 {
 	myColliders.emplace_back(aCollider);
 }
+
+void CollisionManager::RemoveCollider(Collider* aCollider)
+{
+	myColliders.erase(std::remove(myColliders.begin(), myColliders.end(), aCollider), myColliders.end());
+	myPlayerCollider = nullptr;
+}
+
 
 bool CollisionManager::AABBAABB(Collider* aCollider, Collider* anOtherCollider)
 {

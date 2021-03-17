@@ -40,9 +40,10 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 
 	std::cout << gridSize << std::endl;
 	std::cout << worldSize.x << " x " << worldSize.y << std::endl;
+
 	float renderSizeX = static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().x);
 	float renderSizeY = static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().y);
-
+	bool hasAddedPlayerStart = false;
 
 	for (int j = 0; j < document["levels"][0]["layerInstances"].Capacity(); j++)
 	{
@@ -54,12 +55,14 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 
 			for (int i = 0; i < tilesArrayLenght; i++)
 			{
-				levelToPushBack.get()->AddTile(LoadTileMap("Sprites/Tilesets/Tiles.dds", gridSize, j, i));
+				levelToPushBack.get()->AddTile(LoadTileMap("Sprites/Tilesets/tiles_Sheet_01.dds", gridSize, j, i));
 			}
 		}
 		if (layerType == "Entities")
 		{
 			int entityArrayLength = static_cast<int>(document["levels"][0]["layerInstances"][j]["entityInstances"].Capacity());
+
+			
 
 			for (int i = 0; i < entityArrayLength; i++)
 			{
@@ -72,10 +75,27 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 
 				if (entityType == "PlayerStart")
 				{
+					float xPosition = document["levels"][0]["layerInstances"][j]["entityInstances"][i]["__grid"][0].GetFloat();
+					float yPosition = document["levels"][0]["layerInstances"][j]["entityInstances"][i]["__grid"][1].GetFloat();
 
+
+					xPosition /= static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().x);
+					yPosition /= static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().y);
+
+					std::cout << xPosition << "\n";
+
+
+					levelToPushBack.get()->AddPlayerStart({ xPosition,yPosition });
+
+					hasAddedPlayerStart = true;
 				}
 			}
 		}
+	}
+
+	if (hasAddedPlayerStart == false)
+	{
+		levelToPushBack.get()->AddPlayerStart({ 0.5f,0.5f });
 	}
 
 	return levelToPushBack;
@@ -87,7 +107,9 @@ std::shared_ptr<TerrainTile> LevelLoader::LoadTileMap(const char* aImagePath, in
 	std::shared_ptr<Tga2D::CSprite> spriteToPushBack = std::make_shared<Tga2D::CSprite>("Sprites/Tilesets/Tiles.dds");
 
 	spriteToPushBack.get()->SetSamplerState(ESamplerFilter::ESamplerFilter_Point, ESamplerAddressMode::ESamplerAddressMode_Clamp);
+
 	tempRenderCommand.SetSamplerState(ESamplerFilter::ESamplerFilter_Point, ESamplerAddressMode::ESamplerAddressMode_Clamp);
+
 	SetRect(spriteToPushBack, aTileIndex, aLayerIndex);
 	SetRect(tempRenderCommand, aTileIndex, aLayerIndex);
 
@@ -114,6 +136,21 @@ std::shared_ptr<TerrainTile> LevelLoader::LoadTileMap(const char* aImagePath, in
 	{
 		return std::make_shared<TerrainTile>(tempRenderCommand);
 	}
+}
+
+std::shared_ptr<LevelData> LevelLoader::LoadLevel(int aLevelIndex)
+{
+	JsonParser jsonParser;
+
+	rapidjson::Document document;
+
+	document = jsonParser.GetDocument("Json/Levels.json");
+
+	assert(aLevelIndex <= document["levels"].Capacity());
+
+	const char* path = document["levels"][aLevelIndex]["path"].GetString();
+
+	return LoadLevel(path);
 }
 
 void LevelLoader::SetRect(std::shared_ptr<Tga2D::CSprite> aSprite, int gridTileindex, int layerIndex)
@@ -180,6 +217,11 @@ void LevelLoader::SetPosition(RenderCommand& aRenderCommand, int aGridTileIndex,
 void LevelLoader::SetSpriteSize(RenderCommand& aRenderCommand, float aGridSize)
 {
 	aRenderCommand.SetSizeRelativeToImage({ 1.f / (static_cast<float>(aRenderCommand.GetImageSize().x) / aGridSize),1.f / (static_cast<float>(aRenderCommand.GetImageSize().y) / aGridSize) });
+}
+
+Tga2D::Vector2f LevelLoader::GetPlayerStartPosition()
+{
+	return Tga2D::Vector2f();
 }
 
 std::shared_ptr<Saw> LevelLoader::AddSaw(int aGridSize, int aEntityIndex, int aLayerIndex, int aRenderSizeX, int aRenderSizeY)

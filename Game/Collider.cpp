@@ -92,6 +92,16 @@ void Collider::SetCollidedWith(Collider* aCollider)
 	myCollidedWith.emplace_back(aCollider);
 }
 
+void Collider::RemoveFromManager()
+{
+	CollisionManager::GetInstance().RemoveCollider(this);
+}
+
+void Collider::AddToManager()
+{
+	CollisionManager::GetInstance().AddCollider(this);
+}
+
 bool& Collider::HasCollided()
 {
 	return myHasCollided;

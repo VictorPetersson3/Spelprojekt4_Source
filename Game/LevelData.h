@@ -22,6 +22,9 @@ public:
 	void AddPlayerStart(const Tga2D::Vector2f& aPosition);
 	Tga2D::Vector2f GetPlayerStart();
 
+	void AddLevelEnd(std::shared_ptr<Collider> aEndCollider);
+	std::shared_ptr<Collider> GetLevelEnd();
+
 private:
 	std::vector<std::shared_ptr<TerrainTile>> myTiles;
 	std::vector<std::shared_ptr<Saw>> mySaws;

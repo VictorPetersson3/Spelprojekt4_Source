@@ -39,6 +39,8 @@ public:
 	void SetLowerLeft(CommonUtilities::Vector2f aPoint);
 	void SetUpperRight(CommonUtilities::Vector2f aPoint);
 	void SetCollidedWith(Collider* aCollider);
+	void RemoveFromManager();
+	void AddToManager();
 	bool& HasCollided();
 
 	std::vector<Collider*>& GetCollidedWith();

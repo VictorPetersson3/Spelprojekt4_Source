@@ -20,6 +20,7 @@ public:
 private:
 	
 	void AddCollider(Collider* aCollider);
+	void RemoveCollider(Collider* aCollider);
 	bool AABBAABB(Collider* aCollider, Collider* anOtherCollider);
 	bool CircleCircle(Collider* aCollider, Collider* anOtherCollider);
 	bool CircleAABB(Collider* aCollider, Collider* anOtherCollider);

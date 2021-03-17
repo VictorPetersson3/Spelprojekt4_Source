@@ -7,6 +7,7 @@
 #include "Saw.h"
 #include "LevelData.h"
 
+
 class Player;
 class Camera;
 class Sprite_Renderer;
@@ -21,15 +22,23 @@ public:
 	virtual void Render() override;
 	virtual void Update() override;
 	void Load(std::shared_ptr<LevelData> aData);
+	void Load(int aIndex);
+	void Restart();
+
 
 	virtual void Init(const EStateType& aState) override;
 
 private:
 	std::unique_ptr<Camera> myCamera;
 	std::unique_ptr<Player> myPlayer;
+
 	std::shared_ptr<Sprite_Renderer> mySpriteRenderer;
+	std::shared_ptr<LevelData> currentLevelData;
+
 	std::vector<std::shared_ptr<TerrainTile>> myTerrain;
 	std::vector<std::shared_ptr<Saw>> mySaws;
+
+	int currentLevelIndex = 0;
 
 };
 
