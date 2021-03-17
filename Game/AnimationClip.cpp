@@ -82,6 +82,7 @@ void AnimationClip::PlayAnimOnce(const float aSpeed)
 {
 	myAnimationIsDone = false;
 	myAnimationSpeed = aSpeed;
+	myIsLooping = false;
 	myCurrentFrame = { 1 , 1 };
 	Activate();
 }
@@ -93,6 +94,11 @@ void AnimationClip::PlayAnimLoop(const float aSpeed)
 	myCurrentFrame = { 1 , 1 };
 	myIsLooping = true;
 	Activate();
+}
+
+const bool AnimationClip::GetAnimIsLooping() const
+{
+	return myIsLooping;
 }
 
 const bool AnimationClip::GetAnimIsDone() const{	return myAnimationIsDone;}

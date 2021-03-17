@@ -12,7 +12,7 @@
 #include "RenderCommand.h"
 
 #define INPUT InputManager::GetInstance() 
-#define DELTA_TIME Timer::GetInstance().GetDeltaTime()
+#define DELTA_TIME Timer::GetInstance().GetDeltaTime() / 5
 
 Player::Player()
 {
@@ -89,13 +89,15 @@ void Player::Update()
 	{
 		anim->UpdateAnimation(myPosition);
 	}
+	//printf("%d", myCurrentAnimation);
 	PlayAnimation(myCurrentAnimation);
 	//aCamera->BatchRenderSprite(myAnimations[(int)myCurrentAnimation]->GetRenderCommand());
 }
 
 void Player::Render(std::shared_ptr<Camera> aCamera)
 {
-	myAnimations[(int)myCurrentAnimation]->Render();
+	int thing = (int)myCurrentAnimation * 2 + (myDirection < 0);
+	myAnimations[thing]->Render();
 }
 
 CommonUtilities::Vector2f Player::GetPosition() const
@@ -137,7 +139,7 @@ void Player::ChangeInput(EInputType anInputType)
 void Player::UpdatePhysics()
 {
 	CacheCurrentValues();
-	myPosition += myCurrentVelocity * Timer::GetInstance().GetDeltaTime();
+	myPosition += myCurrentVelocity * DELTA_TIME;
 
 	CollisionManager::GetInstance().Update();
 
@@ -263,8 +265,13 @@ void Player::Movement()
 
 void Player::Idle()
 {
+	if (!myWasGrounded)
+	{
+		if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eLandL);
+		else PlaySpecificAnimation(EPlayerAnimationClips::eLandR);
+	}
 	//myCurrentVelocity = CommonUtilities::Vector2f::Zero();
-	if (myCurrentVelocity.x > 0) myCurrentVelocity.x -= 0.001f;
+	if (myCurrentVelocity.x > 0) myCurrentVelocity.x -= 0.001f; // gånger deltatime? ??
 	if (myCurrentVelocity.x < 0) myCurrentVelocity.x += 0.001f;
 
 	myCurrentAnimation = EAnimationState::Idle;
@@ -282,6 +289,7 @@ void Player::Idle()
 	}
 	else if (INPUT.IsKeyDown(myJump))
 	{
+		printf("jag borde bara skrivas ut en gång per hopp\n");
 		myCurrentVelocity.y = -myJumpSpeed;
 		myMoveState = EMovementState::Falling;
 		return;
@@ -290,6 +298,12 @@ void Player::Idle()
 
 void Player::Walk()
 {
+	if (!myWasGrounded)
+	{
+		if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eLandL);
+		else PlaySpecificAnimation(EPlayerAnimationClips::eLandR);
+	}
+
 	myCurrentAnimation = EAnimationState::Run;
 
 	if (INPUT.IsKeyDown(myLeft) == INPUT.IsKeyDown(myRight))
@@ -337,7 +351,8 @@ void Player::Walk()
 		myCurrentVelocity.y = -myJumpSpeed;
 		//jump sfx ?
 		myMoveState = EMovementState::Falling;
-		myCurrentAnimation = EAnimationState::Jump;
+		//myCurrentAnimation = EAnimationState::Jump;
+		printf("jag borde bara skrivas ut en gång per hopp\n");
 
 		if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eJumpL);
 		else PlaySpecificAnimation(EPlayerAnimationClips::eJumpR);
@@ -352,7 +367,7 @@ void Player::Walk()
 
 void Player::Falling()
 {
-	myCurrentAnimation = EAnimationState::Land;
+	myCurrentAnimation = EAnimationState::Jump;
 
 	if (myCurrentVelocity.y >= myMaxVerticalVelocity) myCurrentVelocity.y = myMaxVerticalVelocity;
 	else myCurrentVelocity.y += myGravity * DELTA_TIME;
@@ -444,6 +459,7 @@ void Player::Ledge()
 			myCurrentVelocity.x = -myJumpSpeed;
 			myCurrentVelocity.y = -myJumpSpeed;
 
+			printf("jag borde bara skrivas ut en gång per hopp\n");
 			//jump sfx ?
 			PlaySpecificAnimation(EPlayerAnimationClips::eWallJumpL);
 
@@ -463,6 +479,7 @@ void Player::Ledge()
 			myCurrentVelocity.x = myJumpSpeed;
 			myCurrentVelocity.y = -myJumpSpeed;
 
+			printf("jag borde bara skrivas ut en gång per hopp\n");
 			//jump sfx ?
 			PlaySpecificAnimation(EPlayerAnimationClips::eWallJumpR);
 
@@ -474,31 +491,20 @@ void Player::Ledge()
 
 void Player::PlayAnimation(EAnimationState anAnimEnum)
 {
-	printf("%d", myDirection);
+	//printf("%d", myDirection);
 
 	for (auto& anim : myAnimations)
 	{
 		if (anim->GetAnimIsDone())
 		{
-			if (myDirection > 0)
-			{
-				int enumer = (int)anAnimEnum * 2;
-				myAnimations[enumer]->PlayAnimLoop();
-				return;
-			}
-			if (myDirection < 0)
-			{
-				int enumer = (int)anAnimEnum * 2 + 1;
-
-				myAnimations[enumer]->PlayAnimLoop();
-				return;
-			}
+			if (anim->GetAnimationTypeIndex() == (int)anAnimEnum * 2 + (myDirection < 0)) return;
+			int enumer = (int)anAnimEnum * 2 + (myDirection < 0);
+			myAnimations[enumer]->PlayAnimLoop();
+			return;
 		}
-		if (anim->GetAnimIsPlaying())
+		else if (anim->GetAnimIsPlaying() && anim->GetAnimIsLooping())
 		{
 			if (anim->GetAnimationTypeIndex() == (int)anAnimEnum * 2 + (myDirection < 0)) return;
-			int boop = anim->GetAnimationTypeIndex();
-			int woop = (int)anAnimEnum * 2 + (myDirection < 0);
 
 			anim->Deactivate();
 
@@ -517,17 +523,14 @@ void Player::PlayAnimation(EAnimationState anAnimEnum)
 			}
 		}
 	}
+	myAnimations[0]->PlayAnimLoop();
 }
 
 void Player::PlaySpecificAnimation(EPlayerAnimationClips anAnimEnum)
 {
 	for (auto& anim : myAnimations)
 	{
-		if (anim->GetAnimIsPlaying())
-		{
-			anim->Deactivate();
-		}
+		anim->Deactivate();
 	}
-	myAnimations[(int)anAnimEnum];
+	myAnimations[(int)anAnimEnum]->PlayAnimOnce();
 }
-
