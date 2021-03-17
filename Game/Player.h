@@ -1,6 +1,7 @@
 #pragma once
 #include <CommonUtilities/Vector2.hpp>
 #include <memory>
+#include "Enums.h"
 
 namespace Tga2D
 {
@@ -62,6 +63,7 @@ protected:
 	void Ledge();
 
 	void PlayAnimation(EAnimationState anAnimEnum);
+	void PlaySpecificAnimation(EPlayerAnimationClips anAnimEnum);
 
 protected:
 	EMovementState myMoveState = EMovementState::Idle;
@@ -84,14 +86,15 @@ protected:
 	bool myWasRoofied = false;
 	bool myIsRoofied = false;
 
-	const float myWalkSpeed = 0.5f;
+	const float myWalkSpeed = 0.005f;
 	const float myJumpSpeed = 1.5f;
 
 	const float myAirAcceleration = 0.005f;
 	const float myMaxAirSpeed = 0.25f;
 	const float myJumpDecceleration = 0.01f;
 
-	const float myMaxVelocity = 1.5f;
+	const float myMaxHorizontalVelocity = 0.25f;
+	const float myMaxVerticalVelocity = 1.5f;
 	const float myGravity = 4.0f;
 
 	const float myBoostFactor = 2.0f;

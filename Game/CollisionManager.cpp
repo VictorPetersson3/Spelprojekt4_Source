@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CollisionManager.h"
 #include "Collider.h"
+#include <algorithm>
 #include <assert.h>
 
 CollisionManager* CollisionManager::myInstance = nullptr;
@@ -65,7 +66,7 @@ bool CollisionManager::CheckCollision(Collider* aCollider, Collider* anOtherColl
 	if (aCollider->GetType() == ECollider::AABB && anOtherCollider->GetType() == ECollider::AABB) return AABBAABB(aCollider, anOtherCollider);
 }
 
-CommonUtilities::Vector2f CollisionManager::CollisonNormal(Collider* aCollider, Collider* anOtherCollider)
+CommonUtilities::Vector2f CollisionManager::CollisionNormal(Collider* aCollider, Collider* anOtherCollider)
 {
 	if (aCollider->GetType() == ECollider::Circle && anOtherCollider->GetType() == ECollider::Circle) return (aCollider->GetPosition() - anOtherCollider->GetPosition()).GetNormalized();
 	if (aCollider->GetType() == ECollider::Circle && anOtherCollider->GetType() == ECollider::AABB)
@@ -106,23 +107,36 @@ CommonUtilities::Vector2f CollisionManager::CollisonNormal(Collider* aCollider, 
 	if (aCollider->GetType() == ECollider::AABB && anOtherCollider->GetType() == ECollider::AABB)
 	{
 		CommonUtilities::Vector2f delta = anOtherCollider->GetPosition() - aCollider->GetPosition();
-		if (aCollider->GetSize().x * 0.5f + anOtherCollider->GetSize().x * 0.5f - std::abs(anOtherCollider->GetPosition().x - aCollider->GetPosition().x) <
-			aCollider->GetSize().y * 0.5f + anOtherCollider->GetSize().y * 0.5f - std::abs(anOtherCollider->GetPosition().y - aCollider->GetPosition().y))
+		/*CommonUtilities::Vector2f overlap = AABBOverlap(aCollider, anOtherCollider);
+
+
+		delta.Normalize();
+
+		delta.x = std::roundf(delta.x);
+		delta.y = std::roundf(delta.y);
+
+
+		return { -delta.x, -delta.y };*/
+
+	//else return { -delta.x, 0 };
+
+	if (aCollider->GetSize().x * 0.5f + anOtherCollider->GetSize().x * 0.5f - std::abs(anOtherCollider->GetPosition().x - aCollider->GetPosition().x) <
+		aCollider->GetSize().y * 0.5f + anOtherCollider->GetSize().y * 0.5f - std::abs(anOtherCollider->GetPosition().y - aCollider->GetPosition().y))
+	{
+		if (delta.x < 0)
 		{
-			if (delta.x < 0)
-			{
-				return { 1, 0 };
-			}
-			else return{ -1, 0 };
+			return { 1, 0 };
 		}
-		else
+		else return{ -1, 0 };
+	}
+	else
+	{
+		if (delta.y < 0)
 		{
-			if (delta.y < 0)
-			{
-				return { 0, 1 };
-			}
-			else return{ 0, -1 };
+			return { 0, 1 };
 		}
+		else return{ 0, -1 };
+	}
 	}
 	return { 0, 0 };
 }
