@@ -134,12 +134,15 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Shooter.h" />
+    <ClInclude Include="ShooterBulletManager.h" />
     <ClInclude Include="Sprite_Renderer.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelData.h" />
@@ -165,11 +168,14 @@
     <ClInclude Include="UIImage.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Shooter.cpp" />
+    <ClCompile Include="ShooterBulletManager.cpp" />
     <ClCompile Include="Sprite_Renderer.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelData.cpp" />

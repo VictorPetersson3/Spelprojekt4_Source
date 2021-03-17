@@ -10,6 +10,7 @@
 class Camera;
 
 
+
 using Vector2 = CommonUtilities::Vector2f;
 
 class Saw

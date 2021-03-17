@@ -6,10 +6,3 @@ enum class EStateType
 	eOptionsMenu,
 	eGame
 };
-enum class EDirection
-{
-	Up,
-	Down, 
-	Right, 
-	Left
-};
