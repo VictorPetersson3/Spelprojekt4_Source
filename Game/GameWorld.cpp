@@ -32,7 +32,7 @@ void CGameWorld::Init()
 	myTga2dLogoSprite->SetPosition({ 0.5f, 0.5f });
 	myCamera = std::make_unique<Camera>();
 
-	myController = std::make_unique<XController>(1);
+	myController = std::make_shared<XController>(1);
 
 	//myCollider = new Collider({ 0.5f, 0.9f }, 1.0f, 0.2f);
 
@@ -51,6 +51,8 @@ void CGameWorld::Update(float /*aTimeDelta*/)
 	myPlayer->Update();
 	CollisionManager::GetInstance().Update();
 	
+
+	// Exempel på hur man använder controller input, passa igenom den där ni behöver den som en "shared_ptr"
 	if (myController->IsConnected())
 	{
 		if (myController->IsButton_A_Pressed())

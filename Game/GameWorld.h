@@ -26,7 +26,7 @@ public:
 	void Render();
 private:
 	std::unique_ptr<Player> myPlayer;
-	std::unique_ptr<XController> myController = {};
+	std::shared_ptr<XController> myController = {};
 	bool t = false;
 	int sm = 0;
 	std::shared_ptr<Camera> myCamera;
