@@ -11,8 +11,9 @@ UIButton::UIButton()
 	myOnPressFunction = nullptr;
 	myOnPressIndexFunction = nullptr;
 	myIsHovered = false;
-	myHoverCurrentScale = 0;
-	myHoverEndScale = 1.25f;
+	myHoverCurrentScale = 0.55f;
+	myHoverEndScale = 0.65f;
+	myHoverMinScale = 0.55f;
 }
 
 void UIButton::Update()
@@ -61,7 +62,7 @@ void UIButton::SetIsHovered(const bool aHoverStatus)
 
 void UIButton::ChangeSize()
 {
-	const Tga2D::CColor hoverColor{1.1f, 1.1f, 1.1f, 1.0f};
+	const Tga2D::CColor hoverColor{1.25f, 1.25f, 1.25f, 1.0f};
 	if (myIsHovered)
 	{
 		if (myHoverCurrentScale > myHoverEndScale)
@@ -75,12 +76,16 @@ void UIButton::ChangeSize()
 	}
 	else
 	{
-		if (1.0f < myHoverCurrentScale)
+		if (myHoverMinScale < myHoverCurrentScale)
 		{
 			myHoverCurrentScale -= (Timer::GetInstance().GetDeltaTime() * 4);
 		}
+		else
+		{
+			myHoverCurrentScale = myHoverMinScale;
+		}
 	}
-	float lerpT = (myHoverCurrentScale - 1) * 4;
+	float lerpT = (myHoverCurrentScale - myHoverMinScale) * 4;
 	myRenderCommand->SetColor(Tga2D::CColor{ 
 	CommonUtilities::Lerp(1.0f, hoverColor.myR, lerpT),
 	CommonUtilities::Lerp(1.0f, hoverColor.myG, lerpT),

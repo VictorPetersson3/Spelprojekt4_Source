@@ -141,6 +141,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="LinkString.h" />
     <ClInclude Include="Sprite_Renderer.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelData.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="UIButton.h" />
     <ClInclude Include="UIElement.h" />
     <ClInclude Include="UIImage.h" />
+    <ClInclude Include="UISlider.h" />
     <ClInclude Include="XController.h" />
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +175,7 @@
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="LinkString.cpp" />
     <ClCompile Include="Sprite_Renderer.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelData.cpp" />
@@ -197,6 +200,7 @@
     <ClCompile Include="UIButton.cpp" />
     <ClCompile Include="UIElement.cpp" />
     <ClCompile Include="UIImage.cpp" />
+    <ClCompile Include="UISlider.cpp" />
     <ClCompile Include="XController.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

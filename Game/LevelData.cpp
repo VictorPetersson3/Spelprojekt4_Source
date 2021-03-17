@@ -1,9 +1,14 @@
 #include "stdafx.h"
 #include "LevelData.h"
+#include "Saw.h"
+#include "TerrainTile.h"
+#include "tga2d/sprite/sprite_batch.h"
+#include "Collider.h"
+
 
 LevelData::LevelData()
 {
-
+	mySpriteBatches.Init(10);
 }
 
 LevelData::~LevelData()
@@ -31,6 +36,10 @@ std::vector<std::shared_ptr<Saw>> LevelData::GetSaws()
 	return mySaws;
 }
 
+CommonUtilities::GrowingArray<std::shared_ptr<Tga2D::CSpriteBatch>>& LevelData::GetSpriteBatches()
+{
+	return mySpriteBatches;
+}
 
 void LevelData::AddPlayerStart(const Tga2D::Vector2f& aPosition)
 {
@@ -50,6 +59,11 @@ void LevelData::AddLevelEnd(std::shared_ptr<Collider> aEndCollider)
 std::shared_ptr<Collider> LevelData::GetLevelEnd()
 {
 	return myLevelEndCollider;
+}
+
+void LevelData::AddSpriteBatch(std::shared_ptr<Tga2D::CSpriteBatch> aSpriteBatch)
+{
+	mySpriteBatches.Add(aSpriteBatch);
 }
 
 

@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "XController.h"
 #include "CollisionManager.h"
+#include <iostream>
 
 CGameWorld::CGameWorld()
 {

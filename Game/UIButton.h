@@ -19,7 +19,10 @@ private:
     bool myIsHovered;
     int myOnPressIndexIndex;
     float myHoverCurrentScale;
+    float myHoverMinScale;
     float myHoverEndScale;
+
+
     callback_function myOnPressFunction;
     callback_function_index myOnPressIndexFunction;
     void ChangeSize();

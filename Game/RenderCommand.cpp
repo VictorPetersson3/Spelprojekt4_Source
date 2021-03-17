@@ -18,6 +18,7 @@ RenderCommand::RenderCommand(const char* aImagePath, int aLayer)
 	mySprite = std::make_shared<Tga2D::CSprite>(aImagePath);
 	mySprite->SetPivot({ 0.5f, 0.5f });
 	myLayer = aLayer;
+	mySprite->SetSizeRelativeToImage({ 0.5f, 0.5f });
 }
 
 RenderCommand::RenderCommand(const char* aImagePath, int aLayer, const CommonUtilities::Vector2f& aPos)
@@ -25,6 +26,7 @@ RenderCommand::RenderCommand(const char* aImagePath, int aLayer, const CommonUti
 	mySprite = std::make_shared<Tga2D::CSprite>(aImagePath);
 	mySprite->SetPivot({ 0.5f, 0.5f });
 	mySprite->SetPosition({ aPos.x, aPos.y });
+	mySprite->SetSizeRelativeToImage({ 0.5f, 0.5f });
 	myLayer = aLayer;
 }
 //Sets position of sprite and if animated will animate

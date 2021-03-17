@@ -9,11 +9,16 @@
 #include "InputManager.h"
 #include "RenderCommand.h"
 #include "Collider.h"
+#include "tga2d/sprite/sprite_batch.h"
+
+#include "LevelData.h"
+#include "Saw.h"
+#include "TerrainTile.h"
 
 Level::Level()
 {
 	myPlayer = std::make_unique<Player>();
-
+	mySpriteBatches.Init(10);
 }
 
 Level::~Level()
@@ -23,6 +28,10 @@ Level::~Level()
 
 void Level::Render()
 {
+	for (int i = 0; i < mySpriteBatches.Size(); i++)
+	{
+		mySpriteBatches[i]->Render();
+	}
 	mySpriteRenderer->Render();
 }
 
@@ -40,7 +49,6 @@ void Level::Update()
 	{
 		saw.get()->Update(deltaTime);
 		myCamera->BatchRenderSprite(*saw.get()->GetRenderCommand());
-		//Push in render command to camera 
 	}
 
 	if (InputManager::GetInstance().IsKeyPressed(VK_F5))
@@ -52,12 +60,12 @@ void Level::Update()
 	{
 		Load(1);
 	}
-
-	for (auto t : myTerrain)
-	{
-		t.get()->myCollider.get()->Draw();
-	}
-
+	//Collider drawing needs reworking
+	//for (auto t : myTerrain)
+	//{
+	//	t.get()->myCollider.get()->Draw();
+	//}
+	
 	if (myPlayer.get() != nullptr)
 	{
 		myPlayer.get()->Update();
@@ -86,6 +94,12 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 	myTerrain.clear();
 
 	myTerrain = aData.get()->GetTiles();
+
+	for (int i = 0; i < aData->GetSpriteBatches().Size(); i++)
+	{
+		mySpriteBatches.Add(aData->GetSpriteBatches()[i]);
+
+	}
 
 	//mySaws = aData.get()->GetSaws();
 
@@ -127,11 +141,7 @@ void Level::Init(const EStateType& aState)
 	mySpriteRenderer = std::make_shared<Sprite_Renderer>();
 	myCamera->Init({0.0f, 0.0f}, mySpriteRenderer.get());
 
-	//Load Level Routine
-	//LevelLoader levelLoader;
 
 	currentLevelIndex = 0;
-
-	//Load(levelLoader.LoadLevel(0));
 
 }

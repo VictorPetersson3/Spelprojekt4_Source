@@ -61,17 +61,25 @@ void Camera::RenderSprite(const Tga2D::CSprite aSprite)
 	}
 }
 
-void Camera::BatchRenderSprite(const RenderCommand& aRenderCommand)
+void Camera::BatchRenderSprite(RenderCommand& aRenderCommand)
 {
 	CommonUtilities::Vector2f spritePos;	
 	spritePos.x = aRenderCommand.GetPosition().x - myPosition.x;
 	spritePos.y = aRenderCommand.GetPosition().y - myPosition.y;
 	if (spritePos.x < 1.0f && spritePos.x > 0.0f && spritePos.y < 1.0f && spritePos.y > 0.0f)
 	{
-		RenderCommand commandToBatch = aRenderCommand;
-		Tga2D::CSprite aSpriteCopy = *aRenderCommand.mySprite.get();
-		aSpriteCopy.SetPosition({ spritePos.x, spritePos.y });
-		commandToBatch.ReplaceSpritePointerContent(aSpriteCopy);
-		mySpriteRenderRef->AddRenderCommandToRenderer(commandToBatch);
+		aRenderCommand.SetSpritePosition(spritePos);
+	}
+}
+
+void Camera::RenderSprite(RenderCommand& aRenderCommand)
+{
+	CommonUtilities::Vector2f spritePos;
+	spritePos.x = aRenderCommand.GetPosition().x - myPosition.x;
+	spritePos.y = aRenderCommand.GetPosition().y - myPosition.y;
+	if (spritePos.x < 1.0f && spritePos.x > 0.0f && spritePos.y < 1.0f && spritePos.y > 0.0f)
+	{
+		aRenderCommand.SetSpritePosition(spritePos);
+		aRenderCommand.Render();
 	}
 }

@@ -99,6 +99,7 @@ namespace CommonUtilities
 
 		myElementCount = aGrowingArray.myElementCount;
 		myIsInitialized = aGrowingArray.myIsInitialized;
+		return (*this);
 	}
 
 	template <typename T, typename CountType>

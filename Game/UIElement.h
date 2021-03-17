@@ -14,6 +14,7 @@ public:
 	void Activate();
 	void Deactivate();
 	RenderCommand& GetRenderCommand();
+	void SetPosition(const CommonUtilities::Vector2f& aPos);
 protected:
 	CommonUtilities::Vector2f myPosition;
 	std::unique_ptr<RenderCommand> myRenderCommand;

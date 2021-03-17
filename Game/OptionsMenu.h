@@ -1,7 +1,10 @@
 #pragma once
 #include "MenuObject.h"
+#include "UISlider.h"
 
 class UIImage;
+
+
 class OptionsMenu :
     public MenuObject
 {
@@ -13,7 +16,12 @@ public:
     void Render() final;
 private:
     void BackButtonPress();
+    void EmptyFunction();
+    void SliderFunction(float aValue);
     std::unique_ptr<UIImage> myBackground;
+    std::unique_ptr<UIImage> mySliderBackground;
+    std::unique_ptr<UISlider> mySliderMusic;
+    std::unique_ptr<UISlider> mySliderEffects;
     int myCurrentHoveredButton = 0;
 
 };

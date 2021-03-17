@@ -114,6 +114,10 @@
       <Filter>Rendering</Filter>
     </ClInclude>
     <ClInclude Include="XController.h" />
+    <ClInclude Include="LinkString.h" />
+    <ClInclude Include="UISlider.h">
+      <Filter>UI Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -183,5 +187,9 @@
       <Filter>Rendering</Filter>
     </ClCompile>
     <ClCompile Include="XController.cpp" />
+    <ClCompile Include="LinkString.cpp" />
+    <ClCompile Include="UISlider.cpp">
+      <Filter>UI Components</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -33,3 +33,8 @@ RenderCommand& UIElement::GetRenderCommand()
 {
 	return *myRenderCommand;
 }
+
+void UIElement::SetPosition(const CommonUtilities::Vector2f& aPos)
+{
+	myPosition = aPos;
+}

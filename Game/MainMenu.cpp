@@ -4,12 +4,12 @@
 #include "InputManager.h"
 #include "StateManager.h"
 #include <tga2d/shaders/customshader.h>
+#include "LinkString.h"
 
 void MainMenu::TestMe(int aVal)
 {
 	printf("Hello World %i\n", aVal);
 	StateManager::GetInstance().AddLevelOnStack(aVal);
-
 }
 
 
@@ -32,19 +32,17 @@ void MainMenu::Init(const EStateType& aState)
 
 	LinkString tempImagePaths[4] = { 
 	"sprites/UI/MainMenu/B_Find.dds",
-	"sprites/UI/MainMenu/B_Settings.dds",
 	"sprites/UI/MainMenu/B_Credits.dds",
+	"sprites/UI/MainMenu/B_Settings.dds",
 	"sprites/UI/MainMenu/B_Quit.dds" };
 	for (int i = 0; i < 4; i++)
 	{
 		AddButton(std::make_shared<UIButton>());
 	}
-	for (int i = 0; i < 2; i++)
-	{
-		GetButtonElement(i)->Init({ 00.5f, 0.2f + 0.2f * i }, tempImagePaths[i].GetString(), 0, [this](int index) {TestMe(index);}, i);
-	}
-	GetButtonElement(2)->Init({ 00.5f, 0.2f + 0.2f * 2 }, tempImagePaths[2].GetString(), 0, [this]() { OptionsButtonPress(); });
-	GetButtonElement(3)->Init({ 00.5f, 0.2f + 0.2f * 3 }, tempImagePaths[3].GetString(), 0, [this]() { ExitButtonPress();});
+	GetButtonElement(0)->Init({ 0.7f, 0.5f + 0.13f }, tempImagePaths[0].GetString(), 0, [this](int index) {TestMe(index); }, 0);
+	GetButtonElement(1)->Init({ 0.74f, 0.65f + 0.07f * 1 }, tempImagePaths[1].GetString(), 0, [this](int index) {TestMe(index); }, 1);
+	GetButtonElement(2)->Init({ 0.74f, 0.65f + 0.07f * 2 }, tempImagePaths[2].GetString(), 0, [this]() { OptionsButtonPress(); });
+	GetButtonElement(3)->Init({ 0.74f, 0.65f + 0.07f * 3 }, tempImagePaths[3].GetString(), 0, [this]() { ExitButtonPress();});
 	myPanningShader = std::make_shared<Tga2D::CCustomShader>();
 	myPanningBackground = std::make_unique<UIImage>();
 	myPanningBackground->Init({ 0.5f, 0.5f }, "sprites/UI/MainMenu/huvudmeny_bg_tile.dds", -1);
@@ -57,12 +55,20 @@ void MainMenu::Init(const EStateType& aState)
 
 	myBackground = std::make_unique<UIImage>();
 	myBackground.get()->Init({0.5f, 0.5f}, "sprites/UI/MainMenu/huvudmeny_fg_prince.dds", -1 );
+	myBackground.get()->GetRenderCommand().SetPivot({ 0.0f, 1.0f });
+	myBackground.get()->GetRenderCommand().SetSizeRelativeToImage({ 0.6f, 0.6f });
+	myBackground.get()->SetPosition({ 0.0f, 1.0f });
+	//myBackground.get()->GetRenderCommand().SetSizeRelativeToImage({0.75f, 0.75f});
 }
 
 void MainMenu::Update()
 {
 	myBackground->Update();
 
+	if (InputManager::GetInstance().IsKeyPressed(VK_ESCAPE))
+	{
+		ExitButtonPress();
+	}
 	if (InputManager::GetInstance().IsKeyPressed('W') && myCurrentHoveredButton > 0)
 	{
 		myCurrentHoveredButton--;
