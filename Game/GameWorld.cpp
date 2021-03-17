@@ -6,32 +6,29 @@
 #include "CommonUtilities/Random.h"
 #include "Camera.h"
 #include "StateManager.h"
-
+#include <CommonUtilities/Vector2.hpp>
 #include "LevelLoader.h"
 #include "Player.h"
-
+#include "XController.h"
 #include "CollisionManager.h"
 
 CGameWorld::CGameWorld()
 {
-	myTga2dLogoSprite = nullptr;
 }
 
 CGameWorld::~CGameWorld() 
 {
-	delete myTga2dLogoSprite;
-	myTga2dLogoSprite = nullptr;
 }
 
 void CGameWorld::Init()  
 {
 	CollisionManager::Init();
 	StateManager::Init();
-	myTga2dLogoSprite = new Tga2D::CSprite("sprites/tga_logo.dds");
-	myTga2dLogoSprite->SetPivot({ 0.5f, 0.5f });
-	myTga2dLogoSprite->SetPosition({ 0.5f, 0.5f });
+
 	myCamera = std::make_unique<Camera>();
-	
+
+	myController = std::make_shared<XController>(1);
+
 	//myCollider = new Collider({ 0.5f, 0.9f }, 1.0f, 0.2f);
 
 	myPlayer = std::make_unique<Player>();
@@ -49,6 +46,71 @@ void CGameWorld::Update(float /*aTimeDelta*/)
 	myPlayer->Update();
 	CollisionManager::GetInstance().Update();
 	
+
+	// Exempel på hur man använder controller input, passa igenom den där ni behöver den som en "shared_ptr"
+	if (myController->IsConnected())
+	{
+		if (myController->IsButton_A_Pressed())
+		{
+			std::cout << "A is pressed " << sm << std::endl;
+			sm++;
+		}
+		if (myController->IsButton_X_Pressed())
+		{
+			std::cout << "X is pressed " << sm << std::endl;
+			sm++;
+		}
+		if (myController->IsButton_Y_Pressed())
+		{
+			std::cout << "Y is pressed " << sm << std::endl;
+			sm++;
+		}
+		if (myController->IsButton_B_Pressed())
+		{
+			std::cout << "B is pressed " << sm << std::endl;
+			sm++;
+		}
+
+		if (myController->GetLeftTumbStick() != CommonUtilities::Vector2f::Zero())
+		{
+			std::cout << "Moveing left thumbstick: " << myController->GetLeftTumbStick().x << " " <<myController->GetLeftTumbStick().y << std::endl;
+		
+		}
+		if (myController->GetRightTumbStick() != CommonUtilities::Vector2f::Zero())
+		{
+			std::cout << "Moveing right thumbstick: " << myController->GetRightTumbStick().x << " " << myController->GetRightTumbStick().y << std::endl;
+			
+		}
+		if (myController->GetDPadInput() != CommonUtilities::Vector2f::Zero())
+		{
+			std::cout << "DPad Input: " << myController->GetDPadInput().x << " " << myController->GetDPadInput().y << std::endl;
+			
+		}
+		if (myController->IsButton_LS_Pressed())
+		{
+			std::cout << "LS Is Pressed " << sm << std::endl;
+			sm++;
+		}
+		if (myController->IsButton_RS_Pressed())
+		{
+			std::cout << "RS Is Pressed " << sm << std::endl;
+			sm++;
+		}
+		if (myController->IsButton_RT_Pressed())
+		{
+			std::cout << "RT Is Pressed " << sm << std::endl;
+			sm++;
+		}
+
+		if (myController->IsButton_LT_Pressed())
+		{
+			std::cout << "LT Is Pressed " << sm << std::endl;
+			sm++;
+		}
+
+	}
+
+
 	/*if (InputManager::GetInstance().IsKeyPressed('S'))
 	{
 		printf("Was Pressed\n");
@@ -67,7 +129,7 @@ void CGameWorld::Update(float /*aTimeDelta*/)
 
 void CGameWorld::Render()
 {
-	//myTga2dLogoSprite->Render();
+	
 	myPlayer->Render(myCamera);
-	/*myTga2dLogoSprite->Render();*/
+	
 }
