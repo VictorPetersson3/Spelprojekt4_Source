@@ -54,7 +54,11 @@ void CGameWorld::Update(float /*aTimeDelta*/)
 	if (myController->IsConnected())
 	{
 
-		
+		if (!t)
+		{
+			myController->Vibrate(1, 1);
+			t = true;
+		}
 		if (myController->IsButton_A_Pressed())
 		{
 			std::cout << "A is pressed " << sm << std::endl;
