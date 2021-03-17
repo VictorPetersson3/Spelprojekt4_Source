@@ -13,7 +13,6 @@ namespace Tga2D
 	class CAudio;
 }
 class testObjectsWithPositions;
-class Collider;
 class Camera;
 class CGameWorld
 {
@@ -30,7 +29,5 @@ private:
 	bool t = false;
 	int sm = 0;
 	std::shared_ptr<Camera> myCamera;
-	Tga2D::CSprite* myTga2dLogoSprite;
-
-	Collider* myCollider;
+	
 };

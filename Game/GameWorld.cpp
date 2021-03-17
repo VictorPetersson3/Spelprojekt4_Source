@@ -14,22 +14,17 @@
 
 CGameWorld::CGameWorld()
 {
-	myTga2dLogoSprite = nullptr;
 }
 
 CGameWorld::~CGameWorld() 
 {
-	delete myTga2dLogoSprite;
-	myTga2dLogoSprite = nullptr;
 }
 
 void CGameWorld::Init()  
 {
 	CollisionManager::Init();
 	StateManager::Init();
-	myTga2dLogoSprite = new Tga2D::CSprite("sprites/tga_logo.dds");
-	myTga2dLogoSprite->SetPivot({ 0.5f, 0.5f });
-	myTga2dLogoSprite->SetPosition({ 0.5f, 0.5f });
+
 	myCamera = std::make_unique<Camera>();
 
 	myController = std::make_shared<XController>(1);
@@ -134,7 +129,7 @@ void CGameWorld::Update(float /*aTimeDelta*/)
 
 void CGameWorld::Render()
 {
-	//myTga2dLogoSprite->Render();
+	
 	myPlayer->Render(myCamera);
-	/*myTga2dLogoSprite->Render();*/
+	
 }
