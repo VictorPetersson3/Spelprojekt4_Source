@@ -18,6 +18,7 @@ private:
 	CommonUtilities::Vector2f PointOfIntersection(Collider* aCollider, Collider* anOtherCollider);
 	CommonUtilities::Vector2f CollisonNormal(Collider* aCollider, Collider* anOtherCollider);
 	void AddCollider(Collider* aCollider);
+	void RemoveCollider(Collider* aCollider);
 	bool AABBAABB(Collider* aCollider, Collider* anOtherCollider);
 	bool CircleCircle(Collider* aCollider, Collider* anOtherCollider);
 	bool CircleAABB(Collider* aCollider, Collider* anOtherCollider);

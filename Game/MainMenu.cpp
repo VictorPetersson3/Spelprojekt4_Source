@@ -8,7 +8,8 @@
 void MainMenu::TestMe(int aVal)
 {
 	printf("Hello World %i\n", aVal);
-	StateManager::GetInstance().AddLevelOnStack();
+	StateManager::GetInstance().AddLevelOnStack(aVal);
+
 }
 
 

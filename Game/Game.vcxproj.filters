@@ -113,6 +113,7 @@
     <ClInclude Include="AnimationClip.h">
       <Filter>Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="XController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -181,5 +182,6 @@
     <ClCompile Include="AnimationClip.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="XController.cpp" />
   </ItemGroup>
 </Project>
