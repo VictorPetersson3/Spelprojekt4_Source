@@ -134,7 +134,9 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="AnimationClip.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="AudioManager.h" />
@@ -169,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="AnimationClip.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="AudioManager.cpp" />

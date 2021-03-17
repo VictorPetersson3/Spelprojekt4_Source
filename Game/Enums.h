@@ -6,3 +6,12 @@ enum class EStateType
 	eOptionsMenu,
 	eGame
 };
+enum class EPlayerAnimationClips
+{
+	eNull,
+	eIdleL,
+	eIdleR,
+	eSprintR,
+	eSprint
+};
+
