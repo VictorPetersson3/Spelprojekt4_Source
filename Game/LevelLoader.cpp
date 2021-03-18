@@ -99,6 +99,7 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 
 					std::cout << xPosition << "\n";
 
+					std::cout << Tga2D::CEngine::GetInstance()->GetRenderSize().x << " " << Tga2D::CEngine::GetInstance()->GetRenderSize().y << std::endl;
 
 					levelToPushBack.get()->AddPlayerStart({ xPosition,yPosition });
 
