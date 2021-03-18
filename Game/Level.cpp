@@ -29,7 +29,7 @@ Level::Level()
 
 	myPauseMenu = std::make_shared<PauseMenu>();
 	myPauseMenu->Init(EStateType::ePauseMenu);
-	myEndOfLevelScreen = std::make_shared<EndOfLevelScreen>();
+	myEndOfLevelScreen = std::make_shared<EndOfLevelScreen>(this);
 	myEndOfLevelScreen->Init(EStateType::eEndOfLevelScreen);
 }
 

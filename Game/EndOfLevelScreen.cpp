@@ -8,6 +8,13 @@
 #include "StateManager.h"
 #include "AudioManager.h"
 
+#include "Level.h"
+
+
+EndOfLevelScreen::EndOfLevelScreen(Level* aLevelPointer)
+{
+	myLevelPointer = aLevelPointer;
+}
 
 void EndOfLevelScreen::Init(const EStateType& aState)
 {
