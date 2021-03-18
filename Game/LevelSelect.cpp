@@ -53,7 +53,7 @@ void LevelSelect::Update()
 
 	if (myCharacterMoveTimer < 1.0f)
 	{
-		myCharacterMoveTimer += Timer::GetInstance().GetDeltaTime() * 0.5;
+		myCharacterMoveTimer += Timer::GetInstance().GetDeltaTime() * 2.5f;
 	}
 
 	if (InputManager::GetInstance().IsKeyPressed(VK_ESCAPE))
@@ -70,12 +70,14 @@ void LevelSelect::Update()
 	}
 	if (InputManager::GetInstance().IsKeyPressed('A') && myCurrentHoveredButtonVertical != 1 && myCurrentHoveredButtonHorizontal > 0)
 	{
+		myCharactersPreviousIndex = myCharactersCurrentIndex;
 		myCurrentHoveredButtonHorizontal--;
 		myCharactersCurrentIndex = myCurrentHoveredButtonHorizontal;
 		myCharacterMoveTimer = 0;
 	}
 	else if (InputManager::GetInstance().IsKeyPressed('D') && myCurrentHoveredButtonVertical != 1 && myCurrentHoveredButtonHorizontal < 1)
 	{
+		myCharactersPreviousIndex = myCharactersCurrentIndex;
 		myCurrentHoveredButtonHorizontal++;
 		myCharactersCurrentIndex = myCurrentHoveredButtonHorizontal;
 		myCharacterMoveTimer = 0;
@@ -107,10 +109,9 @@ void LevelSelect::Update()
 			GetButtonElement(i)->Update();
 		}
 	}
-	myCharactersPreviousIndex = myCharactersCurrentIndex;
 	myPlayerAvatar->Update({
-		CommonUtilities::Lerp(GetButtonElement(myCharactersCurrentIndex)->GetPosition().x, GetButtonElement(myCharactersPreviousIndex)->GetPosition().x, myCharacterMoveTimer),
-		CommonUtilities::Lerp(GetButtonElement(myCharactersCurrentIndex)->GetPosition().y, GetButtonElement(myCharactersPreviousIndex)->GetPosition().y, myCharacterMoveTimer)
+		CommonUtilities::Lerp(GetButtonElement(myCharactersPreviousIndex)->GetPosition().x, GetButtonElement(myCharactersCurrentIndex)->GetPosition().x, myCharacterMoveTimer),
+		CommonUtilities::Lerp(GetButtonElement(myCharactersPreviousIndex)->GetPosition().y, GetButtonElement(myCharactersCurrentIndex)->GetPosition().y, myCharacterMoveTimer)
 		});
 }
 

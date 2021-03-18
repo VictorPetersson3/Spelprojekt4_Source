@@ -16,6 +16,7 @@ void UIElement::Init(const CommonUtilities::Vector2f& aPos, const char* aImagePa
 {
 	myPosition = aPos;
 	myRenderCommand = std::make_unique<RenderCommand>(aImagePath, aLayer, aPos);
+	Activate();
 }
 
 void UIElement::Render()

@@ -15,12 +15,22 @@
 #include "Saw.h"
 #include "TerrainTile.h"
 
-#include "AudioManager.h":
+#include "UIImage.h"
+
+#include "AudioManager.h"
+#include "StateManager.h"
+#include "PauseMenu.h"
+#include "EndOfLevelScreen.h"
 
 Level::Level()
 {
 	myPlayer = std::make_unique<Player>();
 	mySpriteBatches.Init(10);
+
+	myPauseMenu = std::make_shared<PauseMenu>();
+	myPauseMenu->Init(EStateType::ePauseMenu);
+	myEndOfLevelScreen = std::make_shared<EndOfLevelScreen>(this);
+	myEndOfLevelScreen->Init(EStateType::eEndOfLevelScreen);
 }
 
 Level::~Level()
@@ -43,6 +53,11 @@ void Level::Render()
 
 void Level::Update()
 {
+	//Pause Menu
+	if (InputManager::GetInstance().IsKeyPressed(VK_ESCAPE))
+	{
+		StateManager::AddStateOnStack(myPauseMenu);
+	}
 	//Player
 	myCamera->Update({ 0,0 });
 	for (auto t : myTerrain)
@@ -87,8 +102,8 @@ void Level::Update()
 	{
 		if (CollisionManager::GetInstance().CheckCollision(myPlayer->GetCollider().get(), myLevelEndCollider.get()))
 		{
+			StateManager::AddStateOnStack(myEndOfLevelScreen);
 			std::cout << "Level ended" << std::endl;
-			Load(currentLevelIndex++);
 		}
 	}	
 }
@@ -159,14 +174,20 @@ void Level::Load(int aIndex)
 
 void Level::Restart()
 {
-	
-	
-	
-	
-
 	LevelLoader levelLoader;
 	Load(levelLoader.LoadLevel(currentLevelIndex));
+}
 
+void Level::LoadNextLevel()
+{
+	if (currentLevelIndex == amountOfLevels)
+	{
+		StateManager::GetInstance().RemoveDownToState(EStateType::eMainMenu);
+	}
+	else
+	{
+		Load(currentLevelIndex++);
+	}
 }
 
 void Level::Init(const EStateType& aState)
