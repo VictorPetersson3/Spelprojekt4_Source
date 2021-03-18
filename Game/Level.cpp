@@ -9,6 +9,7 @@
 #include "RenderCommand.h"
 #include "Collider.h"
 #include "tga2d/sprite/sprite_batch.h"
+#include "CollisionManager.h"
 
 #include "LevelData.h"
 #include "Saw.h"
@@ -65,17 +66,11 @@ void Level::Update()
 	{
 		Load(1);
 	}
-	//Collider drawing needs reworking
-	//for (auto t : myTerrain)
-	//{
-	//	t.get()->myCollider.get()->Draw();
-	//}
 	
 	if (myPlayer.get() != nullptr)
 	{
 		myPlayer.get()->Update(*(myCamera.get()));
 		myPlayer.get()->GetCollider().get()->Draw();
-		//myCamera.get()->RenderSprite(*myPlayer.get()->GetSprite().get());
 	}
 	
 	if (myLevelEndCollider != nullptr)
@@ -83,6 +78,11 @@ void Level::Update()
 		myLevelEndCollider.get()->Draw();
 	}
 	
+	if (CollisionManager::GetInstance().CheckCollision(myPlayer->GetCollider().get(), myLevelEndCollider.get()))
+	{
+		std::cout << "Level ended" << std::endl;
+	}
+
 }
 
 void Level::Load(std::shared_ptr<LevelData> aData)
@@ -101,7 +101,6 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 	{
 		myLevelEndCollider.get()->RemoveFromManager();
 	}
-//	myLevelEndCollider = nullptr;
 
 	myLevelEndCollider = aData.get()->GetLevelEnd();
 
@@ -145,7 +144,6 @@ void Level::Load(int aIndex)
 
 void Level::Restart()
 {
-	//myPlayer.reset();
 	for (int i = 0; i < mySpriteBatches.Size(); i++)
 	{
 		mySpriteBatches[i]->ClearAll();
@@ -154,7 +152,6 @@ void Level::Restart()
 	LevelLoader levelLoader;
 	Load(levelLoader.LoadLevel(currentLevelIndex));
 
-	//Load(myCurrentLevelData);
 }
 
 void Level::Init(const EStateType& aState)
