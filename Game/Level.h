@@ -24,7 +24,7 @@ public:
 	Level();
 	~Level();
 
-
+	void OnPushed() override;
 	virtual void Render() override;
 	virtual void Update() override;
 	void Load(std::shared_ptr<LevelData> aData);

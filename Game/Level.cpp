@@ -14,6 +14,8 @@
 #include "Saw.h"
 #include "TerrainTile.h"
 
+#include "AudioManager.h":
+
 Level::Level()
 {
 	myPlayer = std::make_unique<Player>();
@@ -23,6 +25,11 @@ Level::Level()
 Level::~Level()
 {
 
+}
+
+void Level::OnPushed()
+{
+	AudioManager::GetInstance().StopAllMusic();
 }
 
 void Level::Render()

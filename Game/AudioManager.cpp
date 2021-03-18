@@ -5,75 +5,142 @@ AudioManager AudioManager::myInstance;
 
 AudioManager::AudioManager()
 {
-	myAudioEngine = irrklang::createIrrKlangDevice();
+	myMusicEngine = irrklang::createIrrKlangDevice();
+	myEffectEngine = irrklang::createIrrKlangDevice();
 }
 
 AudioManager::~AudioManager()
 {
-	myAudioEngine->drop();
+	myMusicEngine->drop();
+	myEffectEngine->drop();
 }
 
-void AudioManager::Play2D(const char* aPath)
+void AudioManager::PlayMusic(const char* aPath)
 {
-	myAudioEngine->play2D(aPath);
+	myMusicEngine->play2D(aPath);
 }
 
-void AudioManager::Play2D(const char* aPath, bool aLooping)
+void AudioManager::PlayMusic(const char* aPath, bool aLooping)
 {
-	myAudioEngine->play2D(aPath, aLooping);
+	myMusicEngine->play2D(aPath, aLooping);
 }
 
-void AudioManager::Play2D(const char* aPath, bool aLooping, float volume)
+void AudioManager::PlayMusic(const char* aPath, bool aLooping, float volume)
 {
-	irrklang::ISoundSource* sound = myAudioEngine->addSoundSourceFromFile(aPath);
+	irrklang::ISoundSource* sound = myMusicEngine->addSoundSourceFromFile(aPath);
 
 	if (sound != nullptr)
 	{
 		sound->setDefaultVolume(volume);
 
-		myAudioEngine->play2D(sound, aLooping, false, false);
+		myMusicEngine->play2D(sound, aLooping, false, false);
 
 	}
 	else
 	{
-		myAudioEngine->play2D(myAudioEngine->getSoundSource(aPath), aLooping, false, false);
+		myMusicEngine->play2D(myMusicEngine->getSoundSource(aPath), aLooping, false, false);
 	}
 }
 
-void AudioManager::StopAllSounds()
+void AudioManager::PlayEffect(const char* aPath)
 {
-	myAudioEngine->stopAllSounds();
+	myEffectEngine->play2D(aPath);
 }
 
-void AudioManager::StopSound(const char* aPath)
+void AudioManager::PlayEffect(const char* aPath, bool aLooping)
 {
-	if (myAudioEngine->getSoundSource(aPath) != nullptr)
+	myEffectEngine->play2D(aPath, aLooping);
+}
+
+void AudioManager::PlayEffect(const char* aPath, bool aLooping, float volume)
+{
+	irrklang::ISoundSource* sound = myEffectEngine->addSoundSourceFromFile(aPath);
+
+	if (sound != nullptr)
 	{
-		myAudioEngine->stopAllSoundsOfSoundSource(myAudioEngine->getSoundSource(aPath));
-	}
-}
+		sound->setDefaultVolume(volume);
 
-void AudioManager::RemoveFileFromEngine(const char* aPath)
-{
-	if (myAudioEngine->getSoundSource(aPath) != nullptr)
+		myEffectEngine->play2D(sound, aLooping, false, false);
+
+	}
+	else
 	{
-		myAudioEngine->removeSoundSource(myAudioEngine->getSoundSource(aPath));
+		myEffectEngine->play2D(myMusicEngine->getSoundSource(aPath), aLooping, false, false);
 	}
 }
 
-void AudioManager::RemoveAllAudioFromEngine()
+void AudioManager::StopAllMusic()
 {
-	myAudioEngine->removeAllSoundSources();
+	myMusicEngine->stopAllSounds();
 }
 
-void AudioManager::SetVolumeMultiplier(float aNewMultiplier)
+void AudioManager::StopAllEffects()
 {
-	volumeMultiplier = aNewMultiplier;
-
-	myAudioEngine->setSoundVolume(volumeMultiplier);
+	myEffectEngine->stopAllSounds();
 }
 
-bool AudioManager::IsCurrentlyPlaying(const char* aPath)
+void AudioManager::StopMusicSound(const char* aPath)
 {
-	return myAudioEngine->isCurrentlyPlaying(aPath);
+	if (myMusicEngine->getSoundSource(aPath) != nullptr)
+	{
+		myMusicEngine->stopAllSoundsOfSoundSource(myMusicEngine->getSoundSource(aPath));
+	}
+}
+
+void AudioManager::StopEffectSound(const char* aPath)
+{
+	if (myEffectEngine->getSoundSource(aPath) != nullptr)
+	{
+		myEffectEngine->stopAllSoundsOfSoundSource(myEffectEngine->getSoundSource(aPath));
+	}
+}
+
+void AudioManager::RemoveFileFromMusicEngine(const char* aPath)
+{
+	if (myMusicEngine->getSoundSource(aPath) != nullptr)
+	{
+		myMusicEngine->removeSoundSource(myMusicEngine->getSoundSource(aPath));
+	}
+}
+
+void AudioManager::RemoveAllAudioFromMusicEngine()
+{
+	myMusicEngine->removeAllSoundSources();
+}
+
+void AudioManager::RemoveFileFromEffectEngine(const char* aPath)
+{
+	if (myEffectEngine->getSoundSource(aPath) != nullptr)
+	{
+		myEffectEngine->removeSoundSource(myEffectEngine->getSoundSource(aPath));
+	}
+}
+
+void AudioManager::RemoveAllAudioFromEffectEngine()
+{
+	myEffectEngine->removeAllSoundSources();
+}
+
+void AudioManager::SetMusicVolumeMultiplier(float aNewMultiplier)
+{
+	myMusicMultiplier = aNewMultiplier;
+
+	myMusicEngine->setSoundVolume(myMusicMultiplier);
+}
+
+void AudioManager::SetEffectVolumeMultiplier(float aNewMultiplier)
+{
+	myEffectsMultiplier = aNewMultiplier;
+
+	myEffectEngine->setSoundVolume(myEffectsMultiplier);
+}
+
+const bool AudioManager::IsMusicCurrentlyPlaying(const char* aPath) const
+{
+	return myMusicEngine->isCurrentlyPlaying(aPath);
+}
+
+const bool AudioManager::IsEffectCurrentlyPlaying(const char* aPath) const
+{
+	return myEffectEngine->isCurrentlyPlaying(aPath);
 }

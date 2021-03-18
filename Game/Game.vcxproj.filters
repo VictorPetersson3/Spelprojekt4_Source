@@ -37,6 +37,9 @@
     <Filter Include="Utility">
       <UniqueIdentifier>{1c59107f-a9e1-447d-8976-2b6484727e41}</UniqueIdentifier>
     </Filter>
+    <Filter Include="StateTypes\MenuStates\SubMenuStates">
+      <UniqueIdentifier>{2301b333-1205-441b-82fc-039bc06212b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -101,7 +104,6 @@
       <Filter>Singletons</Filter>
     </ClInclude>
     <ClInclude Include="LevelLoader.h" />
-    <ClInclude Include="AudioManager.h" />
     <ClInclude Include="TerrainTile.h" />
     <ClInclude Include="JsonParser.h" />
     <ClInclude Include="Saw.h" />
@@ -111,9 +113,17 @@
       <Filter>Rendering</Filter>
     </ClInclude>
     <ClInclude Include="XController.h" />
-    <ClInclude Include="LinkString.h" />
     <ClInclude Include="UISlider.h">
       <Filter>UI Components</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioManager.h">
+      <Filter>Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="LinkString.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="ControllerLayOutState.h">
+      <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -166,7 +176,6 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
-    <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="JsonParser.cpp" />
     <ClCompile Include="Saw.cpp" />
     <ClCompile Include="GameWorld.cpp">
@@ -181,9 +190,17 @@
       <Filter>Rendering</Filter>
     </ClCompile>
     <ClCompile Include="XController.cpp" />
-    <ClCompile Include="LinkString.cpp" />
     <ClCompile Include="UISlider.cpp">
       <Filter>UI Components</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioManager.cpp">
+      <Filter>Singletons</Filter>
+    </ClCompile>
+    <ClCompile Include="LinkString.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="ControllerLayOutState.cpp">
+      <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

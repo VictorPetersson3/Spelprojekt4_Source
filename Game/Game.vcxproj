@@ -139,6 +139,7 @@
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ControllerLayOutState.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="LinkString.h" />
@@ -173,6 +174,7 @@
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ControllerLayOutState.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="LinkString.cpp" />
     <ClCompile Include="Level.cpp" />

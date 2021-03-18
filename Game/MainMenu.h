@@ -16,6 +16,7 @@ public:
 	void Init(const EStateType& aState) final;
 	void Update() final;
 	void Render() final;
+	void OnPushed() override;
 private:
 	void TestMe(int aVal);
 	void OptionsButtonPress();
