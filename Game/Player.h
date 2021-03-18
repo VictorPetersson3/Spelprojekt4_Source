@@ -101,6 +101,7 @@ protected:
 	const float myWalkSpeed = 2.0f;
 	const float myJumpSpeed = 1.5f;
 	const float myWallJumpSpeed = 0.7f;
+	const float myWallJumpFactorY = 1.0f;
 
 	const float myAirAcceleration = 2.0f;
 	const float myAirDecceleration = 1.0f;

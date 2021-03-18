@@ -528,7 +528,7 @@ void Player::Ledge()
 		if (INPUT.IsKeyDown(myJump) && myCanJumpAgain)
 		{
 			myCurrentVelocity.x = -myWallJumpSpeed;
-			myCurrentVelocity.y = -myJumpSpeed * 0.5f;
+			myCurrentVelocity.y = -myJumpSpeed * myWallJumpFactorY;
 
 			printf("jag borde bara skrivas ut en g�ng per hopp\n");
 			//jump sfx ?
@@ -550,7 +550,7 @@ void Player::Ledge()
 		if (INPUT.IsKeyDown(myJump) && myCanJumpAgain)
 		{
 			myCurrentVelocity.x = myWallJumpSpeed;
-			myCurrentVelocity.y = -myJumpSpeed * 0.5f;
+			myCurrentVelocity.y = -myJumpSpeed * myWallJumpFactorY;
 
 			printf("jag borde bara skrivas ut en g�ng per hopp\n");
 			//jump sfx ?
