@@ -12,7 +12,7 @@
 #include "RenderCommand.h"
 
 #define INPUT InputManager::GetInstance() 
-#define DELTA_TIME Timer::GetInstance().GetDeltaTime() / 5
+#define DELTA_TIME Timer::GetInstance().GetDeltaTime()
 
 Player::Player()
 {
