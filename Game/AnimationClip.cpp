@@ -52,6 +52,7 @@ void AnimationClip::UpdateAnimation(const CommonUtilities::Vector2f& aPos)
 const int AnimationClip::GetAnimationTypeIndex() const { return myAnimationClipIndex; }
 
 const RenderCommand& AnimationClip::GetRenderCommand() const {	return *myRenderCommand; }
+RenderCommand& AnimationClip::GetRenderCommand() {	return *myRenderCommand; }
 
 void AnimationClip::Render()
 {

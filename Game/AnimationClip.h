@@ -14,6 +14,7 @@ public:
 	
 	const int GetAnimationTypeIndex() const;
 	const RenderCommand& GetRenderCommand() const;
+	RenderCommand& GetRenderCommand();
 	
 	//TestMethod
 	void Render();

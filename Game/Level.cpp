@@ -73,7 +73,7 @@ void Level::Update()
 	
 	if (myPlayer.get() != nullptr)
 	{
-		myPlayer.get()->Update();
+		myPlayer.get()->Update(*(myCamera.get()));
 		myPlayer.get()->GetCollider().get()->Draw();
 		//myCamera.get()->RenderSprite(*myPlayer.get()->GetSprite().get());
 	}
