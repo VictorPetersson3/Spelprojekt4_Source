@@ -21,6 +21,7 @@ void StateManager::Init()
 	myInstance->myLevel.Init(EStateType::eGame);
 	//Main Menu is the default beginning state
 	myInstance->myGameStates.Push(&GetInstance().myMainMenu);
+	myInstance->myGameStates.GetTop()->OnPushed();
 	//Init the states you made here, rest will work automagically,
 	//If you want to test a state, Push it on to myGameStates
 
@@ -56,17 +57,20 @@ void StateManager::RemoveDownToState(const EStateType& aStateType)
 	{
 		myInstance->myGameStates.RemoveTop();
 	}
+	myInstance->myGameStates.GetTop()->OnPushed();
 }
 
 void StateManager::AddOptionsOnStack()
 {
 	myInstance->myGameStates.Push(&myInstance->myOptionsMenu);
+	myInstance->myGameStates.GetTop()->OnPushed();
 }
 
 void StateManager::AddLevelOnStack(int aLevelIndex)
 {
 	myInstance->myGameStates.Push(&myInstance->myLevel);
 	myInstance->myLevel.Load(aLevelIndex);
+	myInstance->myGameStates.GetTop()->OnPushed();
 }
 
 void StateManager::Update()

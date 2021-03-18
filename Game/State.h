@@ -12,6 +12,7 @@ public:
 	virtual void Init(const EStateType& aState) = 0;
 	virtual void Update() = 0;
 	virtual void Render() = 0;
+	virtual void OnPushed();
 	//By default RenderThrough is false
 	void SetRenderThrough(const bool aRenderThroughState);
 	const bool GetRenderThrough() const;

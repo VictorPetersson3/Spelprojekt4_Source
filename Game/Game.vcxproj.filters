@@ -101,7 +101,6 @@
       <Filter>Singletons</Filter>
     </ClInclude>
     <ClInclude Include="LevelLoader.h" />
-    <ClInclude Include="AudioManager.h" />
     <ClInclude Include="TerrainTile.h" />
     <ClInclude Include="JsonParser.h" />
     <ClInclude Include="Saw.h" />
@@ -114,6 +113,9 @@
     <ClInclude Include="LinkString.h" />
     <ClInclude Include="UISlider.h">
       <Filter>UI Components</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioManager.h">
+      <Filter>Singletons</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -166,7 +168,6 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
-    <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="JsonParser.cpp" />
     <ClCompile Include="Saw.cpp" />
     <ClCompile Include="GameWorld.cpp">
@@ -184,6 +185,9 @@
     <ClCompile Include="LinkString.cpp" />
     <ClCompile Include="UISlider.cpp">
       <Filter>UI Components</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioManager.cpp">
+      <Filter>Singletons</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

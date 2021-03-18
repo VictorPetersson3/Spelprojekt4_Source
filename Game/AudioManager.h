@@ -11,25 +11,38 @@ public:
 		return myInstance;
 	}
 
-	irrklang::ISoundEngine* myAudioEngine;
 
-	void Play2D(const char* aPath);
-	void Play2D(const char* aPath, bool aLooping);
-	void Play2D(const char* aPath, bool aLooping, float volume);
+	void PlayMusic(const char* aPath);
+	void PlayMusic(const char* aPath, bool aLooping);
+	void PlayMusic(const char* aPath, bool aLooping, float volume);
 
-	void StopAllSounds();
-	void StopSound(const char* aPath);
+	void PlayEffect(const char* aPath);
+	void PlayEffect(const char* aPath, bool aLooping);
+	void PlayEffect(const char* aPath, bool aLooping, float volume);
 
-	void RemoveFileFromEngine(const char* aPath);
-	void RemoveAllAudioFromEngine();
+	void StopAllMusic();
+	void StopAllEffects();
+	void StopMusicSound(const char* aPath);
+	void StopEffectSound(const char* aPath);
 
-	void SetVolumeMultiplier(float aNewMultiplier);
+	void RemoveFileFromMusicEngine(const char* aPath);
+	void RemoveAllAudioFromMusicEngine();
 
-	bool IsCurrentlyPlaying(const char* aPath);
+	void RemoveFileFromEffectEngine(const char* aPath);
+	void RemoveAllAudioFromEffectEngine();
+
+	void SetMusicVolumeMultiplier(float aNewMultiplier);
+	void SetEffectVolumeMultiplier(float aNewMultiplier);
+
+	const bool IsMusicCurrentlyPlaying(const char* aPath) const;
+	const bool IsEffectCurrentlyPlaying(const char* aPath) const;
 
 private:
-	float volumeMultiplier = 1;
+	float myMusicMultiplier = 1;
+	float myEffectsMultiplier = 1;
 
+	irrklang::ISoundEngine* myMusicEngine;
+	irrklang::ISoundEngine* myEffectEngine;
 	AudioManager();
 	~AudioManager();
 

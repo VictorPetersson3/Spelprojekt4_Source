@@ -17,7 +17,8 @@ public:
 private:
     void BackButtonPress();
     void EmptyFunction();
-    void SliderFunction(float aValue);
+    void MusicSliderFunction(float aValue);
+    void EffectSliderFunction(float aValue);
     std::unique_ptr<UIImage> myBackground;
     std::unique_ptr<UIImage> mySliderBackground;
     std::unique_ptr<UISlider> mySliderMusic;
