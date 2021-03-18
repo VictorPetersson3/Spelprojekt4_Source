@@ -32,11 +32,14 @@ public:
 	void Load(std::shared_ptr<LevelData> aData);
 	void Load(int aIndex);
 	void Restart();
-
+	void LoadNextLevel();
 
 	virtual void Init(const EStateType& aState) override;
 
 private:
+
+	
+
 	std::shared_ptr<PauseMenu> myPauseMenu;
 	std::shared_ptr<EndOfLevelScreen> myEndOfLevelScreen;
 	std::unique_ptr<Camera> myCamera;

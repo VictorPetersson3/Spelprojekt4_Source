@@ -102,8 +102,8 @@ void Level::Update()
 	{
 		if (CollisionManager::GetInstance().CheckCollision(myPlayer->GetCollider().get(), myLevelEndCollider.get()))
 		{
+			StateManager::AddStateOnStack(myEndOfLevelScreen);
 			std::cout << "Level ended" << std::endl;
-			Load(currentLevelIndex++);
 		}
 	}	
 }
@@ -176,6 +176,18 @@ void Level::Restart()
 {
 	LevelLoader levelLoader;
 	Load(levelLoader.LoadLevel(currentLevelIndex));
+}
+
+void Level::LoadNextLevel()
+{
+	if (currentLevelIndex == amountOfLevels)
+	{
+		StateManager::GetInstance().RemoveDownToState(EStateType::eMainMenu);
+	}
+	else
+	{
+		Load(currentLevelIndex++);
+	}
 }
 
 void Level::Init(const EStateType& aState)
