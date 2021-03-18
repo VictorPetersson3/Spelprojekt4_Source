@@ -83,15 +83,24 @@ void Level::Update()
 		myLevelEndCollider.get()->Draw();
 	}
 	
-	if (CollisionManager::GetInstance().CheckCollision(myPlayer->GetCollider().get(), myLevelEndCollider.get()))
+	if (myLevelEndCollider != nullptr && myPlayer.get() != nullptr)
 	{
-		std::cout << "Level ended" << std::endl;
-	}
-
+		if (CollisionManager::GetInstance().CheckCollision(myPlayer->GetCollider().get(), myLevelEndCollider.get()))
+		{
+			std::cout << "Level ended" << std::endl;
+			Load(currentLevelIndex++);
+		}
+	}	
 }
 
 void Level::Load(std::shared_ptr<LevelData> aData)
 {
+	for (int i = 0; i < mySpriteBatches.Size(); i++)
+	{
+		mySpriteBatches[i]->ClearAll();
+	}
+
+
 	if (myPlayer.get()->GetCollider().get() != nullptr)
 	{
 		myPlayer.get()->GetCollider().get()->RemoveFromManager();
@@ -119,7 +128,6 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 
 	}
 
-	//mySaws = aData.get()->GetSaws();
 
 	for (auto t : myTerrain)
 	{
@@ -143,16 +151,18 @@ void Level::Load(int aIndex)
 {
 	LevelLoader levelLoader;
 
+	amountOfLevels = levelLoader.GetAmountOfLevels();
+
 	Load(levelLoader.LoadLevel(aIndex));
 	currentLevelIndex = aIndex;
 }
 
 void Level::Restart()
 {
-	for (int i = 0; i < mySpriteBatches.Size(); i++)
-	{
-		mySpriteBatches[i]->ClearAll();
-	}
+	
+	
+	
+	
 
 	LevelLoader levelLoader;
 	Load(levelLoader.LoadLevel(currentLevelIndex));

@@ -36,6 +36,17 @@ void LevelLoader::Update(const std::shared_ptr<Camera> aCamera)
 {
 }
 
+int LevelLoader::GetAmountOfLevels()
+{
+	JsonParser jsonParser;
+
+	rapidjson::Document document;
+
+	document = jsonParser.GetDocument("Json/Levels.json");
+
+	return document["levels"].Capacity();
+}
+
 std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 {
 	JsonParser jsonParser;
@@ -99,6 +110,7 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 
 					std::cout << xPosition << "\n";
 
+					std::cout << Tga2D::CEngine::GetInstance()->GetRenderSize().x << " " << Tga2D::CEngine::GetInstance()->GetRenderSize().y << std::endl;
 
 					levelToPushBack.get()->AddPlayerStart({ xPosition,yPosition });
 
@@ -191,11 +203,12 @@ void LevelLoader::SetRect(RenderCommand& aRenderCommand, int gridTileindex, int 
 {
 	const float EPSILON = 0.000001f;
 
-	float gridSize = document["defs"]["layers"][0]["gridSize"].GetInt();
-	Tga2D::Vector2f worldSize = { document["levels"][0]["pxWid"].GetFloat(),document["levels"][0]["pxHei"].GetFloat() };
+	float gridSize = document["defs"]["layers"][0]["gridSize"].GetFloat();
 
-	float startX = document["levels"][0]["layerInstances"][layerIndex]["gridTiles"][gridTileindex]["src"][0].GetInt();
-	float startY = document["levels"][0]["layerInstances"][layerIndex]["gridTiles"][gridTileindex]["src"][1].GetInt();
+	std::cout << "Rect gridSize: " << gridSize << std::endl;
+
+	float startX = document["levels"][0]["layerInstances"][layerIndex]["gridTiles"][gridTileindex]["src"][0].GetFloat();
+	float startY = document["levels"][0]["layerInstances"][layerIndex]["gridTiles"][gridTileindex]["src"][1].GetFloat();
 
 	startX /= static_cast<float>(aRenderCommand.GetImageSize().x);
 	startY /= static_cast<float>(aRenderCommand.GetImageSize().y);
@@ -203,7 +216,7 @@ void LevelLoader::SetRect(RenderCommand& aRenderCommand, int gridTileindex, int 
 	startX -= EPSILON;
 	startY -= EPSILON;
 
-	aRenderCommand.SetTextureRect(startX, startY, startX + gridSize / worldSize.x, startY + gridSize / worldSize.y);
+	aRenderCommand.SetTextureRect(startX, startY, startX + gridSize / aRenderCommand.GetImageSize().x, startY + gridSize / aRenderCommand.GetImageSize().y);
 }
 
 void LevelLoader::SetPosition(RenderCommand& aRenderCommand, int aGridTileIndex, int aLayerIndex)

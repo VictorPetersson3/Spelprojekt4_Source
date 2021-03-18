@@ -125,6 +125,9 @@
     <ClInclude Include="ControllerLayOutState.h">
       <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
     </ClInclude>
+    <ClInclude Include="LevelSelect.h">
+      <Filter>StateTypes\MenuStates</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -201,6 +204,9 @@
     </ClCompile>
     <ClCompile Include="ControllerLayOutState.cpp">
       <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelSelect.cpp">
+      <Filter>StateTypes\MenuStates</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

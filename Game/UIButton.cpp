@@ -60,6 +60,8 @@ void UIButton::SetIsHovered(const bool aHoverStatus)
 	myIsHovered = aHoverStatus;
 }
 
+
+
 void UIButton::ChangeSize()
 {
 	const Tga2D::CColor hoverColor{1.25f, 1.25f, 1.25f, 1.0f};

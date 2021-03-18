@@ -21,6 +21,7 @@ private:
 	void TestMe(int aVal);
 	void OptionsButtonPress();
 	void ExitButtonPress();
+	void PlayButtonPress();
 	std::unique_ptr<UIImage> myBackground;
 	std::unique_ptr<UIImage> myPanningBackground;
 	std::shared_ptr<Tga2D::CCustomShader> myPanningShader;

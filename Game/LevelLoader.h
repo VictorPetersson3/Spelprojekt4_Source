@@ -22,7 +22,7 @@ public:
 	~LevelLoader();
 
 	void Update(const std::shared_ptr<Camera> aCamera);
-
+	int GetAmountOfLevels();
 
 	std::shared_ptr<LevelData> LoadLevel(const char* aLevelPath);
 	std::shared_ptr<TerrainTile> LoadTileMap(const char* aImagePath, int aGridSize, int aLayerIndex, int aTileIndex, std::shared_ptr<Tga2D::CSpriteBatch> aSpriteBatch);
