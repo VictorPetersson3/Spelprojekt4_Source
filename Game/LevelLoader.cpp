@@ -36,6 +36,17 @@ void LevelLoader::Update(const std::shared_ptr<Camera> aCamera)
 {
 }
 
+int LevelLoader::GetAmountOfLevels()
+{
+	JsonParser jsonParser;
+
+	rapidjson::Document document;
+
+	document = jsonParser.GetDocument("Json/Levels.json");
+
+	return document["levels"].Capacity();
+}
+
 std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 {
 	JsonParser jsonParser;
@@ -91,15 +102,15 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 					float xPosition = document["levels"][0]["layerInstances"][j]["entityInstances"][i]["px"][0].GetFloat();
 					float yPosition = document["levels"][0]["layerInstances"][j]["entityInstances"][i]["px"][1].GetFloat();
 
-					std::cout << j << "\n";
+					//std::cout << j << "\n";
 
 
 					xPosition /=  static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().x);
 					yPosition /= static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().y);
 
-					std::cout << xPosition << "\n";
+					//std::cout << xPosition << "\n";
 
-					std::cout << Tga2D::CEngine::GetInstance()->GetRenderSize().x << " " << Tga2D::CEngine::GetInstance()->GetRenderSize().y << std::endl;
+					//std::cout << Tga2D::CEngine::GetInstance()->GetRenderSize().x << " " << Tga2D::CEngine::GetInstance()->GetRenderSize().y << std::endl;
 
 					levelToPushBack.get()->AddPlayerStart({ xPosition,yPosition });
 
@@ -194,7 +205,7 @@ void LevelLoader::SetRect(RenderCommand& aRenderCommand, int gridTileindex, int 
 
 	float gridSize = document["defs"]["layers"][0]["gridSize"].GetFloat();
 
-	std::cout << "Rect gridSize: " << gridSize << std::endl;
+	//std::cout << "Rect gridSize: " << gridSize << std::endl;
 
 	float startX = document["levels"][0]["layerInstances"][layerIndex]["gridTiles"][gridTileindex]["src"][0].GetFloat();
 	float startY = document["levels"][0]["layerInstances"][layerIndex]["gridTiles"][gridTileindex]["src"][1].GetFloat();

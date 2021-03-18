@@ -52,6 +52,6 @@ private:
 	CommonUtilities::GrowingArray<std::shared_ptr<Tga2D::CSpriteBatch>> mySpriteBatches;
 
 	int currentLevelIndex = 0;
-
+	int amountOfLevels = 0;
 };
 
