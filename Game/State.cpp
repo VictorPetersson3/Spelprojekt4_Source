@@ -2,6 +2,11 @@
 #include "State.h"
 
 
+void State::OnPushed()
+{
+	printf("I got pushed");
+}
+
 void State::SetRenderThrough(const bool aRenderThroughState)
 {
 	myRenderThrough = aRenderThroughState;

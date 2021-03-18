@@ -32,7 +32,7 @@ void UIButton::Update()
 			{
 				myOnPressIndexFunction(myOnPressIndexIndex);
 			}
-			AudioManager::GetInstance().Play2D("Audio/UI/Button/on_Click.mp3");
+			AudioManager::GetInstance().PlayEffect("Audio/UI/Button/on_Click.mp3");
 		}
 	}
 }

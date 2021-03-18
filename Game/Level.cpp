@@ -9,10 +9,13 @@
 #include "RenderCommand.h"
 #include "Collider.h"
 #include "tga2d/sprite/sprite_batch.h"
+#include "CollisionManager.h"
 
 #include "LevelData.h"
 #include "Saw.h"
 #include "TerrainTile.h"
+
+#include "AudioManager.h":
 
 Level::Level()
 {
@@ -23,6 +26,11 @@ Level::Level()
 Level::~Level()
 {
 
+}
+
+void Level::OnPushed()
+{
+	AudioManager::GetInstance().StopAllMusic();
 }
 
 void Level::Render()
@@ -58,21 +66,28 @@ void Level::Update()
 	{
 		Load(1);
 	}
-	//Collider drawing needs reworking
-	//for (auto t : myTerrain)
-	//{
-	//	t.get()->myCollider.get()->Draw();
-	//}
 	
 	if (myPlayer.get() != nullptr)
 	{
 		myPlayer.get()->Update(*(myCamera.get()));
 		myPlayer.get()->GetCollider().get()->Draw();
-		//myCamera.get()->RenderSprite(*myPlayer.get()->GetSprite().get());
+		if (myPlayer->IsDead())
+		{
+			Restart();
+			return;
+		}
 	}
 	
-
+	if (myLevelEndCollider != nullptr)
+	{
+		myLevelEndCollider.get()->Draw();
+	}
 	
+	if (CollisionManager::GetInstance().CheckCollision(myPlayer->GetCollider().get(), myLevelEndCollider.get()))
+	{
+		std::cout << "Level ended" << std::endl;
+	}
+
 }
 
 void Level::Load(std::shared_ptr<LevelData> aData)
@@ -86,8 +101,13 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 	{
 		t.get()->myCollider.get()->RemoveFromManager();
 	}
-
 	
+	if (myLevelEndCollider != nullptr)
+	{
+		myLevelEndCollider.get()->RemoveFromManager();
+	}
+
+	myLevelEndCollider = aData.get()->GetLevelEnd();
 
 	myTerrain.clear();
 
@@ -108,6 +128,11 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 
 	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y });
 
+	if (myLevelEndCollider != nullptr)
+	{
+		myLevelEndCollider.get()->AddToManager();
+	}
+
 	if (myPlayer.get()->GetCollider().get() != nullptr)
 	{
 		myPlayer.get()->GetCollider().get()->AddToManager();
@@ -124,11 +149,14 @@ void Level::Load(int aIndex)
 
 void Level::Restart()
 {
-	//myPlayer.reset();
+	for (int i = 0; i < mySpriteBatches.Size(); i++)
+	{
+		mySpriteBatches[i]->ClearAll();
+	}
+
 	LevelLoader levelLoader;
 	Load(levelLoader.LoadLevel(currentLevelIndex));
 
-	//Load(myCurrentLevelData);
 }
 
 void Level::Init(const EStateType& aState)

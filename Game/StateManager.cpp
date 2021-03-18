@@ -1,5 +1,10 @@
 #include "stdafx.h"
 #include "StateManager.h"
+
+#include "MainMenu.h"
+#include "OptionsMenu.h"
+#include "Level.h"
+
 StateManager* StateManager::myInstance = nullptr;
 
 uint32_t globalAllocCounter = 0ui32;
@@ -15,12 +20,20 @@ void StateManager::Init()
 {
 	assert(myInstance == nullptr && "Input Manager have already been Created");
 	myInstance = new StateManager;
-	myInstance->myMainMenu.Init(EStateType::eMainMenu);
-	myInstance->myOptionsMenu.Init(EStateType::eOptionsMenu);
-	myInstance->myOptionsMenu.SetRenderThrough(true);
-	myInstance->myLevel.Init(EStateType::eGame);
+
+	myInstance->myMainMenu = std::make_shared<MainMenu>();
+	myInstance->myOptionsMenu = std::make_shared<OptionsMenu>();
+	myInstance->myLevel = std::make_shared<Level>();
+
+
+
+	myInstance->myMainMenu.get()->Init(EStateType::eMainMenu);
+	myInstance->myOptionsMenu.get()->Init(EStateType::eOptionsMenu);
+	//myInstance->myOptionsMenu.SetRenderThrough(true);
+	myInstance->myLevel.get()->Init(EStateType::eGame);
 	//Main Menu is the default beginning state
-	myInstance->myGameStates.Push(&GetInstance().myMainMenu);
+	myInstance->myGameStates.Push(GetInstance().myMainMenu);
+	myInstance->myGameStates.GetTop()->OnPushed();
 	//Init the states you made here, rest will work automagically,
 	//If you want to test a state, Push it on to myGameStates
 
@@ -56,17 +69,26 @@ void StateManager::RemoveDownToState(const EStateType& aStateType)
 	{
 		myInstance->myGameStates.RemoveTop();
 	}
+	myInstance->myGameStates.GetTop()->OnPushed();
+}
+
+void StateManager::AddStateOnStack(std::shared_ptr<State> aState)
+{
+	myInstance->myGameStates.Push(aState);
+	myInstance->myGameStates.GetTop()->OnPushed();
 }
 
 void StateManager::AddOptionsOnStack()
 {
-	myInstance->myGameStates.Push(&myInstance->myOptionsMenu);
+	myInstance->myGameStates.Push(myInstance->myOptionsMenu);
+	myInstance->myGameStates.GetTop()->OnPushed();
 }
 
 void StateManager::AddLevelOnStack(int aLevelIndex)
 {
-	myInstance->myGameStates.Push(&myInstance->myLevel);
-	myInstance->myLevel.Load(aLevelIndex);
+	myInstance->myGameStates.Push(myInstance->myLevel);
+	myInstance->myLevel.get()->Load(aLevelIndex);
+	myInstance->myGameStates.GetTop()->OnPushed();
 }
 
 void StateManager::Update()

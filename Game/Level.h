@@ -10,6 +10,7 @@ class Player;
 class Camera;
 class LevelData;
 class Saw;
+class Collider;
 struct TerrainTile;
 
 namespace Tga2D
@@ -23,7 +24,7 @@ public:
 	Level();
 	~Level();
 
-
+	void OnPushed() override;
 	virtual void Render() override;
 	virtual void Update() override;
 	void Load(std::shared_ptr<LevelData> aData);
@@ -41,6 +42,8 @@ private:
 
 	std::vector<std::shared_ptr<TerrainTile>> myTerrain;
 	std::vector<std::shared_ptr<Saw>> mySaws;
+
+	std::shared_ptr<Collider> myLevelEndCollider;
 
 	CommonUtilities::GrowingArray<std::shared_ptr<Tga2D::CSpriteBatch>> mySpriteBatches;
 

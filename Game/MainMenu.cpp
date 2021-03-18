@@ -60,7 +60,6 @@ void MainMenu::Init(const EStateType& aState)
 	myBackground.get()->GetRenderCommand().SetSizeRelativeToImage({ 0.6f, 0.6f });
 	myBackground.get()->SetPosition({ 0.0f, 1.0f });
 
-	AudioManager::GetInstance().Play2D("Audio/music/Hell_Clown_Core.mp3", true, 0.15f);
 
 	//myBackground.get()->GetRenderCommand().SetSizeRelativeToImage({0.75f, 0.75f});
 }
@@ -100,4 +99,11 @@ void MainMenu::Render()
 	myPanningBackground->Render();
 	myBackground.get()->Render();
 	MenuObject::Render();
+}
+
+void MainMenu::OnPushed()
+{
+	AudioManager::GetInstance().StopAllMusic();
+	AudioManager::GetInstance().PlayMusic("Audio/music/Hell_Clown_Core.mp3", true, 0.15f);
+
 }

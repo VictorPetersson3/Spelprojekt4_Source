@@ -4,6 +4,8 @@
 #include "UIImage.h"
 #include "InputManager.h"
 #include "StateManager.h"
+#include "AudioManager.h"
+#include "ControllerLayOutState.h"
 
 void OptionsMenu::Init(const EStateType& aState)
 {
@@ -11,14 +13,9 @@ void OptionsMenu::Init(const EStateType& aState)
 	AddButton(std::make_shared<UIButton>());
 	GetButtonElement(0)->Init({ 0.74f, 0.88f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {BackButtonPress(); });
 	AddButton(std::make_shared<UIButton>());
-	GetButtonElement(1)->Init({ 0.74f, 0.78f }, "sprites/UI/OptionsMenu/B_controls.dds", 0, [this]() {EmptyFunction(); });
+	GetButtonElement(1)->Init({ 0.74f, 0.78f }, "sprites/UI/OptionsMenu/B_controls.dds", 0, [this]() {ControllerButtonFunction(); });
 	AddButton(std::make_shared<UIButton>());
 	GetButtonElement(2)->Init({ 0.74f, 0.68f }, "sprites/UI/OptionsMenu/B_Resolution.dds", 0, [this]() {EmptyFunction(); });
-	
-	//AddButton(std::make_shared<UIButton>());
-	//GetButtonElement(3)->Init({ 0.74f, 0.58f }, "sprites/UI/OptionsMenu/B_VolumeSlider.dds", 0, [this]() {EmptyFunction(); });
-	//AddButton(std::make_shared<UIButton>());
-	//GetButtonElement(4)->Init({ 0.74f, 0.55f }, "sprites/UI/OptionsMenu/B_VolumeSlider.dds", 0, [this]() {EmptyFunction(); });
 
 
 	mySliderBackground = std::make_unique<UIImage>();
@@ -31,11 +28,12 @@ void OptionsMenu::Init(const EStateType& aState)
 	myBackground.get()->Activate();
 
 	mySliderMusic = std::make_unique<UISlider>();
-	mySliderMusic.get()->Init({ 0.74f, 0.577f }, "sprites/UI/OptionsMenu/B_VolumeSlider.dds", 2, 0.723f, 0.821f, [this](float aValue) {SliderFunction(aValue); });
+	mySliderMusic.get()->Init({ 0.74f, 0.577f }, "sprites/UI/OptionsMenu/B_VolumeSlider.dds", 2, 0.723f, 0.821f, [this](float aValue) {EffectSliderFunction(aValue); });
 	mySliderEffects = std::make_unique<UISlider>();
-	mySliderEffects.get()->Init({ 0.74f, 0.547f }, "sprites/UI/OptionsMenu/B_VolumeSlider.dds", 2, 0.723f, 0.821f, [this](float aValue) {SliderFunction(aValue); });
+	mySliderEffects.get()->Init({ 0.74f, 0.547f }, "sprites/UI/OptionsMenu/B_VolumeSlider.dds", 2, 0.723f, 0.821f, [this](float aValue) {MusicSliderFunction(aValue); });
 
-
+	myControllerLayout = std::make_shared<ControllerLayOutState>();
+	myControllerLayout->Init(EStateType::eControllerLayout);
 }
 
 void OptionsMenu::Update()
@@ -93,6 +91,11 @@ void OptionsMenu::Render()
 	mySliderEffects.get()->Render();
 }
 
+void OptionsMenu::OnPushed()
+{
+	SetRenderThrough(true);
+}
+
 void OptionsMenu::BackButtonPress()
 {
 	StateManager::GetInstance().RemoveStateFromTop();
@@ -102,9 +105,19 @@ void OptionsMenu::EmptyFunction()
 {
 }
 
-void OptionsMenu::SliderFunction(float aValue)
+void OptionsMenu::ControllerButtonFunction()
 {
-	printf("%f\n", aValue);
+	StateManager::GetInstance().AddStateOnStack(myControllerLayout);
+}
+
+void OptionsMenu::MusicSliderFunction(float aValue)
+{
+	AudioManager::GetInstance().SetMusicVolumeMultiplier(aValue);
+}
+
+void OptionsMenu::EffectSliderFunction(float aValue)
+{
+	AudioManager::GetInstance().SetEffectVolumeMultiplier(aValue);
 }
 
 
