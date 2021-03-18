@@ -3,7 +3,6 @@
 #include "LevelLoader.h"
 #include "Player.h"
 #include "Camera.h"
-#include "Sprite_Renderer.h"
 #include "Camera.h"
 #include "Timer.h"
 #include "InputManager.h"
@@ -32,7 +31,6 @@ void Level::Render()
 	{
 		mySpriteBatches[i]->Render();
 	}
-	mySpriteRenderer->Render();
 }
 
 void Level::Update()
@@ -138,9 +136,6 @@ void Level::Init(const EStateType& aState)
 	std::cout << "level inited\n";
 	//Creating a camera and then a renderer for the camera
 	myCamera = std::make_unique<Camera>();
-	mySpriteRenderer = std::make_shared<Sprite_Renderer>();
-	myCamera->Init({0.0f, 0.0f}, mySpriteRenderer.get());
-
 
 	currentLevelIndex = 0;
 

@@ -8,7 +8,6 @@
 
 class Player;
 class Camera;
-class Sprite_Renderer;
 class LevelData;
 class Saw;
 struct TerrainTile;
@@ -38,7 +37,6 @@ private:
 	std::unique_ptr<Camera> myCamera;
 	std::unique_ptr<Player> myPlayer;
 
-	std::shared_ptr<Sprite_Renderer> mySpriteRenderer;
 	std::shared_ptr<LevelData> currentLevelData;
 
 	std::vector<std::shared_ptr<TerrainTile>> myTerrain;

@@ -4,25 +4,16 @@
 #include "InputManager.h"
 #include "tga2d/sprite/sprite.h"
 #include "RenderCommand.h"
-#include "Sprite_Renderer.h"
 
 Camera::Camera()
 {
 	myPosition.Zero;
-	mySpriteRenderRef = nullptr;
 	myMovementSpeed = 0.15f;
 }
 
 void Camera::Init(const CommonUtilities::Vector2f& aPos)
 {
 	myPosition = aPos;
-	mySpriteRenderRef = nullptr;
-}
-
-void Camera::Init(const CommonUtilities::Vector2f& aPos, Sprite_Renderer* aSpriteRenderer)
-{
-	myPosition = aPos;
-	mySpriteRenderRef = aSpriteRenderer;
 }
 
 //Here the logic for following the player will be or whatever we will follow or the rules we have

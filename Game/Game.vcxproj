@@ -142,7 +142,6 @@
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="LinkString.h" />
-    <ClInclude Include="Sprite_Renderer.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelData.h" />
     <ClInclude Include="StateManager.h" />
@@ -176,7 +175,6 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="LinkString.cpp" />
-    <ClCompile Include="Sprite_Renderer.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelData.cpp" />
     <ClCompile Include="StateManager.cpp" />
