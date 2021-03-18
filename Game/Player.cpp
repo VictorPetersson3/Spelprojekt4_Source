@@ -104,7 +104,7 @@ CommonUtilities::Vector2f Player::GetPosition() const
 {
 	return myPosition;
 }
-void Player::SetPosition(const Tga2D::Vector2f aPosition)
+void Player::SetPosition(const CommonUtilities::Vector2f& aPosition)
 {
 	myPosition = aPosition;
 }

@@ -55,7 +55,7 @@ public:
 	std::shared_ptr<Collider> GetCollider();
 	CommonUtilities::Vector2f GetPosition() const;
 	
-	void SetPosition(const Tga2D::Vector2f aPosition);
+	void SetPosition(const CommonUtilities::Vector2f& aPosition);
 
 protected:
 	virtual void UpdatePhysics();
