@@ -35,7 +35,7 @@ void LevelSelect::Init(const EStateType& aState)
 	myPanningShader->Init("shaders/sprite_shader_panning_vs.fx", "shaders/sprite_shader_ps.fx");
 	myPanningBackground.get()->GetRenderCommand().SetSamplerState(ESamplerFilter::ESamplerFilter_Bilinear, ESamplerAddressMode::ESamplerAddressMode_Wrap);
 	myPanningBackground.get()->GetRenderCommand().SetTextureRect(0, 0, 2, 2);
-	myPanningBackground.get()->GetRenderCommand().SetSizeRelativeToImage({ 1.0f, 1.0f });
+	myPanningBackground.get()->GetRenderCommand().SetSizeRelativeToImage({ 2.0f, 2.0f });
 	myPanningBackground->SetShader(*myPanningShader.get());
 
 
