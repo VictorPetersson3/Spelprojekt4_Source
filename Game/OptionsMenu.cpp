@@ -5,6 +5,7 @@
 #include "InputManager.h"
 #include "StateManager.h"
 #include "AudioManager.h"
+#include "ControllerLayOutState.h"
 
 void OptionsMenu::Init(const EStateType& aState)
 {
@@ -12,7 +13,7 @@ void OptionsMenu::Init(const EStateType& aState)
 	AddButton(std::make_shared<UIButton>());
 	GetButtonElement(0)->Init({ 0.74f, 0.88f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {BackButtonPress(); });
 	AddButton(std::make_shared<UIButton>());
-	GetButtonElement(1)->Init({ 0.74f, 0.78f }, "sprites/UI/OptionsMenu/B_controls.dds", 0, [this]() {EmptyFunction(); });
+	GetButtonElement(1)->Init({ 0.74f, 0.78f }, "sprites/UI/OptionsMenu/B_controls.dds", 0, [this]() {ControllerButtonFunction(); });
 	AddButton(std::make_shared<UIButton>());
 	GetButtonElement(2)->Init({ 0.74f, 0.68f }, "sprites/UI/OptionsMenu/B_Resolution.dds", 0, [this]() {EmptyFunction(); });
 
@@ -31,7 +32,8 @@ void OptionsMenu::Init(const EStateType& aState)
 	mySliderEffects = std::make_unique<UISlider>();
 	mySliderEffects.get()->Init({ 0.74f, 0.547f }, "sprites/UI/OptionsMenu/B_VolumeSlider.dds", 2, 0.723f, 0.821f, [this](float aValue) {MusicSliderFunction(aValue); });
 
-
+	myControllerLayout = std::make_shared<ControllerLayOutState>();
+	myControllerLayout->Init(EStateType::eControllerLayout);
 }
 
 void OptionsMenu::Update()
@@ -89,6 +91,11 @@ void OptionsMenu::Render()
 	mySliderEffects.get()->Render();
 }
 
+void OptionsMenu::OnPushed()
+{
+	SetRenderThrough(true);
+}
+
 void OptionsMenu::BackButtonPress()
 {
 	StateManager::GetInstance().RemoveStateFromTop();
@@ -96,6 +103,11 @@ void OptionsMenu::BackButtonPress()
 
 void OptionsMenu::EmptyFunction()
 {
+}
+
+void OptionsMenu::ControllerButtonFunction()
+{
+	StateManager::GetInstance().AddStateOnStack(myControllerLayout);
 }
 
 void OptionsMenu::MusicSliderFunction(float aValue)
