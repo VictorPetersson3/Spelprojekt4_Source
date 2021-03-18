@@ -16,8 +16,7 @@ void PauseMenu::Init(const EStateType& aState)
 	AddButton(std::make_shared<UIButton>());
 	GetButtonElement(1)->Init({ 0.5f, 0.6f }, "sprites/UI/MainMenu/B_Settings.dds", 0, [this]() {PressSettingsButton(); });
 	AddButton(std::make_shared<UIButton>());
-	GetButtonElement(2)->Init({ 0.5f, 0.7f }, "sprites/UI/OptionsMenu/B_Resolution.dds", 0, [this]() {PressGoToMainMenu(); });
-
+	GetButtonElement(2)->Init({ 0.5f, 0.7f }, "sprites/UI/PauseMenu/MainMenuButton.dds", 0, [this]() {PressGoToMainMenu(); });
 
 	myBackground = std::make_unique<UIImage>();
 	myBackground.get()->Init({ 0.5f, 0.5f }, "sprites/UI/OptionsMenu/settings_MenuBoard.dds", 2);

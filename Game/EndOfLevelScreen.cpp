@@ -22,7 +22,7 @@ void EndOfLevelScreen::Init(const EStateType& aState)
 	AddButton(std::make_shared<UIButton>());
 	GetButtonElement(0)->Init({ 0.5f, 0.4f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {BackToMainButton(); });
 	AddButton(std::make_shared<UIButton>());
-	GetButtonElement(1)->Init({ 0.5f, 0.7f }, "sprites/UI/OptionsMenu/B_Resolution.dds", 0, [this]() {NextLevelPress(); });
+	GetButtonElement(1)->Init({ 0.5f, 0.7f }, "sprites/UI/PauseMenu/MainMenuButton.dds", 0, [this]() {NextLevelPress(); });
 
 
 	myBackground = std::make_unique<UIImage>();
