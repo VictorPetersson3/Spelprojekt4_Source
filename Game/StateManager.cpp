@@ -4,6 +4,7 @@
 #include "MainMenu.h"
 #include "OptionsMenu.h"
 #include "Level.h"
+#include "LevelSelect.h"
 
 StateManager* StateManager::myInstance = nullptr;
 
@@ -24,18 +25,23 @@ void StateManager::Init()
 	myInstance->myMainMenu = std::make_shared<MainMenu>();
 	myInstance->myOptionsMenu = std::make_shared<OptionsMenu>();
 	myInstance->myLevel = std::make_shared<Level>();
+	myInstance->myLevelSelect = std::make_shared<LevelSelect>();
 
 
 
+	//Init the states you made here, rest will work automagically,
 	myInstance->myMainMenu.get()->Init(EStateType::eMainMenu);
 	myInstance->myOptionsMenu.get()->Init(EStateType::eOptionsMenu);
-	//myInstance->myOptionsMenu.SetRenderThrough(true);
 	myInstance->myLevel.get()->Init(EStateType::eGame);
+	myInstance->myLevelSelect->Init(EStateType::eLevelSelect);
+	
+	
 	//Main Menu is the default beginning state
 	myInstance->myGameStates.Push(GetInstance().myMainMenu);
 	myInstance->myGameStates.GetTop()->OnPushed();
-	//Init the states you made here, rest will work automagically,
-	//If you want to test a state, Push it on to myGameStates
+
+
+	//If you want to test a state, Push it on to myGameStates above the main menu
 
 
 }
@@ -81,6 +87,12 @@ void StateManager::AddStateOnStack(std::shared_ptr<State> aState)
 void StateManager::AddOptionsOnStack()
 {
 	myInstance->myGameStates.Push(myInstance->myOptionsMenu);
+	myInstance->myGameStates.GetTop()->OnPushed();
+}
+
+void StateManager::AddLevelSelectOnStack()
+{
+	myInstance->myGameStates.Push(myInstance->myLevelSelect);
 	myInstance->myGameStates.GetTop()->OnPushed();
 }
 

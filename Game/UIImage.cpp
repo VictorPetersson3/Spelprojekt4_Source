@@ -10,6 +10,14 @@ void UIImage::Update()
 	}
 }
 
+void UIImage::Update(const CommonUtilities::Vector2f& aPos)
+{
+	if (GetIsActive())
+	{
+		UIElement::Update(aPos);
+	}
+}
+
 void UIImage::Render()
 {
 	UIElement::Render();
