@@ -39,12 +39,7 @@ std::vector<Collider*>& Collider::GetCollidedWith()
 
 const CommonUtilities::Vector2f Collider::GetCollisionNormal(const int anIndex)
 {
-	return CollisionManager::GetInstance().CollisonNormal(this, myCollidedWith[anIndex]);
-}
-
-const CommonUtilities::Vector2f Collider::GetPointOfIntersection(const int anIndex)
-{
-	return CollisionManager::GetInstance().PointOfIntersection(this, myCollidedWith[anIndex]);
+	return CollisionManager::GetInstance().CollisionNormal(this, myCollidedWith[anIndex]);
 }
 
 const void Collider::Draw() const

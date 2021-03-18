@@ -8,9 +8,25 @@ enum class EStateType
 };
 enum class EPlayerAnimationClips
 {
-	eNull,
-	eIdleL,
 	eIdleR,
+	eIdleL,
+	eRunR,
+	eRunL,
 	eSprintR,
-	eSprint
+	eSprintL,
+	eJumpR,
+	eJumpL,
+	eLandR,
+	eLandL,
+	eWallIdleR,
+	eWallIdleL,
+	eWallDownR,
+	eWallDownL,
+	eWallUpR,
+	eWallUpL,
+	eWallJumpR,
+	eWallJumpL,
+	eDeathR,
+	eDeathL,
+	eSize
 };
