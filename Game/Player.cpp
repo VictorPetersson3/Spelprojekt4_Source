@@ -80,7 +80,7 @@ void Player::Init(CommonUtilities::Vector2f aPosition)
 	myCollider->SetTag(EColliderTag::Player);
 }
 
-void Player::Update()
+void Player::Update(Camera& aCamera)
 {
 	Movement();
 	UpdatePhysics();
@@ -91,13 +91,15 @@ void Player::Update()
 	}
 	//printf("%d", myCurrentAnimation);
 	PlayAnimation(myCurrentAnimation);
-	//aCamera->BatchRenderSprite(myAnimations[(int)myCurrentAnimation]->GetRenderCommand());
+
+	int thing = (int)myCurrentAnimation * 2 + (myDirection < 0);
+	aCamera.RenderSprite(myAnimations[thing]->GetRenderCommand());
 }
 
 void Player::Render(std::shared_ptr<Camera> aCamera)
 {
-	int thing = (int)myCurrentAnimation * 2 + (myDirection < 0);
-	myAnimations[thing]->Render();
+	/*int thing = (int)myCurrentAnimation * 2 + (myDirection < 0);
+	myAnimations[thing]->Render();*/
 }
 
 CommonUtilities::Vector2f Player::GetPosition() const
