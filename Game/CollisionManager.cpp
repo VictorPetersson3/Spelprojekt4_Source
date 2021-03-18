@@ -41,6 +41,7 @@ void CollisionManager::Update()
 		myPlayerCollider->Update();
 		for (auto& collider : myColliders)
 		{
+			if (collider->GetTag() == EColliderTag::EndZone) continue;
 			if (myPlayerCollider != collider)
 			{
 				if ((collider->GetPosition() - myPlayerCollider->GetPosition()).Length() < myCollisionDetection)

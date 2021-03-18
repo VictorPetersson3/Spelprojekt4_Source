@@ -92,6 +92,8 @@ void Player::Update(Camera& aCamera)
 	//printf("%d", myCurrentAnimation);
 	PlayAnimation(myCurrentAnimation);
 
+	//printf("%f : %f \n", myCollider->GetPosition().x, myCollider->GetPosition().y);
+
 	int thing = (int)myCurrentAnimation * 2 + (myDirection < 0);
 	aCamera.RenderSprite(myAnimations[thing]->GetRenderCommand());
 }
