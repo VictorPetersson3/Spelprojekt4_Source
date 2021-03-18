@@ -128,7 +128,6 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 
 	}
 
-	//mySaws = aData.get()->GetSaws();
 
 	for (auto t : myTerrain)
 	{
@@ -151,6 +150,8 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 void Level::Load(int aIndex)
 {
 	LevelLoader levelLoader;
+
+	amountOfLevels = levelLoader.GetAmountOfLevels();
 
 	Load(levelLoader.LoadLevel(aIndex));
 	currentLevelIndex = aIndex;
