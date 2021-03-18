@@ -71,7 +71,10 @@ void Level::Update()
 		//myCamera.get()->RenderSprite(*myPlayer.get()->GetSprite().get());
 	}
 	
-
+	if (myLevelEndCollider != nullptr)
+	{
+		myLevelEndCollider.get()->Draw();
+	}
 	
 }
 
@@ -86,8 +89,14 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 	{
 		t.get()->myCollider.get()->RemoveFromManager();
 	}
-
 	
+	if (myLevelEndCollider != nullptr)
+	{
+		myLevelEndCollider.get()->RemoveFromManager();
+	}
+//	myLevelEndCollider = nullptr;
+
+	myLevelEndCollider = aData.get()->GetLevelEnd();
 
 	myTerrain.clear();
 
@@ -108,6 +117,11 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 
 	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y });
 
+	if (myLevelEndCollider != nullptr)
+	{
+		myLevelEndCollider.get()->AddToManager();
+	}
+
 	if (myPlayer.get()->GetCollider().get() != nullptr)
 	{
 		myPlayer.get()->GetCollider().get()->AddToManager();
@@ -125,6 +139,11 @@ void Level::Load(int aIndex)
 void Level::Restart()
 {
 	//myPlayer.reset();
+	for (int i = 0; i < mySpriteBatches.Size(); i++)
+	{
+		mySpriteBatches[i]->ClearAll();
+	}
+
 	LevelLoader levelLoader;
 	Load(levelLoader.LoadLevel(currentLevelIndex));
 

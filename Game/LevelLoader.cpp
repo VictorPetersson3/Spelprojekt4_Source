@@ -88,11 +88,13 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 
 				if (entityType == "PlayerStart")
 				{
-					float xPosition = document["levels"][0]["layerInstances"][j]["entityInstances"][i]["__grid"][0].GetFloat();
-					float yPosition = document["levels"][0]["layerInstances"][j]["entityInstances"][i]["__grid"][1].GetFloat();
+					float xPosition = document["levels"][0]["layerInstances"][j]["entityInstances"][i]["px"][0].GetFloat();
+					float yPosition = document["levels"][0]["layerInstances"][j]["entityInstances"][i]["px"][1].GetFloat();
+
+					std::cout << j << "\n";
 
 
-					xPosition /= static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().x);
+					xPosition /=  static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().x);
 					yPosition /= static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().y);
 
 					std::cout << xPosition << "\n";
@@ -101,6 +103,29 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 					levelToPushBack.get()->AddPlayerStart({ xPosition,yPosition });
 
 					hasAddedPlayerStart = true;
+				}
+
+				if (entityType == "LevelEnd")
+				{
+					float xPosition = document["levels"][0]["layerInstances"][j]["entityInstances"][i]["px"][0].GetFloat();
+					float yPosition = document["levels"][0]["layerInstances"][j]["entityInstances"][i]["px"][1].GetFloat();
+
+					xPosition /= static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().x);
+					yPosition /= static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().y);
+
+					float width = document["levels"][0]["layerInstances"][j]["entityInstances"][i]["width"].GetFloat();
+					float height = document["levels"][0]["layerInstances"][j]["entityInstances"][i]["height"].GetFloat();
+
+					width /= static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().x);
+					height /= static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().y);
+
+					CommonUtilities::Vector2f aColliderPosition = { xPosition,yPosition };
+
+					std::shared_ptr<Collider> colliderToPushBack = std::make_shared<Collider>(aColliderPosition, width, height);
+
+					colliderToPushBack.get()->SetTag(EColliderTag::EndZone);
+
+					levelToPushBack.get()->AddLevelEnd(colliderToPushBack);
 				}
 			}
 		}
