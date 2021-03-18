@@ -5,6 +5,7 @@
 #include "StateManager.h"
 #include <tga2d/shaders/customshader.h>
 #include "LinkString.h"
+#include "AudioManager.h"
 
 void MainMenu::TestMe(int aVal)
 {
@@ -58,6 +59,9 @@ void MainMenu::Init(const EStateType& aState)
 	myBackground.get()->GetRenderCommand().SetPivot({ 0.0f, 1.0f });
 	myBackground.get()->GetRenderCommand().SetSizeRelativeToImage({ 0.6f, 0.6f });
 	myBackground.get()->SetPosition({ 0.0f, 1.0f });
+
+	AudioManager::GetInstance().Play2D("Audio/music/Hell_Clown_Core.mp3", true, 0.15f);
+
 	//myBackground.get()->GetRenderCommand().SetSizeRelativeToImage({0.75f, 0.75f});
 }
 
