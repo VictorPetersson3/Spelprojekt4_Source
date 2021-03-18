@@ -36,6 +36,17 @@ void LevelLoader::Update(const std::shared_ptr<Camera> aCamera)
 {
 }
 
+int LevelLoader::GetAmountOfLevels()
+{
+	JsonParser jsonParser;
+
+	rapidjson::Document document;
+
+	document = jsonParser.GetDocument("Json/Levels.json");
+
+	return document["levels"].Capacity();
+}
+
 std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 {
 	JsonParser jsonParser;
