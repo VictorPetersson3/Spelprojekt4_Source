@@ -12,12 +12,13 @@ class Camera;
 class Collider;
 class AnimationClip;
 
-enum class EMovementState
+enum class EPlayerState
 {
 	Idle,
 	Walk,
 	Falling,
-	Ledge
+	Ledge,
+	Death
 };
 
 enum class EInputType
@@ -54,24 +55,26 @@ public:
 
 	std::shared_ptr<Collider> GetCollider();
 	CommonUtilities::Vector2f GetPosition() const;
+	const bool IsDead() const;
 	
 	void SetPosition(const CommonUtilities::Vector2f& aPosition);
 
 protected:
 	virtual void UpdatePhysics();
 	virtual void CacheCurrentValues();
-	virtual void Movement();
+	virtual void ManageStates();
 
 	void Idle();
 	void Walk();
 	void Falling();
 	void Ledge();
+	void Die();
 
 	void PlayAnimation(EAnimationState anAnimEnum);
 	void PlaySpecificAnimation(EPlayerAnimationClips anAnimEnum);
 
 protected:
-	EMovementState myMoveState = EMovementState::Idle;
+	EPlayerState myMoveState = EPlayerState::Idle;
 
 	CommonUtilities::Vector2f myOldPosition = {};
 	CommonUtilities::Vector2f myPosition = {};
@@ -91,6 +94,9 @@ protected:
 	bool myWasRoofied = false;
 	bool myIsRoofied = false;
 
+	bool myWasDead = false;
+	bool myIsDead = false;
+	
 	const float myWalkSpeed = 0.005f;
 	const float myJumpSpeed = 1.5f;
 

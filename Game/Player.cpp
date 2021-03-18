@@ -82,7 +82,7 @@ void Player::Init(CommonUtilities::Vector2f aPosition)
 
 void Player::Update(Camera& aCamera)
 {
-	Movement();
+	ManageStates();
 	UpdatePhysics();
 
 	for (auto& anim : myAnimations)
@@ -107,6 +107,15 @@ void Player::Render(std::shared_ptr<Camera> aCamera)
 CommonUtilities::Vector2f Player::GetPosition() const
 {
 	return myPosition;
+}
+const bool Player::IsDead() const
+{
+	if (myIsDead)
+	{
+		int enumer = (int)EAnimationState::Death * 2 + (myDirection < 0);
+		if (myAnimations[enumer]->GetAnimIsDone()) return true;
+	}
+	return false;
 }
 void Player::SetPosition(const CommonUtilities::Vector2f& aPosition)
 {
@@ -170,6 +179,12 @@ void Player::UpdatePhysics()
 
 	for (int i = 0; i < myCollider->GetCollidedWith().size(); i++)
 	{
+		if (myCollider->GetCollidedWith()[i]->GetTag() == EColliderTag::KillZone)
+		{
+			myMoveState = EPlayerState::Death;
+			break;
+		}
+
 		normal = myCollider->GetCollisionNormal(i);
 
 		if (verticalCollider != nullptr && normal.y != 0)
@@ -253,25 +268,29 @@ void Player::CacheCurrentValues()
 	myHuggedRightWall = myHugsRightWall;
 	myHuggedLeftWall = myHugsLeftWall;
 	myWasRoofied = myIsRoofied;
+	myWasDead = myIsDead;
 }
 
-void Player::Movement()
+void Player::ManageStates()
 {
 	//std::printf("%d", myMoveState);
 
 	switch (myMoveState)
 	{
-	case EMovementState::Idle:
+	case EPlayerState::Idle:
 		Idle();
 		break;
-	case EMovementState::Walk:
+	case EPlayerState::Walk:
 		Walk();
 		break;
-	case EMovementState::Falling:
+	case EPlayerState::Falling:
 		Falling();
 		break;
-	case EMovementState::Ledge:
+	case EPlayerState::Ledge:
 		Ledge();
+		break;
+	case EPlayerState::Death:
+		Die();
 		break;
 	}
 }
@@ -291,20 +310,20 @@ void Player::Idle()
 
 	if (!myIsGrounded)
 	{
-		myMoveState = EMovementState::Falling;
+		myMoveState = EPlayerState::Falling;
 		/*if (myHugsLeftWall || myHugsRightWall) myMoveState = EMovementState::Ledge;*/
 		return;
 	}
 	if (INPUT.IsKeyDown(myLeft) != INPUT.IsKeyDown(myRight))
 	{
-		myMoveState = EMovementState::Walk;
+		myMoveState = EPlayerState::Walk;
 		return;
 	}
 	else if (INPUT.IsKeyDown(myJump))
 	{
 		printf("jag borde bara skrivas ut en g�ng per hopp\n");
 		myCurrentVelocity.y = -myJumpSpeed;
-		myMoveState = EMovementState::Falling;
+		myMoveState = EPlayerState::Falling;
 		return;
 	}
 }
@@ -321,7 +340,7 @@ void Player::Walk()
 
 	if (INPUT.IsKeyDown(myLeft) == INPUT.IsKeyDown(myRight))
 	{
-		myMoveState = EMovementState::Idle;
+		myMoveState = EPlayerState::Idle;
 		return;
 	}
 	else if (INPUT.IsKeyDown(myRight))
@@ -363,7 +382,7 @@ void Player::Walk()
 	{
 		myCurrentVelocity.y = -myJumpSpeed;
 		//jump sfx ?
-		myMoveState = EMovementState::Falling;
+		myMoveState = EPlayerState::Falling;
 		//myCurrentAnimation = EAnimationState::Jump;
 		printf("jag borde bara skrivas ut en g�ng per hopp\n");
 
@@ -373,7 +392,7 @@ void Player::Walk()
 	}
 	else if (!myIsGrounded)
 	{
-		myMoveState = EMovementState::Falling;
+		myMoveState = EPlayerState::Falling;
 		return;
 	}
 }
@@ -389,7 +408,7 @@ void Player::Falling()
 
 	if (INPUT.IsKeyDown(myLeft) == INPUT.IsKeyDown(myRight))
 	{
-		if (myIsGrounded) myMoveState = EMovementState::Idle;
+		if (myIsGrounded) myMoveState = EPlayerState::Idle;
 		if (myCurrentVelocity.x > 0) myCurrentVelocity.x -= 0.00025f;
 		if (myCurrentVelocity.x < 0) myCurrentVelocity.x += 0.00025f;
 	}
@@ -397,10 +416,10 @@ void Player::Falling()
 	{
 		myDirection = 1;
 
-		if (myIsGrounded) myMoveState = EMovementState::Walk;
+		if (myIsGrounded) myMoveState = EPlayerState::Walk;
 		if (myHugsRightWall && !myIsGrounded && !myWasGrounded)
 		{
-			myMoveState = EMovementState::Ledge;
+			myMoveState = EPlayerState::Ledge;
 			myCurrentVelocity.x = 0.0f;
 		}
 		else
@@ -416,10 +435,10 @@ void Player::Falling()
 	{
 		myDirection = -1;
 
-		if (myIsGrounded) myMoveState = EMovementState::Walk;
+		if (myIsGrounded) myMoveState = EPlayerState::Walk;
 		if (myHugsLeftWall && !myIsGrounded && !myWasGrounded)
 		{
-			myMoveState = EMovementState::Ledge;
+			myMoveState = EPlayerState::Ledge;
 			myCurrentVelocity.x = 0.0f;
 		}
 		else
@@ -441,7 +460,7 @@ void Player::Ledge()
 {
 	if (myIsGrounded)
 	{
-		myMoveState = EMovementState::Idle;
+		myMoveState = EPlayerState::Idle;
 		return;
 	}
 
@@ -457,7 +476,7 @@ void Player::Ledge()
 	if (INPUT.IsKeyDown(myLeft) == INPUT.IsKeyDown(myRight))
 	{
 		myCurrentVelocity.x = 0;
-		myMoveState = EMovementState::Idle;
+		myMoveState = EPlayerState::Idle;
 	}
 	else if (INPUT.IsKeyDown(myRight))
 	{
@@ -476,7 +495,7 @@ void Player::Ledge()
 			//jump sfx ?
 			PlaySpecificAnimation(EPlayerAnimationClips::eWallJumpL);
 
-			myMoveState = EMovementState::Falling;
+			myMoveState = EPlayerState::Falling;
 			return;
 		}
 	}
@@ -496,9 +515,19 @@ void Player::Ledge()
 			//jump sfx ?
 			PlaySpecificAnimation(EPlayerAnimationClips::eWallJumpR);
 
-			myMoveState = EMovementState::Falling;
+			myMoveState = EPlayerState::Falling;
 			return;
 		}
+	}
+}
+
+void Player::Die()
+{
+	if (!myWasDead)
+	{
+		myIsDead = true;
+		if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eDeathL);
+		else PlaySpecificAnimation(EPlayerAnimationClips::eDeathR);
 	}
 }
 

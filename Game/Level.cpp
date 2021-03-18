@@ -71,6 +71,11 @@ void Level::Update()
 	{
 		myPlayer.get()->Update(*(myCamera.get()));
 		myPlayer.get()->GetCollider().get()->Draw();
+		if (myPlayer->IsDead())
+		{
+			Restart();
+			return;
+		}
 	}
 	
 	if (myLevelEndCollider != nullptr)
