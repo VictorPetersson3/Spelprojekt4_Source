@@ -26,6 +26,11 @@ void MainMenu::ExitButtonPress()
 	printf("Pressing Exit\n");
 }
 
+void MainMenu::PlayButtonPress()
+{
+	StateManager::GetInstance().AddLevelSelectOnStack();
+}
+
 void MainMenu::Init(const EStateType& aState)
 {
 	SetStateType(aState);
@@ -40,7 +45,7 @@ void MainMenu::Init(const EStateType& aState)
 	{
 		AddButton(std::make_shared<UIButton>());
 	}
-	GetButtonElement(0)->Init({ 0.7f, 0.5f + 0.13f }, tempImagePaths[0].GetString(), 0, [this](int index) {TestMe(index); }, 0);
+	GetButtonElement(0)->Init({ 0.7f, 0.5f + 0.13f }, tempImagePaths[0].GetString(), 0, [this]() {PlayButtonPress(); });
 	GetButtonElement(1)->Init({ 0.74f, 0.65f + 0.07f * 1 }, tempImagePaths[1].GetString(), 0, [this](int index) {TestMe(index); }, 1);
 	GetButtonElement(2)->Init({ 0.74f, 0.65f + 0.07f * 2 }, tempImagePaths[2].GetString(), 0, [this]() { OptionsButtonPress(); });
 	GetButtonElement(3)->Init({ 0.74f, 0.65f + 0.07f * 3 }, tempImagePaths[3].GetString(), 0, [this]() { ExitButtonPress();});
@@ -59,9 +64,6 @@ void MainMenu::Init(const EStateType& aState)
 	myBackground.get()->GetRenderCommand().SetPivot({ 0.0f, 1.0f });
 	myBackground.get()->GetRenderCommand().SetSizeRelativeToImage({ 0.6f, 0.6f });
 	myBackground.get()->SetPosition({ 0.0f, 1.0f });
-
-
-	//myBackground.get()->GetRenderCommand().SetSizeRelativeToImage({0.75f, 0.75f});
 }
 
 void MainMenu::Update()

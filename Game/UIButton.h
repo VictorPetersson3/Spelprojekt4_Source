@@ -14,7 +14,6 @@ public:
     void Init(const CommonUtilities::Vector2f& aPos, const char* aImagePath, const int aLayer, callback_function aCallback);
     void Init(const CommonUtilities::Vector2f& aPos, const char* aImagePath, const int aLayer, callback_function_index aCallback, int aIndex);
     void SetIsHovered(const bool aHoverStatus);
-    
 private:
     bool myIsHovered;
     int myOnPressIndexIndex;
