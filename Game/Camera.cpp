@@ -4,25 +4,16 @@
 #include "InputManager.h"
 #include "tga2d/sprite/sprite.h"
 #include "RenderCommand.h"
-#include "Sprite_Renderer.h"
 
 Camera::Camera()
 {
 	myPosition.Zero;
-	mySpriteRenderRef = nullptr;
 	myMovementSpeed = 0.15f;
 }
 
 void Camera::Init(const CommonUtilities::Vector2f& aPos)
 {
 	myPosition = aPos;
-	mySpriteRenderRef = nullptr;
-}
-
-void Camera::Init(const CommonUtilities::Vector2f& aPos, Sprite_Renderer* aSpriteRenderer)
-{
-	myPosition = aPos;
-	mySpriteRenderRef = aSpriteRenderer;
 }
 
 //Here the logic for following the player will be or whatever we will follow or the rules we have
@@ -61,17 +52,25 @@ void Camera::RenderSprite(const Tga2D::CSprite aSprite)
 	}
 }
 
-void Camera::BatchRenderSprite(const RenderCommand& aRenderCommand)
+void Camera::BatchRenderSprite(RenderCommand& aRenderCommand)
 {
 	CommonUtilities::Vector2f spritePos;	
 	spritePos.x = aRenderCommand.GetPosition().x - myPosition.x;
 	spritePos.y = aRenderCommand.GetPosition().y - myPosition.y;
 	if (spritePos.x < 1.0f && spritePos.x > 0.0f && spritePos.y < 1.0f && spritePos.y > 0.0f)
 	{
-		RenderCommand commandToBatch = aRenderCommand;
-		Tga2D::CSprite aSpriteCopy = *aRenderCommand.mySprite.get();
-		aSpriteCopy.SetPosition({ spritePos.x, spritePos.y });
-		commandToBatch.ReplaceSpritePointerContent(aSpriteCopy);
-		mySpriteRenderRef->AddRenderCommandToRenderer(commandToBatch);
+		aRenderCommand.SetSpritePosition(spritePos);
+	}
+}
+
+void Camera::RenderSprite(RenderCommand& aRenderCommand)
+{
+	CommonUtilities::Vector2f spritePos;
+	spritePos.x = aRenderCommand.GetPosition().x - myPosition.x;
+	spritePos.y = aRenderCommand.GetPosition().y - myPosition.y;
+	if (spritePos.x < 1.0f && spritePos.x > 0.0f && spritePos.y < 1.0f && spritePos.y > 0.0f)
+	{
+		aRenderCommand.SetSpritePosition(spritePos);
+		aRenderCommand.Render();
 	}
 }

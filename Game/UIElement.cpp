@@ -29,7 +29,12 @@ void UIElement::Deactivate()
 	myIsActive = false;
 }
 
-const RenderCommand UIElement::GetRenderCommand() const
+RenderCommand& UIElement::GetRenderCommand()
 {
 	return *myRenderCommand;
+}
+
+void UIElement::SetPosition(const CommonUtilities::Vector2f& aPos)
+{
+	myPosition = aPos;
 }

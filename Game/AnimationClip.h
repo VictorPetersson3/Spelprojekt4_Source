@@ -14,6 +14,7 @@ public:
 	
 	const int GetAnimationTypeIndex() const;
 	const RenderCommand& GetRenderCommand() const;
+	RenderCommand& GetRenderCommand();
 	
 	//TestMethod
 	void Render();
@@ -29,6 +30,7 @@ public:
 	void PlayAnimOnce(const float aSpeed = 0.08333f);
 	void PlayAnimLoop(const float aSpeed = 0.08333f);
 
+	const bool GetAnimIsLooping() const;
 	const bool GetAnimIsDone() const;
 	const bool GetAnimIsPlaying() const;
 	const CommonUtilities::Vector2ui& GetCurrentFrame() const;

@@ -39,11 +39,12 @@ public:
 	void SetLowerLeft(CommonUtilities::Vector2f aPoint);
 	void SetUpperRight(CommonUtilities::Vector2f aPoint);
 	void SetCollidedWith(Collider* aCollider);
+	void RemoveFromManager();
+	void AddToManager();
 	bool& HasCollided();
 
 	std::vector<Collider*>& GetCollidedWith();
 	const CommonUtilities::Vector2f GetCollisionNormal(const int anIndex);
-	const CommonUtilities::Vector2f GetPointOfIntersection(const int anIndex);
 	const void Draw() const;
 	const float& GetRadius() const;
 	const AABB& GetAABB() const;

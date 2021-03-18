@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "RenderCommand.h"
 #include "tga2D/sprite/sprite.h"
+
+
 RenderCommand::RenderCommand()
 {
 	myLayer = 0;
@@ -16,6 +18,7 @@ RenderCommand::RenderCommand(const char* aImagePath, int aLayer)
 	mySprite = std::make_shared<Tga2D::CSprite>(aImagePath);
 	mySprite->SetPivot({ 0.5f, 0.5f });
 	myLayer = aLayer;
+	mySprite->SetSizeRelativeToImage({ 0.5f, 0.5f });
 }
 
 RenderCommand::RenderCommand(const char* aImagePath, int aLayer, const CommonUtilities::Vector2f& aPos)
@@ -23,12 +26,14 @@ RenderCommand::RenderCommand(const char* aImagePath, int aLayer, const CommonUti
 	mySprite = std::make_shared<Tga2D::CSprite>(aImagePath);
 	mySprite->SetPivot({ 0.5f, 0.5f });
 	mySprite->SetPosition({ aPos.x, aPos.y });
+	mySprite->SetSizeRelativeToImage({ 0.5f, 0.5f });
 	myLayer = aLayer;
 }
 //Sets position of sprite and if animated will animate
 void RenderCommand::Update(const CommonUtilities::Vector2f& aPos)
 {
-	mySprite->SetPosition({ aPos.x, aPos.y });
+	myPosition = aPos;
+	SetSpritePosition(aPos);
 }
 
 void RenderCommand::Render()
@@ -44,6 +49,11 @@ const RenderCommand& RenderCommand::GetRenderCommand() const
 const int RenderCommand::GetLayer() const
 {
 	return myLayer;
+}
+
+void RenderCommand::SetSpritePosition(const CommonUtilities::Vector2f& aPos)
+{
+	mySprite->SetPosition({ aPos.x, aPos.y });
 }
 
 void RenderCommand::SetTextureRect(float aStartX, float aStartY, float aEndX, float aEndY)
@@ -66,6 +76,16 @@ void RenderCommand::SetPivot(const CommonUtilities::Vector2f& aPivot)
 	mySprite->SetPivot({ aPivot.x, aPivot.y });
 }
 
+void RenderCommand::SetShader(Tga2D::CCustomShader& aShader)
+{
+	mySprite->SetCustomShader(&aShader);
+}
+
+void RenderCommand::SetColor(Tga2D::CColor& aColor)
+{
+	mySprite->SetColor(aColor);
+}
+
 void RenderCommand::ReplaceSpritePointerContent(const Tga2D::CSprite& aSprite)
 {
 	std::shared_ptr<Tga2D::CSprite> tempPointer = std::make_shared<Tga2D::CSprite>(aSprite);
@@ -84,5 +104,5 @@ const CommonUtilities::Vector2f& RenderCommand::GetSize() const
 
 const CommonUtilities::Vector2f& RenderCommand::GetPosition() const
 {
-	return CommonUtilities::Vector2f(mySprite->GetPosition().x, mySprite->GetPosition().y);
+	return myPosition;
 }

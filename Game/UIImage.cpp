@@ -15,3 +15,8 @@ void UIImage::Render()
 	UIElement::Render();
 }
 
+void UIImage::SetShader(Tga2D::CCustomShader& aShader)
+{
+	myRenderCommand->SetShader(aShader);
+}
+

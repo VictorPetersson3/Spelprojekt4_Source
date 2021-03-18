@@ -1,15 +1,22 @@
 #pragma once
-#include "TerrainTile.h"
 #include <vector>
 #include "State.h"
 #include "Enums.h"
 #include <memory>
-#include "Saw.h"
-#include "LevelData.h"
+#include "CommonUtilities/GrowingArray.hpp"
+
 
 class Player;
 class Camera;
-class Sprite_Renderer;
+class LevelData;
+class Saw;
+class Collider;
+struct TerrainTile;
+
+namespace Tga2D
+{
+	class CSpriteBatch;
+}
 
 class Level : public State
 {
@@ -17,19 +24,30 @@ public:
 	Level();
 	~Level();
 
-
+	void OnPushed() override;
 	virtual void Render() override;
 	virtual void Update() override;
 	void Load(std::shared_ptr<LevelData> aData);
+	void Load(int aIndex);
+	void Restart();
+
 
 	virtual void Init(const EStateType& aState) override;
 
 private:
 	std::unique_ptr<Camera> myCamera;
 	std::unique_ptr<Player> myPlayer;
-	std::shared_ptr<Sprite_Renderer> mySpriteRenderer;
+
+	std::shared_ptr<LevelData> currentLevelData;
+
 	std::vector<std::shared_ptr<TerrainTile>> myTerrain;
 	std::vector<std::shared_ptr<Saw>> mySaws;
+
+	std::shared_ptr<Collider> myLevelEndCollider;
+
+	CommonUtilities::GrowingArray<std::shared_ptr<Tga2D::CSpriteBatch>> mySpriteBatches;
+
+	int currentLevelIndex = 0;
 
 };
 
