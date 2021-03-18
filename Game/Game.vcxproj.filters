@@ -128,6 +128,8 @@
     <ClInclude Include="LevelSelect.h">
       <Filter>StateTypes\MenuStates</Filter>
     </ClInclude>
+    <ClInclude Include="EndOfLevelScreen.h" />
+    <ClInclude Include="PauseMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -208,5 +210,7 @@
     <ClCompile Include="LevelSelect.cpp">
       <Filter>StateTypes\MenuStates</Filter>
     </ClCompile>
+    <ClCompile Include="EndOfLevelScreen.cpp" />
+    <ClCompile Include="PauseMenu.cpp" />
   </ItemGroup>
 </Project>

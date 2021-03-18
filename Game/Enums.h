@@ -6,6 +6,8 @@ enum class EStateType
 	eOptionsMenu,
 	eControllerLayout,
 	eLevelSelect,
+	ePauseMenu,
+	eEndOfLevelScreen,
 	eGame
 };
 enum class EPlayerAnimationClips

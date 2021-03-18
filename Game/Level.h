@@ -11,6 +11,8 @@ class Camera;
 class LevelData;
 class Saw;
 class Collider;
+class PauseMenu;
+class EndOfLevelScreen;
 struct TerrainTile;
 
 namespace Tga2D
@@ -35,6 +37,8 @@ public:
 	virtual void Init(const EStateType& aState) override;
 
 private:
+	std::shared_ptr<PauseMenu> myPauseMenu;
+	std::shared_ptr<EndOfLevelScreen> myEndOfLevelScreen;
 	std::unique_ptr<Camera> myCamera;
 	std::unique_ptr<Player> myPlayer;
 

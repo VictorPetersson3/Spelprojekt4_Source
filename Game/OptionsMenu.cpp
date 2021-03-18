@@ -11,26 +11,26 @@ void OptionsMenu::Init(const EStateType& aState)
 {
 	SetStateType(aState);
 	AddButton(std::make_shared<UIButton>());
-	GetButtonElement(0)->Init({ 0.74f, 0.88f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {BackButtonPress(); });
+	GetButtonElement(0)->Init({ 0.5f, 0.78f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {BackButtonPress(); });
 	AddButton(std::make_shared<UIButton>());
-	GetButtonElement(1)->Init({ 0.74f, 0.78f }, "sprites/UI/OptionsMenu/B_controls.dds", 0, [this]() {ControllerButtonFunction(); });
+	GetButtonElement(1)->Init({ 0.5f, 0.68f }, "sprites/UI/OptionsMenu/B_controls.dds", 0, [this]() {ControllerButtonFunction(); });
 	AddButton(std::make_shared<UIButton>());
-	GetButtonElement(2)->Init({ 0.74f, 0.68f }, "sprites/UI/OptionsMenu/B_Resolution.dds", 0, [this]() {EmptyFunction(); });
+	GetButtonElement(2)->Init({ 0.5f, 0.58f }, "sprites/UI/OptionsMenu/B_Resolution.dds", 0, [this]() {EmptyFunction(); });
 
 
 	mySliderBackground = std::make_unique<UIImage>();
-	mySliderBackground.get()->Init({ 0.74f, 0.54f }, "sprites/UI/OptionsMenu/B_Volume.dds", 2);
+	mySliderBackground.get()->Init({ 0.5f, 0.44f }, "sprites/UI/OptionsMenu/B_Volume.dds", 2);
 	mySliderBackground.get()->Activate();
 
 	myBackground = std::make_unique<UIImage>();
-	myBackground.get()->Init({ 0.74f, 0.6f }, "sprites/UI/OptionsMenu/settings_MenuBoard.dds", 2);
+	myBackground.get()->Init({ 0.5f, 0.5f }, "sprites/UI/OptionsMenu/settings_MenuBoard.dds", 2);
 	myBackground.get()->GetRenderCommand().SetSizeRelativeToImage({ 0.6f, 0.6f });
 	myBackground.get()->Activate();
 
 	mySliderMusic = std::make_unique<UISlider>();
-	mySliderMusic.get()->Init({ 0.74f, 0.577f }, "sprites/UI/OptionsMenu/B_VolumeSlider.dds", 2, 0.723f, 0.821f, [this](float aValue) {EffectSliderFunction(aValue); });
+	mySliderMusic.get()->Init({ 0.5f, 0.477f }, "sprites/UI/OptionsMenu/B_VolumeSlider.dds", 2, 0.483f, 0.581f, [this](float aValue) {EffectSliderFunction(aValue); });
 	mySliderEffects = std::make_unique<UISlider>();
-	mySliderEffects.get()->Init({ 0.74f, 0.547f }, "sprites/UI/OptionsMenu/B_VolumeSlider.dds", 2, 0.723f, 0.821f, [this](float aValue) {MusicSliderFunction(aValue); });
+	mySliderEffects.get()->Init({ 0.5f, 0.447f }, "sprites/UI/OptionsMenu/B_VolumeSlider.dds", 2, 0.483f, 0.581f, [this](float aValue) {MusicSliderFunction(aValue); });
 
 	myControllerLayout = std::make_shared<ControllerLayOutState>();
 	myControllerLayout->Init(EStateType::eControllerLayout);

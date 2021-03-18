@@ -15,12 +15,22 @@
 #include "Saw.h"
 #include "TerrainTile.h"
 
-#include "AudioManager.h":
+#include "UIImage.h"
+
+#include "AudioManager.h"
+#include "StateManager.h"
+#include "PauseMenu.h"
+#include "EndOfLevelScreen.h"
 
 Level::Level()
 {
 	myPlayer = std::make_unique<Player>();
 	mySpriteBatches.Init(10);
+
+	myPauseMenu = std::make_shared<PauseMenu>();
+	myPauseMenu->Init(EStateType::ePauseMenu);
+	myEndOfLevelScreen = std::make_shared<EndOfLevelScreen>();
+	myEndOfLevelScreen->Init(EStateType::eEndOfLevelScreen);
 }
 
 Level::~Level()
@@ -43,6 +53,11 @@ void Level::Render()
 
 void Level::Update()
 {
+	//Pause Menu
+	if (InputManager::GetInstance().IsKeyPressed(VK_ESCAPE))
+	{
+		StateManager::AddStateOnStack(myPauseMenu);
+	}
 	//Player
 	myCamera->Update({ 0,0 });
 	for (auto t : myTerrain)
@@ -158,14 +173,8 @@ void Level::Load(int aIndex)
 
 void Level::Restart()
 {
-	
-	
-	
-	
-
 	LevelLoader levelLoader;
 	Load(levelLoader.LoadLevel(currentLevelIndex));
-
 }
 
 void Level::Init(const EStateType& aState)
