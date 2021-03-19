@@ -123,6 +123,7 @@
     </ClInclude>
     <ClInclude Include="ShooterBulletManager.h">
       <Filter>Obstacles</Filter>
+     </ClInclude>
     <ClInclude Include="AnimationClip.h">
       <Filter>Rendering</Filter>
     </ClInclude>
@@ -219,6 +220,7 @@
     </ClCompile>
     <ClCompile Include="ShooterBulletManager.cpp">
       <Filter>Obstacles</Filter>
+    </ClCompile>
     <ClCompile Include="AnimationClip.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
