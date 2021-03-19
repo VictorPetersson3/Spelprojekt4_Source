@@ -5,7 +5,7 @@
 #include <memory>
 #include "CommonUtilities/GrowingArray.hpp"
 
-
+class Shooter;
 class Player;
 class Camera;
 class LevelData;
@@ -49,6 +49,7 @@ private:
 
 	std::vector<std::shared_ptr<TerrainTile>> myTerrain;
 	std::vector<std::shared_ptr<Saw>> mySaws;
+	std::vector<std::shared_ptr<Shooter>> myShooters;
 
 	std::shared_ptr<Collider> myLevelEndCollider;
 
