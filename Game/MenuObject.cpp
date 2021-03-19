@@ -6,12 +6,17 @@
 
 void MenuObject::AddButton(const std::shared_ptr<UIButton> aElement)
 {
-    myUiButtonElements.push_back(aElement);
+    myUiButtonElements.Add(aElement);
+}
+
+MenuObject::MenuObject()
+{
+    myUiButtonElements.Init(10);
 }
 
 void MenuObject::Render()
 {
-    for (int i = 0; i < myUiButtonElements.size(); i++)
+    for (int i = 0; i < myUiButtonElements.Size(); i++)
     {
         if (myUiButtonElements[i]->GetIsActive())
         {
@@ -22,7 +27,7 @@ void MenuObject::Render()
 
 void MenuObject::Update()
 {
-    for (int i = 0; i < myUiButtonElements.size(); i++)
+    for (int i = 0; i < myUiButtonElements.Size(); i++)
     {
         if (myUiButtonElements[i]->GetIsActive())
         {
@@ -38,7 +43,7 @@ void MenuObject::Init(const EStateType& aState)
 
 const int MenuObject::GetUIButtonElementsSize() const
 {
-    return myUiButtonElements.size();
+    return myUiButtonElements.Size();
 }
 
 std::shared_ptr<UIButton> MenuObject::GetButtonElement(const int aIndex)

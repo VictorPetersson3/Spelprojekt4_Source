@@ -11,6 +11,8 @@ class Camera;
 class LevelData;
 class Saw;
 class Collider;
+class PauseMenu;
+class EndOfLevelScreen;
 struct TerrainTile;
 
 namespace Tga2D
@@ -30,11 +32,16 @@ public:
 	void Load(std::shared_ptr<LevelData> aData);
 	void Load(int aIndex);
 	void Restart();
-
+	void LoadNextLevel();
 
 	virtual void Init(const EStateType& aState) override;
 
 private:
+
+	
+
+	std::shared_ptr<PauseMenu> myPauseMenu;
+	std::shared_ptr<EndOfLevelScreen> myEndOfLevelScreen;
 	std::unique_ptr<Camera> myCamera;
 	std::unique_ptr<Player> myPlayer;
 
@@ -48,6 +55,6 @@ private:
 	CommonUtilities::GrowingArray<std::shared_ptr<Tga2D::CSpriteBatch>> mySpriteBatches;
 
 	int currentLevelIndex = 0;
-
+	int amountOfLevels = 0;
 };
 

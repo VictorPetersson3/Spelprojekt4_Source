@@ -9,6 +9,7 @@ public:
     UIImage() = default;
     ~UIImage() = default;
     void Update() override;
+    void Update(const CommonUtilities::Vector2f& aPos);
     void Render();
     void SetShader(Tga2D::CCustomShader& aShader);
 };

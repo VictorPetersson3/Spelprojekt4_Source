@@ -5,6 +5,7 @@
 class MainMenu;
 class OptionsMenu;
 class Level;
+class LevelSelect;
 class StateManager
 {
 public:
@@ -22,11 +23,13 @@ public:
 
 	static void AddStateOnStack(std::shared_ptr<State> aState);
 	static void AddOptionsOnStack();
+	static void AddLevelSelectOnStack();
 	static void AddLevelOnStack(int aLevelIndex);
 
 private:
 	StateManager() = default;
 	static StateManager* myInstance;
+	std::shared_ptr<LevelSelect> myLevelSelect;
 	std::shared_ptr<MainMenu> myMainMenu;
 	std::shared_ptr<OptionsMenu> myOptionsMenu;
 	std::shared_ptr<Level> myLevel;

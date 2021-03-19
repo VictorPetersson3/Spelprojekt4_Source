@@ -49,7 +49,7 @@ public:
 	~Player();
 	virtual void Init(CommonUtilities::Vector2f aPosition);
 	virtual void Update(Camera& aCamera);
-	virtual void Render(std::shared_ptr<Camera> aCamera);
+	//virtual void Render(std::shared_ptr<Camera> aCamera);
 	
 	void ChangeInput(const EInputType anInputType);
 
@@ -70,7 +70,6 @@ protected:
 	void Ledge();
 	void Die();
 
-	void PlayAnimation(EAnimationState anAnimEnum);
 	void PlaySpecificAnimation(EPlayerAnimationClips anAnimEnum);
 
 protected:
@@ -96,20 +95,28 @@ protected:
 
 	bool myWasDead = false;
 	bool myIsDead = false;
-	
-	const float myWalkSpeed = 0.005f;
-	const float myJumpSpeed = 1.5f;
 
-	const float myAirAcceleration = 0.005f;
+	const float myWalkDecceleration = 2.0f;
+	
+	const float myWalkSpeed = 2.0f;
+	const float myJumpSpeed = 1.5f;
+	const float myWallJumpSpeed = 0.7f;
+	const float myWallJumpFactorY = 1.0f;
+
+	const float myAirAcceleration = 2.0f;
+	const float myAirDecceleration = 1.0f;
 	const float myMaxAirSpeed = 0.25f;
-	const float myJumpDecceleration = 0.01f;
+	const float myJumpDecceleration = 10.0f;
 
 	const float myMaxHorizontalVelocity = 0.25f;
 	const float myMaxVerticalVelocity = 1.5f;
 	const float myGravity = 4.0f;
 
 	const float myBoostFactor = 2.0f;
-	const float myMaxWallSlideSpeed = 0.1f;
+	const float myMaxWallSlideSpeed = 0.2f;
+	const float myWallDrag = 1.0f;
+
+	bool myPlayingOnce;
 
 	int myUp = 'W';
 	int myLeft = 'A';
@@ -118,6 +125,8 @@ protected:
 	int myJump = VK_SPACE;
 	int myBoost = VK_SHIFT;
 	
+	bool myCanJumpAgain = true;
+
 	int myDirection = 1;
 	EAnimationState myCurrentAnimation = EAnimationState::Idle;
 	std::shared_ptr<Collider> myCollider;

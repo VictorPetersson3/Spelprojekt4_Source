@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "CommonUtilities/GrowingArray.hpp"
 #include <memory>
 #include "State.h"
 
@@ -8,7 +9,7 @@ class MenuObject : public State
 {
 public:
     
-	MenuObject() = default;
+	MenuObject();
 	~MenuObject() = default;
 
 	void Render() override;
@@ -20,6 +21,6 @@ protected:
 	const std::shared_ptr<UIButton> GetButtonElement(const int aIndex) const;
 	const int GetUIButtonElementsSize() const;
 private:
-	std::vector<std::shared_ptr<UIButton>> myUiButtonElements;
+	CommonUtilities::GrowingArray<std::shared_ptr<UIButton>> myUiButtonElements;
 };
 

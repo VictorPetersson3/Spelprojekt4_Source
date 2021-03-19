@@ -30,16 +30,22 @@ void Player::Init(CommonUtilities::Vector2f aPosition)
 
 	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_idle_R.dds", 0, (int)EPlayerAnimationClips::eIdleR));
 	myAnimations[0]->Init({ 8, 1 }, { 7, 1 });
+	myAnimations[0]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_idle_L.dds", 0, (int)EPlayerAnimationClips::eIdleL));
 	myAnimations[1]->Init({ 8, 1 }, { 7, 1 });
+	myAnimations[1]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_run_R.dds", 0, (int)EPlayerAnimationClips::eRunR));
 	myAnimations[2]->Init({ 8, 1 }, { 5, 1 });
+	myAnimations[2]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_run_L.dds", 0, (int)EPlayerAnimationClips::eRunL));
 	myAnimations[3]->Init({ 8, 1 }, { 5, 1 });
+	myAnimations[3]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_sprint_R.dds", 0, (int)EPlayerAnimationClips::eSprintR));
 	myAnimations[4]->Init({ 8, 1 }, { 5, 1 });
+	myAnimations[4]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_sprint_L.dds", 0, (int)EPlayerAnimationClips::eSprintL));
 	myAnimations[5]->Init({ 8, 1 }, { 5, 1 });
+	myAnimations[5]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_jump_R.dds", 0, (int)EPlayerAnimationClips::eJumpR));
 	myAnimations[6]->Init({ 8, 1 }, { 5, 1 });
 	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_jump_L.dds", 0, (int)EPlayerAnimationClips::eJumpL));
@@ -50,16 +56,22 @@ void Player::Init(CommonUtilities::Vector2f aPosition)
 	myAnimations[9]->Init({ 8, 1 }, { 5, 1 });
 	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallidle_R.dds", 0, (int)EPlayerAnimationClips::eWallIdleR));
 	myAnimations[10]->Init({ 4, 1 }, { 4, 1 });
+	myAnimations[10]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallidle_L.dds", 0, (int)EPlayerAnimationClips::eWallIdleL));
 	myAnimations[11]->Init({ 4, 1 }, { 4, 1 });
+	myAnimations[11]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallDown_R.dds", 0, (int)EPlayerAnimationClips::eWallDownR));
 	myAnimations[12]->Init({ 4, 1 }, { 4, 1 });
+	myAnimations[12]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallDown_L.dds", 0, (int)EPlayerAnimationClips::eWallDownL));
 	myAnimations[13]->Init({ 4, 1 }, { 4, 1 });
+	myAnimations[13]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallUp_R.dds", 0, (int)EPlayerAnimationClips::eWallUpR));
 	myAnimations[14]->Init({ 4, 1 }, { 4, 1 });
+	myAnimations[14]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallUp_L.dds", 0, (int)EPlayerAnimationClips::eWallUpL));
 	myAnimations[15]->Init({ 4, 1 }, { 4, 1 });
+	myAnimations[15]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallJump_R.dds", 0, (int)EPlayerAnimationClips::eWallJumpR));
 	myAnimations[16]->Init({ 8, 1 }, { 6, 1 });
 	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallJump_L.dds", 0, (int)EPlayerAnimationClips::eWallJumpL));
@@ -82,6 +94,13 @@ void Player::Init(CommonUtilities::Vector2f aPosition)
 
 void Player::Update(Camera& aCamera)
 {
+	//Sleep(1);
+
+	if (INPUT.IsKeyUp(myJump))
+	{
+		myCanJumpAgain = true;
+	}
+
 	ManageStates();
 	UpdatePhysics();
 
@@ -89,20 +108,16 @@ void Player::Update(Camera& aCamera)
 	{
 		anim->UpdateAnimation(myPosition);
 	}
-	//printf("%d", myCurrentAnimation);
-	PlayAnimation(myCurrentAnimation);
-
-	//printf("%f : %f \n", myCollider->GetPosition().x, myCollider->GetPosition().y);
 
 	int thing = (int)myCurrentAnimation * 2 + (myDirection < 0);
 	aCamera.RenderSprite(myAnimations[thing]->GetRenderCommand());
 }
 
-void Player::Render(std::shared_ptr<Camera> aCamera)
-{
-	/*int thing = (int)myCurrentAnimation * 2 + (myDirection < 0);
-	myAnimations[thing]->Render();*/
-}
+//void Player::Render(std::shared_ptr<Camera> aCamera)
+//{
+//	int thing = (int)myCurrentAnimation * 2 + (myDirection < 0);
+//	myAnimations[thing]->Render();
+//}
 
 CommonUtilities::Vector2f Player::GetPosition() const
 {
@@ -220,7 +235,7 @@ void Player::UpdatePhysics()
 			posCorrNormal.y = CollisionManager::GetInstance().CollisionNormal(myCollider.get(), verticalCollider).y;
 		}
 
-		//positionCorrection.x -= 1.0f / Tga2D::CEngine::GetInstance()->GetRenderSize().x;
+		//positionCorrection.x += 1.0f / Tga2D::CEngine::GetInstance()->GetRenderSize().x;
 		//positionCorrection.y -= 1.0f / Tga2D::CEngine::GetInstance()->GetRenderSize().y;
 
 		positionCorrection *= posCorrNormal;
@@ -238,24 +253,37 @@ void Player::UpdatePhysics()
 			myIsGrounded = true;
 			//myMoveState = EMovementState::Idle;
 		}
+		else
+		{
+			myIsGrounded = false;
+			myIsRoofied = false;
+		}
 		if (posCorrNormal.x > 0 &&
 			myCollider->GetPosition().y < horizontalCollider->GetPosition().y + horizontalCollider->GetSize().y * 0.5f &&
 			myCollider->GetPosition().y > horizontalCollider->GetPosition().y - horizontalCollider->GetSize().y * 0.5f)
 		{
 			myPosition.x += positionCorrection.x;
-			myHugsLeftWall = true;
+			if (myCurrentVelocity.x < 0) myHugsLeftWall = true;
 		}
 		else if (posCorrNormal.x < 0 &&
 			myCollider->GetPosition().y < horizontalCollider->GetPosition().y + horizontalCollider->GetSize().y * 0.5f &&
 			myCollider->GetPosition().y > horizontalCollider->GetPosition().y - horizontalCollider->GetSize().y * 0.5f)
 		{
 			myPosition.x += positionCorrection.x;
-			myHugsRightWall = true;
+			if (myCurrentVelocity.x > 0) myHugsRightWall = true;
+		}
+		else
+		{
+			myHugsLeftWall = false;
+			myHugsRightWall = false;
 		}
 	}
 	else
 	{
 		myIsGrounded = false;
+		myIsRoofied = false;
+		myHugsLeftWall = false;
+		myHugsRightWall = false;
 	}
 	myCollider->UpdateCollider(myPosition);
 }
@@ -303,8 +331,8 @@ void Player::Idle()
 		else PlaySpecificAnimation(EPlayerAnimationClips::eLandR);
 	}
 	//myCurrentVelocity = CommonUtilities::Vector2f::Zero();
-	if (myCurrentVelocity.x > 0) myCurrentVelocity.x -= 0.001f; // g�nger deltatime? ??
-	if (myCurrentVelocity.x < 0) myCurrentVelocity.x += 0.001f;
+	if (myCurrentVelocity.x > 0) myCurrentVelocity.x -= myWalkDecceleration * DELTA_TIME; // g�nger deltatime? ??
+	if (myCurrentVelocity.x < 0) myCurrentVelocity.x += myWalkDecceleration * DELTA_TIME;
 
 	myCurrentAnimation = EAnimationState::Idle;
 
@@ -319,11 +347,15 @@ void Player::Idle()
 		myMoveState = EPlayerState::Walk;
 		return;
 	}
-	else if (INPUT.IsKeyDown(myJump))
+	else if (INPUT.IsKeyDown(myJump) && myCanJumpAgain)
 	{
 		printf("jag borde bara skrivas ut en g�ng per hopp\n");
 		myCurrentVelocity.y = -myJumpSpeed;
+		if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eJumpL);
+		else PlaySpecificAnimation(EPlayerAnimationClips::eJumpR);
 		myMoveState = EPlayerState::Falling;
+
+		myCanJumpAgain = false;
 		return;
 	}
 }
@@ -355,9 +387,9 @@ void Player::Walk()
 			if (INPUT.IsKeyDown(myBoost))
 			{
 				myCurrentAnimation = EAnimationState::Sprint;
-				if (myCurrentVelocity.x <= myMaxAirSpeed * myBoostFactor) myCurrentVelocity.x += myWalkSpeed * myBoostFactor;
+				if (myCurrentVelocity.x <= myMaxAirSpeed * myBoostFactor) myCurrentVelocity.x += myWalkSpeed * DELTA_TIME * myBoostFactor;
 			}
-			else if (myCurrentVelocity.x <= myMaxHorizontalVelocity) myCurrentVelocity.x += myWalkSpeed;
+			else if (myCurrentVelocity.x <= myMaxHorizontalVelocity) myCurrentVelocity.x += myWalkSpeed * DELTA_TIME;
 		}
 	}
 	else if (INPUT.IsKeyDown(myLeft))
@@ -372,13 +404,13 @@ void Player::Walk()
 			if (INPUT.IsKeyDown(myBoost))
 			{
 				myCurrentAnimation = EAnimationState::Sprint;
-				if (myCurrentVelocity.x >= -myMaxAirSpeed * myBoostFactor) myCurrentVelocity.x -= myWalkSpeed * myBoostFactor;
+				if (myCurrentVelocity.x >= -myMaxAirSpeed * myBoostFactor) myCurrentVelocity.x -= myWalkSpeed * DELTA_TIME * myBoostFactor;
 			}
-			else if (myCurrentVelocity.x >= -myMaxHorizontalVelocity) myCurrentVelocity.x -= myWalkSpeed;
+			else if (myCurrentVelocity.x >= -myMaxHorizontalVelocity) myCurrentVelocity.x -= myWalkSpeed * DELTA_TIME;
 		}
 	}
 
-	if (INPUT.IsKeyDown(myJump))
+	if (INPUT.IsKeyDown(myJump) && myCanJumpAgain)
 	{
 		myCurrentVelocity.y = -myJumpSpeed;
 		//jump sfx ?
@@ -388,6 +420,8 @@ void Player::Walk()
 
 		if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eJumpL);
 		else PlaySpecificAnimation(EPlayerAnimationClips::eJumpR);
+		
+		myCanJumpAgain = false;
 		return;
 	}
 	else if (!myIsGrounded)
@@ -399,7 +433,8 @@ void Player::Walk()
 
 void Player::Falling()
 {
-	myCurrentAnimation = EAnimationState::Jump;
+	if (myHuggedLeftWall || myHuggedRightWall) myCurrentAnimation = EAnimationState::W_Jump;
+	else myCurrentAnimation = EAnimationState::Jump;
 
 	if (myCurrentVelocity.y >= myMaxVerticalVelocity) myCurrentVelocity.y = myMaxVerticalVelocity;
 	else myCurrentVelocity.y += myGravity * DELTA_TIME;
@@ -409,8 +444,8 @@ void Player::Falling()
 	if (INPUT.IsKeyDown(myLeft) == INPUT.IsKeyDown(myRight))
 	{
 		if (myIsGrounded) myMoveState = EPlayerState::Idle;
-		if (myCurrentVelocity.x > 0) myCurrentVelocity.x -= 0.00025f;
-		if (myCurrentVelocity.x < 0) myCurrentVelocity.x += 0.00025f;
+		if (myCurrentVelocity.x > 0) myCurrentVelocity.x -= myAirDecceleration * DELTA_TIME;
+		if (myCurrentVelocity.x < 0) myCurrentVelocity.x += myAirDecceleration * DELTA_TIME;
 	}
 	else if (INPUT.IsKeyDown(myRight))
 	{
@@ -426,9 +461,9 @@ void Player::Falling()
 		{
 			if (INPUT.IsKeyDown(myBoost))
 			{
-				if (myCurrentVelocity.x <= myMaxAirSpeed * myBoostFactor) myCurrentVelocity.x += myAirAcceleration * myBoostFactor;
+				if (myCurrentVelocity.x <= myMaxAirSpeed * myBoostFactor) myCurrentVelocity.x += myAirAcceleration * DELTA_TIME * myBoostFactor;
 			}
-			else if (myCurrentVelocity.x <= myMaxAirSpeed) myCurrentVelocity.x += myAirAcceleration;
+			else if (myCurrentVelocity.x <= myMaxAirSpeed) myCurrentVelocity.x += myAirAcceleration * DELTA_TIME;
 		}
 	}
 	else if (INPUT.IsKeyDown(myLeft))
@@ -445,14 +480,14 @@ void Player::Falling()
 		{
 			if (INPUT.IsKeyDown(myBoost))
 			{
-				if (myCurrentVelocity.x >= -myMaxAirSpeed * myBoostFactor) myCurrentVelocity.x -= myAirAcceleration * myBoostFactor;
+				if (myCurrentVelocity.x >= -myMaxAirSpeed * myBoostFactor) myCurrentVelocity.x -= myAirAcceleration * DELTA_TIME * myBoostFactor;
 			}
-			else if (myCurrentVelocity.x >= -myMaxAirSpeed) myCurrentVelocity.x -= myAirAcceleration;
+			else if (myCurrentVelocity.x >= -myMaxAirSpeed) myCurrentVelocity.x -= myAirAcceleration * DELTA_TIME;
 		}
 	}
 	if (!INPUT.IsKeyDown(myJump) && myCurrentVelocity.y < 0.0f)
 	{
-		myCurrentVelocity.y += myJumpDecceleration;
+		myCurrentVelocity.y += myJumpDecceleration * DELTA_TIME;
 	}
 }
 
@@ -463,13 +498,17 @@ void Player::Ledge()
 		myMoveState = EPlayerState::Idle;
 		return;
 	}
+	//if (!myHugsRightWall && !myHugsLeftWall)
+	//{
+	//	myMoveState = EPlayerState::Falling;
+	//}
 
 	if (myCurrentVelocity.y == 0) myCurrentAnimation = EAnimationState::W_Idle;
 	else if (myCurrentVelocity.y > 0) myCurrentAnimation = EAnimationState::W_Down;
 	else if (myCurrentVelocity.y < 0) myCurrentAnimation = EAnimationState::W_Up;
 
+   if (myCurrentVelocity.y < 0) myCurrentVelocity.y += myWallDrag * DELTA_TIME;
 	myCurrentVelocity.y += myGravity * DELTA_TIME;
-	if (myCurrentVelocity.y <= myMaxWallSlideSpeed) myCurrentVelocity.y = myMaxWallSlideSpeed;
 	if (myCurrentVelocity.y >= myMaxWallSlideSpeed) myCurrentVelocity.y = myMaxWallSlideSpeed;
 
 
@@ -486,16 +525,18 @@ void Player::Ledge()
 		{
 			myCurrentVelocity.x = 0.0f;
 		}
-		if (INPUT.IsKeyDown(myJump))
+		if (INPUT.IsKeyDown(myJump) && myCanJumpAgain)
 		{
-			myCurrentVelocity.x = -myJumpSpeed;
-			myCurrentVelocity.y = -myJumpSpeed;
+			myCurrentVelocity.x = -myWallJumpSpeed;
+			myCurrentVelocity.y = -myJumpSpeed * myWallJumpFactorY;
 
 			printf("jag borde bara skrivas ut en g�ng per hopp\n");
 			//jump sfx ?
 			PlaySpecificAnimation(EPlayerAnimationClips::eWallJumpL);
 
 			myMoveState = EPlayerState::Falling;
+			
+			myCanJumpAgain = false;
 			return;
 		}
 	}
@@ -506,16 +547,19 @@ void Player::Ledge()
 		{
 			myCurrentVelocity.x = 0.0f;
 		}
-		if (INPUT.IsKeyDown(myJump))
+		if (INPUT.IsKeyDown(myJump) && myCanJumpAgain)
 		{
-			myCurrentVelocity.x = myJumpSpeed;
-			myCurrentVelocity.y = -myJumpSpeed;
+			myCurrentVelocity.x = myWallJumpSpeed;
+			myCurrentVelocity.y = -myJumpSpeed * myWallJumpFactorY;
 
 			printf("jag borde bara skrivas ut en g�ng per hopp\n");
 			//jump sfx ?
 			PlaySpecificAnimation(EPlayerAnimationClips::eWallJumpR);
 
 			myMoveState = EPlayerState::Falling;
+			myCurrentAnimation = EAnimationState::W_Jump;
+			
+			myCanJumpAgain = false;
 			return;
 		}
 	}
@@ -531,48 +575,12 @@ void Player::Die()
 	}
 }
 
-void Player::PlayAnimation(EAnimationState anAnimEnum)
-{
-	//printf("%d", myDirection);
-
-	for (auto& anim : myAnimations)
-	{
-		if (anim->GetAnimIsDone())
-		{
-			if (anim->GetAnimationTypeIndex() == (int)anAnimEnum * 2 + (myDirection < 0)) return;
-			int enumer = (int)anAnimEnum * 2 + (myDirection < 0);
-			myAnimations[enumer]->PlayAnimLoop();
-			return;
-		}
-		else if (anim->GetAnimIsPlaying() && anim->GetAnimIsLooping())
-		{
-			if (anim->GetAnimationTypeIndex() == (int)anAnimEnum * 2 + (myDirection < 0)) return;
-
-			anim->Deactivate();
-
-			if (myDirection > 0)
-			{
-				int enumer = (int)anAnimEnum * 2;
-				myAnimations[enumer]->PlayAnimLoop();
-				return;
-			}
-			if (myDirection < 0)
-			{
-				int enumer = (int)anAnimEnum * 2 + 1;
-
-				myAnimations[enumer]->PlayAnimLoop();
-				return;
-			}
-		}
-	}
-	myAnimations[0]->PlayAnimLoop();
-}
-
 void Player::PlaySpecificAnimation(EPlayerAnimationClips anAnimEnum)
 {
-	for (auto& anim : myAnimations)
-	{
-		anim->Deactivate();
-	}
-	myAnimations[(int)anAnimEnum]->PlayAnimOnce();
+	if (anAnimEnum == EPlayerAnimationClips::eJumpL ||
+		anAnimEnum == EPlayerAnimationClips::eJumpR ||
+		anAnimEnum == EPlayerAnimationClips::eWallJumpL ||
+		anAnimEnum == EPlayerAnimationClips::eWallJumpR)
+		myAnimations[(int)anAnimEnum]->PlayAnimOnce(0.1666666666666667f);
+	else myAnimations[(int)anAnimEnum]->PlayAnimOnce();
 }

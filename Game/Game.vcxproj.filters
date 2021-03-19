@@ -139,6 +139,15 @@
     <ClInclude Include="ControllerLayOutState.h">
       <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
     </ClInclude>
+    <ClInclude Include="LevelSelect.h">
+      <Filter>StateTypes\MenuStates</Filter>
+    </ClInclude>
+    <ClInclude Include="EndOfLevelScreen.h">
+      <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
+    </ClInclude>
+    <ClInclude Include="PauseMenu.h">
+      <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -224,6 +233,15 @@
       <Filter>Utility</Filter>
     </ClCompile>
     <ClCompile Include="ControllerLayOutState.cpp">
+      <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelSelect.cpp">
+      <Filter>StateTypes\MenuStates</Filter>
+    </ClCompile>
+    <ClCompile Include="EndOfLevelScreen.cpp">
+      <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
+    </ClCompile>
+    <ClCompile Include="PauseMenu.cpp">
       <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
     </ClCompile>
   </ItemGroup>
