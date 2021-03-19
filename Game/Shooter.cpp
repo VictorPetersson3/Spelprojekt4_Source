@@ -4,6 +4,35 @@
 #include "CommonUtilities/Timer.h"
 #include "RenderCommand.h"
 
+void Shooter::Init(Vector2 aPosition, Shooter::EFireDirection aFireDirection)
+{
+	myPosition = aPosition;
+	myRenderCommand = std::make_shared<RenderCommand>("Sprites/tempShooter.dds", 0);
+
+	switch (aFireDirection)
+	{
+	case Shooter::EFireDirection::Up:
+		myFireDirection = { 1,0 };
+		break;
+	case Shooter::EFireDirection::Down:
+		myFireDirection = { -1,0 };
+		break;
+	case Shooter::EFireDirection::Right:
+		myFireDirection = { 0,1 };
+		break;
+	case Shooter::EFireDirection::Left:
+		myFireDirection = { 0,-1};
+		break;
+	default:
+		break;
+	}
+}
+
+std::shared_ptr<RenderCommand> Shooter::GetRenderCommand()
+{
+	return myRenderCommand;
+}
+
 void Shooter::Update(float aDeltaTime)
 {
 	if (myFireTimer <= 0)

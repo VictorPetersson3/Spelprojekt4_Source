@@ -10,6 +10,7 @@
 #include "Collider.h"
 #include "tga2d/sprite/sprite_batch.h"
 #include "CollisionManager.h"
+#include "Shooter.h"
 
 #include "LevelData.h"
 #include "Saw.h"
@@ -70,6 +71,11 @@ void Level::Update()
 	{
 		saw.get()->Update(deltaTime);
 		myCamera->BatchRenderSprite(*saw.get()->GetRenderCommand());
+	}
+	for (auto shooter : myShooters)
+	{
+		shooter.get()->Update(deltaTime);
+		myCamera->BatchRenderSprite(*shooter.get()->GetRenderCommand());
 	}
 
 	if (InputManager::GetInstance().IsKeyPressed(VK_F5))

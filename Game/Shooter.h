@@ -21,6 +21,7 @@ static enum class EFireDirection
 	~Shooter() = default;
 
 	void Init(Vector2 aPosition, Shooter::EFireDirection aFireDirection);
+	std::shared_ptr<RenderCommand> GetRenderCommand();
 	void Update(float aDeltaTime);
 	void Render();
 	const void Shoot() const;
