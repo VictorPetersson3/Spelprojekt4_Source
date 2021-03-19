@@ -47,22 +47,28 @@ class Player
 public:
 	Player();
 	~Player();
+
 	virtual void Init(CommonUtilities::Vector2f aPosition);
 	virtual void Update(Camera& aCamera);
-	//virtual void Render(std::shared_ptr<Camera> aCamera);
-	
+
 	void ChangeInput(const EInputType anInputType);
 
-	std::shared_ptr<Collider> GetCollider();
-	CommonUtilities::Vector2f GetPosition() const;
-	const bool IsDead() const;
-	
 	void SetPosition(const CommonUtilities::Vector2f& aPosition);
+	CommonUtilities::Vector2f GetPosition() const;
+
+	std::shared_ptr<Collider> GetCollider();
+	const bool IsDead() const;
 
 protected:
-	virtual void UpdatePhysics();
-	virtual void CacheCurrentValues();
-	virtual void ManageStates();
+	void InitJSON();
+	void InitAnimations();
+	void InitCollider();
+
+	void ManageStates();
+	void UpdatePhysics();
+	void HandleAnimations(Camera& aCamera);
+
+	void CacheCurrentValues();
 
 	void Idle();
 	void Walk();
@@ -74,6 +80,8 @@ protected:
 
 protected:
 	EPlayerState myMoveState = EPlayerState::Idle;
+
+	CommonUtilities::Vector2f mySize = {};
 
 	CommonUtilities::Vector2f myOldPosition = {};
 	CommonUtilities::Vector2f myPosition = {};
@@ -96,27 +104,28 @@ protected:
 	bool myWasDead = false;
 	bool myIsDead = false;
 
-	const float myWalkDecceleration = 2.0f;
-	
-	const float myWalkSpeed = 2.0f;
-	const float myJumpSpeed = 1.5f;
-	const float myWallJumpSpeed = 0.7f;
-	const float myWallJumpFactorY = 1.0f;
-
-	const float myAirAcceleration = 2.0f;
-	const float myAirDecceleration = 1.0f;
-	const float myMaxAirSpeed = 0.25f;
-	const float myJumpDecceleration = 10.0f;
-
-	const float myMaxHorizontalVelocity = 0.25f;
-	const float myMaxVerticalVelocity = 1.5f;
-	const float myGravity = 4.0f;
-
-	const float myBoostFactor = 2.0f;
-	const float myMaxWallSlideSpeed = 0.2f;
-	const float myWallDrag = 1.0f;
-
-	bool myPlayingOnce;
+	/*Technically should be const values, but can't because JSON*/
+	//======================================//
+	float myWalkDecceleration = 2.0f;		 //
+	float myWalkSpeed = 2.0f;					 //
+														 //
+	float myJumpDecceleration = 10.0f;		 //
+	float myJumpSpeed = 1.5f;					 //
+														 //
+	float myWallJumpSpeed = 0.7f;				 //
+	float myWallJumpFactorX = 2.0f;			 //
+	float myWallDrag = 1.0f;					 //
+	float myMaxWallSlideSpeed = 0.2f;		 //
+														 //
+	float myAirAcceleration = 2.0f;			 //
+	float myAirDecceleration = 1.0f;			 //
+	float myMaxAirSpeed = 0.25f;				 //
+														 //
+	float myMaxHorizontalVelocity = 0.25f;	 //
+	float myMaxVerticalVelocity = 1.5f;		 //
+	float myGravity = 4.0f;						 //
+	float myBoostFactor = 2.0f;				 //
+	//======================================//
 
 	int myUp = 'W';
 	int myLeft = 'A';
@@ -124,12 +133,12 @@ protected:
 	int myRight = 'D';
 	int myJump = VK_SPACE;
 	int myBoost = VK_SHIFT;
-	
+
 	bool myCanJumpAgain = true;
 
 	int myDirection = 1;
 	EAnimationState myCurrentAnimation = EAnimationState::Idle;
+
 	std::shared_ptr<Collider> myCollider;
-	std::shared_ptr<Tga2D::CSprite> mySprite;
 	std::vector<std::shared_ptr<AnimationClip>> myAnimations;
 };
