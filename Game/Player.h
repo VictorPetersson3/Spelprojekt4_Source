@@ -106,25 +106,25 @@ protected:
 
 	/*Technically should be const values, but can't because JSON*/
 	//======================================//
-	float myWalkDecceleration = 2.0f;		 //
-	float myWalkSpeed = 2.0f;					 //
-														 //
-	float myJumpDecceleration = 10.0f;		 //
-	float myJumpSpeed = 1.5f;					 //
-														 //
-	float myWallJumpSpeed = 0.7f;				 //
-	float myWallJumpFactorX = 2.0f;			 //
-	float myWallDrag = 1.0f;					 //
-	float myMaxWallSlideSpeed = 0.2f;		 //
-														 //
+	float myWalkDecceleration = 2.0f;       //
+	float myWalkSpeed = 2.0f;               //
+	                                        //
+	float myJumpDecceleration = 10.0f;      //
+	float myJumpSpeed = 1.5f;               //
+	                                        //
+	float myWallJumpSpeed = 0.7f;	          //
+	float myWallJumpFactorX = 2.0f;         //
+	float myWallDrag = 1.0f;                //
+	float myMaxWallSlideSpeed = 0.2f;       //
+	                                        //
 	float myAirAcceleration = 2.0f;			 //
-	float myAirDecceleration = 1.0f;			 //
-	float myMaxAirSpeed = 0.25f;				 //
-														 //
-	float myMaxHorizontalVelocity = 0.25f;	 //
-	float myMaxVerticalVelocity = 1.5f;		 //
-	float myGravity = 4.0f;						 //
-	float myBoostFactor = 2.0f;				 //
+	float myAirDecceleration = 1.0f;        //
+	float myMaxAirSpeed = 0.25f;            //
+	                                        //
+	float myMaxHorizontalVelocity = 0.25f;  //
+	float myMaxVerticalVelocity = 1.5f;     //
+	float myGravity = 4.0f;                 //
+	float myBoostFactor = 2.0f;             //
 	//======================================//
 
 	int myUp = 'W';
