@@ -75,8 +75,6 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 		{
 			int entityArrayLength = static_cast<int>(document["levels"][0]["layerInstances"][j]["entityInstances"].Capacity());
 
-			
-
 			for (int i = 0; i < entityArrayLength; i++)
 			{
 				std::string entityType = document["levels"][0]["layerInstances"][j]["entityInstances"][i]["__identifier"].GetString();
@@ -126,6 +124,11 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 					colliderToPushBack.get()->SetTag(EColliderTag::EndZone);
 
 					levelToPushBack.get()->AddLevelEnd(colliderToPushBack);
+				}
+
+				if (entityType == "Shooter")
+				{
+
 				}
 			}
 		}
