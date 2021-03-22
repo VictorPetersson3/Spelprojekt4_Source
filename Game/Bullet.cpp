@@ -7,7 +7,7 @@ Bullet::Bullet()
 	myIsActive = false;
 	myCollider = Collider(mySize / 2, myPosition);
 	myCollider.SetTag(EColliderTag::KillZone);
-	myRenderCommand = std::make_unique<RenderCommand>("Sprites/TempBullet.dds", 1);
+	myRenderCommand = new RenderCommand("Sprites/TempSaw.dds", 1);
 }
 
 void Bullet::Call(Vector2 aPosition, Vector2 aDirection)

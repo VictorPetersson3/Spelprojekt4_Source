@@ -134,7 +134,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="AnimationClip.h" />
     <ClInclude Include="Collider.h" />
@@ -188,7 +187,6 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Shooter.cpp" />
     <ClCompile Include="ShooterBulletManager.cpp" />
-    <ClCompile Include="Sprite_Renderer.cpp" />
     <ClCompile Include="LevelSelect.cpp" />
     <ClCompile Include="LinkString.cpp" />
     <ClCompile Include="Level.cpp" />

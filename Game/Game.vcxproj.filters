@@ -123,7 +123,7 @@
     </ClInclude>
     <ClInclude Include="ShooterBulletManager.h">
       <Filter>Obstacles</Filter>
-     </ClInclude>
+    </ClInclude>
     <ClInclude Include="AnimationClip.h">
       <Filter>Rendering</Filter>
     </ClInclude>

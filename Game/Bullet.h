@@ -19,13 +19,13 @@ public:
 
 private:
 
-	std::unique_ptr<RenderCommand> myRenderCommand;
+	RenderCommand* myRenderCommand;
 	Vector2 myPosition;
 	Vector2 myDirection;
 	Collider myCollider;
-	static float mySpeed;
-	static float myMaxLifetime;
-	static float mySize;
+	float mySpeed = 1;
+	float myMaxLifetime = 5;
+	float mySize = 16;
 	float myRemainingLifetime;
 	bool myIsActive;	
 };

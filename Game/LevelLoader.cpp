@@ -20,6 +20,7 @@
 #include "Level.h"
 #include "RenderCommand.h"
 #include "Saw.h"
+#include "Shooter.h"
 #include "TerrainTile.h"
 
 
@@ -94,6 +95,10 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 				{
 					levelToPushBack.get()->AddSaw(AddSaw(gridSize, i, j, renderSizeX, renderSizeY));
 				}
+				if (entityType == "Shooter" || entityType == "shooter")
+				{
+					levelToPushBack.get()->AddShooter(AddShooter(gridSize, i, j, renderSizeX, renderSizeY));
+				}
 
 				if (entityType == "PlayerStart")
 				{
@@ -103,7 +108,7 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 					//std::cout << j << "\n";
 
 
-					xPosition /=  static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().x);
+					xPosition /= static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().x);
 					yPosition /= static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().y);
 
 					//std::cout << xPosition << "\n";
@@ -258,10 +263,37 @@ std::shared_ptr<Saw> LevelLoader::AddSaw(int aGridSize, int aEntityIndex, int aL
 	}
 
 	aSawToPushBack.myCollider = Collider(16, { document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / aRenderSizeX * aGridSize,
-											   document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / aRenderSizeY * aGridSize }); 
+											   document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / aRenderSizeY * aGridSize });
 
 	aSawToPushBack.myCollider.SetTag(EColliderTag::KillZone);
 
 	return std::make_shared<Saw>(aSawToPushBack);
+
+}
+std::shared_ptr<Shooter> LevelLoader::AddShooter(int aGridSize, int aEntityIndex, int aLayerIndex, int aRenderSizeX, int aRenderSizeY)
+{
+	Shooter shooterToPushBack = Shooter();
+	std::string shootDirection = document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][0]["__value"].GetString();
+	float xPosition = document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / aRenderSizeX * aGridSize;
+	float yPosition = document["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / aRenderSizeY * aGridSize;
+
+	if (shootDirection == "Up")
+	{
+		shooterToPushBack.Init({ xPosition, yPosition }, Shooter::EFireDirection::Up);
+	}
+	else if (shootDirection == "Down")
+	{
+		shooterToPushBack.Init({ xPosition, yPosition }, Shooter::EFireDirection::Down);
+	}
+	else if (shootDirection == "Right")
+	{
+		shooterToPushBack.Init({ xPosition, yPosition }, Shooter::EFireDirection::Right);
+	}
+	else
+	{
+		shooterToPushBack.Init({ xPosition, yPosition }, Shooter::EFireDirection::Left);
+	}
+
+	return std::make_shared<Shooter>(shooterToPushBack);
 
 }

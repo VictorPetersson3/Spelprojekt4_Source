@@ -36,7 +36,7 @@ void Player::InitJSON()
 	myWalkDecceleration = doc["Walking and running"]["Decceleration"].GetFloat();
 
 	myJumpSpeed = doc["Jumping"]["Speed"].GetFloat();
-	myJumpDecceleration = doc["Speed"]["Decceleration"].GetFloat();
+	myJumpDecceleration = doc["Jumping"]["Decceleration"].GetFloat();
 
 	myWallJumpSpeed = doc["Wall stuff"]["Jump speed"].GetFloat();
 	myWallJumpFactorX = doc["Wall stuff"]["X factor"].GetFloat();;

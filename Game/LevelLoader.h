@@ -12,6 +12,7 @@ namespace Tga2D
 class Camera;
 class LevelData;
 class Saw;
+class Shooter;
 class RenderCommand;
 struct TerrainTile;
 
@@ -39,6 +40,8 @@ private:
 	void SetSpriteSize(RenderCommand& aRenderCommand, float aGridSize);
 
 	std::shared_ptr<Saw> AddSaw(int aGridSize, int aEntityIndex, int aLayerIndex, int aRenderSizeX, int aRenderSizeY);
+
+	std::shared_ptr<Shooter> AddShooter(int aGridSize, int aEntityIndex, int aLayerIndex, int aRenderSizeX, int aRenderSizeY);
 
 	rapidjson::Document document;
 

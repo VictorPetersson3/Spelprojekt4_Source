@@ -4,6 +4,7 @@
 #include "Enums.h"
 #include <memory>
 #include "CommonUtilities/GrowingArray.hpp"
+#include "ShooterBulletManager.h"
 
 class Shooter;
 class Player;
@@ -55,6 +56,7 @@ private:
 
 	CommonUtilities::GrowingArray<std::shared_ptr<Tga2D::CSpriteBatch>> mySpriteBatches;
 
+	std::shared_ptr<ShooterBulletManager> myBulletManager;
 	int currentLevelIndex = 0;
 	int amountOfLevels = 0;
 };

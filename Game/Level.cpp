@@ -32,6 +32,7 @@ Level::Level()
 	myPauseMenu->Init(EStateType::ePauseMenu);
 	myEndOfLevelScreen = std::make_shared<EndOfLevelScreen>(this);
 	myEndOfLevelScreen->Init(EStateType::eEndOfLevelScreen);
+	myBulletManager = std::make_shared<ShooterBulletManager>();
 }
 
 Level::~Level()
@@ -66,7 +67,6 @@ void Level::Update()
 		myCamera->BatchRenderSprite(t.get()->myRenderCommand);
 	}
 	float deltaTime = Timer::GetInstance().GetDeltaTime();
-
 	for (auto saw : mySaws)
 	{
 		saw.get()->Update(deltaTime);
@@ -142,6 +142,8 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 	myTerrain.clear();
 
 	myTerrain = aData.get()->GetTiles();
+	myShooters = aData.get()->GetShooters();
+
 
 	for (int i = 0; i < aData->GetSpriteBatches().Size(); i++)
 	{
@@ -149,10 +151,14 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 
 	}
 
-
 	for (auto t : myTerrain)
 	{
 		t.get()->myCollider.get()->AddToManager();
+	}
+
+	for (auto shooter : myShooters)
+	{
+		shooter.get()->SetManager(myBulletManager);
 	}
 
 	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y });

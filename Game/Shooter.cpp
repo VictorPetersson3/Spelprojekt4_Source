@@ -7,7 +7,7 @@
 void Shooter::Init(Vector2 aPosition, Shooter::EFireDirection aFireDirection)
 {
 	myPosition = aPosition;
-	myRenderCommand = std::make_shared<RenderCommand>("Sprites/tempShooter.dds", 0);
+	myRenderCommand = std::make_shared<RenderCommand>("Sprites/tempSaw.dds", 0);
 
 	switch (aFireDirection)
 	{
@@ -26,6 +26,11 @@ void Shooter::Init(Vector2 aPosition, Shooter::EFireDirection aFireDirection)
 	default:
 		break;
 	}
+}
+
+void Shooter::SetManager(std::shared_ptr<ShooterBulletManager> aBulletManager)
+{
+	myBulletManager = aBulletManager;
 }
 
 std::shared_ptr<RenderCommand> Shooter::GetRenderCommand()
