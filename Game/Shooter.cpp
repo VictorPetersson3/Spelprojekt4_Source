@@ -49,6 +49,8 @@ void Shooter::Update(float aDeltaTime)
 	{
 		myFireTimer -= aDeltaTime;
 	}
+
+	myRenderCommand->Update(myPosition);
 }
 
 void Shooter::Render()
