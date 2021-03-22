@@ -13,7 +13,7 @@
 #define INPUT InputManager::GetInstance() 
 #define DELTA_TIME Timer::GetInstance().GetDeltaTime()
 
-Player::Player(){}
+Player::Player(EPowerUp aPowerup) : myCurrentPower(aPowerup) {}
 Player::~Player(){}
 
 void Player::Init(CommonUtilities::Vector2f aPosition)
@@ -126,14 +126,11 @@ void Player::InitCollider()
 void Player::Update(Camera& aCamera)
 {
 	//Sleep(1);
-
-	if (INPUT.IsKeyUp(myJump))
-	{
-		myCanJumpAgain = true;
-	}
+	UpdateJumping();
 
 	ManageStates();
 	UpdatePhysics();
+
 	HandleAnimations(aCamera);
 }
 
@@ -200,6 +197,16 @@ void Player::ChangeInput(EInputType anInputType)
 	//	myJump = XINPUT_GAMEPAD_A;
 	//	myBoost = XINPUT_GAMEPAD_B;
 	//	break;
+	}
+}
+
+void Player::UpdateJumping()
+{
+	if (myIsGrounded) myCanDoubleJump = true;
+	if (INPUT.IsKeyUp(myJump))
+	{
+		myCanJumpAgain = true;
+		return;
 	}
 }
 
@@ -500,9 +507,34 @@ void Player::Falling()
 			else if (myCurrentVelocity.x >= -myMaxAirSpeed) myCurrentVelocity.x -= myAirAcceleration * DELTA_TIME;
 		}
 	}
-	if (!INPUT.IsKeyDown(myJump) && myCurrentVelocity.y < 0.0f)
+
+	switch (myCurrentPower)
 	{
-		myCurrentVelocity.y += myJumpDecceleration * DELTA_TIME;
+	case EPowerUp::DoubleJump:
+		if (INPUT.IsKeyDown(myJump) && myCanDoubleJump && myCanJumpAgain)
+		{
+			myCurrentVelocity.y = -myJumpSpeed;
+
+			if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eJumpL);
+			else PlaySpecificAnimation(EPlayerAnimationClips::eJumpR);
+
+			myCanDoubleJump = false;
+			myCanJumpAgain = false;
+		}
+		if (!INPUT.IsKeyDown(myJump) && myCurrentVelocity.y < 0.0f)
+		{
+			myCurrentVelocity.y += myJumpDecceleration * DELTA_TIME;
+		}
+		break;
+	case EPowerUp::Glide:
+		// glide code
+		break;
+	default:
+		if (!INPUT.IsKeyDown(myJump) && myCurrentVelocity.y < 0.0f)
+		{
+			myCurrentVelocity.y += myJumpDecceleration * DELTA_TIME;
+		}
+		break;
 	}
 }
 

@@ -42,10 +42,17 @@ enum class EAnimationState
 	Death
 };
 
+enum class EPowerUp
+{
+	Default,
+	DoubleJump,
+	Glide
+};
+
 class Player
 {
 public:
-	Player();
+	Player(EPowerUp aPowerup = EPowerUp::DoubleJump);
 	~Player();
 
 	virtual void Init(CommonUtilities::Vector2f aPosition);
@@ -66,6 +73,7 @@ protected:
 
 	void ManageStates();
 	void UpdatePhysics();
+	void UpdateJumping();
 	void HandleAnimations(Camera& aCamera);
 
 	void CacheCurrentValues();
@@ -135,10 +143,12 @@ protected:
 	int myBoost = VK_SHIFT;
 
 	bool myCanJumpAgain = true;
+	bool myCanDoubleJump = true;
+	bool myCanGlide = true;
 
 	int myDirection = 1;
 	EAnimationState myCurrentAnimation = EAnimationState::Idle;
-
+	EPowerUp myCurrentPower = EPowerUp::Default;
 	std::shared_ptr<Collider> myCollider;
 	std::vector<std::shared_ptr<AnimationClip>> myAnimations;
 };
