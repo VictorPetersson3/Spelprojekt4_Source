@@ -19,19 +19,19 @@ void Camera::Init(const CommonUtilities::Vector2f& aPos)
 //Here the logic for following the player will be or whatever we will follow or the rules we have
 void Camera::Update(const CommonUtilities::Vector2f aPositionToFollow)
 {
-	if (InputManager::GetInstance().IsKeyDown('I'))
+	if (InputManagerS::GetInstance().GetKey('I'))
 	{
 		myPosition.y -= myMovementSpeed * Timer::GetInstance().GetDeltaTime();
 	}
-	if (InputManager::GetInstance().IsKeyDown('L'))
+	if (InputManagerS::GetInstance().GetKey('L'))
 	{
 		myPosition.x += myMovementSpeed * Timer::GetInstance().GetDeltaTime();
 	}
-	if (InputManager::GetInstance().IsKeyDown('J'))
+	if (InputManagerS::GetInstance().GetKey('J'))
 	{
 		myPosition.x -= myMovementSpeed * Timer::GetInstance().GetDeltaTime();
 	}
-	if (InputManager::GetInstance().IsKeyDown('K'))
+	if (InputManagerS::GetInstance().GetKey('K'))
 	{
 		myPosition.y += myMovementSpeed * Timer::GetInstance().GetDeltaTime();
 	}

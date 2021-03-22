@@ -70,15 +70,16 @@ void MainMenu::Update()
 {
 	myBackground->Update();
 
-	if (InputManager::GetInstance().IsKeyPressed(VK_ESCAPE))
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_ESCAPE))
 	{
 		ExitButtonPress();
+		return;
 	}
-	if (InputManager::GetInstance().IsKeyPressed('W') && myCurrentHoveredButton > 0)
+	if (InputManagerS::GetInstance().GetKeyDown('W') && myCurrentHoveredButton > 0)
 	{
 		myCurrentHoveredButton--;
 	}
-	else if (InputManager::GetInstance().IsKeyPressed('S') && myCurrentHoveredButton < 3)
+	else if (InputManagerS::GetInstance().GetKeyDown('S') && myCurrentHoveredButton < 3)
 	{
 		myCurrentHoveredButton++;
 	}

@@ -56,26 +56,26 @@ void LevelSelect::Update()
 		myCharacterMoveTimer += Timer::GetInstance().GetDeltaTime() * 2.5f;
 	}
 
-	if (InputManager::GetInstance().IsKeyPressed(VK_ESCAPE))
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_ESCAPE))
 	{
 		BackButtonPress();
 	}
-	if (InputManager::GetInstance().IsKeyPressed('W') && myCurrentHoveredButtonVertical > 0)
+	if (InputManagerS::GetInstance().GetKeyDown('W') && myCurrentHoveredButtonVertical > 0)
 	{
 		myCurrentHoveredButtonVertical--;
 	}
-	else if (InputManager::GetInstance().IsKeyPressed('S') && myCurrentHoveredButtonVertical < 1)
+	else if (InputManagerS::GetInstance().GetKeyDown('S') && myCurrentHoveredButtonVertical < 1)
 	{
 		myCurrentHoveredButtonVertical++;
 	}
-	if (InputManager::GetInstance().IsKeyPressed('A') && myCurrentHoveredButtonVertical != 1 && myCurrentHoveredButtonHorizontal > 0)
+	if (InputManagerS::GetInstance().GetKeyDown('A') && myCurrentHoveredButtonVertical != 1 && myCurrentHoveredButtonHorizontal > 0)
 	{
 		myCharactersPreviousIndex = myCharactersCurrentIndex;
 		myCurrentHoveredButtonHorizontal--;
 		myCharactersCurrentIndex = myCurrentHoveredButtonHorizontal;
 		myCharacterMoveTimer = 0;
 	}
-	else if (InputManager::GetInstance().IsKeyPressed('D') && myCurrentHoveredButtonVertical != 1 && myCurrentHoveredButtonHorizontal < 1)
+	else if (InputManagerS::GetInstance().GetKeyDown('D') && myCurrentHoveredButtonVertical != 1 && myCurrentHoveredButtonHorizontal < 1)
 	{
 		myCharactersPreviousIndex = myCharactersCurrentIndex;
 		myCurrentHoveredButtonHorizontal++;

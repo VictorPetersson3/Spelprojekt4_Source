@@ -2,28 +2,28 @@
 #include "InputManager.h"
 #include <assert.h>
 
-CommonUtilities::InputManager* InputManager::myInstance = nullptr;
+InputManager* InputManagerS::myInstance = nullptr;
 
-void InputManager::Init()
+void InputManagerS::Init()
 {
     assert(myInstance == nullptr && "Input Manager have already been Created");
-    myInstance = new CommonUtilities::InputManager();
+    myInstance = new InputManager();
 }
 
-void InputManager::Destroy()
+void InputManagerS::Destroy()
 {
     assert(myInstance != nullptr && "Input Manager have already been destroyed");
     delete myInstance;
     myInstance = nullptr;
 }
 
-CommonUtilities::InputManager& InputManager::GetInstance()
+InputManager& InputManagerS::GetInstance()
 {
     assert(myInstance != nullptr && "Input Manager is Nullptr");
     return *myInstance;
 }
 
-bool InputManager::IsReady()
+bool InputManagerS::IsReady()
 {
     return myInstance != nullptr;
 }

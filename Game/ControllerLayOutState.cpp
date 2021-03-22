@@ -21,7 +21,7 @@ void ControllerLayOutState::Init(const EStateType& aState)
 
 void ControllerLayOutState::Update()
 {
-	if (InputManager::GetInstance().IsKeyPressed(VK_ESCAPE))
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_ESCAPE))
 	{
 		BackButtonPress();
 	}

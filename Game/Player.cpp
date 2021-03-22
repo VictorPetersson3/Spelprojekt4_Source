@@ -11,7 +11,7 @@
 #include "AnimationClip.h"
 #include "RenderCommand.h"
 
-#define INPUT InputManager::GetInstance() 
+#define INPUT InputManagerS::GetInstance() 
 #define DELTA_TIME Timer::GetInstance().GetDeltaTime()
 
 Player::Player()
@@ -96,7 +96,7 @@ void Player::Update(Camera& aCamera)
 {
 	//Sleep(1);
 
-	if (INPUT.IsKeyUp(myJump))
+	if (INPUT.GetKeyUp(myJump))
 	{
 		myCanJumpAgain = true;
 	}
@@ -147,10 +147,10 @@ void Player::ChangeInput(EInputType anInputType)
 	switch (anInputType)
 	{
 	case EInputType::ArrowKeys:
-		myUp = VK_UP;
-		myLeft = VK_LEFT;
-		myDown = VK_DOWN;
-		myRight = VK_RIGHT;
+		myUp = DIK_UP;
+		myLeft = DIK_LEFT;
+		myDown = DIK_DOWN;
+		myRight = DIK_RIGHT;
 		myJump = 'X';
 		myBoost = 'Z';
 		break;
@@ -159,8 +159,8 @@ void Player::ChangeInput(EInputType anInputType)
 		myLeft = 'A';
 		myDown = 'S';
 		myRight = 'D';
-		myJump = VK_SPACE;
-		myBoost = VK_SHIFT;
+		myJump = DIK_SPACE;
+		myBoost = DIK_LSHIFT;
 		break;
 	case EInputType::Controller:
 		myUp = XINPUT_GAMEPAD_DPAD_UP;
@@ -342,12 +342,12 @@ void Player::Idle()
 		/*if (myHugsLeftWall || myHugsRightWall) myMoveState = EMovementState::Ledge;*/
 		return;
 	}
-	if (INPUT.IsKeyDown(myLeft) != INPUT.IsKeyDown(myRight))
+	if (INPUT.GetKey(myLeft) != INPUT.GetKey(myRight))
 	{
 		myMoveState = EPlayerState::Walk;
 		return;
 	}
-	else if (INPUT.IsKeyDown(myJump) && myCanJumpAgain)
+	else if (INPUT.GetKey(myJump) && myCanJumpAgain)
 	{
 		printf("jag borde bara skrivas ut en g�ng per hopp\n");
 		myCurrentVelocity.y = -myJumpSpeed;
@@ -370,12 +370,12 @@ void Player::Walk()
 
 	myCurrentAnimation = EAnimationState::Run;
 
-	if (INPUT.IsKeyDown(myLeft) == INPUT.IsKeyDown(myRight))
+	if (INPUT.GetKey(myLeft) == INPUT.GetKey(myRight))
 	{
 		myMoveState = EPlayerState::Idle;
 		return;
 	}
-	else if (INPUT.IsKeyDown(myRight))
+	else if (INPUT.GetKey(myRight))
 	{
 		myDirection = 1;
 		if (myHugsRightWall)
@@ -384,7 +384,7 @@ void Player::Walk()
 		}
 		else
 		{
-			if (INPUT.IsKeyDown(myBoost))
+			if (INPUT.GetKey(myBoost))
 			{
 				myCurrentAnimation = EAnimationState::Sprint;
 				if (myCurrentVelocity.x <= myMaxAirSpeed * myBoostFactor) myCurrentVelocity.x += myWalkSpeed * DELTA_TIME * myBoostFactor;
@@ -392,7 +392,7 @@ void Player::Walk()
 			else if (myCurrentVelocity.x <= myMaxHorizontalVelocity) myCurrentVelocity.x += myWalkSpeed * DELTA_TIME;
 		}
 	}
-	else if (INPUT.IsKeyDown(myLeft))
+	else if (INPUT.GetKey(myLeft))
 	{
 		myDirection = -1;
 		if (myHugsLeftWall)
@@ -401,7 +401,7 @@ void Player::Walk()
 		}
 		else
 		{
-			if (INPUT.IsKeyDown(myBoost))
+			if (INPUT.GetKey(myBoost))
 			{
 				myCurrentAnimation = EAnimationState::Sprint;
 				if (myCurrentVelocity.x >= -myMaxAirSpeed * myBoostFactor) myCurrentVelocity.x -= myWalkSpeed * DELTA_TIME * myBoostFactor;
@@ -410,7 +410,7 @@ void Player::Walk()
 		}
 	}
 
-	if (INPUT.IsKeyDown(myJump) && myCanJumpAgain)
+	if (INPUT.GetKey(myJump) && myCanJumpAgain)
 	{
 		myCurrentVelocity.y = -myJumpSpeed;
 		//jump sfx ?
@@ -441,13 +441,13 @@ void Player::Falling()
 
 	//std::printf("%d", myIsGrounded);
 
-	if (INPUT.IsKeyDown(myLeft) == INPUT.IsKeyDown(myRight))
+	if (INPUT.GetKey(myLeft) == INPUT.GetKey(myRight))
 	{
 		if (myIsGrounded) myMoveState = EPlayerState::Idle;
 		if (myCurrentVelocity.x > 0) myCurrentVelocity.x -= myAirDecceleration * DELTA_TIME;
 		if (myCurrentVelocity.x < 0) myCurrentVelocity.x += myAirDecceleration * DELTA_TIME;
 	}
-	else if (INPUT.IsKeyDown(myRight))
+	else if (INPUT.GetKey(myRight))
 	{
 		myDirection = 1;
 
@@ -459,14 +459,14 @@ void Player::Falling()
 		}
 		else
 		{
-			if (INPUT.IsKeyDown(myBoost))
+			if (INPUT.GetKey(myBoost))
 			{
 				if (myCurrentVelocity.x <= myMaxAirSpeed * myBoostFactor) myCurrentVelocity.x += myAirAcceleration * DELTA_TIME * myBoostFactor;
 			}
 			else if (myCurrentVelocity.x <= myMaxAirSpeed) myCurrentVelocity.x += myAirAcceleration * DELTA_TIME;
 		}
 	}
-	else if (INPUT.IsKeyDown(myLeft))
+	else if (INPUT.GetKey(myLeft))
 	{
 		myDirection = -1;
 
@@ -478,14 +478,14 @@ void Player::Falling()
 		}
 		else
 		{
-			if (INPUT.IsKeyDown(myBoost))
+			if (INPUT.GetKey(myBoost))
 			{
 				if (myCurrentVelocity.x >= -myMaxAirSpeed * myBoostFactor) myCurrentVelocity.x -= myAirAcceleration * DELTA_TIME * myBoostFactor;
 			}
 			else if (myCurrentVelocity.x >= -myMaxAirSpeed) myCurrentVelocity.x -= myAirAcceleration * DELTA_TIME;
 		}
 	}
-	if (!INPUT.IsKeyDown(myJump) && myCurrentVelocity.y < 0.0f)
+	if (!INPUT.GetKey(myJump) && myCurrentVelocity.y < 0.0f)
 	{
 		myCurrentVelocity.y += myJumpDecceleration * DELTA_TIME;
 	}
@@ -512,12 +512,12 @@ void Player::Ledge()
 	if (myCurrentVelocity.y >= myMaxWallSlideSpeed) myCurrentVelocity.y = myMaxWallSlideSpeed;
 
 
-	if (INPUT.IsKeyDown(myLeft) == INPUT.IsKeyDown(myRight))
+	if (INPUT.GetKey(myLeft) == INPUT.GetKey(myRight))
 	{
 		myCurrentVelocity.x = 0;
 		myMoveState = EPlayerState::Idle;
 	}
-	else if (INPUT.IsKeyDown(myRight))
+	else if (INPUT.GetKey(myRight))
 	{
 		myDirection = 1;
 
@@ -525,7 +525,7 @@ void Player::Ledge()
 		{
 			myCurrentVelocity.x = 0.0f;
 		}
-		if (INPUT.IsKeyDown(myJump) && myCanJumpAgain)
+		if (INPUT.GetKey(myJump) && myCanJumpAgain)
 		{
 			myCurrentVelocity.x = -myWallJumpSpeed;
 			myCurrentVelocity.y = -myJumpSpeed * myWallJumpFactorY;
@@ -540,14 +540,14 @@ void Player::Ledge()
 			return;
 		}
 	}
-	else if (INPUT.IsKeyDown(myLeft))
+	else if (INPUT.GetKey(myLeft))
 	{
 		myDirection = -1;
 		if (myHugsLeftWall)
 		{
 			myCurrentVelocity.x = 0.0f;
 		}
-		if (INPUT.IsKeyDown(myJump) && myCanJumpAgain)
+		if (INPUT.GetKey(myJump) && myCanJumpAgain)
 		{
 			myCurrentVelocity.x = myWallJumpSpeed;
 			myCurrentVelocity.y = -myJumpSpeed * myWallJumpFactorY;
