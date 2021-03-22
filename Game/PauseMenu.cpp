@@ -29,11 +29,11 @@ void PauseMenu::Update()
 	{
 		BackButtonPress();
 	}
-	if (InputManagerS::GetInstance().GetKeyDown('S') && myCurrentHoveredButton < GetUIButtonElementsSize())
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_S) && myCurrentHoveredButton < GetUIButtonElementsSize())
 	{
 		myCurrentHoveredButton++;
 	}
-	else if (InputManagerS::GetInstance().GetKeyDown('W') && myCurrentHoveredButton > 0)
+	else if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButton > 0)
 	{
 		myCurrentHoveredButton--;
 	}

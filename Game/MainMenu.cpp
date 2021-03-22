@@ -75,11 +75,11 @@ void MainMenu::Update()
 		ExitButtonPress();
 		return;
 	}
-	if (InputManagerS::GetInstance().GetKeyDown('W') && myCurrentHoveredButton > 0)
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButton > 0)
 	{
 		myCurrentHoveredButton--;
 	}
-	else if (InputManagerS::GetInstance().GetKeyDown('S') && myCurrentHoveredButton < 3)
+	else if (InputManagerS::GetInstance().GetKeyDown(DIK_S) && myCurrentHoveredButton < 3)
 	{
 		myCurrentHoveredButton++;
 	}

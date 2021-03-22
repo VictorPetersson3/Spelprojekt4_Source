@@ -60,22 +60,22 @@ void LevelSelect::Update()
 	{
 		BackButtonPress();
 	}
-	if (InputManagerS::GetInstance().GetKeyDown('W') && myCurrentHoveredButtonVertical > 0)
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButtonVertical > 0)
 	{
 		myCurrentHoveredButtonVertical--;
 	}
-	else if (InputManagerS::GetInstance().GetKeyDown('S') && myCurrentHoveredButtonVertical < 1)
+	else if (InputManagerS::GetInstance().GetKeyDown(DIK_S) && myCurrentHoveredButtonVertical < 1)
 	{
 		myCurrentHoveredButtonVertical++;
 	}
-	if (InputManagerS::GetInstance().GetKeyDown('A') && myCurrentHoveredButtonVertical != 1 && myCurrentHoveredButtonHorizontal > 0)
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_A) && myCurrentHoveredButtonVertical != 1 && myCurrentHoveredButtonHorizontal > 0)
 	{
 		myCharactersPreviousIndex = myCharactersCurrentIndex;
 		myCurrentHoveredButtonHorizontal--;
 		myCharactersCurrentIndex = myCurrentHoveredButtonHorizontal;
 		myCharacterMoveTimer = 0;
 	}
-	else if (InputManagerS::GetInstance().GetKeyDown('D') && myCurrentHoveredButtonVertical != 1 && myCurrentHoveredButtonHorizontal < 1)
+	else if (InputManagerS::GetInstance().GetKeyDown(DIK_D) && myCurrentHoveredButtonVertical != 1 && myCurrentHoveredButtonHorizontal < 1)
 	{
 		myCharactersPreviousIndex = myCharactersCurrentIndex;
 		myCurrentHoveredButtonHorizontal++;

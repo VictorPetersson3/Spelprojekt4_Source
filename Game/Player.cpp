@@ -151,14 +151,14 @@ void Player::ChangeInput(EInputType anInputType)
 		myLeft = DIK_LEFT;
 		myDown = DIK_DOWN;
 		myRight = DIK_RIGHT;
-		myJump = 'X';
-		myBoost = 'Z';
+		myJump = DIK_X;
+		myBoost = DIK_Z;
 		break;
 	case EInputType::WASD:
-		myUp = 'W';
-		myLeft = 'A';
-		myDown = 'S';
-		myRight = 'D';
+		myUp = DIK_W;
+		myLeft = DIK_A;
+		myDown = DIK_S;
+		myRight = DIK_D;
 		myJump = DIK_SPACE;
 		myBoost = DIK_LSHIFT;
 		break;

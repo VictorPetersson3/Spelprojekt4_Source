@@ -47,12 +47,12 @@ void UISlider::SetIsHovered(const bool aHoverStatus)
 void UISlider::SlideSlider()
 {
 	float sliderDirection = 0;
-	if (InputManagerS::GetInstance().GetKey('A'))
+	if (InputManagerS::GetInstance().GetKey(DIK_A))
 	{
 		sliderDirection = -1;
 		//AddSoundHere
 	}
-	if (InputManagerS::GetInstance().GetKey('D'))
+	if (InputManagerS::GetInstance().GetKey(DIK_D))
 	{
 		sliderDirection = 1;
 		//AddSoundHere

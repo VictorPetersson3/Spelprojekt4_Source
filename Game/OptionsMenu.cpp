@@ -42,11 +42,11 @@ void OptionsMenu::Update()
 	{
 		BackButtonPress();
 	}
-	if (InputManagerS::GetInstance().GetKeyDown('S') && myCurrentHoveredButton > 0)
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_S) && myCurrentHoveredButton > 0)
 	{
 		myCurrentHoveredButton--;
 	}
-	else if (InputManagerS::GetInstance().GetKeyDown('W') && myCurrentHoveredButton < 4)
+	else if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButton < 4)
 	{
 		myCurrentHoveredButton++;
 	}

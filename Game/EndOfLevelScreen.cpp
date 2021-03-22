@@ -36,11 +36,11 @@ void EndOfLevelScreen::Update()
 	{
 		NextLevelPress();
 	}
-	if (InputManagerS::GetInstance().GetKeyDown('S') && myCurrentHoveredButton > 0)
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_S) && myCurrentHoveredButton > 0)
 	{
 		myCurrentHoveredButton--;
 	}
-	else if (InputManagerS::GetInstance().GetKeyDown('W') && myCurrentHoveredButton < GetUIButtonElementsSize())
+	else if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButton < GetUIButtonElementsSize())
 	{
 		myCurrentHoveredButton++;
 	}
