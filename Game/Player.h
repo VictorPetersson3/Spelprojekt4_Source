@@ -53,7 +53,7 @@ enum class EPowerUp
 class Player
 {
 public:
-	Player(EPowerUp aPowerup = EPowerUp::DoubleJump);
+	Player(EPowerUp aPowerup = EPowerUp::Glide);
 	~Player();
 
 	virtual void Init(CommonUtilities::Vector2f aPosition);
@@ -134,6 +134,7 @@ protected:
 	float myMaxVerticalVelocity = 1.5f;     //
 	float myGravity = 4.0f;                 //
 	float myBoostFactor = 2.0f;             //
+	float myGlideSpeed = 0.2f;             //
 	//======================================//
 
 	int myUp = 0x11;
@@ -145,7 +146,7 @@ protected:
 	
 	bool myCanJumpAgain = true;
 	bool myCanDoubleJump = true;
-	bool myCanGlide = true;
+	bool myIsGliding = false;
 
 	int myDirection = 1;
 	EAnimationState myCurrentAnimation = EAnimationState::Idle;

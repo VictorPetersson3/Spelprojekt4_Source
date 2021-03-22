@@ -207,7 +207,6 @@ void Player::UpdateJumping()
 	if (INPUT.GetKeyUp(myJump))
 	{
 		myCanJumpAgain = true;
-		return;
 	}
 }
 
@@ -462,6 +461,7 @@ void Player::Falling()
 	else myCurrentAnimation = EAnimationState::Jump;
 
 	if (myCurrentVelocity.y >= myMaxVerticalVelocity) myCurrentVelocity.y = myMaxVerticalVelocity;
+	else if (myIsGliding) myCurrentVelocity.y = myGlideSpeed;
 	else myCurrentVelocity.y += myGravity * DELTA_TIME;
 
 	if (INPUT.GetKey(myLeft) == INPUT.GetKey(myRight))
@@ -522,20 +522,25 @@ void Player::Falling()
 			myCanDoubleJump = false;
 			myCanJumpAgain = false;
 		}
-		if (!INPUT.GetKey(myJump) && myCurrentVelocity.y < 0.0f)
-		{
-			myCurrentVelocity.y += myJumpDecceleration * DELTA_TIME;
-		}
 		break;
 	case EPowerUp::Glide:
-		// glide code
-		break;
-	default:
-		if (!INPUT.GetKey(myJump) && myCurrentVelocity.y < 0.0f)
+		if (INPUT.GetKey(myJump) && myCanJumpAgain && myCurrentVelocity.y > 0.0f)
 		{
-			myCurrentVelocity.y += myJumpDecceleration * DELTA_TIME;
+			myIsGliding = true;
+			myCanJumpAgain = false;
+		}
+		else
+		{
+			myCanJumpAgain = true;
+			myIsGliding = false;
 		}
 		break;
+	default:
+		break;
+	}
+	if (!INPUT.GetKey(myJump) && myCurrentVelocity.y < 0.0f)
+	{
+		myCurrentVelocity.y += myJumpDecceleration * DELTA_TIME;
 	}
 }
 
