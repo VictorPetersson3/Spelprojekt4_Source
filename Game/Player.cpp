@@ -1,33 +1,66 @@
 #include "stdafx.h"
-#include "Timer.h"
 #include "Player.h"
-#include "InputManager.h"
-#include <tga2d/sprite/sprite.h>
-#include <iostream>
-#include <Xinput.h>
+
+#include "AnimationClip.h"
 #include "Camera.h"
 #include "Collider.h"
 #include "CollisionManager.h"
-#include "AnimationClip.h"
+#include "InputManager.h"
+#include "JsonParser.h"
 #include "RenderCommand.h"
+#include "Timer.h"
 
 #define INPUT InputManagerS::GetInstance() 
 #define DELTA_TIME Timer::GetInstance().GetDeltaTime()
 
-Player::Player()
-{
-
-}
-
-Player::~Player()
-{
-
-}
+Player::Player(){}
+Player::~Player(){}
 
 void Player::Init(CommonUtilities::Vector2f aPosition)
 {
 	myPosition = aPosition;
 
+	InitJSON();
+
+	InitAnimations();
+
+	InitCollider();
+}
+
+void Player::InitJSON()
+{
+	JsonParser parser;
+	auto doc = parser.GetDocument("Json/Player.json");
+
+	myWalkSpeed = doc["Walking and running"]["Speed"].GetFloat();
+	myWalkDecceleration = doc["Walking and running"]["Decceleration"].GetFloat();
+
+	myJumpSpeed = doc["Jumping"]["Speed"].GetFloat();
+	myJumpDecceleration = doc["Jumping"]["Decceleration"].GetFloat();
+
+	myWallJumpSpeed = doc["Wall stuff"]["Jump speed"].GetFloat();
+	myWallJumpFactorX = doc["Wall stuff"]["X factor"].GetFloat();;
+	myWallDrag = doc["Wall stuff"]["Wall drag"].GetFloat();
+	myMaxWallSlideSpeed = doc["Wall stuff"]["Maximum wall slide speed"].GetFloat();;
+
+	myAirAcceleration = doc["Air time"]["Acceleration"].GetFloat();
+	myAirDecceleration = doc["Air time"]["Decceleration"].GetFloat();
+	myMaxAirSpeed = doc["Air time"]["Maximum speed"].GetFloat();
+
+	myMaxHorizontalVelocity = doc["Maximum velocities and gravity"]["Maximum horizontal velocity"].GetFloat();
+	myMaxVerticalVelocity = doc["Maximum velocities and gravity"]["Maximum vertical velocity"].GetFloat();
+	myGravity = doc["Maximum velocities and gravity"]["Gravity"].GetFloat();
+	myBoostFactor = doc["Maximum velocities and gravity"]["Boost multiplier"].GetFloat();
+
+	mySize =
+	{
+		doc["Collider"]["Size in pixels"]["X"].GetFloat() / (float)Tga2D::CEngine::GetInstance()->GetRenderSize().x,
+		doc["Collider"]["Size in pixels"]["Y"].GetFloat() / (float)Tga2D::CEngine::GetInstance()->GetRenderSize().y
+	};
+}
+
+void Player::InitAnimations()
+{
 	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_idle_R.dds", 0, (int)EPlayerAnimationClips::eIdleR));
 	myAnimations[0]->Init({ 8, 1 }, { 7, 1 });
 	myAnimations[0]->PlayAnimLoop();
@@ -82,13 +115,11 @@ void Player::Init(CommonUtilities::Vector2f aPosition)
 	myAnimations[19]->Init({ 16, 1 }, { 9, 1 });
 
 	myAnimations[(int)EPlayerAnimationClips::eIdleR]->PlayAnimLoop();
+}
 
-	mySprite = std::make_shared<Tga2D::CSprite>("sprites/Player.dds");
-	mySprite->SetSizeRelativeToImage({ 0.1f,0.1f });
-	mySprite->SetPosition(Tga2D::Vector2f(myPosition.x, myPosition.y));
-	mySprite->SetPivot({ 0.5f,0.5f });
-
-	myCollider = std::make_shared<Collider>(myPosition, mySprite->GetSize().x * (9.0f / 16.0f), mySprite->GetSize().y);
+void Player::InitCollider()
+{
+	myCollider = std::make_shared<Collider>(myPosition, mySize.x/* * (9.0f / 16.0f)*/, mySize.y);
 	myCollider->SetTag(EColliderTag::Player);
 }
 
@@ -103,7 +134,11 @@ void Player::Update(Camera& aCamera)
 
 	ManageStates();
 	UpdatePhysics();
+	HandleAnimations(aCamera);
+}
 
+void Player::HandleAnimations(Camera& aCamera)
+{
 	for (auto& anim : myAnimations)
 	{
 		anim->UpdateAnimation(myPosition);
@@ -113,16 +148,11 @@ void Player::Update(Camera& aCamera)
 	aCamera.RenderSprite(myAnimations[thing]->GetRenderCommand());
 }
 
-//void Player::Render(std::shared_ptr<Camera> aCamera)
-//{
-//	int thing = (int)myCurrentAnimation * 2 + (myDirection < 0);
-//	myAnimations[thing]->Render();
-//}
-
 CommonUtilities::Vector2f Player::GetPosition() const
 {
 	return myPosition;
 }
+
 const bool Player::IsDead() const
 {
 	if (myIsDead)
@@ -162,14 +192,14 @@ void Player::ChangeInput(EInputType anInputType)
 		myJump = DIK_SPACE;
 		myBoost = DIK_LSHIFT;
 		break;
-	case EInputType::Controller:
-		myUp = XINPUT_GAMEPAD_DPAD_UP;
-		myLeft = XINPUT_GAMEPAD_DPAD_LEFT;
-		myDown = XINPUT_GAMEPAD_DPAD_DOWN;
-		myRight = XINPUT_GAMEPAD_DPAD_RIGHT;
-		myJump = XINPUT_GAMEPAD_A;
-		myBoost = XINPUT_GAMEPAD_B;
-		break;
+	//case EInputType::Controller:
+	//	myUp = XINPUT_GAMEPAD_DPAD_UP;
+	//	myLeft = XINPUT_GAMEPAD_DPAD_LEFT;
+	//	myDown = XINPUT_GAMEPAD_DPAD_DOWN;
+	//	myRight = XINPUT_GAMEPAD_DPAD_RIGHT;
+	//	myJump = XINPUT_GAMEPAD_A;
+	//	myBoost = XINPUT_GAMEPAD_B;
+	//	break;
 	}
 }
 
@@ -235,11 +265,7 @@ void Player::UpdatePhysics()
 			posCorrNormal.y = CollisionManager::GetInstance().CollisionNormal(myCollider.get(), verticalCollider).y;
 		}
 
-		//positionCorrection.x += 1.0f / Tga2D::CEngine::GetInstance()->GetRenderSize().x;
-		//positionCorrection.y -= 1.0f / Tga2D::CEngine::GetInstance()->GetRenderSize().y;
-
 		positionCorrection *= posCorrNormal;
-		//myPosition += positionCorrection;
 
 		if (posCorrNormal.y > 0)
 		{
@@ -247,11 +273,9 @@ void Player::UpdatePhysics()
 			myIsRoofied = true;
 		}
 		else if (posCorrNormal.y < 0)
-			//else if (positionCorrection.y > -1.0f / Tga2D::CEngine::GetInstance()->GetRenderSize().x)
 		{
 			myPosition.y += positionCorrection.y;
 			myIsGrounded = true;
-			//myMoveState = EMovementState::Idle;
 		}
 		else
 		{
@@ -301,8 +325,6 @@ void Player::CacheCurrentValues()
 
 void Player::ManageStates()
 {
-	//std::printf("%d", myMoveState);
-
 	switch (myMoveState)
 	{
 	case EPlayerState::Idle:
@@ -330,8 +352,8 @@ void Player::Idle()
 		if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eLandL);
 		else PlaySpecificAnimation(EPlayerAnimationClips::eLandR);
 	}
-	//myCurrentVelocity = CommonUtilities::Vector2f::Zero();
-	if (myCurrentVelocity.x > 0) myCurrentVelocity.x -= myWalkDecceleration * DELTA_TIME; // g�nger deltatime? ??
+
+	if (myCurrentVelocity.x > 0) myCurrentVelocity.x -= myWalkDecceleration * DELTA_TIME;
 	if (myCurrentVelocity.x < 0) myCurrentVelocity.x += myWalkDecceleration * DELTA_TIME;
 
 	myCurrentAnimation = EAnimationState::Idle;
@@ -339,7 +361,6 @@ void Player::Idle()
 	if (!myIsGrounded)
 	{
 		myMoveState = EPlayerState::Falling;
-		/*if (myHugsLeftWall || myHugsRightWall) myMoveState = EMovementState::Ledge;*/
 		return;
 	}
 	if (INPUT.GetKey(myLeft) != INPUT.GetKey(myRight))
@@ -349,7 +370,6 @@ void Player::Idle()
 	}
 	else if (INPUT.GetKey(myJump) && myCanJumpAgain)
 	{
-		printf("jag borde bara skrivas ut en g�ng per hopp\n");
 		myCurrentVelocity.y = -myJumpSpeed;
 		if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eJumpL);
 		else PlaySpecificAnimation(EPlayerAnimationClips::eJumpR);
@@ -413,10 +433,7 @@ void Player::Walk()
 	if (INPUT.GetKey(myJump) && myCanJumpAgain)
 	{
 		myCurrentVelocity.y = -myJumpSpeed;
-		//jump sfx ?
 		myMoveState = EPlayerState::Falling;
-		//myCurrentAnimation = EAnimationState::Jump;
-		printf("jag borde bara skrivas ut en g�ng per hopp\n");
 
 		if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eJumpL);
 		else PlaySpecificAnimation(EPlayerAnimationClips::eJumpR);
@@ -438,8 +455,6 @@ void Player::Falling()
 
 	if (myCurrentVelocity.y >= myMaxVerticalVelocity) myCurrentVelocity.y = myMaxVerticalVelocity;
 	else myCurrentVelocity.y += myGravity * DELTA_TIME;
-
-	//std::printf("%d", myIsGrounded);
 
 	if (INPUT.GetKey(myLeft) == INPUT.GetKey(myRight))
 	{
@@ -498,10 +513,6 @@ void Player::Ledge()
 		myMoveState = EPlayerState::Idle;
 		return;
 	}
-	//if (!myHugsRightWall && !myHugsLeftWall)
-	//{
-	//	myMoveState = EPlayerState::Falling;
-	//}
 
 	if (myCurrentVelocity.y == 0) myCurrentAnimation = EAnimationState::W_Idle;
 	else if (myCurrentVelocity.y > 0) myCurrentAnimation = EAnimationState::W_Down;
@@ -527,11 +538,9 @@ void Player::Ledge()
 		}
 		if (INPUT.GetKey(myJump) && myCanJumpAgain)
 		{
-			myCurrentVelocity.x = -myWallJumpSpeed;
-			myCurrentVelocity.y = -myJumpSpeed * myWallJumpFactorY;
+			myCurrentVelocity.x = -myWallJumpSpeed * myWallJumpFactorX;
+			myCurrentVelocity.y = -myWallJumpSpeed;
 
-			printf("jag borde bara skrivas ut en g�ng per hopp\n");
-			//jump sfx ?
 			PlaySpecificAnimation(EPlayerAnimationClips::eWallJumpL);
 
 			myMoveState = EPlayerState::Falling;
@@ -549,11 +558,9 @@ void Player::Ledge()
 		}
 		if (INPUT.GetKey(myJump) && myCanJumpAgain)
 		{
-			myCurrentVelocity.x = myWallJumpSpeed;
-			myCurrentVelocity.y = -myJumpSpeed * myWallJumpFactorY;
+			myCurrentVelocity.x = myWallJumpSpeed * myWallJumpFactorX;
+			myCurrentVelocity.y = -myWallJumpSpeed;
 
-			printf("jag borde bara skrivas ut en g�ng per hopp\n");
-			//jump sfx ?
 			PlaySpecificAnimation(EPlayerAnimationClips::eWallJumpR);
 
 			myMoveState = EPlayerState::Falling;
