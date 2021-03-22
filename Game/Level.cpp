@@ -54,7 +54,7 @@ void Level::Render()
 void Level::Update()
 {
 	//Pause Menu
-	if (InputManager::GetInstance().IsKeyPressed(VK_ESCAPE))
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_ESCAPE))
 	{
 		StateManager::AddStateOnStack(myPauseMenu);
 	}
@@ -64,7 +64,7 @@ void Level::Update()
 	{
 		myCamera->BatchRenderSprite(t.get()->myRenderCommand);
 	}
-	float deltaTime = Timer::GetInstance().GetDeltaTime();
+	const float deltaTime = Timer::GetInstance().GetDeltaTime();
 
 	for (auto saw : mySaws)
 	{
@@ -72,12 +72,12 @@ void Level::Update()
 		myCamera->BatchRenderSprite(*saw.get()->GetRenderCommand());
 	}
 
-	if (InputManager::GetInstance().IsKeyPressed(VK_F5))
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_F5))
 	{
 		Restart();
 	}
 
-	if (InputManager::GetInstance().IsKeyPressed(VK_F4))
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_F4))
 	{
 		Load(1);
 	}

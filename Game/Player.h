@@ -1,6 +1,7 @@
 #pragma once
 #include <CommonUtilities/Vector2.hpp>
 #include <memory>
+
 #include "Enums.h"
 
 namespace Tga2D
@@ -135,13 +136,13 @@ protected:
 	float myBoostFactor = 2.0f;             //
 	//======================================//
 
-	int myUp = 'W';
-	int myLeft = 'A';
-	int myDown = 'S';
-	int myRight = 'D';
-	int myJump = VK_SPACE;
-	int myBoost = VK_SHIFT;
-
+	int myUp = 0x11;
+	int myLeft = 0x1E;
+	int myDown = 0x1F;
+	int myRight = 0x20;
+	int myJump = 0x39;
+	int myBoost = 0x2A;
+	
 	bool myCanJumpAgain = true;
 	bool myCanDoubleJump = true;
 	bool myCanGlide = true;

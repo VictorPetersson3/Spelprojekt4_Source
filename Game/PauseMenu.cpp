@@ -25,15 +25,15 @@ void PauseMenu::Init(const EStateType& aState)
 
 void PauseMenu::Update()
 {
-	if (InputManager::GetInstance().IsKeyPressed(VK_ESCAPE))
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_ESCAPE))
 	{
 		BackButtonPress();
 	}
-	if (InputManager::GetInstance().IsKeyPressed('S') && myCurrentHoveredButton < GetUIButtonElementsSize())
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_S) && myCurrentHoveredButton < GetUIButtonElementsSize())
 	{
 		myCurrentHoveredButton++;
 	}
-	else if (InputManager::GetInstance().IsKeyPressed('W') && myCurrentHoveredButton > 0)
+	else if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButton > 0)
 	{
 		myCurrentHoveredButton--;
 	}

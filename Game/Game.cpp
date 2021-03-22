@@ -21,13 +21,13 @@ std::wstring BUILD_NAME = L"Retail";
 
 CGame::CGame() : myGameWorld()
 {
-	InputManager::Init();
+	
 	Timer::Init();
 }
 
 CGame::~CGame()
 {
-	InputManager::Destroy();
+	InputManagerS::Destroy();
 	Timer::Destroy();
 }
 
@@ -36,7 +36,14 @@ LRESULT CGame::WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	lParam;
 	wParam;
 	hWnd;
-	InputManager::GetInstance().UpdateMouseInputEvents(hWnd, message, wParam, lParam);
+	HINSTANCE currentInstance = GetModuleHandle(NULL);
+
+	if (!InputManagerS::IsReady())
+	{
+		InputManagerS::Init();
+		InputManagerS::GetInstance().InitDevices(hWnd, currentInstance, DISCL_NONEXCLUSIVE | DISCL_FOREGROUND, DISCL_NONEXCLUSIVE | DISCL_FOREGROUND);
+	}
+	
 	switch (message)
 	{
 		// this message is read when the window is closed
@@ -88,7 +95,7 @@ void CGame::InitCallBack()
 void CGame::UpdateCallBack()
 {
 	Timer::GetInstance().Update();
-	InputManager::GetInstance().Update();
+	InputManagerS::GetInstance().Update();
 	myGameWorld.Update(Tga2D::CEngine::GetInstance()->GetDeltaTime());
 	myGameWorld.Render();
 }
