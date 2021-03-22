@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Saw.h"
 #include "Camera.h"
+#include "RenderCommand.h"
 
 
 Saw::Saw(Vector2 aStartPoint)

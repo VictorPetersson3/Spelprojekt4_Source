@@ -142,11 +142,6 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 
 					levelToPushBack.get()->AddLevelEnd(colliderToPushBack);
 				}
-
-				if (entityType == "Shooter")
-				{
-
-				}
 			}
 		}
 	}
