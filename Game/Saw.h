@@ -3,24 +3,24 @@
 #include <vector>
 #include <CommonUtilities/Vector2.hpp>
 #include <memory>
-#include "RenderCommand.h"
 #include "Collider.h"
+#include "Entity.h"
 
 
 class Camera;
-
+class RenderCommand;
 
 using Vector2 = CommonUtilities::Vector2f;
 
-class Saw
+class Saw : public Entity
 {
 public:
 
 	Saw(Vector2 aStartPoint);
 	void AddPoint(Vector2 aPoint);
 
-	void Update(float aDeltatime);
-	void Render(const std::shared_ptr<Camera> aCamera);
+	void Update(float aDeltatime) override;
+	void Render(const std::shared_ptr<Camera> aCamera) override;
 	const std::shared_ptr<RenderCommand> GetRenderCommand() const;
 
 	Collider myCollider;

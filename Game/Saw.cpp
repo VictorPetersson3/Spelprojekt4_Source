@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Saw.h"
 #include "Camera.h"
+#include "RenderCommand.h"
 
 
 Saw::Saw(Vector2 aStartPoint)
@@ -18,7 +19,6 @@ void Saw::AddPoint(Vector2 aPoint)
 
 void Saw::Update(float aDeltatime)
 {
-
 	if (myPosition.Distance(myPosition, myTravelPoints[myNextPointIndex]) < EPSILON)
 	{
 		myNextPointIndex += myDirection;

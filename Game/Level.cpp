@@ -10,6 +10,7 @@
 #include "Collider.h"
 #include "tga2d/sprite/sprite_batch.h"
 #include "CollisionManager.h"
+#include "Shooter.h"
 
 #include "LevelData.h"
 #include "Saw.h"
@@ -31,6 +32,7 @@ Level::Level()
 	myPauseMenu->Init(EStateType::ePauseMenu);
 	myEndOfLevelScreen = std::make_shared<EndOfLevelScreen>(this);
 	myEndOfLevelScreen->Init(EStateType::eEndOfLevelScreen);
+	myBulletManager = std::make_shared<ShooterBulletManager>();
 }
 
 Level::~Level()
@@ -64,12 +66,16 @@ void Level::Update()
 	{
 		myCamera->BatchRenderSprite(t.get()->myRenderCommand);
 	}
-	const float deltaTime = Timer::GetInstance().GetDeltaTime();
-
+	float deltaTime = Timer::GetInstance().GetDeltaTime();
 	for (auto saw : mySaws)
 	{
 		saw.get()->Update(deltaTime);
 		myCamera->BatchRenderSprite(*saw.get()->GetRenderCommand());
+	}
+	for (auto shooter : myShooters)
+	{
+		shooter.get()->Update(deltaTime);
+		myCamera->BatchRenderSprite(*shooter.get()->GetRenderCommand());
 	}
 
 	if (InputManagerS::GetInstance().GetKeyDown(DIK_F5))
@@ -136,6 +142,8 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 	myTerrain.clear();
 
 	myTerrain = aData.get()->GetTiles();
+	myShooters = aData.get()->GetShooters();
+
 
 	for (int i = 0; i < aData->GetSpriteBatches().Size(); i++)
 	{
@@ -143,10 +151,14 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 
 	}
 
-
 	for (auto t : myTerrain)
 	{
 		t.get()->myCollider.get()->AddToManager();
+	}
+
+	for (auto shooter : myShooters)
+	{
+		shooter.get()->SetManager(myBulletManager);
 	}
 
 	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y });

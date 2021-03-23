@@ -18,7 +18,7 @@ void LevelSelect::Init(const EStateType& aState)
 	GetButtonElement(0)->Init({ 0.45f, 0.5f }, "sprites/UI/LevelSelect/LevelSelect_Map_Marker.dds", 0, [this](int aLevelIndex) {MapMarkerPress(aLevelIndex); }, 0);
 	
 	AddButton(std::make_shared<UIButton>());
-	GetButtonElement(1)->Init({ 0.55f, 0.5f }, "sprites/UI/LevelSelect/LevelSelect_Map_Marker.dds", 0, [this](int aLevelIndex) {MapMarkerPress(aLevelIndex); }, 1);
+	GetButtonElement(1)->Init({ 0.55f, 0.5f }, "sprites/UI/LevelSelect/LevelSelect_Map_Marker.dds", 0, [this](int aLevelIndex) {MapMarkerPress(aLevelIndex); }, 2);
 
 	AddButton(std::make_shared<UIButton>());
 	GetButtonElement(2)->Init({ 0.5f, 0.8f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {BackButtonPress(); });

@@ -4,8 +4,9 @@
 #include "Enums.h"
 #include <memory>
 #include "CommonUtilities/GrowingArray.hpp"
+#include "ShooterBulletManager.h"
 
-
+class Shooter;
 class Player;
 class Camera;
 class LevelData;
@@ -49,11 +50,13 @@ private:
 
 	std::vector<std::shared_ptr<TerrainTile>> myTerrain;
 	std::vector<std::shared_ptr<Saw>> mySaws;
+	std::vector<std::shared_ptr<Shooter>> myShooters;
 
 	std::shared_ptr<Collider> myLevelEndCollider;
 
 	CommonUtilities::GrowingArray<std::shared_ptr<Tga2D::CSpriteBatch>> mySpriteBatches;
 
+	std::shared_ptr<ShooterBulletManager> myBulletManager;
 	int currentLevelIndex = 0;
 	int amountOfLevels = 0;
 };

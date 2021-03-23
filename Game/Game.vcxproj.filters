@@ -106,9 +106,24 @@
     <ClInclude Include="LevelLoader.h" />
     <ClInclude Include="TerrainTile.h" />
     <ClInclude Include="JsonParser.h" />
+    <ClInclude Include="Sprite_Renderer.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
     <ClInclude Include="Saw.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelData.h" />
+    <ClInclude Include="Saw.h">
+      <Filter>Obstacles</Filter>
+    </ClInclude>
+    <ClInclude Include="Shooter.h">
+      <Filter>Obstacles</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Obstacles</Filter>
+    </ClInclude>
+    <ClInclude Include="ShooterBulletManager.h">
+      <Filter>Obstacles</Filter>
+    </ClInclude>
     <ClInclude Include="AnimationClip.h">
       <Filter>Rendering</Filter>
     </ClInclude>
@@ -186,7 +201,6 @@
     <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
     <ClCompile Include="JsonParser.cpp" />
-    <ClCompile Include="Saw.cpp" />
     <ClCompile Include="GameWorld.cpp">
       <Filter>Main</Filter>
     </ClCompile>
@@ -195,6 +209,18 @@
     </ClCompile>
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelData.cpp" />
+    <ClCompile Include="Saw.cpp">
+      <Filter>Obstacles</Filter>
+    </ClCompile>
+    <ClCompile Include="Shooter.cpp">
+      <Filter>Obstacles</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Obstacles</Filter>
+    </ClCompile>
+    <ClCompile Include="ShooterBulletManager.cpp">
+      <Filter>Obstacles</Filter>
+    </ClCompile>
     <ClCompile Include="AnimationClip.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
