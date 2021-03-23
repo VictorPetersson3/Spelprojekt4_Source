@@ -37,3 +37,10 @@ enum class EPlayerAnimationClips
 	eGlideR,
 	eGlideL
 };
+
+enum class EPowerUp
+{
+	Default = 1,
+	DoubleJump = 2,
+	Glide = 3
+};

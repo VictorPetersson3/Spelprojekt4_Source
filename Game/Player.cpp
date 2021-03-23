@@ -142,9 +142,27 @@ void Player::InitCollider()
 	myCollider->SetTag(EColliderTag::Player);
 }
 
+//temp
+void Player::ChangePower()
+{
+	if (INPUT.GetKeyDown(DIK_1) && myCurrentPower != EPowerUp::Default)
+	{
+		myCurrentPower = EPowerUp::Default;
+	}
+	if (INPUT.GetKeyDown(DIK_2) && myCurrentPower != EPowerUp::DoubleJump)
+	{
+		myCurrentPower = EPowerUp::DoubleJump;
+	}
+	if (INPUT.GetKeyDown(DIK_3) && myCurrentPower != EPowerUp::Glide)
+	{
+		myCurrentPower = EPowerUp::Glide;
+	}
+}
+
 void Player::Update(Camera& aCamera)
 {
 	//Sleep(1);
+	ChangePower();
 
 	UpdateJumping();
 
@@ -537,8 +555,8 @@ void Player::Falling()
 		{
 			myCurrentVelocity.y = -myJumpSpeed;
 
-			if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eDoubleJumpL);
-			else PlaySpecificAnimation(EPlayerAnimationClips::eDoubleJumpR);
+		/*	if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eDoubleJumpL);
+			else PlaySpecificAnimation(EPlayerAnimationClips::eDoubleJumpR);*/
 
 			myCanDoubleJump = false;
 			myCanJumpAgain = false;
@@ -547,7 +565,7 @@ void Player::Falling()
 	case EPowerUp::Glide:
 		if (INPUT.GetKey(myJump) && myCanGlide && myCurrentVelocity.y > 0.0f && myCanJumpAgain)
 		{
-			myCurrentAnimation = EAnimationState::Glide;
+			//myCurrentAnimation = EAnimationState::Glide;
 
 			myIsGliding = true;
 			myCanGlide = false;

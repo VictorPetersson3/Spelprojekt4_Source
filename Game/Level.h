@@ -4,6 +4,7 @@
 #include "Enums.h"
 #include <memory>
 #include "CommonUtilities/GrowingArray.hpp"
+#include "Enums.h"
 
 
 class Player;

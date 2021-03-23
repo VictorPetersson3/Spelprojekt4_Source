@@ -45,13 +45,6 @@ enum class EAnimationState
 	Glide
 };
 
-enum class EPowerUp
-{
-	Default = 1,
-	DoubleJump = 2,
-	Glide = 3
-};
-
 class Player
 {
 public:
@@ -80,6 +73,7 @@ protected:
 	void HandleAnimations(Camera& aCamera);
 
 	void CacheCurrentValues();
+	void ChangePower();
 
 	void Idle();
 	void Walk();
