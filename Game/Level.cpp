@@ -67,15 +67,10 @@ void Level::Update()
 		myCamera->BatchRenderSprite(t.get()->myRenderCommand);
 	}
 	float deltaTime = Timer::GetInstance().GetDeltaTime();
-	for (auto saw : mySaws)
+	for (auto entity : myEntities)
 	{
-		saw.get()->Update(deltaTime);
-		myCamera->BatchRenderSprite(*saw.get()->GetRenderCommand());
-	}
-	for (auto shooter : myShooters)
-	{
-		shooter.get()->Update(deltaTime);
-		myCamera->BatchRenderSprite(*shooter.get()->GetRenderCommand());
+		entity.get()->Update(deltaTime);
+		myCamera->BatchRenderSprite(*entity.get()->GetRenderCommand());
 	}
 
 	if (InputManagerS::GetInstance().GetKeyDown(DIK_F5))

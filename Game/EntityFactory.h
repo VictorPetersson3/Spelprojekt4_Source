@@ -8,14 +8,17 @@ class Shooter;
 class Saw;
 class EntityFactory
 {
-	std::vector<std::shared_ptr<Entity>> LoadEntities(rapidjson::Document& aDocument);
+	std::vector<std::shared_ptr<Entity>> LoadEntities(const rapidjson::Document aDocument);
 
-	std::shared_ptr<Saw>		LoadSaw		(int aGridSize, int aEntityIndex, int aLayerIndex, int aRenderSizeX, int aRenderSizeY);
-	std::shared_ptr<Shooter>	LoadShooter	(int aGridSize, int aEntityIndex, int aLayerIndex, int aRenderSizeX, int aRenderSizeY);
+	std::shared_ptr<Saw>		LoadSaw		(int aEntityIndex, int aLayerIndex);
+	std::shared_ptr<Shooter>	LoadShooter	(int aEntityIndex, int aLayerIndex);
 
 private:
 
-	rapidjson::Document* myDocument;
+	rapidjson::Document myDocument;
+	int aGridSize;
+	int aRenderSizeX;
+	int aRenderSizeY;
 	
 };
 
