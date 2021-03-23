@@ -40,14 +40,16 @@ enum class EAnimationState
 	W_Down,
 	W_Up,
 	W_Jump,
-	Death
+	Death,
+	D_Jump,
+	Glide
 };
 
 enum class EPowerUp
 {
-	Default,
-	DoubleJump,
-	Glide
+	Default = 1,
+	DoubleJump = 2,
+	Glide = 3
 };
 
 class Player
@@ -88,8 +90,6 @@ protected:
 	void PlaySpecificAnimation(EPlayerAnimationClips anAnimEnum);
 
 protected:
-	EPlayerState myMoveState = EPlayerState::Idle;
-
 	CommonUtilities::Vector2f mySize = {};
 
 	CommonUtilities::Vector2f myOldPosition = {};
@@ -150,8 +150,11 @@ protected:
 	bool myCanGlide = true;
 
 	int myDirection = 1;
+
+	EPlayerState myMoveState = EPlayerState::Idle;
 	EAnimationState myCurrentAnimation = EAnimationState::Idle;
 	EPowerUp myCurrentPower = EPowerUp::Default;
+
 	std::shared_ptr<Collider> myCollider;
 	std::vector<std::shared_ptr<AnimationClip>> myAnimations;
 };
