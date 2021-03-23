@@ -16,8 +16,9 @@
 Player::Player(EPowerUp aPowerup) : myCurrentPower(aPowerup) {}
 Player::~Player(){}
 
-void Player::Init(CommonUtilities::Vector2f aPosition)
+void Player::Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower)
 {
+	myCurrentPower = aPower;
 	myPosition = aPosition;
 
 	InitJSON();
@@ -51,6 +52,7 @@ void Player::InitJSON()
 	myMaxVerticalVelocity = doc["Maximum velocities and gravity"]["Maximum vertical velocity"].GetFloat();
 	myGravity = doc["Maximum velocities and gravity"]["Gravity"].GetFloat();
 	myBoostFactor = doc["Maximum velocities and gravity"]["Boost multiplier"].GetFloat();
+	myGlideSpeed = doc["Maximum velocities and gravity"]["Glide falling speed"].GetFloat();
 
 	mySize =
 	{
@@ -207,6 +209,8 @@ void Player::UpdateJumping()
 	if (INPUT.GetKeyUp(myJump))
 	{
 		myCanJumpAgain = true;
+		myIsGliding = false;
+		myCanGlide = true;
 	}
 }
 
@@ -524,15 +528,10 @@ void Player::Falling()
 		}
 		break;
 	case EPowerUp::Glide:
-		if (INPUT.GetKey(myJump) && myCanJumpAgain && myCurrentVelocity.y > 0.0f)
+		if (INPUT.GetKey(myJump) && myCanGlide && myCurrentVelocity.y > 0.0f && myCanJumpAgain)
 		{
 			myIsGliding = true;
-			myCanJumpAgain = false;
-		}
-		else
-		{
-			myCanJumpAgain = true;
-			myIsGliding = false;
+			myCanGlide = false;
 		}
 		break;
 	default:
@@ -574,7 +573,7 @@ void Player::Ledge()
 		{
 			myCurrentVelocity.x = 0.0f;
 		}
-		if (INPUT.GetKey(myJump) && myCanJumpAgain)
+		if (INPUT.GetKey(myJump) && myCanJumpAgain && !myIsGliding)
 		{
 			myCurrentVelocity.x = -myWallJumpSpeed * myWallJumpFactorX;
 			myCurrentVelocity.y = -myWallJumpSpeed;
@@ -594,7 +593,7 @@ void Player::Ledge()
 		{
 			myCurrentVelocity.x = 0.0f;
 		}
-		if (INPUT.GetKey(myJump) && myCanJumpAgain)
+		if (INPUT.GetKey(myJump) && myCanJumpAgain && !myIsGliding)
 		{
 			myCurrentVelocity.x = myWallJumpSpeed * myWallJumpFactorX;
 			myCurrentVelocity.y = -myWallJumpSpeed;
