@@ -1,4 +1,5 @@
 #pragma once
+#include "RenderCommand.h"
 
 class Entity
 {
@@ -13,5 +14,5 @@ public:
 
 	EntityType myEntityType;
 	virtual void Update(float aDeltaTime) = 0;
-	virtual std::shared_ptr<Tga2D::CSpriteBatch> GetRenderSprite() = 0;
+	std::shared_ptr<RenderCommand> GetRenderCommand();
 };

@@ -6,11 +6,10 @@
 #include "CommonUtilities/GrowingArray.hpp"
 #include "ShooterBulletManager.h"
 
-class Shooter;
+class Entity;
 class Player;
 class Camera;
 class LevelData;
-class Saw;
 class Collider;
 class PauseMenu;
 class EndOfLevelScreen;
@@ -49,8 +48,7 @@ private:
 	std::shared_ptr<LevelData> currentLevelData;
 
 	std::vector<std::shared_ptr<TerrainTile>> myTerrain;
-	std::vector<std::shared_ptr<Saw>> mySaws;
-	std::vector<std::shared_ptr<Shooter>> myShooters;
+	std::vector<std::shared_ptr<Entity>> myEntities;
 
 	std::shared_ptr<Collider> myLevelEndCollider;
 

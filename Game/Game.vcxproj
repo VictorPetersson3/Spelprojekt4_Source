@@ -142,6 +142,8 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ControllerLayOutState.h" />
     <ClInclude Include="EndOfLevelScreen.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityFactory.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Shooter.h" />
@@ -184,6 +186,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ControllerLayOutState.cpp" />
     <ClCompile Include="EndOfLevelScreen.cpp" />
+    <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Shooter.cpp" />
     <ClCompile Include="ShooterBulletManager.cpp" />

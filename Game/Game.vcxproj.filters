@@ -40,6 +40,9 @@
     <Filter Include="StateTypes\MenuStates\SubMenuStates">
       <UniqueIdentifier>{2301b333-1205-441b-82fc-039bc06212b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Entities">
+      <UniqueIdentifier>{1d02941e-43eb-4ec8-8ad2-f83325e6a1ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -149,6 +152,10 @@
     <ClInclude Include="PauseMenu.h">
       <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
     </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -246,5 +253,6 @@
     <ClCompile Include="PauseMenu.cpp">
       <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
     </ClCompile>
+    <ClCompile Include="EntityFactory.cpp" />
   </ItemGroup>
 </Project>

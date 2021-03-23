@@ -22,13 +22,9 @@ void LevelData::AddTile(std::shared_ptr<TerrainTile> aTile)
 	myTiles.push_back(aTile);
 }
 
-void LevelData::AddSaw(std::shared_ptr<Saw> aSaw)
+void LevelData::AddEntities(std::vector<std::shared_ptr<Entity>> someEntities)
 {
-	mySaws.push_back(aSaw);
-}
-void LevelData::AddShooter(std::shared_ptr<Shooter> aShooter)
-{
-	myShooters.push_back(aShooter);
+	myEntities = someEntities;
 }
 
 std::vector<std::shared_ptr<TerrainTile>> LevelData::GetTiles()
@@ -36,16 +32,10 @@ std::vector<std::shared_ptr<TerrainTile>> LevelData::GetTiles()
 	return myTiles;
 }
 
-std::vector<std::shared_ptr<Saw>> LevelData::GetSaws()
+std::vector<std::shared_ptr<Entity>> LevelData::GetEntities()
 {
-	return mySaws;
+	return myEntities;
 }
-
-std::vector<std::shared_ptr<Shooter>> LevelData::GetShooters()
-{
-	return myShooters;
-}
-
 CommonUtilities::GrowingArray<std::shared_ptr<Tga2D::CSpriteBatch>>& LevelData::GetSpriteBatches()
 {
 	return mySpriteBatches;
