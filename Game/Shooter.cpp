@@ -53,7 +53,7 @@ void Shooter::Update(float aDeltaTime)
 	myRenderCommand->Update(myPosition);
 }
 
-void Shooter::Render()
+void Shooter::Render(std::shared_ptr<Camera> aCamera)
 {
 	myRenderCommand->Render();
 }

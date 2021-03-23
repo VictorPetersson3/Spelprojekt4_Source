@@ -42,7 +42,7 @@ private:
 
 	std::shared_ptr<PauseMenu> myPauseMenu;
 	std::shared_ptr<EndOfLevelScreen> myEndOfLevelScreen;
-	std::unique_ptr<Camera> myCamera;
+	std::shared_ptr<Camera> myCamera;
 	std::unique_ptr<Player> myPlayer;
 
 	std::shared_ptr<LevelData> currentLevelData;
