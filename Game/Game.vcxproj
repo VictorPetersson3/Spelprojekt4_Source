@@ -143,9 +143,11 @@
     <ClInclude Include="CutsceneManager.h" />
     <ClInclude Include="CutsceneCharacter.h" />
     <ClInclude Include="CutsceneData.h" />
+    <ClInclude Include="Door.h" />
     <ClInclude Include="EndOfLevelScreen.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Key.h" />
     <ClInclude Include="LevelSelect.h" />
     <ClInclude Include="LinkString.h" />
     <ClInclude Include="Level.h" />
@@ -185,8 +187,10 @@
     <ClCompile Include="CutsceneManager.cpp" />
     <ClCompile Include="CutsceneCharacter.cpp" />
     <ClCompile Include="CutsceneData.cpp" />
+    <ClCompile Include="Door.cpp" />
     <ClCompile Include="EndOfLevelScreen.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Key.cpp" />
     <ClCompile Include="LevelSelect.cpp" />
     <ClCompile Include="LinkString.cpp" />
     <ClCompile Include="Level.cpp" />

@@ -16,8 +16,9 @@
 Player::Player(EPowerUp aPowerup) : myCurrentPower(aPowerup) {}
 Player::~Player(){}
 
-void Player::Init(CommonUtilities::Vector2f aPosition)
+void Player::Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower)
 {
+	myCurrentPower = aPower;
 	myPosition = aPosition;
 
 	InitJSON();
@@ -51,6 +52,7 @@ void Player::InitJSON()
 	myMaxVerticalVelocity = doc["Maximum velocities and gravity"]["Maximum vertical velocity"].GetFloat();
 	myGravity = doc["Maximum velocities and gravity"]["Gravity"].GetFloat();
 	myBoostFactor = doc["Maximum velocities and gravity"]["Boost multiplier"].GetFloat();
+	myGlideSpeed = doc["Maximum velocities and gravity"]["Glide falling speed"].GetFloat();
 
 	mySize =
 	{
@@ -61,60 +63,77 @@ void Player::InitJSON()
 
 void Player::InitAnimations()
 {
-	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_idle_R.dds", 0, (int)EPlayerAnimationClips::eIdleR));
-	myAnimations[0]->Init({ 8, 1 }, { 7, 1 });
-	myAnimations[0]->PlayAnimLoop();
-	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_idle_L.dds", 0, (int)EPlayerAnimationClips::eIdleL));
-	myAnimations[1]->Init({ 8, 1 }, { 7, 1 });
-	myAnimations[1]->PlayAnimLoop();
-	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_run_R.dds", 0, (int)EPlayerAnimationClips::eRunR));
-	myAnimations[2]->Init({ 8, 1 }, { 5, 1 });
-	myAnimations[2]->PlayAnimLoop();
-	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_run_L.dds", 0, (int)EPlayerAnimationClips::eRunL));
-	myAnimations[3]->Init({ 8, 1 }, { 5, 1 });
-	myAnimations[3]->PlayAnimLoop();
-	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_sprint_R.dds", 0, (int)EPlayerAnimationClips::eSprintR));
-	myAnimations[4]->Init({ 8, 1 }, { 5, 1 });
-	myAnimations[4]->PlayAnimLoop();
-	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_sprint_L.dds", 0, (int)EPlayerAnimationClips::eSprintL));
-	myAnimations[5]->Init({ 8, 1 }, { 5, 1 });
-	myAnimations[5]->PlayAnimLoop();
-	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_jump_R.dds", 0, (int)EPlayerAnimationClips::eJumpR));
-	myAnimations[6]->Init({ 8, 1 }, { 5, 1 });
-	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_jump_L.dds", 0, (int)EPlayerAnimationClips::eJumpL));
-	myAnimations[7]->Init({ 8, 1 }, { 5, 1 });
-	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_land_R.dds", 0, (int)EPlayerAnimationClips::eLandR));
-	myAnimations[8]->Init({ 8, 1 }, { 5, 1 });
-	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_land_L.dds", 0, (int)EPlayerAnimationClips::eLandL));
-	myAnimations[9]->Init({ 8, 1 }, { 5, 1 });
-	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallidle_R.dds", 0, (int)EPlayerAnimationClips::eWallIdleR));
-	myAnimations[10]->Init({ 4, 1 }, { 4, 1 });
-	myAnimations[10]->PlayAnimLoop();
-	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallidle_L.dds", 0, (int)EPlayerAnimationClips::eWallIdleL));
-	myAnimations[11]->Init({ 4, 1 }, { 4, 1 });
-	myAnimations[11]->PlayAnimLoop();
-	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallDown_R.dds", 0, (int)EPlayerAnimationClips::eWallDownR));
-	myAnimations[12]->Init({ 4, 1 }, { 4, 1 });
-	myAnimations[12]->PlayAnimLoop();
-	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallDown_L.dds", 0, (int)EPlayerAnimationClips::eWallDownL));
-	myAnimations[13]->Init({ 4, 1 }, { 4, 1 });
-	myAnimations[13]->PlayAnimLoop();
-	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallUp_R.dds", 0, (int)EPlayerAnimationClips::eWallUpR));
-	myAnimations[14]->Init({ 4, 1 }, { 4, 1 });
-	myAnimations[14]->PlayAnimLoop();
-	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallUp_L.dds", 0, (int)EPlayerAnimationClips::eWallUpL));
-	myAnimations[15]->Init({ 4, 1 }, { 4, 1 });
-	myAnimations[15]->PlayAnimLoop();
-	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallJump_R.dds", 0, (int)EPlayerAnimationClips::eWallJumpR));
-	myAnimations[16]->Init({ 8, 1 }, { 6, 1 });
-	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_wallJump_L.dds", 0, (int)EPlayerAnimationClips::eWallJumpL));
-	myAnimations[17]->Init({ 8, 1 }, { 6, 1 });
-	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_death_R.dds", 0, (int)EPlayerAnimationClips::eDeathR));
-	myAnimations[18]->Init({ 16, 1 }, { 9, 1 });
-	myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State1/player_death_L.dds", 0, (int)EPlayerAnimationClips::eDeathL));
+	std::string folder = "sprites/Player/State" + std::to_string((int)myCurrentPower);
+	printf(folder.c_str());
+
+	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_idle_R.dds").c_str(), 0, (int)EPlayerAnimationClips::eIdleR));
+	myAnimations[0]->Init({ 8, 1 }, { 7, 1 });				
+	myAnimations[0]->PlayAnimLoop();								
+	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_idle_L.dds").c_str(), 0, (int)EPlayerAnimationClips::eIdleL));
+	myAnimations[1]->Init({ 8, 1 }, { 7, 1 });				 
+	myAnimations[1]->PlayAnimLoop();								 
+	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_run_R.dds").c_str(), 0, (int)EPlayerAnimationClips::eRunR));
+	myAnimations[2]->Init({ 8, 1 }, { 5, 1 });				
+	myAnimations[2]->PlayAnimLoop();								
+	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_run_L.dds").c_str(), 0, (int)EPlayerAnimationClips::eRunL));
+	myAnimations[3]->Init({ 8, 1 }, { 5, 1 });				
+	myAnimations[3]->PlayAnimLoop();								
+	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_sprint_R.dds").c_str(), 0, (int)EPlayerAnimationClips::eSprintR));
+	myAnimations[4]->Init({ 8, 1 }, { 5, 1 });				 
+	myAnimations[4]->PlayAnimLoop();								 
+	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_sprint_L.dds").c_str(), 0, (int)EPlayerAnimationClips::eSprintL));
+	myAnimations[5]->Init({ 8, 1 }, { 5, 1 });				
+	myAnimations[5]->PlayAnimLoop();								
+	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_jump_R.dds").c_str(), 0, (int)EPlayerAnimationClips::eJumpR));
+	myAnimations[6]->Init({ 8, 1 }, { 5, 1 });			
+	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_jump_L.dds").c_str(), 0, (int)EPlayerAnimationClips::eJumpL));
+	myAnimations[7]->Init({ 8, 1 }, { 5, 1 });				
+	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_land_R.dds").c_str(), 0, (int)EPlayerAnimationClips::eLandR));
+	myAnimations[8]->Init({ 8, 1 }, { 5, 1 });			
+	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_land_L.dds").c_str(), 0, (int)EPlayerAnimationClips::eLandL));
+	myAnimations[9]->Init({ 8, 1 }, { 5, 1 });			
+	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_wallidle_R.dds").c_str(), 0, (int)EPlayerAnimationClips::eWallIdleR));
+	myAnimations[10]->Init({ 4, 1 }, { 4, 1 });			 
+	myAnimations[10]->PlayAnimLoop();						 
+	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_wallidle_L.dds").c_str(), 0, (int)EPlayerAnimationClips::eWallIdleL));
+	myAnimations[11]->Init({ 4, 1 }, { 4, 1 });				
+	myAnimations[11]->PlayAnimLoop();							
+	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_wallDown_R.dds").c_str(), 0, (int)EPlayerAnimationClips::eWallDownR));
+	myAnimations[12]->Init({ 4, 1 }, { 4, 1 });			
+	myAnimations[12]->PlayAnimLoop();						
+	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_wallDown_L.dds").c_str(), 0, (int)EPlayerAnimationClips::eWallDownL));
+	myAnimations[13]->Init({ 4, 1 }, { 4, 1 });				
+	myAnimations[13]->PlayAnimLoop();							
+	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_wallUp_R.dds").c_str(), 0, (int)EPlayerAnimationClips::eWallUpR));
+	myAnimations[14]->Init({ 4, 1 }, { 4, 1 });				 
+	myAnimations[14]->PlayAnimLoop();							 
+	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_wallUp_L.dds").c_str(), 0, (int)EPlayerAnimationClips::eWallUpL));
+	myAnimations[15]->Init({ 4, 1 }, { 4, 1 });			
+	myAnimations[15]->PlayAnimLoop();						
+	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_wallJump_R.dds").c_str(), 0, (int)EPlayerAnimationClips::eWallJumpR));
+	myAnimations[16]->Init({ 8, 1 }, { 6, 1 });				
+	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_wallJump_L.dds").c_str(), 0, (int)EPlayerAnimationClips::eWallJumpL));
+	myAnimations[17]->Init({ 8, 1 }, { 6, 1 });				 
+	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_death_R.dds").c_str(), 0, (int)EPlayerAnimationClips::eDeathR));
+	myAnimations[18]->Init({ 16, 1 }, { 9, 1 });				
+	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_death_L.dds").c_str(), 0, (int)EPlayerAnimationClips::eDeathL));
 	myAnimations[19]->Init({ 16, 1 }, { 9, 1 });
 
-	myAnimations[(int)EPlayerAnimationClips::eIdleR]->PlayAnimLoop();
+	switch (myCurrentPower)
+	{
+	case EPowerUp::DoubleJump:
+		myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State2/player_doubleJump_R.dds", 0, (int)EPlayerAnimationClips::eDoubleJumpR));
+		myAnimations[20]->Init({ 16, 1 }, { 9, 1 });
+		myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State2/player_doubleJump_L.dds", 0, (int)EPlayerAnimationClips::eDoubleJumpL));
+		myAnimations[21]->Init({ 16, 1 }, { 9, 1 });
+		break;
+	case EPowerUp::Glide:
+		myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State3/player_glide_R.dds", 0, (int)EPlayerAnimationClips::eGlideR));
+		myAnimations[20]->Init({ 16, 1 }, { 9, 1 });
+		myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State3/player_glide_L.dds", 0, (int)EPlayerAnimationClips::eGlideL));
+		myAnimations[21]->Init({ 16, 1 }, { 9, 1 });
+		break;
+	}
 }
 
 void Player::InitCollider()
@@ -123,9 +142,27 @@ void Player::InitCollider()
 	myCollider->SetTag(EColliderTag::Player);
 }
 
+//temp
+void Player::ChangePower()
+{
+	if (INPUT.GetKeyDown(DIK_1) && myCurrentPower != EPowerUp::Default)
+	{
+		myCurrentPower = EPowerUp::Default;
+	}
+	if (INPUT.GetKeyDown(DIK_2) && myCurrentPower != EPowerUp::DoubleJump)
+	{
+		myCurrentPower = EPowerUp::DoubleJump;
+	}
+	if (INPUT.GetKeyDown(DIK_3) && myCurrentPower != EPowerUp::Glide)
+	{
+		myCurrentPower = EPowerUp::Glide;
+	}
+}
+
 void Player::Update(Camera& aCamera)
 {
 	//Sleep(1);
+	ChangePower();
 
 	UpdateJumping();
 
@@ -207,7 +244,8 @@ void Player::UpdateJumping()
 	if (INPUT.GetKeyUp(myJump))
 	{
 		myCanJumpAgain = true;
-		return;
+		myIsGliding = false;
+		myCanGlide = true;
 	}
 }
 
@@ -462,6 +500,7 @@ void Player::Falling()
 	else myCurrentAnimation = EAnimationState::Jump;
 
 	if (myCurrentVelocity.y >= myMaxVerticalVelocity) myCurrentVelocity.y = myMaxVerticalVelocity;
+	else if (myIsGliding) myCurrentVelocity.y = myGlideSpeed;
 	else myCurrentVelocity.y += myGravity * DELTA_TIME;
 
 	if (INPUT.GetKey(myLeft) == INPUT.GetKey(myRight))
@@ -516,26 +555,28 @@ void Player::Falling()
 		{
 			myCurrentVelocity.y = -myJumpSpeed;
 
-			if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eJumpL);
-			else PlaySpecificAnimation(EPlayerAnimationClips::eJumpR);
+		/*	if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eDoubleJumpL);
+			else PlaySpecificAnimation(EPlayerAnimationClips::eDoubleJumpR);*/
 
 			myCanDoubleJump = false;
 			myCanJumpAgain = false;
 		}
-		if (!INPUT.GetKey(myJump) && myCurrentVelocity.y < 0.0f)
-		{
-			myCurrentVelocity.y += myJumpDecceleration * DELTA_TIME;
-		}
 		break;
 	case EPowerUp::Glide:
-		// glide code
-		break;
-	default:
-		if (!INPUT.GetKey(myJump) && myCurrentVelocity.y < 0.0f)
+		if (INPUT.GetKey(myJump) && myCanGlide && myCurrentVelocity.y > 0.0f && myCanJumpAgain)
 		{
-			myCurrentVelocity.y += myJumpDecceleration * DELTA_TIME;
+			//myCurrentAnimation = EAnimationState::Glide;
+
+			myIsGliding = true;
+			myCanGlide = false;
 		}
 		break;
+	default:
+		break;
+	}
+	if (!INPUT.GetKey(myJump) && myCurrentVelocity.y < 0.0f)
+	{
+		myCurrentVelocity.y += myJumpDecceleration * DELTA_TIME;
 	}
 }
 
@@ -569,7 +610,7 @@ void Player::Ledge()
 		{
 			myCurrentVelocity.x = 0.0f;
 		}
-		if (INPUT.GetKey(myJump) && myCanJumpAgain)
+		if (INPUT.GetKey(myJump) && myCanJumpAgain && !myIsGliding)
 		{
 			myCurrentVelocity.x = -myWallJumpSpeed * myWallJumpFactorX;
 			myCurrentVelocity.y = -myWallJumpSpeed;
@@ -589,7 +630,7 @@ void Player::Ledge()
 		{
 			myCurrentVelocity.x = 0.0f;
 		}
-		if (INPUT.GetKey(myJump) && myCanJumpAgain)
+		if (INPUT.GetKey(myJump) && myCanJumpAgain && !myIsGliding)
 		{
 			myCurrentVelocity.x = myWallJumpSpeed * myWallJumpFactorX;
 			myCurrentVelocity.y = -myWallJumpSpeed;

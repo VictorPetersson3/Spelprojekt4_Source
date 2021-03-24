@@ -20,6 +20,11 @@ public:
 	CommonUtilities::Vector2f GetRightTumbStick();
 	CommonUtilities::Vector2f GetDPadInput();
 
+	inline const bool IsButtonDown(const int aIndex) 
+	{
+		return this->GetControllerState().Gamepad.wButtons & aIndex;
+	}
+		 
 	// Basic buttons
 	const bool IsButton_A_Pressed();
 	const bool IsButton_B_Pressed();

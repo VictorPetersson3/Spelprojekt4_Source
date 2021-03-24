@@ -140,6 +140,8 @@
     <ClInclude Include="CutsceneManager.h" />
     <ClInclude Include="CutsceneCharacter.h" />
     <ClInclude Include="CutsceneData.h" />
+    <ClInclude Include="Key.h" />
+    <ClInclude Include="Door.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -232,5 +234,7 @@
     <ClCompile Include="CutsceneManager.cpp" />
     <ClCompile Include="CutsceneCharacter.cpp" />
     <ClCompile Include="CutsceneData.cpp" />
+    <ClCompile Include="Key.cpp" />
+    <ClCompile Include="Door.cpp" />
   </ItemGroup>
 </Project>
