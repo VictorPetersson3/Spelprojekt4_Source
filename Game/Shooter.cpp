@@ -3,6 +3,7 @@
 #include "ShooterBulletManager.h"
 #include "CommonUtilities/Timer.h"
 #include "RenderCommand.h"
+#include "Camera.h"
 
 void Shooter::Init(Vector2 aPosition, Shooter::EFireDirection aFireDirection)
 {
@@ -55,7 +56,7 @@ void Shooter::Update(float aDeltaTime)
 
 void Shooter::Render(std::shared_ptr<Camera> aCamera)
 {
-	myRenderCommand->Render();
+	aCamera->RenderSprite(*myRenderCommand);		
 }
 
 const void Shooter::Shoot() const

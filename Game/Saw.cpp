@@ -35,7 +35,7 @@ void Saw::Update(float aDeltatime)
 
 void Saw::Render(const std::shared_ptr<Camera> aCamera)
 {
-	myRenderCommand->Render();
+	aCamera->RenderSprite(*myRenderCommand);
 }
 
 const std::shared_ptr<RenderCommand> Saw::GetRenderCommand() const

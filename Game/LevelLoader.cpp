@@ -21,6 +21,7 @@
 #include "RenderCommand.h"
 #include "Saw.h"
 #include "Shooter.h"
+#include "ShooterBulletManager.h"
 #include "TerrainTile.h"
 #include "EntityFactory.h"
 
@@ -50,6 +51,7 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 {
 	JsonParser jsonParser;
 	EntityFactory entityFactory;
+	std::shared_ptr<ShooterBulletManager> bulletManager = std::make_shared<ShooterBulletManager>();
 
 	myDocument = jsonParser.GetDocument(aLevelPath);
 
@@ -61,11 +63,11 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 	std::cout << gridSize << std::endl;
 	std::cout << worldSize.x << " x " << worldSize.y << std::endl;
 
-	float renderSizeX = 1920.f;
-	float renderSizeY = 1080.f;
+	float renderSizeX = 1280.f;
+	float renderSizeY = 720.f;
 	bool hasAddedPlayerStart = false;
 
-	levelToPushBack->AddEntities(entityFactory.LoadEntities(aLevelPath));
+	levelToPushBack->AddEntities(entityFactory.LoadEntities(aLevelPath, bulletManager));
 
 	for (int j = 0; j < myDocument["levels"][0]["layerInstances"].Capacity(); j++)
 	{
@@ -97,8 +99,8 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 					float xPosition = myDocument["levels"][0]["layerInstances"][j]["entityInstances"][i]["px"][0].GetFloat();
 					float yPosition = myDocument["levels"][0]["layerInstances"][j]["entityInstances"][i]["px"][1].GetFloat();
 
-					xPosition /= 1920.f;
-					yPosition /= 1080.f;
+					xPosition /= 1280.f;
+					yPosition /= 720.f;
 			
 					levelToPushBack.get()->AddPlayerStart({ xPosition,yPosition });
 
@@ -110,14 +112,14 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 					float xPosition = myDocument["levels"][0]["layerInstances"][j]["entityInstances"][i]["px"][0].GetFloat();
 					float yPosition = myDocument["levels"][0]["layerInstances"][j]["entityInstances"][i]["px"][1].GetFloat();
 
-					xPosition /= 1920.f;
-					yPosition /= 1080.f;
+					xPosition /= 1280.f;
+					yPosition /= 720.f;
 
 					float width = myDocument["levels"][0]["layerInstances"][j]["entityInstances"][i]["width"].GetFloat();
 					float height = myDocument["levels"][0]["layerInstances"][j]["entityInstances"][i]["height"].GetFloat();
 
-					width /= 1920.f;
-					height /= 1080.f;
+					width /= 1280.f;
+					height /= 720.f;
 
 					CommonUtilities::Vector2f aColliderPosition = { xPosition,yPosition };
 
@@ -213,7 +215,7 @@ void LevelLoader::SetPosition(RenderCommand& aRenderCommand, int aGridTileIndex,
 	float posY = myDocument["levels"][0]["layerInstances"][aLayerIndex]["gridTiles"][aGridTileIndex]["px"][1].GetFloat();
 
 	aRenderCommand.SetPivot({ 0.5f,0.5f });
-	aRenderCommand.Update({ posX / 1920.f, posY / 1080.f });
+	aRenderCommand.Update({ posX / 1280.f, posY / 720.f });
 }
 
 void LevelLoader::SetSpriteSize(RenderCommand& aRenderCommand, float aGridSize)
