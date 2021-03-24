@@ -147,7 +147,6 @@
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Shooter.h" />
-    <ClInclude Include="ShooterBulletManager.h" />
     <ClInclude Include="Sprite_Renderer.h" />
     <ClInclude Include="LevelSelect.h" />
     <ClInclude Include="LinkString.h" />
@@ -189,7 +188,6 @@
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Shooter.cpp" />
-    <ClCompile Include="ShooterBulletManager.cpp" />
     <ClCompile Include="LevelSelect.cpp" />
     <ClCompile Include="LinkString.cpp" />
     <ClCompile Include="Level.cpp" />

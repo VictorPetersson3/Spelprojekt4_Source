@@ -4,18 +4,20 @@
 
 using Vector2 = CommonUtilities::Vector2f;
 
+class Camera;
 class RenderCommand;
 class Bullet
 {
 public:
 
 	Bullet();
+	~Bullet() = default;
 
 	void Call(Vector2 aPosition, Vector2 aDirection);
 	void Return();
 	bool GetActive();
 	void Update(float aDeltaTime);
-	void Render();
+	void Render(std::shared_ptr<Camera> aCamera);
 
 private:
 

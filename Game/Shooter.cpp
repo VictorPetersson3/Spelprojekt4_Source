@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Shooter.h"
-#include "ShooterBulletManager.h"
 #include "CommonUtilities/Timer.h"
 #include "RenderCommand.h"
 #include "Camera.h"
@@ -29,11 +28,6 @@ void Shooter::Init(Vector2 aPosition, Shooter::EFireDirection aFireDirection)
 	}
 }
 
-void Shooter::SetManager(std::shared_ptr<ShooterBulletManager> aBulletManager)
-{
-	myBulletManager = aBulletManager;
-}
-
 std::shared_ptr<RenderCommand> Shooter::GetRenderCommand()
 {
 	return myRenderCommand;
@@ -52,14 +46,36 @@ void Shooter::Update(float aDeltaTime)
 	}
 
 	myRenderCommand->Update(myPosition);
+
+	for (int i = 0; i < 10; i++)
+	{
+		if (myBullets[i].GetActive())
+		{
+			myBullets[i].Update(aDeltaTime);
+		}
+	}
 }
 
 void Shooter::Render(std::shared_ptr<Camera> aCamera)
 {
-	aCamera->RenderSprite(*myRenderCommand);		
+	aCamera->RenderSprite(*myRenderCommand);	
+
+	for (int i = 0; i < 10; i++)
+	{
+		if (myBullets[i].GetActive())
+		{
+			myBullets[i].Render(aCamera);
+		}
+	}
 }
 
-const void Shooter::Shoot() const
+void Shooter::Shoot()
 {
-	myBulletManager->CallBullet(myPosition, myFireDirection);
+	/*for (int i = 0; i < 10; i++)
+	{
+		if (!myBullets[i].GetActive())
+		{
+			myBullets[i].Call(myPosition, myFireDirection);
+		}
+	}*/
 }

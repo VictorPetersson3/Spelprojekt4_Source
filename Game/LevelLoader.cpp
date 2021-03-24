@@ -21,7 +21,6 @@
 #include "RenderCommand.h"
 #include "Saw.h"
 #include "Shooter.h"
-#include "ShooterBulletManager.h"
 #include "TerrainTile.h"
 #include "EntityFactory.h"
 
@@ -51,7 +50,6 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 {
 	JsonParser jsonParser;
 	EntityFactory entityFactory;
-	std::shared_ptr<ShooterBulletManager> bulletManager = std::make_shared<ShooterBulletManager>();
 
 	myDocument = jsonParser.GetDocument(aLevelPath);
 
@@ -67,7 +65,7 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 	float renderSizeY = 720.f;
 	bool hasAddedPlayerStart = false;
 
-	levelToPushBack->AddEntities(entityFactory.LoadEntities(aLevelPath, bulletManager));
+	levelToPushBack->AddEntities(entityFactory.LoadEntities(aLevelPath));
 
 	for (int j = 0; j < myDocument["levels"][0]["layerInstances"].Capacity(); j++)
 	{

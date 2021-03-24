@@ -32,7 +32,6 @@ Level::Level()
 	myPauseMenu->Init(EStateType::ePauseMenu);
 	myEndOfLevelScreen = std::make_shared<EndOfLevelScreen>(this);
 	myEndOfLevelScreen->Init(EStateType::eEndOfLevelScreen);
-	myBulletManager = std::make_shared<ShooterBulletManager>();
 }
 
 Level::~Level()
@@ -73,7 +72,6 @@ void Level::Update()
 	{
 		myCamera->BatchRenderSprite(t.get()->myRenderCommand);
 	}
-	const float deltaTime = Timer::GetInstance().GetDeltaTime();
 
 	for (auto entity : myEntities)
 	{

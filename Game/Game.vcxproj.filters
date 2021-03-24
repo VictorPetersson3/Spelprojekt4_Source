@@ -124,9 +124,6 @@
     <ClInclude Include="Bullet.h">
       <Filter>Obstacles</Filter>
     </ClInclude>
-    <ClInclude Include="ShooterBulletManager.h">
-      <Filter>Obstacles</Filter>
-    </ClInclude>
     <ClInclude Include="AnimationClip.h">
       <Filter>Rendering</Filter>
     </ClInclude>
@@ -223,9 +220,6 @@
       <Filter>Obstacles</Filter>
     </ClCompile>
     <ClCompile Include="Bullet.cpp">
-      <Filter>Obstacles</Filter>
-    </ClCompile>
-    <ClCompile Include="ShooterBulletManager.cpp">
       <Filter>Obstacles</Filter>
     </ClCompile>
     <ClCompile Include="AnimationClip.cpp">
