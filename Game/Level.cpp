@@ -61,25 +61,31 @@ void Level::Render()
 void Level::Update()
 {
 	//Pause Menu
-	if (InputManager::GetInstance().IsKeyPressed(VK_ESCAPE))
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_ESCAPE))
 	{
 		StateManager::AddStateOnStack(myPauseMenu);
 	}
 	//Player
-	myCamera->Update({ 0,0 });
-	
+	myCamera->Update({ 0,0 });	
 	float deltaTime = Timer::GetInstance().GetDeltaTime();
+
+	for (auto t : myTerrain)
+	{
+		myCamera->BatchRenderSprite(t.get()->myRenderCommand);
+	}
+	const float deltaTime = Timer::GetInstance().GetDeltaTime();
+
 	for (auto entity : myEntities)
 	{
 		entity.get()->Update(deltaTime);
 	}
 
-	if (InputManager::GetInstance().IsKeyPressed(VK_F5))
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_F5))
 	{
 		Restart();
 	}
 
-	if (InputManager::GetInstance().IsKeyPressed(VK_F4))
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_F4))
 	{
 		Load(1);
 	}

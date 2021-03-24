@@ -32,15 +32,15 @@ void EndOfLevelScreen::Init(const EStateType& aState)
 
 void EndOfLevelScreen::Update()
 {
-	if (InputManager::GetInstance().IsKeyPressed(VK_ESCAPE))
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_ESCAPE))
 	{
 		NextLevelPress();
 	}
-	if (InputManager::GetInstance().IsKeyPressed('S') && myCurrentHoveredButton > 0)
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_S) && myCurrentHoveredButton > 0)
 	{
 		myCurrentHoveredButton--;
 	}
-	else if (InputManager::GetInstance().IsKeyPressed('W') && myCurrentHoveredButton < GetUIButtonElementsSize())
+	else if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButton < GetUIButtonElementsSize())
 	{
 		myCurrentHoveredButton++;
 	}

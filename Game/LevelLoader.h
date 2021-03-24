@@ -3,6 +3,7 @@
 #include <memory>
 #include<CommonUtilities/Vector2.hpp>
 #include "rapidjson\document.h"
+#include "Enums.h"
 
 namespace Tga2D
 {
@@ -37,6 +38,7 @@ private:
 	void SetSpriteSize(RenderCommand& aRenderCommand, float aGridSize);
 
 	rapidjson::Document myDocument;
-
+	std::shared_ptr<Saw> AddSaw(int aGridSize, int aEntityIndex, int aLayerIndex, int aRenderSizeX, int aRenderSizeY);
+	EPowerUp mySelectedPower = EPowerUp::Default;
 };
 

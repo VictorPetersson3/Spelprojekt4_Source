@@ -22,7 +22,7 @@ void UIButton::Update()
 	{
 		ChangeSize();
 		UIElement::Update();
-		if (InputManager::GetInstance().IsKeyUp(VK_RETURN) && myIsHovered)
+		if (InputManagerS::GetInstance().GetKeyUp(DIK_RETURN) && myIsHovered)
 		{
 			if (myOnPressFunction != nullptr)
 			{

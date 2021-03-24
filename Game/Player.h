@@ -1,6 +1,7 @@
 #pragma once
 #include <CommonUtilities/Vector2.hpp>
 #include <memory>
+
 #include "Enums.h"
 
 namespace Tga2D
@@ -39,16 +40,18 @@ enum class EAnimationState
 	W_Down,
 	W_Up,
 	W_Jump,
-	Death
+	Death,
+	D_Jump,
+	Glide
 };
 
 class Player
 {
 public:
-	Player();
+	Player(EPowerUp aPowerup = EPowerUp::Default);
 	~Player();
 
-	virtual void Init(CommonUtilities::Vector2f aPosition);
+	virtual void Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower = EPowerUp::Default);
 	virtual void Update(Camera& aCamera);
 
 	void ChangeInput(const EInputType anInputType);
@@ -66,9 +69,11 @@ protected:
 
 	void ManageStates();
 	void UpdatePhysics();
+	void UpdateJumping();
 	void HandleAnimations(Camera& aCamera);
 
 	void CacheCurrentValues();
+	void ChangePower();
 
 	void Idle();
 	void Walk();
@@ -79,8 +84,6 @@ protected:
 	void PlaySpecificAnimation(EPlayerAnimationClips anAnimEnum);
 
 protected:
-	EPlayerState myMoveState = EPlayerState::Idle;
-
 	CommonUtilities::Vector2f mySize = {};
 
 	CommonUtilities::Vector2f myOldPosition = {};
@@ -125,19 +128,26 @@ protected:
 	float myMaxVerticalVelocity = 1.5f;     //
 	float myGravity = 4.0f;                 //
 	float myBoostFactor = 2.0f;             //
+	float myGlideSpeed = 0.2f;              //
 	//======================================//
 
-	int myUp = 'W';
-	int myLeft = 'A';
-	int myDown = 'S';
-	int myRight = 'D';
-	int myJump = VK_SPACE;
-	int myBoost = VK_SHIFT;
-
+	int myUp = 0x11;
+	int myLeft = 0x1E;
+	int myDown = 0x1F;
+	int myRight = 0x20;
+	int myJump = 0x39;
+	int myBoost = 0x2A;
+	
 	bool myCanJumpAgain = true;
+	bool myCanDoubleJump = true;
+	bool myIsGliding = false;
+	bool myCanGlide = true;
 
 	int myDirection = 1;
+
+	EPlayerState myMoveState = EPlayerState::Idle;
 	EAnimationState myCurrentAnimation = EAnimationState::Idle;
+	EPowerUp myCurrentPower = EPowerUp::Default;
 
 	std::shared_ptr<Collider> myCollider;
 	std::vector<std::shared_ptr<AnimationClip>> myAnimations;

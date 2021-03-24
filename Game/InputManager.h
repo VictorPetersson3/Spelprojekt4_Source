@@ -1,14 +1,14 @@
 #pragma once
 #include "CommonUtilities/InputManager.h"
 
-class InputManager
+class InputManagerS
 {
 public:
     static void Init();
     static void Destroy();
-    static CommonUtilities::InputManager& GetInstance();
+    static InputManager& GetInstance();
     static bool IsReady();
 private:
-    InputManager() = default;
-    static CommonUtilities::InputManager* myInstance;
+    InputManagerS() = default;
+    static InputManager* myInstance;
 };

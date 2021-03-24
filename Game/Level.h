@@ -5,6 +5,7 @@
 #include <memory>
 #include "CommonUtilities/GrowingArray.hpp"
 #include "ShooterBulletManager.h"
+#include "Enums.h"
 
 class Entity;
 class Player;
