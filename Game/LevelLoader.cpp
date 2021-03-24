@@ -225,7 +225,7 @@ void LevelLoader::SetPosition(RenderCommand& aRenderCommand, int aGridTileIndex,
 	float posY = document["levels"][0]["layerInstances"][aLayerIndex]["gridTiles"][aGridTileIndex]["px"][1].GetFloat();
 
 	aRenderCommand.SetPivot({ 0.5f,0.5f });
-	aRenderCommand.Update({ posX / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().x), posY / static_cast<float>(Tga2D::CEngine::GetInstance()->GetRenderSize().y) });
+	aRenderCommand.Update({ posX / 1920.0f, posY / 1080.0f });
 }
 
 void LevelLoader::SetSpriteSize(RenderCommand& aRenderCommand, float aGridSize)

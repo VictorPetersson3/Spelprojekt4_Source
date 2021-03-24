@@ -148,6 +148,7 @@
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelData.h" />
     <ClInclude Include="PauseMenu.h" />
+    <ClInclude Include="ResolutionMenu.h" />
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="GameWorld.h" />
     <ClInclude Include="InputManager.h" />
@@ -185,6 +186,7 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelData.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
+    <ClCompile Include="ResolutionMenu.cpp" />
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="InputManager.cpp" />

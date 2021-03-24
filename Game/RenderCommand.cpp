@@ -13,6 +13,13 @@ RenderCommand::RenderCommand(const RenderCommand& aRenderCommand)
 	myLayer = aRenderCommand.myLayer;
 	mySprite = aRenderCommand.mySprite;
 }
+RenderCommand::RenderCommand(const char* aImagePath)
+{
+	mySprite = std::make_shared<Tga2D::CSprite>(aImagePath);
+	mySprite->SetPivot({ 0.5f, 0.5f });
+	myLayer = 0;
+	mySprite->SetSizeRelativeToImage({ 0.5f, 0.5f });
+}
 RenderCommand::RenderCommand(const char* aImagePath, int aLayer)
 {
 	mySprite = std::make_shared<Tga2D::CSprite>(aImagePath);

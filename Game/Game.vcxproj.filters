@@ -134,6 +134,9 @@
     <ClInclude Include="PauseMenu.h">
       <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
     </ClInclude>
+    <ClInclude Include="ResolutionMenu.h">
+      <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -218,6 +221,9 @@
       <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
     </ClCompile>
     <ClCompile Include="PauseMenu.cpp">
+      <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
+    </ClCompile>
+    <ClCompile Include="ResolutionMenu.cpp">
       <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
     </ClCompile>
   </ItemGroup>
