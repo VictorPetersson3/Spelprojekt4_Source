@@ -20,8 +20,8 @@ public:
 
 private:
 
-	const int myId = 0;                        // Detta är ett id som level design ska kunna använda för att ha flera olika nycklar i samma level
 	bool myIsPickedUp = false;
+	const int myId = 0;          // Detta är ett id som level design ska kunna använda för att ha flera olika nycklar i samma level
 	const float myRange = 0.025f;
 
 	CommonUtilities::Vector2f myPosition;
