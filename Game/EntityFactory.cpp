@@ -59,10 +59,11 @@ std::shared_ptr<Saw> EntityFactory::LoadSaw(int aEntityIndex, int aLayerIndex)
 
 	}
 
-	aSawToPushBack.myCollider = Collider(16, { myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / renderSizeX * 16,
+	std::shared_ptr<Collider> collider = std::make_shared<Collider>(0.002, Vector2{ myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / renderSizeX * 16,
 											   myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / renderSizeY * 16 });
 
-	aSawToPushBack.myCollider.SetTag(EColliderTag::KillZone);
+	collider->SetTag(EColliderTag::KillZone);
+	aSawToPushBack.SetCollider(collider);
 
 	return std::make_shared<Saw>(aSawToPushBack);
 
@@ -71,8 +72,8 @@ std::shared_ptr<Shooter> EntityFactory::LoadShooter(int aEntityIndex, int aLayer
 {
 	Shooter shooterToPushBack = Shooter();
 	std::string shootDirection = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][0]["__value"].GetString();
-	float xPosition = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / renderSizeX * gridSize;
-	float yPosition = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / renderSizeY * gridSize;
+	float xPosition = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / renderSizeX * 16;
+	float yPosition = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / renderSizeY * 16;
 
 	if (shootDirection == "Up")
 	{

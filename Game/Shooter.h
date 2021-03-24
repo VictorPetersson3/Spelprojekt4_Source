@@ -32,7 +32,7 @@ private:
 	std::shared_ptr<RenderCommand> myRenderCommand;
 	Vector2 myPosition;
 	Vector2 myFireDirection;
-	float myFireRate;
+	float myFireRate = 5;
 	float myFireTimer;
 	std::array<Bullet, 10> myBullets;
 

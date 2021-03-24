@@ -24,10 +24,10 @@ private:
 	RenderCommand* myRenderCommand;
 	Vector2 myPosition;
 	Vector2 myDirection;
-	Collider myCollider;
-	float mySpeed = 1;
+	std::shared_ptr<Collider> myCollider;
+	float mySpeed = 0.001f;
 	float myMaxLifetime = 5;
-	float mySize = 16;
+	float mySize = 0.001;
 	float myRemainingLifetime;
 	bool myIsActive;	
 };

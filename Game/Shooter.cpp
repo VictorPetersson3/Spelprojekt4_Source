@@ -8,6 +8,7 @@ void Shooter::Init(Vector2 aPosition, Shooter::EFireDirection aFireDirection)
 {
 	myPosition = aPosition;
 	myRenderCommand = std::make_shared<RenderCommand>("Sprites/tempSaw.dds", 0);
+	myFireTimer = myFireRate;
 
 	switch (aFireDirection)
 	{
@@ -71,11 +72,12 @@ void Shooter::Render(std::shared_ptr<Camera> aCamera)
 
 void Shooter::Shoot()
 {
-	/*for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		if (!myBullets[i].GetActive())
 		{
 			myBullets[i].Call(myPosition, myFireDirection);
+			break;
 		}
-	}*/
+	}
 }

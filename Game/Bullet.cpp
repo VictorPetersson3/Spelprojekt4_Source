@@ -6,11 +6,11 @@
 Bullet::Bullet()
 {
 	myIsActive = false;
-	myCollider = Collider(mySize / 2, myPosition);
-	myCollider.SetTag(EColliderTag::KillZone);
 	myRenderCommand = new RenderCommand("Sprites/TempSaw.dds", 1);
 	myPosition = { 0,0 };
 	myDirection = { 0,0 };
+	myCollider = std::make_shared<Collider>(mySize / 2, myPosition);
+	myCollider->SetTag(EColliderTag::KillZone);
 }
 
 void Bullet::Call(Vector2 aPosition, Vector2 aDirection)
@@ -36,8 +36,14 @@ void Bullet::Update(float aDeltaTime)
 	if (myIsActive)
 	{
 		myPosition = myPosition + (myDirection.GetNormalized()) * mySpeed;
-		myCollider.UpdateCollider(myPosition);
+		myCollider->UpdateCollider(myPosition);
 		myRenderCommand->Update(myPosition);
+		myRemainingLifetime -= aDeltaTime;
+
+		if (myRemainingLifetime <= 0)
+		{
+			Return();
+		}
 	}
 }
 

@@ -7,7 +7,6 @@
 Saw::Saw(Vector2 aStartPoint)
 {
 	myPosition = aStartPoint;
-	myCollider = Collider(myRadius, myPosition);
 	myRenderCommand = std::make_shared<RenderCommand>("Sprites/tempSaw.dds", 0);
 	myTravelPoints.push_back(aStartPoint);
 }
@@ -29,7 +28,7 @@ void Saw::Update(float aDeltatime)
 		myNextPointIndex += myDirection;
 	}
 	myPosition += (myTravelPoints[myNextPointIndex] - myPosition).GetNormalized() * aDeltatime * mySpeed;
-	myCollider.UpdateCollider(myPosition); 
+	myCollider->UpdateCollider(myPosition); 
 	myRenderCommand->Update(myPosition);
 }
 
@@ -41,6 +40,11 @@ void Saw::Render(const std::shared_ptr<Camera> aCamera)
 const std::shared_ptr<RenderCommand> Saw::GetRenderCommand() const
 {
 	return myRenderCommand;
+}
+
+void Saw::SetCollider(std::shared_ptr<Collider> aCollider)
+{
+	myCollider = aCollider;
 }
 
 
