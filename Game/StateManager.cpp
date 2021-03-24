@@ -5,6 +5,7 @@
 #include "OptionsMenu.h"
 #include "Level.h"
 #include "LevelSelect.h"
+#include "CutsceneManager.h"
 
 StateManager* StateManager::myInstance = nullptr;
 
@@ -26,7 +27,7 @@ void StateManager::Init()
 	myInstance->myOptionsMenu = std::make_shared<OptionsMenu>();
 	myInstance->myLevel = std::make_shared<Level>();
 	myInstance->myLevelSelect = std::make_shared<LevelSelect>();
-
+	myInstance->myCutsceneManager = std::make_shared<CutsceneManager>();
 
 
 	//Init the states you made here, rest will work automagically,
@@ -34,13 +35,16 @@ void StateManager::Init()
 	myInstance->myOptionsMenu.get()->Init(EStateType::eOptionsMenu);
 	myInstance->myLevel.get()->Init(EStateType::eGame);
 	myInstance->myLevelSelect->Init(EStateType::eLevelSelect);
+	myInstance->myCutsceneManager->Init(EStateType::eCutsceneManager);
 	
 	
 	//Main Menu is the default beginning state
 	myInstance->myGameStates.Push(GetInstance().myMainMenu);
 	myInstance->myGameStates.GetTop()->OnPushed();
 
-
+	//myInstance->myGameStates.Push(GetInstance().myCutsceneManager);
+	//myInstance->myCutsceneManager->PlayCutscene(0);
+	// 
 	//If you want to test a state, Push it on to myGameStates above the main menu
 
 

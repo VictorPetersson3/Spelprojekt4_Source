@@ -137,6 +137,9 @@
     <ClInclude Include="ResolutionMenu.h">
       <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
     </ClInclude>
+    <ClInclude Include="CutsceneManager.h" />
+    <ClInclude Include="CutsceneCharacter.h" />
+    <ClInclude Include="CutsceneData.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -226,5 +229,8 @@
     <ClCompile Include="ResolutionMenu.cpp">
       <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
     </ClCompile>
+    <ClCompile Include="CutsceneManager.cpp" />
+    <ClCompile Include="CutsceneCharacter.cpp" />
+    <ClCompile Include="CutsceneData.cpp" />
   </ItemGroup>
 </Project>

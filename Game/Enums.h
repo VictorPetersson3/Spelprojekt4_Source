@@ -9,7 +9,8 @@ enum class EStateType
 	ePauseMenu,
 	eEndOfLevelScreen,
 	eResolutionMenu,
-	eGame
+	eGame,
+	eCutsceneManager
 };
 enum class EPlayerAnimationClips
 {
