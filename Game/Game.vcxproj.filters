@@ -134,6 +134,7 @@
     <ClInclude Include="PauseMenu.h">
       <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
     </ClInclude>
+    <ClInclude Include="Background.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -220,5 +221,6 @@
     <ClCompile Include="PauseMenu.cpp">
       <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
     </ClCompile>
+    <ClCompile Include="Background.cpp" />
   </ItemGroup>
 </Project>
