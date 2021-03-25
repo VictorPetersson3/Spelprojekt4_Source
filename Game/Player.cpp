@@ -76,7 +76,7 @@ void Player::InitJSON()
 void Player::InitAnimations()
 {
 	std::string folder = "sprites/Player/State" + std::to_string((int)myCurrentPower);
-	printf(folder.c_str());
+	//printf(folder.c_str());
 
 	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_idle_R.dds").c_str(), 0, (int)EPlayerAnimationClips::eIdleR));
 	myAnimations[0]->Init({ 8, 1 }, { 7, 1 });				
