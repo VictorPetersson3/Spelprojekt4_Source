@@ -76,7 +76,6 @@ void Level::Update()
 	{
 		myCamera->BatchRenderSprite(t.get()->myRenderCommand);
 	}
-	float deltaTime = Timer::GetInstance().GetDeltaTime();
 	for (auto entity : myEntities)
 	{
 		entity.get()->Update(deltaTime);

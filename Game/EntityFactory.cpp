@@ -48,6 +48,7 @@ std::shared_ptr<Saw> EntityFactory::LoadSaw(int aEntityIndex, int aLayerIndex)
 	Saw aSawToPushBack = Saw({	myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / renderSizeX * gridSize ,
 								myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / renderSizeY * gridSize });
 
+	std::shared_ptr<Collider> collider;
 
 	int currentSawPointAmounts = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][0]["__value"].Capacity();
 
@@ -58,10 +59,11 @@ std::shared_ptr<Saw> EntityFactory::LoadSaw(int aEntityIndex, int aLayerIndex)
 
 	}
 
-	aSawToPushBack.myCollider = Collider(16, { myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / renderSizeX * gridSize,
-											   myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / renderSizeY * gridSize });
+	collider = std::make_shared<Collider>(16, CommonUtilities::Vector2f { myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / renderSizeX * gridSize,
+													myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / renderSizeY * gridSize });
 
 	collider->SetTag(EColliderTag::KillZone);
+
 	aSawToPushBack.SetCollider(collider);
 
 	return std::make_shared<Saw>(aSawToPushBack);
