@@ -17,7 +17,6 @@ enum class EPlayerAnimationClips
 	eRunR,
 	eRunL,
 	eSprintR,
-	eSprint,
 	eSprintL,
 	eJumpR,
 	eJumpL,
