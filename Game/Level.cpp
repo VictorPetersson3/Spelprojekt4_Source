@@ -51,7 +51,16 @@ void Level::Render()
 	{
 		mySpriteBatches[i]->Render();
 	}
+
+	for (auto entity : myEntities)
+	{
+		entity->Render(myCamera);
+	}
+	myPlayer->Update(*(myCamera.get()));
 }
+
+
+
 
 void Level::Update()
 {
@@ -70,7 +79,7 @@ void Level::Update()
 	for (auto entity : myEntities)
 	{
 		entity.get()->Update(deltaTime);
-		myCamera->BatchRenderSprite(*entity.get()->GetRenderCommand());
+		entity->Render(myCamera);
 	}
 
 	if (InputManagerS::GetInstance().GetKeyDown(DIK_F5))
@@ -85,8 +94,6 @@ void Level::Update()
 	
 	if (myPlayer.get() != nullptr)
 	{
-		myPlayer.get()->Update(*(myCamera.get()));
-		myPlayer.get()->GetCollider().get()->Draw();
 		if (myPlayer->IsDead())
 		{
 			Restart();
@@ -96,7 +103,7 @@ void Level::Update()
 	
 	if (myLevelEndCollider != nullptr)
 	{
-		myLevelEndCollider.get()->Draw();
+		myLevelEndCollider->Draw();
 	}
 	
 	if (myLevelEndCollider != nullptr && myPlayer.get() != nullptr)
@@ -116,8 +123,7 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 		mySpriteBatches[i]->ClearAll();
 	}
 
-
-	if (myPlayer.get()->GetCollider().get() != nullptr)
+	if (myPlayer->GetCollider().get() != nullptr)
 	{
 		myPlayer.get()->GetCollider().get()->RemoveFromManager();
 	}
@@ -137,7 +143,6 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 	myTerrain.clear();
 
 	myTerrain = aData.get()->GetTiles();
-	myShooters = aData.get()->GetShooters();
 
 
 	for (int i = 0; i < aData->GetSpriteBatches().Size(); i++)
@@ -151,11 +156,6 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 		t.get()->myCollider.get()->AddToManager();
 	}
 
-	for (auto shooter : myShooters)
-	{
-		shooter.get()->SetManager(myBulletManager);
-	}
-
 	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y });
 
 	if (myLevelEndCollider != nullptr)
@@ -163,10 +163,10 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 		myLevelEndCollider.get()->AddToManager();
 	}
 
-	if (myPlayer.get()->GetCollider().get() != nullptr)
-	{
-		myPlayer.get()->GetCollider().get()->AddToManager();
-	}
+	//if (myPlayer->GetCollider().get() != nullptr)
+	//{
+	//	myPlayer->GetCollider()->AddToManager();
+	//}
 }
 
 void Level::Load(int aIndex)
@@ -201,7 +201,7 @@ void Level::Init(const EStateType& aState)
 {
 	std::cout << "level inited\n";
 	//Creating a camera and then a renderer for the camera
-	myCamera = std::make_unique<Camera>();
+	myCamera = std::make_shared<Camera>();
 
 	currentLevelIndex = 0;
 

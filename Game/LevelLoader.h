@@ -39,11 +39,10 @@ private:
 	void SetPosition(RenderCommand& aRenderCommand, int aGridTileIndex, int aLayerIndex);
 	void SetSpriteSize(RenderCommand& aRenderCommand, float aGridSize);
 
-	std::shared_ptr<Saw> AddSaw(int aGridSize, int aEntityIndex, int aLayerIndex, int aRenderSizeX, int aRenderSizeY);
+	rapidjson::Document myDocument;
+	//EPowerUp mySelectedPower = EPowerUp::Default;
 
-	std::shared_ptr<Shooter> AddShooter(int aGridSize, int aEntityIndex, int aLayerIndex, int aRenderSizeX, int aRenderSizeY);
 
-	rapidjson::Document document;
 
 };
 

@@ -1,12 +1,14 @@
 #pragma once
 #include "CommonUtilities/Vector2.hpp"
-
+#include "Entity.h"
 
 using Vector2 = CommonUtilities::Vector2f;
 
 class ShooterBulletManager;
 class RenderCommand;
-class Shooter
+class Camera;
+
+class Shooter : public Entity
 {
 public:
 static enum class EFireDirection
@@ -24,7 +26,7 @@ static enum class EFireDirection
 	void SetManager(std::shared_ptr<ShooterBulletManager> aBulletManager);
 	std::shared_ptr<RenderCommand> GetRenderCommand();
 	void Update(float aDeltaTime);
-	void Render();
+	void Render(std::shared_ptr<Camera> aCamera) override;
 	const void Shoot() const;
 		
 private:

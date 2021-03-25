@@ -14,5 +14,5 @@ public:
 
 	EntityType myEntityType;
 	virtual void Update(float aDeltaTime) = 0;
-	std::shared_ptr<RenderCommand> GetRenderCommand();
+	virtual void Render(const std::shared_ptr<Camera> aCamera) = 0;
 };

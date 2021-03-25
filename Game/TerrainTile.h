@@ -14,6 +14,8 @@ struct TerrainTile
 	TerrainTile(const RenderCommand& aRenderCommand)
 	{
 		myRenderCommand = aRenderCommand;
+		myCollider = std::make_shared<Collider>();
+		myCollider->SetTag(EColliderTag::IgnoreCollision);
 	}
 	RenderCommand myRenderCommand;
 	std::shared_ptr<Collider> myCollider;

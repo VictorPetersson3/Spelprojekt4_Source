@@ -35,3 +35,10 @@ enum class EPlayerAnimationClips
 	eDeathL,
 	eSize
 };
+
+
+
+
+
+
+
