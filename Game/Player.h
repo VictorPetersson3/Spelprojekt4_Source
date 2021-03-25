@@ -116,12 +116,12 @@ protected:
 	float myJumpDecceleration = 10.0f;      //
 	float myJumpSpeed = 1.5f;               //
 	                                        //
-	float myWallJumpSpeed = 0.7f;	          //
+	float myWallJumpSpeed = 0.7f;	        //
 	float myWallJumpFactorX = 2.0f;         //
 	float myWallDrag = 1.0f;                //
 	float myMaxWallSlideSpeed = 0.2f;       //
 	                                        //
-	float myAirAcceleration = 2.0f;			 //
+	float myAirAcceleration = 2.0f;			//
 	float myAirDecceleration = 1.0f;        //
 	float myMaxAirSpeed = 0.25f;            //
 	                                        //
