@@ -11,8 +11,9 @@ UIButton::UIButton()
 	myOnPressFunction = nullptr;
 	myOnPressIndexFunction = nullptr;
 	myIsHovered = false;
+	myHasReachedApex = false;
 	myHoverCurrentScale = 0.55f;
-	myHoverEndScale = 0.65f;
+	myHoverMaxScale = 0.65f;
 	myHoverMinScale = 0.55f;
 }
 
@@ -60,6 +61,12 @@ void UIButton::SetIsHovered(const bool aHoverStatus)
 	myIsHovered = aHoverStatus;
 }
 
+void UIButton::SetButtonScales(const float aMinScale, const float aMaxScale)
+{
+	myHoverMinScale = aMinScale;
+	myHoverMaxScale = aMaxScale;
+}
+
 
 
 void UIButton::ChangeSize()
@@ -67,17 +74,23 @@ void UIButton::ChangeSize()
 	const Tga2D::CColor hoverColor{1.25f, 1.25f, 1.25f, 1.0f};
 	if (myIsHovered)
 	{
-		if (myHoverCurrentScale > myHoverEndScale)
+		if (myHoverCurrentScale > myHoverMaxScale && !myHasReachedApex)
 		{
-			myHoverCurrentScale = myHoverEndScale;
+			myHoverCurrentScale = myHoverMaxScale;
+			myHasReachedApex = true;
 		}
-		else if (myHoverCurrentScale < myHoverEndScale)
+		else if (myHoverCurrentScale < myHoverMaxScale)
 		{
 			myHoverCurrentScale += (Timer::GetInstance().GetDeltaTime() * 4);
+		}
+		if (myHasReachedApex)
+		{
+			myHoverCurrentScale = CommonUtilities::Lerp(myHoverMaxScale, myHoverMaxScale * 1.1f, (1 + sin(Timer::GetInstance().GetTotalTime() * 2) ) * 0.5f );
 		}
 	}
 	else
 	{
+		myHasReachedApex = false;
 		if (myHoverMinScale < myHoverCurrentScale)
 		{
 			myHoverCurrentScale -= (Timer::GetInstance().GetDeltaTime() * 4);

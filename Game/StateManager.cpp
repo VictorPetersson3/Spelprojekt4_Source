@@ -42,8 +42,7 @@ void StateManager::Init()
 	myInstance->myGameStates.Push(GetInstance().myMainMenu);
 	myInstance->myGameStates.GetTop()->OnPushed();
 
-	//myInstance->myGameStates.Push(GetInstance().myCutsceneManager);
-	//myInstance->myCutsceneManager->PlayCutscene(0);
+	
 	// 
 	//If you want to test a state, Push it on to myGameStates above the main menu
 
@@ -104,6 +103,13 @@ void StateManager::AddLevelOnStack(int aLevelIndex)
 {
 	myInstance->myGameStates.Push(myInstance->myLevel);
 	myInstance->myLevel.get()->Load(aLevelIndex);
+	myInstance->myGameStates.GetTop()->OnPushed();
+}
+
+void StateManager::AddAndPlayCutscene(int aLevelIndex)
+{
+	myInstance->myGameStates.Push(GetInstance().myCutsceneManager);
+	myInstance->myCutsceneManager->PlayCutscene(aLevelIndex);
 	myInstance->myGameStates.GetTop()->OnPushed();
 }
 

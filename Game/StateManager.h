@@ -26,6 +26,7 @@ public:
 	static void AddOptionsOnStack();
 	static void AddLevelSelectOnStack();
 	static void AddLevelOnStack(int aLevelIndex);
+	static void AddAndPlayCutscene(int aLevelIndex);
 
 private:
 	StateManager() = default;

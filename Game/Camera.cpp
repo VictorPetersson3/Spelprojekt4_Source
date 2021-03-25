@@ -38,17 +38,15 @@ void Camera::Update(const CommonUtilities::Vector2f aPositionToFollow)
 	//printf("CameraPos x: %f y: %f\n", myPosition.x, myPosition.y);
 }
 
-void Camera::RenderSprite(const Tga2D::CSprite aSprite)
+void Camera::RenderSprite(Tga2D::CSprite aSprite)
 {
-	Tga2D::CSprite renderSprite = aSprite;
 	CommonUtilities::Vector2f spritePos;
 	spritePos.x = aSprite.GetPosition().x;
 	spritePos.y = aSprite.GetPosition().y;
 	spritePos -= myPosition;
 	if (spritePos.x < 1.0f && spritePos.x > 0.0f && spritePos.y < 1.0f && spritePos.y > 0.0f)
 	{
-		renderSprite.SetPosition({ spritePos.x, spritePos.y });
-		renderSprite.Render();
+		aSprite.SetPosition({ spritePos.x, spritePos.y });
 	}
 }
 

@@ -13,6 +13,7 @@ public:
 	const LinkString& GetName() const;
 	void SetActive(const bool aState);
 	void Render();
+	void SetPosition(const CommonUtilities::Vector2f& aPos);
 
 private:
 	std::unique_ptr<Tga2D::CSprite> mySprite;

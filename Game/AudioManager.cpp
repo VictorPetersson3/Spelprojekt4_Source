@@ -59,13 +59,11 @@ void AudioManager::PlayEffect(const char* aPath, bool aLooping, float volume)
 	if (sound != nullptr)
 	{
 		sound->setDefaultVolume(volume);
-
-		myEffectEngine->play2D(sound, aLooping, false, false);
-
+		myEffectEngine->play2D(sound, aLooping, false, true);
 	}
 	else
 	{
-		myEffectEngine->play2D(myMusicEngine->getSoundSource(aPath), aLooping, false, false);
+		myEffectEngine->play2D(myEffectEngine->getSoundSource(aPath), aLooping, false, false);
 	}
 }
 

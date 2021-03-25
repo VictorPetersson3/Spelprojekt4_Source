@@ -31,3 +31,8 @@ void CutsceneCharacter::Render()
 {
 	mySprite->Render();
 }
+
+void CutsceneCharacter::SetPosition(const CommonUtilities::Vector2f& aPos)
+{
+	mySprite->SetPosition({aPos.x, aPos.y});
+}
