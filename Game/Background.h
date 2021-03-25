@@ -30,7 +30,7 @@ public:
 	Background(EWorld_but_like_just_a_placeholder_for_the_real_tag aWorld = EWorld_but_like_just_a_placeholder_for_the_real_tag::Forest);
 	~Background() {}
 
-	void Init(Player& aPlayer, CommonUtilities::Vector2f aPosition = { 0.0f, -0.4f });
+	void Init(Player& aPlayer, CommonUtilities::Vector2f aPosition = { 0.0f, 0.5f });
 	void Update();
 	void Render(Camera& aCamera);
 

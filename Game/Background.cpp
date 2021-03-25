@@ -25,9 +25,9 @@ void Background::Init(Player& aPlayer, CommonUtilities::Vector2f aPosition)
 	switch (myWorld)
 	{
 	case EWorld_but_like_just_a_placeholder_for_the_real_tag::Forest:
-		layer1.mySprite = RenderCommand("Sprites/Backgrounds/world_01/prarlllaa.dds", 1, aPosition, false);
-		layer2.mySprite = RenderCommand("Sprites/Backgrounds/world_01/prarlllaa(1).dds", 1, aPosition, false);
-		layer3.mySprite = RenderCommand("Sprites/Backgrounds/world_01/prarlllaa(2).dds", 1, aPosition, false);
+		layer1.mySprite = RenderCommand("Sprites/Backgrounds/world_01/background_03.dds", 1, aPosition, false);
+		layer2.mySprite = RenderCommand("Sprites/Backgrounds/world_01/background_02.dds", 1, aPosition, false);
+		layer3.mySprite = RenderCommand("Sprites/Backgrounds/world_01/background_01.dds", 1, aPosition, false);
 		break;
 	case EWorld_but_like_just_a_placeholder_for_the_real_tag::Level2:
 		layer1.mySprite = RenderCommand("Sprites/Backgrounds/world_02/background_03.dds", 1, aPosition, false);
