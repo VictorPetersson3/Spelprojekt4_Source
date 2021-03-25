@@ -37,6 +37,8 @@ private:
 	void SetPosition(RenderCommand& aRenderCommand, int aGridTileIndex, int aLayerIndex);
 	void SetSpriteSize(RenderCommand& aRenderCommand, float aGridSize);
 
+	int myLevelindex = 0;
+
 	rapidjson::Document myDocument;
 	std::shared_ptr<Saw> AddSaw(int aGridSize, int aEntityIndex, int aLayerIndex, int aRenderSizeX, int aRenderSizeY);
 	EPowerUp mySelectedPower = EPowerUp::Default;

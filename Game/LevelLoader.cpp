@@ -56,7 +56,6 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 
 
 	rapidjson::Document levelPropertiesDocument = jsonParser.GetDocument("Json/Levels.json");
-	rapidjson::Document testDocument = jsonParser.GetDocument("Json/Test.json");
 
 	std::shared_ptr<LevelData> levelToPushBack = std::make_shared<LevelData>();
 
@@ -88,7 +87,7 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 
 				std::shared_ptr<Tga2D::CSpriteBatch> spriteBatch = std::make_shared<Tga2D::CSpriteBatch>(false);
 
-				const char* aTileSheetPath = levelPropertiesDocument["levels"][j]["propsTileSheetPath"].GetString();
+				const char* aTileSheetPath = levelPropertiesDocument["levels"][myLevelindex]["propsTileSheetPath"].GetString();
 
 				spriteBatch->Init(aTileSheetPath);
 
@@ -104,7 +103,7 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 
 				std::shared_ptr<Tga2D::CSpriteBatch> spriteBatch = std::make_shared<Tga2D::CSpriteBatch>(false);
 
-				const char* aTileSheetPath = levelPropertiesDocument["levels"][j]["gameplayAreaTileSheetPath"].GetString();
+				const char* aTileSheetPath = levelPropertiesDocument["levels"][myLevelindex]["gameplayAreaTileSheetPath"].GetString();
 
 				spriteBatch->Init(aTileSheetPath);
 
@@ -210,6 +209,8 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(int aLevelIndex)
 	JsonParser jsonParser;
 
 	rapidjson::Document document;
+
+	myLevelindex = aLevelIndex;
 
 	document = jsonParser.GetDocument("Json/Levels.json");
 
