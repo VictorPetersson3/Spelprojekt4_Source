@@ -1,9 +1,10 @@
 #pragma once
 #include <array>
+#include "CommonUtilities/Vector2.hpp"
+#include "RenderCommand.h"
 
 class AnimationClip;
 class Camera;
-class RenderCommand;
 class Player;
 
 enum class EWorld_but_like_just_a_placeholder_for_the_real_tag
@@ -17,46 +18,27 @@ enum class EWorld_but_like_just_a_placeholder_for_the_real_tag
 struct Layer
 {
 public:
-	virtual void Update() = 0;
+	void Update(Camera& aCamera);
+	RenderCommand mySprite;
 	CommonUtilities::Vector2f myPosition;
-};
-struct StaticLayer : public Layer
-{
-	void Update() override
-	{
-		mySprite->Update(myPosition);
-	}
-	std::shared_ptr<RenderCommand> mySprite;
-};
-struct AnimatedLayer : public Layer
-{
-	void Update() override
-	{
-		myAnimation->UpdateAnimation(myPosition);
-	}
-	std::shared_ptr<AnimationClip> myAnimation;
 };
 
 class Background
 {
 public:
-	Background();
-	~Background();
+	Background(EWorld_but_like_just_a_placeholder_for_the_real_tag aWorld = EWorld_but_like_just_a_placeholder_for_the_real_tag::Forest);
+	~Background() {}
 
-	void Init(std::shared_ptr<Player> aPlayer, EWorld_but_like_just_a_placeholder_for_the_real_tag aWorld);
-	void Update();
-	void MoveLayers();
-
-private:
-	void InitWorld1();
-	void InitWorld2();
-	void InitWorld3();
-	void InitWorld4();
+	void Init(Player& aPlayer, CommonUtilities::Vector2f aPosition = { 0.1f, 0.5f });
+	void Update(Camera& aCamera);
 
 private:
-	std::array<std::shared_ptr<Layer>, 4> myLayers;
+	std::array<std::array<Layer, 3>, 3> mySets;
 
-	std::array<float, 4> mySpeedFactor = { 1 / 16.0f, 1 / 8.0f, 1 / 2.0f, 1 / 1.0f };
-	CommonUtilities::Vector2f* mySpeed;
+	std::array<float, 3> mySpeedFactor = { 1.0f / 8.0f, 1.0f / 4.0f, 1.0f / 2.0f };
+
+	CommonUtilities::Vector2<float*> mySpeed;
+
+	EWorld_but_like_just_a_placeholder_for_the_real_tag myWorld;
 };
 

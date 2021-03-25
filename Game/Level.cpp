@@ -10,6 +10,7 @@
 #include "Collider.h"
 #include "tga2d/sprite/sprite_batch.h"
 #include "CollisionManager.h"
+#include "Background.h"
 
 #include "LevelData.h"
 #include "Saw.h"
@@ -31,6 +32,8 @@ Level::Level()
 	myPauseMenu->Init(EStateType::ePauseMenu);
 	myEndOfLevelScreen = std::make_shared<EndOfLevelScreen>(this);
 	myEndOfLevelScreen->Init(EStateType::eEndOfLevelScreen);
+	
+	myBackground = std::make_unique<Background>(/*EWorld_but_like_just_a_placeholder_for_the_real_tag::Forest*/);
 }
 
 Level::~Level()
@@ -106,6 +109,11 @@ void Level::Update()
 			std::cout << "Level ended" << std::endl;
 		}
 	}	
+	// Background
+	if (myBackground != nullptr)
+	{
+		myBackground->Update(*(myCamera.get()));
+	}
 }
 
 void Level::Load(std::shared_ptr<LevelData> aData)
@@ -198,4 +206,5 @@ void Level::Init(const EStateType& aState)
 
 	currentLevelIndex = 0;
 
+	myBackground->Init(*(myPlayer.get()));
 }

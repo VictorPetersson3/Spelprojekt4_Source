@@ -188,9 +188,9 @@ CommonUtilities::Vector2f Player::GetPosition() const
 	return myPosition;
 }
 
-CommonUtilities::Vector2f* Player::GetCurrentVelocityPtr()
+CommonUtilities::Vector2f& Player::GetCurrentVelocity()
 {
-	return &myCurrentVelocity;
+	return myCurrentVelocity;
 }
 
 const bool Player::IsDead() const

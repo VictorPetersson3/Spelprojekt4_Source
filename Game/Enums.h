@@ -44,7 +44,3 @@ enum class EPowerUp
 	DoubleJump = 2,
 	Glide = 3
 };
-enum class EAnimatedBackgroundLayers
-{
-	Fog
-};

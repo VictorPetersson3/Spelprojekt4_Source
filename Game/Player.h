@@ -58,7 +58,7 @@ public:
 
 	void SetPosition(const CommonUtilities::Vector2f& aPosition);
 	CommonUtilities::Vector2f GetPosition() const;
-	CommonUtilities::Vector2f* GetCurrentVelocityPtr();
+	CommonUtilities::Vector2f& GetCurrentVelocity();
 	std::shared_ptr<Collider> GetCollider();
 	const bool IsDead() const;
 
