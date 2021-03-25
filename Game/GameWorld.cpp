@@ -49,69 +49,6 @@ void CGameWorld::Update(float /*aTimeDelta*/)
 	
 
 	// Exempel på hur man använder controller input, passa igenom den där ni behöver den som en "shared_ptr"
-	if (myController->IsConnected())
-	{
-		if (myController->IsButton_A_Pressed())
-		{
-			std::cout << "A is pressed " << sm << std::endl;
-			sm++;
-		}
-		if (myController->IsButton_X_Pressed())
-		{
-			std::cout << "X is pressed " << sm << std::endl;
-			sm++;
-		}
-		if (myController->IsButton_Y_Pressed())
-		{
-			std::cout << "Y is pressed " << sm << std::endl;
-			sm++;
-		}
-		if (myController->IsButton_B_Pressed())
-		{
-			std::cout << "B is pressed " << sm << std::endl;
-			sm++;
-		}
-
-		if (myController->GetLeftTumbStick() != CommonUtilities::Vector2f::Zero())
-		{
-			std::cout << "Moveing left thumbstick: " << myController->GetLeftTumbStick().x << " " <<myController->GetLeftTumbStick().y << std::endl;
-		
-		}
-		if (myController->GetRightTumbStick() != CommonUtilities::Vector2f::Zero())
-		{
-			std::cout << "Moveing right thumbstick: " << myController->GetRightTumbStick().x << " " << myController->GetRightTumbStick().y << std::endl;
-			
-		}
-		if (myController->GetDPadInput() != CommonUtilities::Vector2f::Zero())
-		{
-			std::cout << "DPad Input: " << myController->GetDPadInput().x << " " << myController->GetDPadInput().y << std::endl;
-			
-		}
-		if (myController->IsButton_LS_Pressed())
-		{
-			std::cout << "LS Is Pressed " << sm << std::endl;
-			sm++;
-		}
-		if (myController->IsButton_RS_Pressed())
-		{
-			std::cout << "RS Is Pressed " << sm << std::endl;
-			sm++;
-		}
-		if (myController->IsButton_RT_Pressed())
-		{
-			std::cout << "RT Is Pressed " << sm << std::endl;
-			sm++;
-		}
-
-		if (myController->IsButton_LT_Pressed())
-		{
-			std::cout << "LT Is Pressed " << sm << std::endl;
-			sm++;
-		}
-
-	}
-
-
 	/*if (InputManager::GetInstance().IsKeyPressed('S'))
 	{
 		printf("Was Pressed\n");
