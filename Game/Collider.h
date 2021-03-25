@@ -19,7 +19,8 @@ enum class EColliderTag
 	Player,
 	KillZone,
 	EndZone,
-	Terrain
+	Terrain,
+	IgnoreCollision
 };
 
 class Collider

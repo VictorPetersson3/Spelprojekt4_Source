@@ -53,6 +53,11 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 
 	myDocument = jsonParser.GetDocument(aLevelPath);
 
+
+
+	rapidjson::Document levelPropertiesDocument = jsonParser.GetDocument("Json/Levels.json");
+	rapidjson::Document testDocument = jsonParser.GetDocument("Json/Test.json");
+
 	std::shared_ptr<LevelData> levelToPushBack = std::make_shared<LevelData>();
 
 	float gridSize = myDocument["defs"]["layers"][0]["gridSize"].GetInt();
@@ -73,16 +78,42 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 
 		if (layerType == "Tiles")
 		{
-			int tilesArrayLenght = static_cast<int>(myDocument["levels"][0]["layerInstances"][j]["gridTiles"].Capacity());
 
-			std::shared_ptr<Tga2D::CSpriteBatch> spriteBatch = std::make_shared<Tga2D::CSpriteBatch>(false);
-			spriteBatch->Init("Sprites/Tilesets/tiles_Sheet_01.dds");
+			std::string layerIdentifier = myDocument["levels"][0]["layerInstances"][j]["__identifier"].GetString();
 
-			for (int i = 0; i < tilesArrayLenght; i++)
+
+			if (layerIdentifier == "Props" || layerIdentifier == "props")
 			{
-				levelToPushBack.get()->AddTile(LoadTileMap("Sprites/Tilesets/tiles_Sheet_01.dds", gridSize, j, i, spriteBatch));
+				int tilesArrayLenght = static_cast<int>(myDocument["levels"][0]["layerInstances"][j]["gridTiles"].Capacity());
+
+				std::shared_ptr<Tga2D::CSpriteBatch> spriteBatch = std::make_shared<Tga2D::CSpriteBatch>(false);
+
+				const char* aTileSheetPath = levelPropertiesDocument["levels"][j]["propsTileSheetPath"].GetString();
+
+				spriteBatch->Init(aTileSheetPath);
+
+				for (int i = 0; i < tilesArrayLenght; i++)
+				{
+					levelToPushBack.get()->AddTile(LoadTileMap(aTileSheetPath, gridSize, j, i, spriteBatch));
+				}
+				levelToPushBack->AddSpriteBatch(spriteBatch);
 			}
-			levelToPushBack->AddSpriteBatch(spriteBatch);
+			else
+			{
+				int tilesArrayLenght = static_cast<int>(myDocument["levels"][0]["layerInstances"][j]["gridTiles"].Capacity());
+
+				std::shared_ptr<Tga2D::CSpriteBatch> spriteBatch = std::make_shared<Tga2D::CSpriteBatch>(false);
+
+				const char* aTileSheetPath = levelPropertiesDocument["levels"][j]["gameplayAreaTileSheetPath"].GetString();
+
+				spriteBatch->Init(aTileSheetPath);
+
+				for (int i = 0; i < tilesArrayLenght; i++)
+				{
+					levelToPushBack.get()->AddTile(LoadTileMap(aTileSheetPath, gridSize, j, i, spriteBatch));
+				}
+				levelToPushBack->AddSpriteBatch(spriteBatch);
+			}
 		}
 		if (layerType == "Entities")
 		{
@@ -99,7 +130,7 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 
 					xPosition /= 1280.f;
 					yPosition /= 720.f;
-			
+
 					levelToPushBack.get()->AddPlayerStart({ xPosition,yPosition });
 
 					hasAddedPlayerStart = true;
@@ -155,14 +186,16 @@ std::shared_ptr<TerrainTile> LevelLoader::LoadTileMap(const char* aImagePath, in
 
 	aSpriteBatch->AddObject(tempRenderCommand.mySprite.get());
 
-	if (layerIdentifier != "Background" || layerIdentifier != "background")
+	if (layerIdentifier != "Background" && layerIdentifier != "background" && layerIdentifier != "Props" && layerIdentifier != "props")
 	{
 		CommonUtilities::Vector2f aColliderPosition = { tempRenderCommand.GetPosition().x, tempRenderCommand.GetPosition().y };
 
 		float width = tempRenderCommand.GetSize().x;
-		float height = tempRenderCommand.GetSize().y * (16.f/9.f);
+		float height = tempRenderCommand.GetSize().y * (16.f / 9.f);
 
 		std::shared_ptr<Collider> colliderToPushBack = std::make_shared<Collider>(aColliderPosition, width * 0.5f, height * 0.5f);
+
+		colliderToPushBack->SetTag(EColliderTag::Terrain);
 
 		return std::make_shared<TerrainTile>(colliderToPushBack, tempRenderCommand);
 	}

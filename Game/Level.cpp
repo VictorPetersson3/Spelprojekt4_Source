@@ -64,6 +64,9 @@ void Level::Render()
 	myPlayer->Render(*myCamera);
 }
 
+
+
+
 void Level::Update()
 {
 	//Pause Menu
@@ -79,10 +82,10 @@ void Level::Update()
 	{
 		myCamera->BatchRenderSprite(t.get()->myRenderCommand);
 	}
-
 	for (auto entity : myEntities)
 	{
 		entity.get()->Update(deltaTime);
+		entity->Render(myCamera);
 	}
 
 	if (InputManagerS::GetInstance().GetKeyDown(DIK_F5))
@@ -108,7 +111,7 @@ void Level::Update()
 	
 	if (myLevelEndCollider != nullptr)
 	{
-		myLevelEndCollider.get()->Draw();
+		myLevelEndCollider->Draw();
 	}
 	
 	if (myLevelEndCollider != nullptr && myPlayer.get() != nullptr)
@@ -133,8 +136,7 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 		mySpriteBatches[i]->ClearAll();
 	}
 
-
-	if (myPlayer.get()->GetCollider().get() != nullptr)
+	if (myPlayer->GetCollider().get() != nullptr)
 	{
 		myPlayer.get()->GetCollider().get()->RemoveFromManager();
 	}
@@ -167,11 +169,6 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 		t->myCollider->AddToManager();
 	}
 
-	//for (auto shooter : myShooters)
-	//{
-	//	shooter.get()->SetManager(myBulletManager);
-	//}
-
 	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y });
 
 	if (myLevelEndCollider != nullptr)
@@ -179,10 +176,10 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 		myLevelEndCollider->AddToManager();
 	}
 
-	if (myPlayer->GetCollider().get() != nullptr)
-	{
-		myPlayer->GetCollider()->AddToManager();
-	}
+	//if (myPlayer->GetCollider().get() != nullptr)
+	//{
+	//	myPlayer->GetCollider()->AddToManager();
+	//}
 }
 
 void Level::Load(int aIndex)

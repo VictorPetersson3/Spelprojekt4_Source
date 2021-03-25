@@ -7,6 +7,10 @@
 using Vector2 = CommonUtilities::Vector2f;
 class AnimationClip;
 
+class ShooterBulletManager;
+class RenderCommand;
+class Camera;
+
 class Shooter : public Entity
 {
 public:
