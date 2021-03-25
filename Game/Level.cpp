@@ -49,6 +49,8 @@ void Level::OnPushed()
 
 void Level::Render()
 {
+	myBackground->Render(*myCamera);
+
 	for (int i = 0; i < mySpriteBatches.Size(); i++)
 	{
 		mySpriteBatches[i]->Render();
@@ -58,6 +60,8 @@ void Level::Render()
 	{
 		entity->Render(myCamera);
 	}
+
+	myPlayer->Render(*myCamera);
 }
 
 void Level::Update()
@@ -93,7 +97,7 @@ void Level::Update()
 	
 	if (myPlayer.get() != nullptr)
 	{
-		myPlayer.get()->Update(*(myCamera.get()));
+		myPlayer.get()->Update();
 		myPlayer.get()->GetCollider().get()->Draw();
 		if (myPlayer->IsDead())
 		{
@@ -116,9 +120,9 @@ void Level::Update()
 		}
 	}	
 	// Background
-	if (myBackground != nullptr)
+	//if (myBackground != nullptr)
 	{
-		myBackground->Update(*(myCamera.get()));
+		myBackground->Update();
 	}
 }
 

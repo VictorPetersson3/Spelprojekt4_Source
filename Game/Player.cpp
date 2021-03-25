@@ -28,6 +28,12 @@ void Player::Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower)
 	InitCollider();
 }
 
+void Player::Render(Camera& aCamera)
+{
+	int thing = (int)myCurrentAnimation * 2 + (myDirection < 0);
+	aCamera.RenderSprite(myAnimations[thing]->GetRenderCommand());
+}
+
 void Player::InitJSON()
 {
 	JsonParser parser;
@@ -128,9 +134,9 @@ void Player::InitAnimations()
 		myAnimations[21]->Init({ 16, 1 }, { 9, 1 });
 		break;
 	case EPowerUp::Glide:
-		myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State3/player_glide_R.dds", 0, (int)EPlayerAnimationClips::eGlideR));
+		myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State3/player_glidflyg_R.dds", 0, (int)EPlayerAnimationClips::eGlideR));
 		myAnimations[20]->Init({ 16, 1 }, { 9, 1 });
-		myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State3/player_glide_L.dds", 0, (int)EPlayerAnimationClips::eGlideL));
+		myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State3/player_glidflyg_L.dds", 0, (int)EPlayerAnimationClips::eGlideL));
 		myAnimations[21]->Init({ 16, 1 }, { 9, 1 });
 		break;
 	}
@@ -159,7 +165,7 @@ void Player::ChangePower()
 	}
 }
 
-void Player::Update(Camera& aCamera)
+void Player::Update()
 {
 	//Sleep(1);
 	ChangePower();
@@ -169,18 +175,15 @@ void Player::Update(Camera& aCamera)
 	ManageStates();
 	UpdatePhysics();
 
-	HandleAnimations(aCamera);
+	HandleAnimations();
 }
 
-void Player::HandleAnimations(Camera& aCamera)
+void Player::HandleAnimations()
 {
 	for (auto& anim : myAnimations)
 	{
 		anim->UpdateAnimation(myPosition);
 	}
-
-	int thing = (int)myCurrentAnimation * 2 + (myDirection < 0);
-	aCamera.RenderSprite(myAnimations[thing]->GetRenderCommand());
 }
 
 CommonUtilities::Vector2f Player::GetPosition() const
