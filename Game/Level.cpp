@@ -10,6 +10,7 @@
 #include "Collider.h"
 #include "tga2d/sprite/sprite_batch.h"
 #include "CollisionManager.h"
+#include "Background.h"
 #include "Shooter.h"
 
 #include "LevelData.h"
@@ -32,6 +33,8 @@ Level::Level()
 	myPauseMenu->Init(EStateType::ePauseMenu);
 	myEndOfLevelScreen = std::make_shared<EndOfLevelScreen>(this);
 	myEndOfLevelScreen->Init(EStateType::eEndOfLevelScreen);
+	
+	myBackground = std::make_unique<Background>(/*EWorld_but_like_just_a_placeholder_for_the_real_tag::Forest*/);
 }
 
 Level::~Level()
@@ -46,6 +49,8 @@ void Level::OnPushed()
 
 void Level::Render()
 {
+	myBackground->Render(*myCamera);
+
 	for (int i = 0; i < mySpriteBatches.Size(); i++)
 	{
 		mySpriteBatches[i]->Render();
@@ -55,7 +60,8 @@ void Level::Render()
 	{
 		entity->Render(myCamera);
 	}
-	myPlayer->Update(*(myCamera.get()));
+
+	myPlayer->Render(*myCamera);
 }
 
 
@@ -94,6 +100,8 @@ void Level::Update()
 	
 	if (myPlayer.get() != nullptr)
 	{
+		myPlayer.get()->Update();
+		myPlayer.get()->GetCollider().get()->Draw();
 		if (myPlayer->IsDead())
 		{
 			Restart();
@@ -114,6 +122,11 @@ void Level::Update()
 			std::cout << "Level ended" << std::endl;
 		}
 	}	
+	// Background
+	//if (myBackground != nullptr)
+	{
+		myBackground->Update();
+	}
 }
 
 void Level::Load(std::shared_ptr<LevelData> aData)
@@ -205,4 +218,5 @@ void Level::Init(const EStateType& aState)
 
 	currentLevelIndex = 0;
 
+	myBackground->Init(*(myPlayer.get()));
 }

@@ -149,6 +149,7 @@
     <ClInclude Include="PauseMenu.h">
       <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
     </ClInclude>
+    <ClInclude Include="Background.h" />
     <ClInclude Include="Entity.h">
       <Filter>Entities</Filter>
     </ClInclude>
@@ -249,6 +250,7 @@
     <ClCompile Include="PauseMenu.cpp">
       <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
     </ClCompile>
+    <ClCompile Include="Background.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="Door.cpp" />

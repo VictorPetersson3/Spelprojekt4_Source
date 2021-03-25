@@ -4,10 +4,10 @@
 #include "Enums.h"
 #include <memory>
 #include "CommonUtilities/GrowingArray.hpp"
-#include "Enums.h"
 
 class Entity;
 class Player;
+class Background;
 class Camera;
 class LevelData;
 class Collider;
@@ -44,6 +44,7 @@ private:
 	std::shared_ptr<EndOfLevelScreen> myEndOfLevelScreen;
 	std::shared_ptr<Camera> myCamera;
 	std::unique_ptr<Player> myPlayer;
+	std::unique_ptr<Background> myBackground;
 
 	std::shared_ptr<LevelData> currentLevelData;
 

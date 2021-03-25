@@ -52,13 +52,14 @@ public:
 	~Player();
 
 	virtual void Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower = EPowerUp::Default);
-	virtual void Update(Camera& aCamera);
+	virtual void Update();
+	void Render(Camera& aCamera);
 
 	void ChangeInput(const EInputType anInputType);
 
 	void SetPosition(const CommonUtilities::Vector2f& aPosition);
 	CommonUtilities::Vector2f GetPosition() const;
-
+	CommonUtilities::Vector2f& GetCurrentVelocity();
 	std::shared_ptr<Collider> GetCollider();
 	const bool IsDead() const;
 
@@ -70,7 +71,7 @@ protected:
 	void ManageStates();
 	void UpdatePhysics();
 	void UpdateJumping();
-	void HandleAnimations(Camera& aCamera);
+	void HandleAnimations();
 
 	void CacheCurrentValues();
 	void ChangePower();
