@@ -33,7 +33,17 @@ enum class EPlayerAnimationClips
 	eWallJumpL,
 	eDeathR,
 	eDeathL,
-	eSize
+	eDoubleJumpR,
+	eDoubleJumpL,
+	eGlideR,
+	eGlideL
+};
+
+enum class EPowerUp
+{
+	Default = 1,
+	DoubleJump = 2,
+	Glide = 3
 };
 
 

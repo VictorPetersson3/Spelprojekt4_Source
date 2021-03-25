@@ -1,6 +1,8 @@
 #pragma once
 #include "RenderCommand.h"
 
+class Camera;
+
 class Entity
 {
 public:

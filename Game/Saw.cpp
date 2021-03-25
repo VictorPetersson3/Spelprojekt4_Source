@@ -1,14 +1,15 @@
 #include "stdafx.h"
 #include "Saw.h"
 #include "Camera.h"
-#include "RenderCommand.h"
+#include "AnimationClip.h"
 
 
 Saw::Saw(Vector2 aStartPoint)
 {
 	myPosition = aStartPoint;
-	myCollider = Collider(myRadius, myPosition);
-	myRenderCommand = std::make_shared<RenderCommand>("Sprites/tempSaw.dds", 0);
+	myAnimationClip = std::make_shared<AnimationClip>("Sprites/obstacles/obstacle_snail.dds", 0, 0);
+	myAnimationClip->Init({ 8,1 }, { 5,1 });
+	myAnimationClip->PlayAnimLoop();
 	myTravelPoints.push_back(aStartPoint);
 }
 
@@ -29,18 +30,18 @@ void Saw::Update(float aDeltatime)
 		myNextPointIndex += myDirection;
 	}
 	myPosition += (myTravelPoints[myNextPointIndex] - myPosition).GetNormalized() * aDeltatime * mySpeed;
-	myCollider.UpdateCollider(myPosition); 
-	myRenderCommand->Update(myPosition);
+	myCollider->UpdateCollider(myPosition); 
+	myAnimationClip->UpdateAnimation(myPosition);
 }
 
 void Saw::Render(const std::shared_ptr<Camera> aCamera)
 {
-	myRenderCommand->Render();
+	aCamera->RenderSprite(myAnimationClip->GetRenderCommand());
 }
 
-const std::shared_ptr<RenderCommand> Saw::GetRenderCommand() const
+void Saw::SetCollider(std::shared_ptr<Collider> aCollider)
 {
-	return myRenderCommand;
+	myCollider = aCollider;
 }
 
 

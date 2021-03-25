@@ -124,9 +124,6 @@
     <ClInclude Include="Bullet.h">
       <Filter>Obstacles</Filter>
     </ClInclude>
-    <ClInclude Include="ShooterBulletManager.h">
-      <Filter>Obstacles</Filter>
-    </ClInclude>
     <ClInclude Include="AnimationClip.h">
       <Filter>Rendering</Filter>
     </ClInclude>
@@ -156,6 +153,8 @@
       <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="EntityFactory.h" />
+    <ClInclude Include="Key.h" />
+    <ClInclude Include="Door.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -225,9 +224,6 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>Obstacles</Filter>
     </ClCompile>
-    <ClCompile Include="ShooterBulletManager.cpp">
-      <Filter>Obstacles</Filter>
-    </ClCompile>
     <ClCompile Include="AnimationClip.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
@@ -254,5 +250,7 @@
       <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
     </ClCompile>
     <ClCompile Include="EntityFactory.cpp" />
+    <ClCompile Include="Key.cpp" />
+    <ClCompile Include="Door.cpp" />
   </ItemGroup>
 </Project>

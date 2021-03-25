@@ -1,10 +1,12 @@
 #pragma once
 #include "CommonUtilities/Vector2.hpp"
 #include "Collider.h"
+#include "RenderCommand.h"
 
 using Vector2 = CommonUtilities::Vector2f;
+class Camera;
+class AnimationClip;
 
-class RenderCommand;
 class Bullet
 {
 public:
@@ -15,17 +17,17 @@ public:
 	void Return();
 	bool GetActive();
 	void Update(float aDeltaTime);
-	void Render();
+	void Render(std::shared_ptr<Camera> aCamera);
 
 private:
 
-	RenderCommand* myRenderCommand;
+	std::shared_ptr<AnimationClip> myAnimationClip;
 	Vector2 myPosition;
 	Vector2 myDirection;
-	Collider myCollider;
-	float mySpeed = 1;
+	std::shared_ptr<Collider> myCollider;
+	float mySpeed = 0.0001f;
 	float myMaxLifetime = 5;
-	float mySize = 16;
+	float mySize = 0.001;
 	float myRemainingLifetime;
 	bool myIsActive;	
 };

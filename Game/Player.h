@@ -40,23 +40,18 @@ enum class EAnimationState
 	W_Down,
 	W_Up,
 	W_Jump,
-	Death
-};
-
-enum class EPowerUp
-{
-	Default,
-	DoubleJump,
+	Death,
+	D_Jump,
 	Glide
 };
 
 class Player
 {
 public:
-	Player(EPowerUp aPowerup = EPowerUp::DoubleJump);
+	Player(EPowerUp aPowerup = EPowerUp::Default);
 	~Player();
 
-	virtual void Init(CommonUtilities::Vector2f aPosition);
+	virtual void Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower = EPowerUp::Default);
 	virtual void Update(Camera& aCamera);
 
 	void ChangeInput(const EInputType anInputType);
@@ -78,6 +73,7 @@ protected:
 	void HandleAnimations(Camera& aCamera);
 
 	void CacheCurrentValues();
+	void ChangePower();
 
 	void Idle();
 	void Walk();
@@ -88,8 +84,6 @@ protected:
 	void PlaySpecificAnimation(EPlayerAnimationClips anAnimEnum);
 
 protected:
-	EPlayerState myMoveState = EPlayerState::Idle;
-
 	CommonUtilities::Vector2f mySize = {};
 
 	CommonUtilities::Vector2f myOldPosition = {};
@@ -121,12 +115,12 @@ protected:
 	float myJumpDecceleration = 10.0f;      //
 	float myJumpSpeed = 1.5f;               //
 	                                        //
-	float myWallJumpSpeed = 0.7f;	          //
+	float myWallJumpSpeed = 0.7f;	        //
 	float myWallJumpFactorX = 2.0f;         //
 	float myWallDrag = 1.0f;                //
 	float myMaxWallSlideSpeed = 0.2f;       //
 	                                        //
-	float myAirAcceleration = 2.0f;			 //
+	float myAirAcceleration = 2.0f;			//
 	float myAirDecceleration = 1.0f;        //
 	float myMaxAirSpeed = 0.25f;            //
 	                                        //
@@ -134,6 +128,7 @@ protected:
 	float myMaxVerticalVelocity = 1.5f;     //
 	float myGravity = 4.0f;                 //
 	float myBoostFactor = 2.0f;             //
+	float myGlideSpeed = 0.2f;              //
 	//======================================//
 
 	int myUp = 0x11;
@@ -145,11 +140,15 @@ protected:
 	
 	bool myCanJumpAgain = true;
 	bool myCanDoubleJump = true;
+	bool myIsGliding = false;
 	bool myCanGlide = true;
 
 	int myDirection = 1;
+
+	EPlayerState myMoveState = EPlayerState::Idle;
 	EAnimationState myCurrentAnimation = EAnimationState::Idle;
 	EPowerUp myCurrentPower = EPowerUp::Default;
+
 	std::shared_ptr<Collider> myCollider;
 	std::vector<std::shared_ptr<AnimationClip>> myAnimations;
 };

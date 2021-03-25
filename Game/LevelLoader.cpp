@@ -66,8 +66,8 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 	std::cout << gridSize << std::endl;
 	std::cout << worldSize.x << " x " << worldSize.y << std::endl;
 
-	std::cout << testDocument["test"].GetString();
-
+	float renderSizeX = 1280.f;
+	float renderSizeY = 720.f;
 	bool hasAddedPlayerStart = false;
 
 	levelToPushBack->AddEntities(entityFactory.LoadEntities(aLevelPath));

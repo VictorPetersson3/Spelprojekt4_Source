@@ -61,7 +61,8 @@ std::shared_ptr<Saw> EntityFactory::LoadSaw(int aEntityIndex, int aLayerIndex)
 	aSawToPushBack.myCollider = Collider(16, { myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / renderSizeX * gridSize,
 											   myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / renderSizeY * gridSize });
 
-	aSawToPushBack.myCollider.SetTag(EColliderTag::KillZone);
+	collider->SetTag(EColliderTag::KillZone);
+	aSawToPushBack.SetCollider(collider);
 
 	return std::make_shared<Saw>(aSawToPushBack);
 

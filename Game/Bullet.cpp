@@ -1,13 +1,18 @@
 #include "stdafx.h"
 #include "Bullet.h"
-#include "RenderCommand.h"
+#include "AnimationClip.h"
+#include "Camera.h"
 
 Bullet::Bullet()
 {
 	myIsActive = false;
-	myCollider = Collider(mySize / 2, myPosition);
-	myCollider.SetTag(EColliderTag::KillZone);
-	myRenderCommand = new RenderCommand("Sprites/TempSaw.dds", 1);
+	myAnimationClip = std::make_shared<AnimationClip>("Sprites/obstacles/obstacle_shot.dds", 0, 0);
+	myAnimationClip->Init({ 4,1 }, { 2,1 });
+	myAnimationClip->PlayAnimLoop();
+	myPosition = { 0,0 };
+	myDirection = { 0,0 };
+	myCollider = std::make_shared<Collider>(mySize / 2, myPosition);
+	myCollider->SetTag(EColliderTag::KillZone);
 }
 
 void Bullet::Call(Vector2 aPosition, Vector2 aDirection)
@@ -31,17 +36,24 @@ bool Bullet::GetActive()
 void Bullet::Update(float aDeltaTime)
 {
 	if (myIsActive)
-	{	
+	{
 		myPosition = myPosition + (myDirection.GetNormalized()) * mySpeed;
-		myCollider.UpdateCollider(myPosition);
-		myRenderCommand->Update(myPosition);
+		myCollider->UpdateCollider(myPosition);
+		myAnimationClip->UpdateAnimation(myPosition);
+		myRemainingLifetime -= aDeltaTime;
+
+		if (myRemainingLifetime <= 0)
+		{
+			Return();
+		}
 	}
 }
 
-void Bullet::Render()
+void Bullet::Render(std::shared_ptr<Camera> aCamera)
 {
 	if (myIsActive)
 	{
-		myRenderCommand->Render();
+		aCamera->RenderSprite(myAnimationClip->GetRenderCommand());
+
 	}
 }

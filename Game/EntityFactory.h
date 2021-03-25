@@ -16,12 +16,11 @@ public:
 
 private:
 
-	rapidjson::Document myDocument;
-	int gridSize;
-	int renderSizeX;
-	int renderSizeY;
-	
-
 	std::vector<std::shared_ptr<Entity>> myEntities;
+	rapidjson::Document myDocument;
+	float gridSize;
+	float renderSizeX;
+	float renderSizeY;
+	
 };
 
