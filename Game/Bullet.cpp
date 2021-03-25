@@ -1,12 +1,14 @@
 #include "stdafx.h"
 #include "Bullet.h"
-#include "RenderCommand.h"
+#include "AnimationClip.h"
 #include "Camera.h"
 
 Bullet::Bullet()
 {
 	myIsActive = false;
-	myRenderCommand = new RenderCommand("Sprites/TempSaw.dds", 1);
+	myAnimationClip = std::make_shared<AnimationClip>("Sprites/obstacles/obstacle_shot.dds", 0, 0);
+	myAnimationClip->Init({ 4,1 }, { 2,1 });
+	myAnimationClip->PlayAnimLoop();
 	myPosition = { 0,0 };
 	myDirection = { 0,0 };
 	myCollider = std::make_shared<Collider>(mySize / 2, myPosition);
@@ -37,7 +39,7 @@ void Bullet::Update(float aDeltaTime)
 	{
 		myPosition = myPosition + (myDirection.GetNormalized()) * mySpeed;
 		myCollider->UpdateCollider(myPosition);
-		myRenderCommand->Update(myPosition);
+		myAnimationClip->UpdateAnimation(myPosition);
 		myRemainingLifetime -= aDeltaTime;
 
 		if (myRemainingLifetime <= 0)
@@ -51,6 +53,7 @@ void Bullet::Render(std::shared_ptr<Camera> aCamera)
 {
 	if (myIsActive)
 	{
-		aCamera->RenderSprite(*myRenderCommand);
+		aCamera->RenderSprite(myAnimationClip->GetRenderCommand());
+
 	}
 }

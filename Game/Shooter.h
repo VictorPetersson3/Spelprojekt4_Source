@@ -5,7 +5,7 @@
 #include "Bullet.h"
 
 using Vector2 = CommonUtilities::Vector2f;
-class RenderCommand;
+class AnimationClip;
 
 class Shooter : public Entity
 {
@@ -22,14 +22,13 @@ static enum class EFireDirection
 	~Shooter() = default;
 
 	void Init(Vector2 aPosition, Shooter::EFireDirection aFireDirection);
-	std::shared_ptr<RenderCommand> GetRenderCommand();
 	void Update(float aDeltaTime) override;
 	void Render(std::shared_ptr<Camera> aCamera)override;
 	void Shoot();
 		
 private:
 	
-	std::shared_ptr<RenderCommand> myRenderCommand;
+	std::shared_ptr<AnimationClip> myAnimationClip;
 	Vector2 myPosition;
 	Vector2 myFireDirection;
 	float myFireRate = 5;
