@@ -179,6 +179,7 @@ void Player::Update()
 	UpdateJumping();
 
 	ManageStates();
+	
 	UpdatePhysics();
 
 	HandleAnimations();
@@ -287,6 +288,7 @@ void Player::UpdatePhysics()
 		if (myCollider->GetCollidedWith()[i]->GetTag() == EColliderTag::KillZone)
 		{
 			myMoveState = EPlayerState::Death;
+			continue;
 		}
 
 		normal = myCollider->GetCollisionNormal(i);
