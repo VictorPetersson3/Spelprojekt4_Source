@@ -132,6 +132,8 @@ protected:
 	float myGlideSpeed = 0.2f;              //
 	//======================================//
 
+	float myDeathTimer;
+
 	int myUp = 0x11;
 	int myLeft = 0x1E;
 	int myDown = 0x1F;

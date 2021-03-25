@@ -18,8 +18,14 @@ Player::~Player(){}
 
 void Player::Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower)
 {
+	myAnimations.clear();
+	
 	myCurrentPower = aPower;
 	myPosition = aPosition;
+
+	myIsDead = false;
+	myWasDead = false;
+	myMoveState = EPlayerState::Idle;
 
 	InitJSON();
 
@@ -281,7 +287,6 @@ void Player::UpdatePhysics()
 		if (myCollider->GetCollidedWith()[i]->GetTag() == EColliderTag::KillZone)
 		{
 			myMoveState = EPlayerState::Death;
-			break;
 		}
 
 		normal = myCollider->GetCollisionNormal(i);
@@ -659,8 +664,14 @@ void Player::Die()
 	if (!myWasDead)
 	{
 		myIsDead = true;
+		myCurrentVelocity.x = 0;
+
+		myCurrentAnimation = EAnimationState::Death;
+
 		if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eDeathL);
 		else PlaySpecificAnimation(EPlayerAnimationClips::eDeathR);
+
+		myDeathTimer = Timer::GetInstance().GetTotalTime();
 	}
 }
 
