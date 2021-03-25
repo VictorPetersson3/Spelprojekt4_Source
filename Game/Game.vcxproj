@@ -141,6 +141,7 @@
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ControllerLayOutState.h" />
+    <ClInclude Include="Door.h" />
     <ClInclude Include="EndOfLevelScreen.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityFactory.h" />
@@ -148,6 +149,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Shooter.h" />
     <ClInclude Include="Sprite_Renderer.h" />
+    <ClInclude Include="Key.h" />
     <ClInclude Include="LevelSelect.h" />
     <ClInclude Include="LinkString.h" />
     <ClInclude Include="Level.h" />
@@ -184,10 +186,12 @@
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ControllerLayOutState.cpp" />
+    <ClCompile Include="Door.cpp" />
     <ClCompile Include="EndOfLevelScreen.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Shooter.cpp" />
+    <ClCompile Include="Key.cpp" />
     <ClCompile Include="LevelSelect.cpp" />
     <ClCompile Include="LinkString.cpp" />
     <ClCompile Include="Level.cpp" />

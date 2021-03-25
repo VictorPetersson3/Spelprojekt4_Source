@@ -153,6 +153,8 @@
       <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="EntityFactory.h" />
+    <ClInclude Include="Key.h" />
+    <ClInclude Include="Door.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -248,5 +250,7 @@
       <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
     </ClCompile>
     <ClCompile Include="EntityFactory.cpp" />
+    <ClCompile Include="Key.cpp" />
+    <ClCompile Include="Door.cpp" />
   </ItemGroup>
 </Project>
