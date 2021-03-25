@@ -43,7 +43,6 @@ private:
 	void ReplaceSpritePointerContent(const Tga2D::CSprite& aSprite);
 
 
-	friend class Sprite_Renderer;
 	friend class Camera;
 	friend class LevelLoader;
 	CommonUtilities::Vector2f myPosition;

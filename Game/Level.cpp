@@ -11,6 +11,7 @@
 #include "tga2d/sprite/sprite_batch.h"
 #include "CollisionManager.h"
 #include "Background.h"
+#include "Shooter.h"
 
 #include "LevelData.h"
 #include "Saw.h"
@@ -52,6 +53,11 @@ void Level::Render()
 	{
 		mySpriteBatches[i]->Render();
 	}
+
+	for (auto entity : myEntities)
+	{
+		entity->Render(myCamera);
+	}
 }
 
 void Level::Update()
@@ -62,17 +68,17 @@ void Level::Update()
 		StateManager::AddStateOnStack(myPauseMenu);
 	}
 	//Player
-	myCamera->Update({ 0,0 });
+	myCamera->Update({ 0,0 });	
+	float deltaTime = Timer::GetInstance().GetDeltaTime();
+
 	for (auto t : myTerrain)
 	{
 		myCamera->BatchRenderSprite(t.get()->myRenderCommand);
 	}
-	const float deltaTime = Timer::GetInstance().GetDeltaTime();
 
-	for (auto saw : mySaws)
+	for (auto entity : myEntities)
 	{
-		saw.get()->Update(deltaTime);
-		myCamera->BatchRenderSprite(*saw.get()->GetRenderCommand());
+		entity.get()->Update(deltaTime);
 	}
 
 	if (InputManagerS::GetInstance().GetKeyDown(DIK_F5))
@@ -143,7 +149,8 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 
 	myTerrain.clear();
 
-	myTerrain = aData.get()->GetTiles();
+	myTerrain = aData->GetTiles();
+	myEntities = aData->GetEntities();
 
 	for (int i = 0; i < aData->GetSpriteBatches().Size(); i++)
 	{
@@ -151,22 +158,26 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 
 	}
 
-
 	for (auto t : myTerrain)
 	{
-		t.get()->myCollider.get()->AddToManager();
+		t->myCollider->AddToManager();
 	}
+
+	//for (auto shooter : myShooters)
+	//{
+	//	shooter.get()->SetManager(myBulletManager);
+	//}
 
 	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y });
 
 	if (myLevelEndCollider != nullptr)
 	{
-		myLevelEndCollider.get()->AddToManager();
+		myLevelEndCollider->AddToManager();
 	}
 
-	if (myPlayer.get()->GetCollider().get() != nullptr)
+	if (myPlayer->GetCollider().get() != nullptr)
 	{
-		myPlayer.get()->GetCollider().get()->AddToManager();
+		myPlayer->GetCollider()->AddToManager();
 	}
 }
 
@@ -202,7 +213,7 @@ void Level::Init(const EStateType& aState)
 {
 	std::cout << "level inited\n";
 	//Creating a camera and then a renderer for the camera
-	myCamera = std::make_unique<Camera>();
+	myCamera = std::make_shared<Camera>();
 
 	currentLevelIndex = 0;
 
