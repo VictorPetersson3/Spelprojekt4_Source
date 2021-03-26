@@ -18,14 +18,26 @@ Player::~Player(){}
 
 void Player::Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower)
 {
+	myAnimations.clear();
+	
 	myCurrentPower = aPower;
 	myPosition = aPosition;
+
+	myIsDead = false;
+	myWasDead = false;
+	myMoveState = EPlayerState::Idle;
 
 	InitJSON();
 
 	InitAnimations();
 
 	InitCollider();
+}
+
+void Player::Render(Camera& aCamera)
+{
+	int thing = (int)myCurrentAnimation * 2 + (myDirection < 0);
+	aCamera.RenderSprite(myAnimations[thing]->GetRenderCommand());
 }
 
 void Player::InitJSON()
@@ -64,7 +76,7 @@ void Player::InitJSON()
 void Player::InitAnimations()
 {
 	std::string folder = "sprites/Player/State" + std::to_string((int)myCurrentPower);
-	printf(folder.c_str());
+	//printf(folder.c_str());
 
 	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_idle_R.dds").c_str(), 0, (int)EPlayerAnimationClips::eIdleR));
 	myAnimations[0]->Init({ 8, 1 }, { 7, 1 });				
@@ -128,9 +140,9 @@ void Player::InitAnimations()
 		myAnimations[21]->Init({ 16, 1 }, { 9, 1 });
 		break;
 	case EPowerUp::Glide:
-		myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State3/player_glide_R.dds", 0, (int)EPlayerAnimationClips::eGlideR));
+		myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State3/player_glidflyg_R.dds", 0, (int)EPlayerAnimationClips::eGlideR));
 		myAnimations[20]->Init({ 16, 1 }, { 9, 1 });
-		myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State3/player_glide_L.dds", 0, (int)EPlayerAnimationClips::eGlideL));
+		myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State3/player_glidflyg_L.dds", 0, (int)EPlayerAnimationClips::eGlideL));
 		myAnimations[21]->Init({ 16, 1 }, { 9, 1 });
 		break;
 	}
@@ -159,7 +171,7 @@ void Player::ChangePower()
 	}
 }
 
-void Player::Update(Camera& aCamera)
+void Player::Update()
 {
 	//Sleep(1);
 	ChangePower();
@@ -167,25 +179,28 @@ void Player::Update(Camera& aCamera)
 	UpdateJumping();
 
 	ManageStates();
+	
 	UpdatePhysics();
 
-	HandleAnimations(aCamera);
+	HandleAnimations();
 }
 
-void Player::HandleAnimations(Camera& aCamera)
+void Player::HandleAnimations()
 {
 	for (auto& anim : myAnimations)
 	{
 		anim->UpdateAnimation(myPosition);
 	}
-
-	int thing = (int)myCurrentAnimation * 2 + (myDirection < 0);
-	aCamera.RenderSprite(myAnimations[thing]->GetRenderCommand());
 }
 
 CommonUtilities::Vector2f Player::GetPosition() const
 {
 	return myPosition;
+}
+
+CommonUtilities::Vector2f& Player::GetCurrentVelocity()
+{
+	return myCurrentVelocity;
 }
 
 const bool Player::IsDead() const
@@ -273,7 +288,7 @@ void Player::UpdatePhysics()
 		if (myCollider->GetCollidedWith()[i]->GetTag() == EColliderTag::KillZone)
 		{
 			myMoveState = EPlayerState::Death;
-			break;
+			continue;
 		}
 
 		normal = myCollider->GetCollisionNormal(i);
@@ -651,8 +666,14 @@ void Player::Die()
 	if (!myWasDead)
 	{
 		myIsDead = true;
+		myCurrentVelocity.x = 0;
+
+		myCurrentAnimation = EAnimationState::Death;
+
 		if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eDeathL);
 		else PlaySpecificAnimation(EPlayerAnimationClips::eDeathR);
+
+		myDeathTimer = Timer::GetInstance().GetTotalTime();
 	}
 }
 

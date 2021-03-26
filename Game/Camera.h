@@ -1,6 +1,5 @@
 #pragma once
 #include "CommonUtilities/Vector2.hpp"
-class Sprite_Renderer;
 class RenderCommand;
 class Camera
 {

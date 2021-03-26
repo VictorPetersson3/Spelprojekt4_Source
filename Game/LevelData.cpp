@@ -4,6 +4,7 @@
 #include "TerrainTile.h"
 #include "tga2d/sprite/sprite_batch.h"
 #include "Collider.h"
+#include "Shooter.h"
 
 
 LevelData::LevelData()
@@ -21,9 +22,9 @@ void LevelData::AddTile(std::shared_ptr<TerrainTile> aTile)
 	myTiles.push_back(aTile);
 }
 
-void LevelData::AddSaw(std::shared_ptr<Saw> aSaw)
+void LevelData::AddEntities(std::vector<std::shared_ptr<Entity>> someEntities)
 {
-	mySaws.push_back(aSaw);
+	myEntities = someEntities;
 }
 
 std::vector<std::shared_ptr<TerrainTile>> LevelData::GetTiles()
@@ -31,11 +32,10 @@ std::vector<std::shared_ptr<TerrainTile>> LevelData::GetTiles()
 	return myTiles;
 }
 
-std::vector<std::shared_ptr<Saw>> LevelData::GetSaws()
+std::vector<std::shared_ptr<Entity>> LevelData::GetEntities()
 {
-	return mySaws;
+	return myEntities;
 }
-
 CommonUtilities::GrowingArray<std::shared_ptr<Tga2D::CSpriteBatch>>& LevelData::GetSpriteBatches()
 {
 	return mySpriteBatches;

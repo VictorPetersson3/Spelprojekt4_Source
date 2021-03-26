@@ -13,6 +13,7 @@ namespace Tga2D
 class Camera;
 class LevelData;
 class Saw;
+class Shooter;
 class RenderCommand;
 struct TerrainTile;
 
@@ -22,7 +23,6 @@ public:
 	LevelLoader();
 	~LevelLoader();
 
-	void Update(const std::shared_ptr<Camera> aCamera);
 	int GetAmountOfLevels();
 
 	std::shared_ptr<LevelData> LoadLevel(const char* aLevelPath);
@@ -33,15 +33,14 @@ private:
 	std::vector<TerrainTile> myTiles;
 	std::vector<Saw> mySaws;
 
-	Tga2D::Vector2f GetPlayerStartPosition();
-
 	void SetRect(RenderCommand& aRenderCommand, int gridTileindex, int layerIndex);
 	void SetPosition(RenderCommand& aRenderCommand, int aGridTileIndex, int aLayerIndex);
 	void SetSpriteSize(RenderCommand& aRenderCommand, float aGridSize);
 
-	std::shared_ptr<Saw> AddSaw(int aGridSize, int aEntityIndex, int aLayerIndex, int aRenderSizeX, int aRenderSizeY);
+	int myLevelindex = 0;
 
-	rapidjson::Document document;
+	rapidjson::Document myDocument;
+	std::shared_ptr<Saw> AddSaw(int aGridSize, int aEntityIndex, int aLayerIndex, int aRenderSizeX, int aRenderSizeY);
 	EPowerUp mySelectedPower = EPowerUp::Default;
 };
 

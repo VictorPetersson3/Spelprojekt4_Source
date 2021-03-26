@@ -30,15 +30,19 @@ void CollisionManager::Update()
 		{
 			if (myColliders[i]->GetTag() == EColliderTag::Player)
 			{
+				if (myColliders[i] != myPlayerCollider && myPlayerCollider != nullptr)
+				{
+					myColliders.erase(myColliders.begin() + i);
+				}
 				myPlayerCollider = myColliders[i];
 				myColliders.erase(myColliders.begin() + i);
-				break;
 			}
 		}
 	}
 	else
 	{
 		myPlayerCollider->Update();
+
 		for (auto& collider : myColliders)
 		{
 			if (collider->GetTag() == EColliderTag::EndZone) continue;
@@ -172,8 +176,12 @@ void CollisionManager::AddCollider(Collider* aCollider)
 
 void CollisionManager::RemoveCollider(Collider* aCollider)
 {
+	if (aCollider == myPlayerCollider)
+	{
+		myPlayerCollider = nullptr;
+	}
+
 	myColliders.erase(std::remove(myColliders.begin(), myColliders.end(), aCollider), myColliders.end());
-	myPlayerCollider = nullptr;
 }
 
 
