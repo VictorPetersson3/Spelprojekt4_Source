@@ -238,7 +238,7 @@ void LevelLoader::SetRect(RenderCommand& aRenderCommand, int gridTileindex, int 
 	startX -= EPSILON;
 	startY -= EPSILON;
 
-	aRenderCommand.SetTextureRect(startX, startY, startX + gridSize / aRenderCommand.GetImageSize().x, startY + gridSize / aRenderCommand.GetImageSize().y);
+	aRenderCommand.SetTextureRect(startX, startY, startX + 32.f / aRenderCommand.GetImageSize().x, startY + 32.f / aRenderCommand.GetImageSize().y);
 }
 
 void LevelLoader::SetPosition(RenderCommand& aRenderCommand, int aGridTileIndex, int aLayerIndex)
@@ -252,5 +252,5 @@ void LevelLoader::SetPosition(RenderCommand& aRenderCommand, int aGridTileIndex,
 
 void LevelLoader::SetSpriteSize(RenderCommand& aRenderCommand, float aGridSize)
 {
-	aRenderCommand.SetSizeRelativeToImage({ 1.f / (static_cast<float>(aRenderCommand.GetImageSize().x) / aGridSize),1.f / (static_cast<float>(aRenderCommand.GetImageSize().y) / aGridSize) });
+	aRenderCommand.SetSizeRelativeToImage({ 1.f / (static_cast<float>(aRenderCommand.GetImageSize().x) / 32),1.f / (static_cast<float>(aRenderCommand.GetImageSize().y) / 32) });
 }

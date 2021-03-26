@@ -30,9 +30,6 @@ public:
 	std::shared_ptr<LevelData> LoadLevel(int aLevelIndex);
 
 private:
-	std::vector<TerrainTile> myTiles;
-	std::vector<Saw> mySaws;
-
 	void SetRect(RenderCommand& aRenderCommand, int gridTileindex, int layerIndex);
 	void SetPosition(RenderCommand& aRenderCommand, int aGridTileIndex, int aLayerIndex);
 	void SetSpriteSize(RenderCommand& aRenderCommand, float aGridSize);
@@ -40,7 +37,6 @@ private:
 	int myLevelindex = 0;
 
 	rapidjson::Document myDocument;
-	std::shared_ptr<Saw> AddSaw(int aGridSize, int aEntityIndex, int aLayerIndex, int aRenderSizeX, int aRenderSizeY);
 	EPowerUp mySelectedPower = EPowerUp::Default;
 };
 
