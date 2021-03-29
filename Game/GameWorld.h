@@ -1,7 +1,7 @@
 #pragma once
 #include "CommonUtilities/Timer.h"
 #include <memory>
-
+#include <vector>
 
 class Player;
 class XController;
@@ -14,6 +14,9 @@ namespace Tga2D
 }
 class testObjectsWithPositions;
 class Camera;
+class Door;
+class Key;
+
 class CGameWorld
 {
 public:
@@ -24,10 +27,11 @@ public:
 	void Update(float aTimeDelta); 
 	void Render();
 private:
-	std::unique_ptr<Player> myPlayer;
+	std::shared_ptr<Player> myPlayer;
 	std::shared_ptr<XController> myController = {};
-	bool t = false;
-	int sm = 0;
 	std::shared_ptr<Camera> myCamera;
 	
+	std::shared_ptr<Door> myDoors = {};
+	std::shared_ptr<Key> myKey = {};
+
 };
