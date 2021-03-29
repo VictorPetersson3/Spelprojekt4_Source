@@ -57,8 +57,6 @@ public:
 	virtual void Update();
 	void Render(Camera& aCamera);
 
-	void ChangeInput();
-
 	void SetPosition(const CommonUtilities::Vector2f& aPosition);
 	CommonUtilities::Vector2f GetPosition() const;
 	CommonUtilities::Vector2f& GetCurrentVelocity();
@@ -78,6 +76,8 @@ protected:
 	void HandleAnimations();
 
 	void CacheCurrentValues();
+
+	void ChangeInput();
 	void ChangePower();
 
 	void Idle();
