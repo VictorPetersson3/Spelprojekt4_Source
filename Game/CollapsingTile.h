@@ -1,0 +1,29 @@
+#pragma once
+#include "Entity.h"
+#include "Timer.h"
+
+class RenderCommand;
+class Collider;
+
+class CollapsingTile : public Entity
+{
+public:
+	
+	CollapsingTile(CommonUtilities::Vector2f aPosition);
+	~CollapsingTile();
+
+	void Update(float aDeltaTime) override;
+	void Render(const std::shared_ptr<Camera> aCamera) override;
+
+private:
+	std::shared_ptr<RenderCommand> myRenderCommand;
+	std::shared_ptr<Collider> myCollider;
+
+	float myTimer = 0.f;
+	float myCooldownTime = 2.5f;
+
+	bool myHasBeenHitByPlayer = false;
+	bool myShouldBeRendered = true;
+
+};
+

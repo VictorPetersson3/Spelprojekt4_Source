@@ -331,6 +331,7 @@ void Player::UpdatePhysics()
 		if (posCorrNormal.y > 0)
 		{
 			myPosition.y += positionCorrection.y;
+			myCurrentVelocity.y = 0;
 			myIsRoofied = true;
 		}
 		else if (posCorrNormal.y < 0)

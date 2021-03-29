@@ -137,6 +137,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="AnimationClip.h" />
     <ClInclude Include="Background.h" />
+    <ClInclude Include="CollapsingTile.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="AudioManager.h" />
@@ -189,6 +190,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="AnimationClip.cpp" />
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="CollapsingTile.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="AudioManager.cpp" />

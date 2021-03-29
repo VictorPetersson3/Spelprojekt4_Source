@@ -30,9 +30,6 @@ public:
 	std::shared_ptr<TerrainTile> LoadTileMap(const char* aImagePath, int aGridSize, int aLayerIndex, int aTileIndex, std::shared_ptr<Tga2D::CSpriteBatch> aSpriteBatch);
 
 private:
-	std::vector<TerrainTile> myTiles;
-	std::vector<Saw> mySaws;
-
 	void SetRect(RenderCommand& aRenderCommand, int gridTileindex, int layerIndex);
 	void SetPosition(RenderCommand& aRenderCommand, int aGridTileIndex, int aLayerIndex);
 	void SetSpriteSize(RenderCommand& aRenderCommand, float aGridSize);
@@ -40,7 +37,6 @@ private:
 	int myLevelindex = 0;
 
 	rapidjson::Document myDocument;
-	std::shared_ptr<Saw> AddSaw(int aGridSize, int aEntityIndex, int aLayerIndex, int aRenderSizeX, int aRenderSizeY);
 	EPowerUp mySelectedPower = EPowerUp::Default;
 };
 

@@ -17,6 +17,9 @@ public:
 	void Clear();
 
 	void Update();
+
+	Collider* GetPlayerCollider();
+
 private:
 	
 	void AddCollider(Collider* aCollider);

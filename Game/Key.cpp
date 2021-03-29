@@ -1,23 +1,35 @@
 #include "stdafx.h"
 #include "Key.h"
+#include "Camera.h"
+#include "RenderCommand.h"
 #include "Player.h"
+#include "InputManager.h"
+
 void Key::Init(std::shared_ptr<Player> aPlayer) 
 {
 	myPlayer = aPlayer;
-
+	myRenderCommand = std::make_shared<RenderCommand>("sprites/tga_logo.dds", 1, true);
+	myPosition = { 0.5f,0.5f };
 }
 
-void Key::Update()
+void Key::Update() 
 {
-	if (CheckState() && !myIsPickedUp)
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_0))
+	{
+		myIsPickedUp = true;		
+	}
+
+	myRenderCommand->SetSpritePosition(myPosition);
+	/*if (CheckState() && !myIsPickedUp)
 	{
 		myIsPickedUp = true;
-	}
+	}*/
+
 }
 
-void Key::Render()
+void Key::Render(std::shared_ptr<Camera> aCamera)
 {
-
+	aCamera->RenderSprite(*myRenderCommand);
 }
 
 bool Key::CheckState()

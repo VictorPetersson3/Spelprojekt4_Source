@@ -30,14 +30,14 @@ public:
 	Background(EWorld_but_like_just_a_placeholder_for_the_real_tag aWorld = EWorld_but_like_just_a_placeholder_for_the_real_tag::Forest);
 	~Background() {}
 
-	void Init(Player& aPlayer, CommonUtilities::Vector2f aPosition = { 0.0f, 0.5f });
+	void Init(Player& aPlayer, CommonUtilities::Vector2f aPosition = { 0.0f, 0.25f });
 	void Update();
 	void Render(Camera& aCamera);
 
 private:
 	std::array<std::array<Layer, 3>, 4> mySets;
 
-	std::array<float, 3> mySpeedFactor = { 1.0f / 8.0f, 1.0f / 4.0f, 1.0f / 2.0f };
+	std::array<float, 3> mySpeedFactor = { 1.0f / 16.0f, 1.0f / 8.0f, 1.0f / 4.0f };
 
 	CommonUtilities::Vector2<float*> mySpeed;
 

@@ -12,6 +12,8 @@
 #include "CollisionManager.h"
 #include "Background.h"
 #include "Shooter.h"
+#include "Door.h"
+#include "Key.h"
 
 #include "LevelData.h"
 #include "Saw.h"
@@ -28,14 +30,14 @@
 
 Level::Level()
 {
-	myPlayer = std::make_unique<Player>();
+	myPlayer = std::make_shared<Player>();
 	mySpriteBatches.Init(10);
 
 	myPauseMenu = std::make_shared<PauseMenu>();
 	myPauseMenu->Init(EStateType::ePauseMenu);
 	myEndOfLevelScreen = std::make_shared<EndOfLevelScreen>(this);
 	myEndOfLevelScreen->Init(EStateType::eEndOfLevelScreen);
-	
+
 	myBackground = std::make_unique<Background>(/*EWorld_but_like_just_a_placeholder_for_the_real_tag::Forest*/);
 }
 
@@ -77,7 +79,7 @@ void Level::Update()
 		StateManager::AddStateOnStack(myPauseMenu);
 	}
 	//Player
-	myCamera->Update({ 0,0 });	
+	myCamera->Update({ 0,0 });
 	float deltaTime = Timer::GetInstance().GetDeltaTime();
 
 	for (auto t : myTerrain)
@@ -105,12 +107,12 @@ void Level::Update()
 			return;
 		}
 	}
-	
+
 	if (myLevelEndCollider != nullptr)
 	{
 		myLevelEndCollider->Draw();
 	}
-	
+
 	if (myLevelEndCollider != nullptr && myPlayer.get() != nullptr)
 	{
 		if (CollisionManager::GetInstance().CheckCollision(myPlayer->GetCollider().get(), myLevelEndCollider.get()))
@@ -118,7 +120,7 @@ void Level::Update()
 			StateManager::AddStateOnStack(myEndOfLevelScreen);
 			std::cout << "Level ended" << std::endl;
 		}
-	}	
+	}
 	// Background
 	//if (myBackground != nullptr)
 	{
@@ -142,7 +144,7 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 	{
 		t.get()->myCollider.get()->RemoveFromManager();
 	}
-	
+
 	if (myLevelEndCollider != nullptr)
 	{
 		myLevelEndCollider.get()->RemoveFromManager();
@@ -154,6 +156,34 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 
 	myTerrain = aData->GetTiles();
 	myEntities = aData->GetEntities();
+
+	std::vector<std::shared_ptr<Key>> keyList = {};
+	std::vector<Door*> doorList = {};
+	for (int i = 0; i < myEntities.size(); i++)
+	{
+		if (Key* key = dynamic_cast<Key*>(myEntities[i].get()))
+		{
+			keyList.emplace_back(dynamic_cast<Key*>(myEntities[i].get()));
+			key->Init(myPlayer);
+		}
+		if (Door* door = dynamic_cast<Door*>(myEntities[i].get()))
+		{
+			doorList.emplace_back(dynamic_cast<Door*>(myEntities[i].get()));
+		}
+	}
+	for (int i = 0; i < doorList.size(); i++)
+	{
+		for (int j = 0; j < keyList.size(); j++)
+		{
+			if (doorList[i]->GetIndex() == keyList[j]->GetIndex())
+			{
+				doorList[i]->Init(keyList[j]);
+			}
+		}
+	}
+	keyList.clear();
+	doorList.clear();
+
 
 	for (int i = 0; i < aData->GetSpriteBatches().Size(); i++)
 	{
@@ -184,7 +214,7 @@ void Level::Load(int aIndex, LevelSelect_SpecificLevelData* someLevelData)
 	LevelLoader levelLoader;
 	mylevelButtondata = someLevelData;
 	//amountOfLevels = levelLoader.GetAmountOfLevels();
-	//Lägg in att den skall spela en cutscene här och att den laddar in den
+	//Lï¿½gg in att den skall spela en cutscene hï¿½r och att den laddar in den
 
 	Load(levelLoader.LoadLevel(mylevelButtondata), mylevelButtondata);
 	myBackground->Init(*(myPlayer.get()));

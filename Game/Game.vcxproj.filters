@@ -164,6 +164,7 @@
     <ClInclude Include="Door.h" />
     <ClInclude Include="LevelSelect_SpecificLevelData.h" />
     <ClInclude Include="LevelSelectLoadData.h" />
+    <ClInclude Include="CollapsingTile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -269,5 +270,6 @@
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="LevelSelect_SpecificLevelData.cpp" />
+    <ClCompile Include="CollapsingTile.cpp" />
   </ItemGroup>
 </Project>
