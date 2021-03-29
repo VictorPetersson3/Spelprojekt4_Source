@@ -7,6 +7,8 @@
 class Shooter;
 class Saw;
 class MovingPlatform;
+class CollapsingTile;
+
 class EntityFactory
 {
 public:
@@ -14,9 +16,9 @@ public:
 
 	std::shared_ptr<Saw>				LoadSaw				(int aEntityIndex, int aLayerIndex);
 	std::shared_ptr<Shooter>			LoadShooter			(int aEntityIndex, int aLayerIndex);
-
 	std::shared_ptr<MovingPlatform>		LoadMovingPlatform	(int aEntityIndex, int aLayerIndex);
-
+	std::shared_ptr<CollapsingTile> 	LoadCollapsingTile	(int aEntityIndex, int aLayerindex);
+	
 private:
 
 	std::vector<std::shared_ptr<Entity>> myEntities;

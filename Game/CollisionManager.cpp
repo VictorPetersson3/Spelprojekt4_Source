@@ -61,6 +61,16 @@ void CollisionManager::Update()
 	}
 }
 
+Collider* CollisionManager::GetPlayerCollider()
+{
+	if (myPlayerCollider != nullptr)
+	{
+		return myPlayerCollider;
+	}
+	else
+	return nullptr;
+}
+
 
 bool CollisionManager::CheckCollision(Collider* aCollider, Collider* anOtherCollider)
 {

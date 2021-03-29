@@ -4,6 +4,7 @@
 #include "Shooter.h"
 #include "MovingPlatform.h"
 #include "JsonParser.h"
+#include "CollapsingTile.h"
 
 std::vector<std::shared_ptr<Entity>> EntityFactory::LoadEntities(const char* aPath)
 {
@@ -40,6 +41,11 @@ std::vector<std::shared_ptr<Entity>> EntityFactory::LoadEntities(const char* aPa
 				if (entityType == "MovingPlatform" || entityType == "movingplatform")
 				{
 					myEntities.push_back(LoadMovingPlatform(i, j));
+					
+				}
+				if (entityType == "CollapsingTile")
+				{
+					myEntities.push_back(LoadCollapsingTile(i, j));
 				}
 			}
 		}
@@ -148,3 +154,14 @@ std::shared_ptr<MovingPlatform> EntityFactory::LoadMovingPlatform(int aEntityInd
 	return std::make_shared<MovingPlatform>(aPlatformToPushBack);
 
 }
+
+
+std::shared_ptr<CollapsingTile> EntityFactory::LoadCollapsingTile(int aEntityIndex, int aLayerindex)
+{
+	float xPosition = myDocument["levels"][0]["layerInstances"][aLayerindex]["entityInstances"][aEntityIndex]["px"][0].GetFloat();
+	float yPosition = myDocument["levels"][0]["layerInstances"][aLayerindex]["entityInstances"][aEntityIndex]["px"][1].GetFloat();
+
+
+	return std::make_shared<CollapsingTile>(CommonUtilities::Vector2f(xPosition,yPosition));
+}
+
