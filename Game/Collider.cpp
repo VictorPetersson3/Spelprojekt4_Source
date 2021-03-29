@@ -23,8 +23,15 @@ Collider::Collider(CommonUtilities::Vector2f aPosition, float aWidth, float aHei
 
 void Collider::Update()
 {
-	myCollidedWith.clear();
-	myHasCollided = false;
+	if (!myCollidedWith.empty())
+	{
+		myCollidedWith.clear();
+		myHasCollided = false;
+	}	
+	else
+	{
+		myHasCollided = false;
+	}
 }
 
 void Collider::UpdateCollider(CommonUtilities::Vector2f anUpdatedPosition)

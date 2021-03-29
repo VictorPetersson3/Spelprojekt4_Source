@@ -10,6 +10,8 @@
 #include "Collider.h"
 #include "tga2d/sprite/sprite_batch.h"
 #include "CollisionManager.h"
+#include "Background.h"
+#include "Shooter.h"
 
 #include "LevelData.h"
 #include "Saw.h"
@@ -31,6 +33,8 @@ Level::Level()
 	myPauseMenu->Init(EStateType::ePauseMenu);
 	myEndOfLevelScreen = std::make_shared<EndOfLevelScreen>(this);
 	myEndOfLevelScreen->Init(EStateType::eEndOfLevelScreen);
+	
+	myBackground = std::make_unique<Background>(/*EWorld_but_like_just_a_placeholder_for_the_real_tag::Forest*/);
 }
 
 Level::~Level()
@@ -45,11 +49,23 @@ void Level::OnPushed()
 
 void Level::Render()
 {
+	myBackground->Render(*myCamera);
+
 	for (int i = 0; i < mySpriteBatches.Size(); i++)
 	{
 		mySpriteBatches[i]->Render();
 	}
+
+	for (auto entity : myEntities)
+	{
+		entity->Render(myCamera);
+	}
+
+	myPlayer->Render(*myCamera);
 }
+
+
+
 
 void Level::Update()
 {
@@ -59,17 +75,17 @@ void Level::Update()
 		StateManager::AddStateOnStack(myPauseMenu);
 	}
 	//Player
-	myCamera->Update({ 0,0 });
+	myCamera->Update({ 0,0 });	
+	float deltaTime = Timer::GetInstance().GetDeltaTime();
+
 	for (auto t : myTerrain)
 	{
 		myCamera->BatchRenderSprite(t.get()->myRenderCommand);
 	}
-	const float deltaTime = Timer::GetInstance().GetDeltaTime();
-
-	for (auto saw : mySaws)
+	for (auto entity : myEntities)
 	{
-		saw.get()->Update(deltaTime);
-		myCamera->BatchRenderSprite(*saw.get()->GetRenderCommand());
+		entity.get()->Update(deltaTime);
+		entity->Render(myCamera);
 	}
 
 	if (InputManagerS::GetInstance().GetKeyDown(DIK_F5))
@@ -84,7 +100,7 @@ void Level::Update()
 	
 	if (myPlayer.get() != nullptr)
 	{
-		myPlayer.get()->Update(*(myCamera.get()));
+		myPlayer.get()->Update();
 		myPlayer.get()->GetCollider().get()->Draw();
 		if (myPlayer->IsDead())
 		{
@@ -95,7 +111,7 @@ void Level::Update()
 	
 	if (myLevelEndCollider != nullptr)
 	{
-		myLevelEndCollider.get()->Draw();
+		myLevelEndCollider->Draw();
 	}
 	
 	if (myLevelEndCollider != nullptr && myPlayer.get() != nullptr)
@@ -106,6 +122,11 @@ void Level::Update()
 			std::cout << "Level ended" << std::endl;
 		}
 	}	
+	// Background
+	//if (myBackground != nullptr)
+	{
+		myBackground->Update();
+	}
 }
 
 void Level::Load(std::shared_ptr<LevelData> aData)
@@ -115,8 +136,7 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 		mySpriteBatches[i]->ClearAll();
 	}
 
-
-	if (myPlayer.get()->GetCollider().get() != nullptr)
+	if (myPlayer->GetCollider().get() != nullptr)
 	{
 		myPlayer.get()->GetCollider().get()->RemoveFromManager();
 	}
@@ -135,7 +155,8 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 
 	myTerrain.clear();
 
-	myTerrain = aData.get()->GetTiles();
+	myTerrain = aData->GetTiles();
+	myEntities = aData->GetEntities();
 
 	for (int i = 0; i < aData->GetSpriteBatches().Size(); i++)
 	{
@@ -143,23 +164,22 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 
 	}
 
-
 	for (auto t : myTerrain)
 	{
-		t.get()->myCollider.get()->AddToManager();
+		t->myCollider->AddToManager();
 	}
 
 	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y });
 
 	if (myLevelEndCollider != nullptr)
 	{
-		myLevelEndCollider.get()->AddToManager();
+		myLevelEndCollider->AddToManager();
 	}
 
-	if (myPlayer.get()->GetCollider().get() != nullptr)
-	{
-		myPlayer.get()->GetCollider().get()->AddToManager();
-	}
+	//if (myPlayer->GetCollider().get() != nullptr)
+	//{
+	//	myPlayer->GetCollider()->AddToManager();
+	//}
 }
 
 void Level::Load(int aIndex)
@@ -194,8 +214,9 @@ void Level::Init(const EStateType& aState)
 {
 	std::cout << "level inited\n";
 	//Creating a camera and then a renderer for the camera
-	myCamera = std::make_unique<Camera>();
+	myCamera = std::make_shared<Camera>();
 
 	currentLevelIndex = 0;
 
+	myBackground->Init(*(myPlayer.get()));
 }

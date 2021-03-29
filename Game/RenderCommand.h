@@ -18,6 +18,8 @@ public:
 	RenderCommand(const char* aImagePath);
 	RenderCommand(const char* aImagePath, int aLayer);
 	RenderCommand(const char* aImagePath, int aLayer, const CommonUtilities::Vector2f& aPos);
+	RenderCommand(const char* aImagePath, int aLayer, bool aShouldBeCulled = true);
+	RenderCommand(const char* aImagePath, int aLayer, const CommonUtilities::Vector2f& aPos, bool aShouldBeCulled = true);
 	
 	~RenderCommand() = default;
 	void Update(const CommonUtilities::Vector2f& aPos);
@@ -44,11 +46,11 @@ private:
 	void ReplaceSpritePointerContent(const Tga2D::CSprite& aSprite);
 
 
-	friend class Sprite_Renderer;
 	friend class Camera;
 	friend class LevelLoader;
 	CommonUtilities::Vector2f myPosition;
 	std::shared_ptr<Tga2D::CSprite> mySprite;
 	int myLayer;
+	bool myShouldBeCulled;
 };
 

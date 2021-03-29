@@ -134,7 +134,9 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="AnimationClip.h" />
+    <ClInclude Include="Background.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="AudioManager.h" />
@@ -145,8 +147,12 @@
     <ClInclude Include="CutsceneData.h" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="EndOfLevelScreen.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityFactory.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Shooter.h" />
+    <ClInclude Include="Sprite_Renderer.h" />
     <ClInclude Include="Key.h" />
     <ClInclude Include="LevelSelect.h" />
     <ClInclude Include="LinkString.h" />
@@ -178,7 +184,9 @@
     <ClInclude Include="XController.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="AnimationClip.cpp" />
+    <ClCompile Include="Background.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="AudioManager.cpp" />
@@ -189,7 +197,9 @@
     <ClCompile Include="CutsceneData.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="EndOfLevelScreen.cpp" />
+    <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Shooter.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="LevelSelect.cpp" />
     <ClCompile Include="LinkString.cpp" />

@@ -12,6 +12,7 @@ RenderCommand::RenderCommand(const RenderCommand& aRenderCommand)
 {
 	myLayer = aRenderCommand.myLayer;
 	mySprite = aRenderCommand.mySprite;
+	myShouldBeCulled = aRenderCommand.myShouldBeCulled;
 }
 RenderCommand::RenderCommand(const char* aImagePath)
 {
@@ -27,14 +28,23 @@ RenderCommand::RenderCommand(const char* aImagePath, int aLayer)
 	myLayer = aLayer;
 	mySprite->SetSizeRelativeToImage({ 0.5f, 0.5f });
 }
+RenderCommand::RenderCommand(const char* aImagePath, int aLayer, bool aShouldBeCulled)
+{
+	mySprite = std::make_shared<Tga2D::CSprite>(aImagePath);
+	mySprite->SetPivot({ 0.5f, 0.5f });
+	myLayer = aLayer;
+	mySprite->SetSizeRelativeToImage({ 0.5f, 0.5f });
+	myShouldBeCulled = aShouldBeCulled;
+}
 
-RenderCommand::RenderCommand(const char* aImagePath, int aLayer, const CommonUtilities::Vector2f& aPos)
+RenderCommand::RenderCommand(const char* aImagePath, int aLayer, const CommonUtilities::Vector2f& aPos, bool aShouldBeCulled)
 {
 	mySprite = std::make_shared<Tga2D::CSprite>(aImagePath);
 	mySprite->SetPivot({ 0.5f, 0.5f });
 	mySprite->SetPosition({ aPos.x, aPos.y });
 	mySprite->SetSizeRelativeToImage({ 0.5f, 0.5f });
 	myLayer = aLayer;
+	myShouldBeCulled = aShouldBeCulled;
 }
 //Sets position of sprite and if animated will animate
 void RenderCommand::Update(const CommonUtilities::Vector2f& aPos)
