@@ -124,10 +124,10 @@ void StateManager::AddNextLevelOnStack(int aCurrentLevelIndex)
 }
 
 
-void StateManager::AddAndPlayCutscene(int aLevelIndex)
+void StateManager::AddAndPlayCutscene(int aCutsceneIndex)
 {
 	myInstance->myGameStates.Push(GetInstance().myCutsceneManager);
-	myInstance->myCutsceneManager->PlayCutscene(aLevelIndex);
+	myInstance->myCutsceneManager->PlayCutscene(aCutsceneIndex);
 	myInstance->myGameStates.GetTop()->OnPushed();
 }
 

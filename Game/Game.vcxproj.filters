@@ -43,6 +43,12 @@
     <Filter Include="Entities">
       <UniqueIdentifier>{1d02941e-43eb-4ec8-8ad2-f83325e6a1ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Cutscenes">
+      <UniqueIdentifier>{00c9469a-ee7d-4dfb-a475-e5662784dd4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StateTypes\MenuStates\SubMenuStates\LevelSelect">
+      <UniqueIdentifier>{24e7be9c-28bb-4375-b878-7c8fb7610b43}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -152,9 +158,6 @@
     <ClInclude Include="ResolutionMenu.h">
       <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
     </ClInclude>
-    <ClInclude Include="CutsceneManager.h" />
-    <ClInclude Include="CutsceneCharacter.h" />
-    <ClInclude Include="CutsceneData.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="Entity.h">
       <Filter>Entities</Filter>
@@ -162,9 +165,22 @@
     <ClInclude Include="EntityFactory.h" />
     <ClInclude Include="Key.h" />
     <ClInclude Include="Door.h" />
-    <ClInclude Include="LevelSelect_SpecificLevelData.h" />
-    <ClInclude Include="LevelSelectLoadData.h" />
     <ClInclude Include="CollapsingTile.h" />
+    <ClInclude Include="CutsceneManager.h">
+      <Filter>Cutscenes</Filter>
+    </ClInclude>
+    <ClInclude Include="CutsceneCharacter.h">
+      <Filter>Cutscenes</Filter>
+    </ClInclude>
+    <ClInclude Include="CutsceneData.h">
+      <Filter>Cutscenes</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelSelect_SpecificLevelData.h">
+      <Filter>StateTypes\MenuStates\SubMenuStates\LevelSelect</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelSelectLoadData.h">
+      <Filter>StateTypes\MenuStates\SubMenuStates\LevelSelect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -262,14 +278,22 @@
     <ClCompile Include="ResolutionMenu.cpp">
       <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
     </ClCompile>
-    <ClCompile Include="CutsceneManager.cpp" />
-    <ClCompile Include="CutsceneCharacter.cpp" />
-    <ClCompile Include="CutsceneData.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="Door.cpp" />
-    <ClCompile Include="LevelSelect_SpecificLevelData.cpp" />
     <ClCompile Include="CollapsingTile.cpp" />
+    <ClCompile Include="CutsceneCharacter.cpp">
+      <Filter>Cutscenes</Filter>
+    </ClCompile>
+    <ClCompile Include="CutsceneData.cpp">
+      <Filter>Cutscenes</Filter>
+    </ClCompile>
+    <ClCompile Include="CutsceneManager.cpp">
+      <Filter>Cutscenes</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelSelect_SpecificLevelData.cpp">
+      <Filter>StateTypes\MenuStates\SubMenuStates\LevelSelect</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
