@@ -26,8 +26,8 @@
 
 #include "LevelSelect_SpecificLevelData.h"
 
-#define WINDOW_WIDTH 1920.0f
-#define WINDOW_HEIGTH 1080.0f
+#define WINDOW_WIDTH 1280.0f
+#define WINDOW_HEIGTH 720.0f
 
 LevelLoader::LevelLoader()
 {
@@ -87,7 +87,7 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(LevelSelect_SpecificLevelData*
 
 				std::shared_ptr<Tga2D::CSpriteBatch> spriteBatch = std::make_shared<Tga2D::CSpriteBatch>(false);
 
-				const char* aTileSheetPath = someLevelData->myTileSheetPath.GetString();
+				const char* aTileSheetPath = someLevelData->myPropsTileSheetPath.GetString();
 
 				spriteBatch->Init(aTileSheetPath);
 

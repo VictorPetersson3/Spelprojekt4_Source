@@ -209,17 +209,15 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 	//}
 }
 
-void Level::Load(int aIndex, LevelSelect_SpecificLevelData* someLevelData)
+void Level::Load(LevelSelect_SpecificLevelData* someLevelData)
 {
 	LevelLoader levelLoader;
 	mylevelButtondata = someLevelData;
-	//amountOfLevels = levelLoader.GetAmountOfLevels();
+	myEndOfLevelScreen->SetCurrentLevel(mylevelButtondata->myLevelNumber);
 	//L�gg in att den skall spela en cutscene h�r och att den laddar in den
 
 	Load(levelLoader.LoadLevel(mylevelButtondata), mylevelButtondata);
-	myBackground->Init(*(myPlayer.get()));
-
-	currentLevelIndex = aIndex;
+	myBackground->Init(*(myPlayer.get()), mylevelButtondata->myWorld);
 }
 
 void Level::Restart()
@@ -230,14 +228,9 @@ void Level::Restart()
 
 void Level::LoadNextLevel()
 {
-	if (currentLevelIndex == amountOfLevels)
-	{
-		StateManager::GetInstance().RemoveDownToState(EStateType::eMainMenu);
-	}
-	else
-	{
-		StateManager::GetInstance().AddNextLevelOnStack(mylevelButtondata->myLevelNumber);
-	}
+	bool amILastLevel = false;
+	StateManager::GetInstance().AddNextLevelOnStack(mylevelButtondata->myLevelNumber);
+	return;
 }
 
 void Level::Init(const EStateType& aState)
@@ -245,7 +238,4 @@ void Level::Init(const EStateType& aState)
 	std::cout << "level inited\n";
 	//Creating a camera and then a renderer for the camera
 	myCamera = std::make_shared<Camera>();
-
-	currentLevelIndex = 0;
-
 }

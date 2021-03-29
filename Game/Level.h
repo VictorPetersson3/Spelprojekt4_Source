@@ -31,7 +31,7 @@ public:
 	virtual void Render() override;
 	virtual void Update() override;
 	void Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData* someLevelData);
-	void Load(int aIndex, LevelSelect_SpecificLevelData* someLevelData);
+	void Load(LevelSelect_SpecificLevelData* someLevelData);
 	void Restart();
 	void LoadNextLevel();
 
@@ -55,8 +55,5 @@ private:
 	std::shared_ptr<Collider> myLevelEndCollider;
 
 	CommonUtilities::GrowingArray<std::shared_ptr<Tga2D::CSpriteBatch>> mySpriteBatches;
-
-	int currentLevelIndex = 0;
-	int amountOfLevels = 0;
 };
 

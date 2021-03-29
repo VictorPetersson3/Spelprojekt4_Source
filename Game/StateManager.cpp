@@ -101,23 +101,24 @@ void StateManager::AddLevelSelectOnStack()
 
 void StateManager::AddLevelOnStack(int aLevelIndex)
 {
+	myInstance->RemoveDownToState(EStateType::eLevelSelect);
 	myInstance->myGameStates.Push(myInstance->myLevel);
 
 	//const std::shared_ptr<LevelSelect_SpecificLevelData> temp = myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex);
-	myInstance->myLevel.get()->Load(aLevelIndex, myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex));
+	myInstance->myLevel.get()->Load(myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex));
 
 	myInstance->myGameStates.GetTop()->OnPushed();
 }
 
-void StateManager::AddNextLevelOnStack(int aLevelIndex)
+void StateManager::AddNextLevelOnStack(int aCurrentLevelIndex)
 {
-	if (aLevelIndex + 1 < myInstance->myLevelSelect->GetLevelAmount())
+	if (aCurrentLevelIndex + 1 < myInstance->myLevelSelect->GetLevelAmount())
 	{
-		myInstance->RemoveStateFromTop();
-		myInstance->AddLevelOnStack(aLevelIndex + 1);
+		myInstance->AddLevelOnStack(aCurrentLevelIndex + 1);
 	}
 	else
 	{
+		myInstance->RemoveDownToState(EStateType::eLevelSelect);
 		//Play Game over stuff and final cutscenes
 	}
 }

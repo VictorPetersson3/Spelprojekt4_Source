@@ -14,35 +14,36 @@ Background::Background(EWorld_but_like_just_a_placeholder_for_the_real_tag aWorl
 	myWorld = aWorld;
 }
 
-void Background::Init(Player& aPlayer, CommonUtilities::Vector2f aPosition)
+void Background::Init(Player& aPlayer, EWorldLevel aWorld)
 {
+	CommonUtilities::Vector2f position = { 0.0f, 0.25f };
 	mySpeed = { &(aPlayer.GetCurrentVelocity().x), &(aPlayer.GetCurrentVelocity().x) };
 
 	Layer layer1;
 	Layer layer2;
 	Layer layer3;
 
-	switch (myWorld)
+	switch (aWorld)
 	{
-	case EWorld_but_like_just_a_placeholder_for_the_real_tag::Forest:
-		layer1.mySprite = RenderCommand("Sprites/Backgrounds/world_01/back_world_01.dds" , 1, aPosition, false);
-		layer2.mySprite = RenderCommand("Sprites/Backgrounds/world_01/mid_world_01.dds"  , 1, aPosition, false);
-		layer3.mySprite = RenderCommand("Sprites/Backgrounds/world_01/front_world_01.dds", 1, aPosition, false);
+	case EWorldLevel::eWorld1:
+		layer1.mySprite = RenderCommand("Sprites/Backgrounds/world_01/back_world_01.dds" , 1, position, false);
+		layer2.mySprite = RenderCommand("Sprites/Backgrounds/world_01/mid_world_01.dds"  , 1, position, false);
+		layer3.mySprite = RenderCommand("Sprites/Backgrounds/world_01/front_world_01.dds", 1, position, false);
 		break;
-	case EWorld_but_like_just_a_placeholder_for_the_real_tag::Level2:
-		layer1.mySprite = RenderCommand("Sprites/Backgrounds/world_02/back_world_02.dds", 1, aPosition, false);
-		layer2.mySprite = RenderCommand("Sprites/Backgrounds/world_02/mid_world_02.dds", 1, aPosition, false);
-		layer3.mySprite = RenderCommand("Sprites/Backgrounds/world_02/front_world_02.dds", 1, aPosition, false);
+	case EWorldLevel::eWorld2:
+		layer1.mySprite = RenderCommand("Sprites/Backgrounds/world_02/back_world_02.dds", 1, position, false);
+		layer2.mySprite = RenderCommand("Sprites/Backgrounds/world_02/mid_world_02.dds", 1, position, false);
+		layer3.mySprite = RenderCommand("Sprites/Backgrounds/world_02/front_world_02.dds", 1, position, false);
 		break;
-	case EWorld_but_like_just_a_placeholder_for_the_real_tag::Factory_Kanske:
-		layer1.mySprite = RenderCommand("Sprites/Backgrounds/world_03/back_world_03.dds", 1, aPosition, false);
-		layer2.mySprite = RenderCommand("Sprites/Backgrounds/world_03/mid_world_03.dds", 1, aPosition, false);
-		layer3.mySprite = RenderCommand("Sprites/Backgrounds/world_03/front_world_03.dds", 1, aPosition, false);
+	case EWorldLevel::eWorld3:
+		layer1.mySprite = RenderCommand("Sprites/Backgrounds/world_03/back_world_03.dds", 1, position, false);
+		layer2.mySprite = RenderCommand("Sprites/Backgrounds/world_03/mid_world_03.dds", 1, position, false);
+		layer3.mySprite = RenderCommand("Sprites/Backgrounds/world_03/front_world_03.dds", 1, position, false);
 		break;
-	case EWorld_but_like_just_a_placeholder_for_the_real_tag::MinnsInteVadDennaSkulleVaraHeller:
-		layer1.mySprite = RenderCommand("Sprites/Backgrounds/world_04/back_world_04.dds", 1, aPosition, false);
-		layer2.mySprite = RenderCommand("Sprites/Backgrounds/world_04/mid_world_04.dds", 1, aPosition, false);
-		layer3.mySprite = RenderCommand("Sprites/Backgrounds/world_04/front_world_04.dds", 1, aPosition, false);
+	case EWorldLevel::eWorld4:
+		layer1.mySprite = RenderCommand("Sprites/Backgrounds/world_04/back_world_04.dds", 1, position, false);
+		layer2.mySprite = RenderCommand("Sprites/Backgrounds/world_04/mid_world_04.dds", 1, position, false);
+		layer3.mySprite = RenderCommand("Sprites/Backgrounds/world_04/front_world_04.dds", 1, position, false);
 		break;
 	}
 
@@ -70,7 +71,7 @@ void Background::Init(Player& aPlayer, CommonUtilities::Vector2f aPosition)
 	{
 		for (auto& layer : mySets[i])
 		{
-			layer.myPosition = { aPosition.x + i * 511.5f / RESOLUTION.x , aPosition.y };
+			layer.myPosition = { position.x + i * 511.5f / RESOLUTION.x , position.y };
 		}
 	}
 }
