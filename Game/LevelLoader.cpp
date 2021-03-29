@@ -227,8 +227,6 @@ void LevelLoader::SetRect(RenderCommand& aRenderCommand, int gridTileindex, int 
 
 	float gridSize = myDocument["defs"]["layers"][0]["gridSize"].GetFloat();
 
-	//std::cout << "Rect gridSize: " << gridSize << std::endl;
-
 	float startX = myDocument["levels"][0]["layerInstances"][layerIndex]["gridTiles"][gridTileindex]["src"][0].GetFloat();
 	float startY = myDocument["levels"][0]["layerInstances"][layerIndex]["gridTiles"][gridTileindex]["src"][1].GetFloat();
 
