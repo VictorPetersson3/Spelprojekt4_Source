@@ -156,6 +156,7 @@
     <ClInclude Include="EntityFactory.h" />
     <ClInclude Include="Key.h" />
     <ClInclude Include="Door.h" />
+    <ClInclude Include="CollapsingTile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -254,5 +255,6 @@
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="Door.cpp" />
+    <ClCompile Include="CollapsingTile.cpp" />
   </ItemGroup>
 </Project>

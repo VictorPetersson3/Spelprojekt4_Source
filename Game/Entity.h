@@ -11,7 +11,8 @@ public:
 		eSaw,
 		eShooter,
 		ePlayerStart,
-		eLevelEnd
+		eLevelEnd,
+		eMovingPlatform
 	};
 
 	EntityType myEntityType;

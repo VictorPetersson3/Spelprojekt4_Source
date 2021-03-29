@@ -23,6 +23,7 @@ public:
 	void Update(float aDeltatime) override;
 	void Render(const std::shared_ptr<Camera> aCamera) override;
 	void SetCollider(std::shared_ptr<Collider> aCollider);
+	void SetRepeating(bool aRepeating);
 	std::shared_ptr<Collider> myCollider;
 
 private:
@@ -34,6 +35,7 @@ private:
 	float myRadius = 0.5;
 	float mySpeed = 0.1;
 	int myDirection = 1;
+	bool myRepeating = false;
 
 	const float EPSILON = 0.01;
 };

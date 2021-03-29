@@ -25,26 +25,30 @@ void Background::Init(Player& aPlayer, CommonUtilities::Vector2f aPosition)
 	switch (myWorld)
 	{
 	case EWorld_but_like_just_a_placeholder_for_the_real_tag::Forest:
-		layer1.mySprite = RenderCommand("Sprites/Backgrounds/world_01/background_03.dds", 1, aPosition, false);
-		layer2.mySprite = RenderCommand("Sprites/Backgrounds/world_01/background_02.dds", 1, aPosition, false);
-		layer3.mySprite = RenderCommand("Sprites/Backgrounds/world_01/background_01.dds", 1, aPosition, false);
+		layer1.mySprite = RenderCommand("Sprites/Backgrounds/world_01/back_world_01.dds" , 1, aPosition, false);
+		layer2.mySprite = RenderCommand("Sprites/Backgrounds/world_01/mid_world_01.dds"  , 1, aPosition, false);
+		layer3.mySprite = RenderCommand("Sprites/Backgrounds/world_01/front_world_01.dds", 1, aPosition, false);
 		break;
 	case EWorld_but_like_just_a_placeholder_for_the_real_tag::Level2:
-		layer1.mySprite = RenderCommand("Sprites/Backgrounds/world_02/background_03.dds", 1, aPosition, false);
-		layer2.mySprite = RenderCommand("Sprites/Backgrounds/world_02/background_02.dds", 1, aPosition, false);
-		layer3.mySprite = RenderCommand("Sprites/Backgrounds/world_02/background_01.dds", 1, aPosition, false);
+		layer1.mySprite = RenderCommand("Sprites/Backgrounds/world_02/back_world_02.dds", 1, aPosition, false);
+		layer2.mySprite = RenderCommand("Sprites/Backgrounds/world_02/mid_world_02.dds", 1, aPosition, false);
+		layer3.mySprite = RenderCommand("Sprites/Backgrounds/world_02/front_world_02.dds", 1, aPosition, false);
 		break;
 	case EWorld_but_like_just_a_placeholder_for_the_real_tag::Factory_Kanske:
-		layer1.mySprite = RenderCommand("Sprites/Backgrounds/world_03/background_03.dds", 1, aPosition, false);
-		layer2.mySprite = RenderCommand("Sprites/Backgrounds/world_03/background_02.dds", 1, aPosition, false);
-		layer3.mySprite = RenderCommand("Sprites/Backgrounds/world_03/background_01.dds", 1, aPosition, false);
+		layer1.mySprite = RenderCommand("Sprites/Backgrounds/world_03/back_world_03.dds", 1, aPosition, false);
+		layer2.mySprite = RenderCommand("Sprites/Backgrounds/world_03/mid_world_03.dds", 1, aPosition, false);
+		layer3.mySprite = RenderCommand("Sprites/Backgrounds/world_03/front_world_03.dds", 1, aPosition, false);
 		break;
 	case EWorld_but_like_just_a_placeholder_for_the_real_tag::MinnsInteVadDennaSkulleVaraHeller:
-		layer1.mySprite = RenderCommand("Sprites/Backgrounds/world_04/background_03.dds", 1, aPosition, false);
-		layer2.mySprite = RenderCommand("Sprites/Backgrounds/world_04/background_02.dds", 1, aPosition, false);
-		layer3.mySprite = RenderCommand("Sprites/Backgrounds/world_04/background_01.dds", 1, aPosition, false);
+		layer1.mySprite = RenderCommand("Sprites/Backgrounds/world_04/back_world_04.dds", 1, aPosition, false);
+		layer2.mySprite = RenderCommand("Sprites/Backgrounds/world_04/mid_world_04.dds", 1, aPosition, false);
+		layer3.mySprite = RenderCommand("Sprites/Backgrounds/world_04/front_world_04.dds", 1, aPosition, false);
 		break;
 	}
+
+	layer1.mySprite.SetSamplerState(ESamplerFilter::ESamplerFilter_Point, ESamplerAddressMode::ESamplerAddressMode_Clamp);
+	layer2.mySprite.SetSamplerState(ESamplerFilter::ESamplerFilter_Point, ESamplerAddressMode::ESamplerAddressMode_Clamp);
+	layer3.mySprite.SetSamplerState(ESamplerFilter::ESamplerFilter_Point, ESamplerAddressMode::ESamplerAddressMode_Clamp);
 
 	mySets[0][0] = layer1;
 	mySets[0][1] = layer2;
@@ -66,7 +70,7 @@ void Background::Init(Player& aPlayer, CommonUtilities::Vector2f aPosition)
 	{
 		for (auto& layer : mySets[i])
 		{
-			layer.myPosition = { aPosition.x + i * 512.0f / RESOLUTION.x , aPosition.y };
+			layer.myPosition = { aPosition.x + i * 511.5f / RESOLUTION.x , aPosition.y };
 		}
 	}
 }
@@ -82,11 +86,11 @@ void Background::Update()
 
 			if (mySets[i][j].myPosition.x > 1 && *mySpeed.x > 0)
 			{
-				mySets[i][j].myPosition.x -= 4 * + 512.0f / RESOLUTION.x;
+				mySets[i][j].myPosition.x -= 4 * + 511.5f / RESOLUTION.x;
 			}
-			else if (mySets[i][j].myPosition.x + 512.0f / RESOLUTION.x < 0 && *mySpeed.x < 0)
+			else if (mySets[i][j].myPosition.x + 511.5f / RESOLUTION.x < 0 && *mySpeed.x < 0)
 			{
-				mySets[i][j].myPosition.x += 4 * + 512.0f / RESOLUTION.x;
+				mySets[i][j].myPosition.x += 4 * + 511.5f / RESOLUTION.x;
 			}
 			mySets[i][j].Update();
 		}
