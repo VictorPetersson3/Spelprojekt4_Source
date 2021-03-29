@@ -50,14 +50,14 @@ enum class EAnimationState
 class Player
 {
 public:
-	Player(EPowerUp aPowerup = EPowerUp::Default);
+	Player(std::shared_ptr<XController> aController, EPowerUp aPowerup = EPowerUp::Default);
 	~Player();
 
 	virtual void Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower = EPowerUp::Default);
 	virtual void Update();
 	void Render(Camera& aCamera);
 
-	void ChangeInput(const EInputType anInputType);
+	void ChangeInput();
 
 	void SetPosition(const CommonUtilities::Vector2f& aPosition);
 	CommonUtilities::Vector2f GetPosition() const;
@@ -158,5 +158,5 @@ protected:
 
 	std::shared_ptr<Collider> myCollider;
 	std::vector<std::shared_ptr<AnimationClip>> myAnimations;
-	XController myController;
+	std::shared_ptr<XController> myController;
 };

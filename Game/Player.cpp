@@ -14,20 +14,15 @@
 #define INPUT InputManagerS::GetInstance() 
 #define DELTA_TIME Timer::GetInstance().GetDeltaTime()
 
-Player::Player(EPowerUp aPowerup) : 
-	myCurrentPower(aPowerup) ,
-	myController(1)
+Player::Player(std::shared_ptr<XController> aController, EPowerUp aPowerup) :
+	myCurrentPower(aPowerup),
+	myController(aController)
 {
 }
 Player::~Player(){}
 
 void Player::Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower)
 {
-	if (myController.IsConnected())
-	{
-		ChangeInput(EInputType::Controller);
-	}
-
 	myAnimations.clear();
 	
 	myCurrentPower = aPower;
@@ -173,17 +168,17 @@ bool Player::Input(int anInput)
 		return INPUT.GetKey(anInput);
 		break;
 	case XINPUT_GAMEPAD_DPAD_UP:
-		return myController.GetLeftTumbStick().y > 0 || myController.GetDPadInput().y > 0;
+		return myController->GetLeftTumbStick().y > 0 || myController->GetDPadInput().y > 0;
 	case XINPUT_GAMEPAD_DPAD_LEFT:
-		return myController.GetLeftTumbStick().x < 0 || myController.GetDPadInput().x < 0;
+		return myController->GetLeftTumbStick().x < 0 || myController->GetDPadInput().x < 0;
 	case XINPUT_GAMEPAD_DPAD_DOWN:
-		return myController.GetLeftTumbStick().y < 0 || myController.GetDPadInput().y < 0;
+		return myController->GetLeftTumbStick().y < 0 || myController->GetDPadInput().y < 0;
 	case XINPUT_GAMEPAD_DPAD_RIGHT:
-		return myController.GetLeftTumbStick().x > 0 || myController.GetDPadInput().x > 0;
+		return myController->GetLeftTumbStick().x > 0 || myController->GetDPadInput().x > 0;
 	case XINPUT_GAMEPAD_A:
-		return myController.IsButton_A_Pressed();
+		return myController->IsButton_A_Pressed();
 	case XINPUT_GAMEPAD_B:
-		return (myController.IsButton_B_Pressed() || myController.IsButton_X_Pressed());
+		return (myController->IsButton_B_Pressed() || myController->IsButton_X_Pressed());
 	}
 }
 
@@ -207,6 +202,7 @@ void Player::ChangePower()
 void Player::Update()
 {
 	//Sleep(1);
+	ChangeInput();
 	ChangePower();
 
 	UpdateJumping();
@@ -255,9 +251,18 @@ std::shared_ptr<Collider> Player::GetCollider()
 	return myCollider;
 }
 
-void Player::ChangeInput(EInputType anInputType)
+void Player::ChangeInput()
 {
-	switch (anInputType)
+	EInputType inputType;
+
+	if (INPUT.GetKey(DIK_UP) || INPUT.GetKey(DIK_LEFT) || INPUT.GetKey(DIK_DOWN) || INPUT.GetKey(DIK_RIGHT) || INPUT.GetKey(DIK_Z) || INPUT.GetKey(DIK_X))
+		inputType = EInputType::ArrowKeys;
+	else if (INPUT.GetKey(DIK_W) || INPUT.GetKey(DIK_A) || INPUT.GetKey(DIK_S) || INPUT.GetKey(DIK_D) || INPUT.GetKey(DIK_SPACE) || INPUT.GetKey(DIK_LSHIFT))
+		inputType = EInputType::WASD;
+	else if (INPUT.GetKey(XINPUT_GAMEPAD_DPAD_UP) || INPUT.GetKey(XINPUT_GAMEPAD_DPAD_LEFT) || INPUT.GetKey(XINPUT_GAMEPAD_DPAD_DOWN) || INPUT.GetKey(XINPUT_GAMEPAD_DPAD_RIGHT) || INPUT.GetKey(XINPUT_GAMEPAD_A) || INPUT.GetKey(XINPUT_GAMEPAD_B) || INPUT.GetKey(XINPUT_GAMEPAD_X))
+		inputType = EInputType::Controller;
+
+	switch (inputType)
 	{
 	case EInputType::ArrowKeys:
 		myUp    = DIK_UP;
@@ -697,6 +702,7 @@ void Player::Ledge()
 
 void Player::Die()
 {
+	myCurrentVelocity.y += myGravity * DELTA_TIME;
 	if (!myWasDead)
 	{
 		myIsDead = true;
