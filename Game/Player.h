@@ -1,6 +1,7 @@
 #pragma once
 #include <CommonUtilities/Vector2.hpp>
 #include <memory>
+#include "XController.h"
 
 #include "Enums.h"
 
@@ -9,9 +10,10 @@ namespace Tga2D
 	class CSprite;
 }
 
+class AnimationClip;
 class Camera;
 class Collider;
-class AnimationClip;
+//class XController;
 
 enum class EPlayerState
 {
@@ -67,6 +69,8 @@ protected:
 	void InitJSON();
 	void InitAnimations();
 	void InitCollider();
+
+	bool Input(int anInput);
 
 	void ManageStates();
 	void UpdatePhysics();
@@ -134,11 +138,11 @@ protected:
 
 	float myDeathTimer;
 
-	int myUp = 0x11;
-	int myLeft = 0x1E;
-	int myDown = 0x1F;
+	int    myUp = 0x11;
+	int  myLeft = 0x1E;
+	int  myDown = 0x1F;
 	int myRight = 0x20;
-	int myJump = 0x39;
+	int  myJump = 0x39;
 	int myBoost = 0x2A;
 	
 	bool myCanJumpAgain = true;
@@ -154,4 +158,5 @@ protected:
 
 	std::shared_ptr<Collider> myCollider;
 	std::vector<std::shared_ptr<AnimationClip>> myAnimations;
+	XController myController;
 };
