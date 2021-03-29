@@ -39,7 +39,6 @@ void Saw::Update(float aDeltatime)
 	myPosition += (myTravelPoints[myNextPointIndex] - myPosition).GetNormalized() * aDeltatime * mySpeed;
 	myCollider->UpdateCollider(myPosition); 
 	myAnimationClip->UpdateAnimation(myPosition);
-	myCollider->Draw();
 }
 
 void Saw::Render(const std::shared_ptr<Camera> aCamera)

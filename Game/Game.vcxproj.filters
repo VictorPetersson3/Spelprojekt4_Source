@@ -157,6 +157,9 @@
     <ClInclude Include="Key.h" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="CollapsingTile.h" />
+    <ClInclude Include="MovingPlatform.h">
+      <Filter>Obstacles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -256,5 +259,8 @@
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="CollapsingTile.cpp" />
+    <ClCompile Include="MovingPlatform.cpp">
+      <Filter>Obstacles</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
