@@ -5,9 +5,8 @@
 #include "Player.h"
 #include "InputManager.h"
 
-void Key::Init(std::shared_ptr<Player> aPlayer, const int aId) 
+void Key::Init(std::shared_ptr<Player> aPlayer) 
 {
-	const_cast<int&>(myId) = aId;
 	myPlayer = aPlayer;
 	myRenderCommand = std::make_shared<RenderCommand>("sprites/tga_logo.dds", 1, true);
 	myPosition = { 0.5f,0.5f };

@@ -11,7 +11,7 @@
 #include "CollisionManager.h"
 #include "Door.h"
 #include "Key.h"
-#include "RenderCommand.h"
+
 #include <tga2d/sprite/sprite.h>
 #include <CommonUtilities/Vector2.hpp>
 #include <iostream>
@@ -30,15 +30,6 @@ void CGameWorld::Init()
 	StateManager::Init();
 	myPlayer = std::make_shared<Player>();
 
-	myKey = std::make_shared<Key>();
-	myKey->Init(myPlayer, 1);
-
-	myDoors = std::make_shared<Door>();
-	myDoors->Init(myKey);
-	myDoors->SetPosition({ 0.5f, 0.1f });
-
-
-
 	myCamera = std::make_unique<Camera>();
 	myController = std::make_shared<XController>(1);
 
@@ -52,10 +43,7 @@ void CGameWorld::Update(float /*aTimeDelta*/)
 {
 	StateManager::GetInstance().Update();
 	myCamera->Update(myPlayer->GetPosition());
-	myKey->Update();
 
-
-	myDoors->Update();
 
 	//myCollider->Draw();
 	//If you want to render something send in the sprite to the Camera
@@ -82,9 +70,6 @@ void CGameWorld::Update(float /*aTimeDelta*/)
 
 void CGameWorld::Render()
 {
-	 
-	myKey->Render(myCamera);
-	myDoors->Render(myCamera);
 	//myTga2dLogoSprite->Render();
 	//myPlayer->Render(myCamera);
 	/*myTga2dLogoSprite->Render();*/

@@ -31,7 +31,6 @@ private:
 	std::shared_ptr<XController> myController = {};
 	std::shared_ptr<Camera> myCamera;
 	
-	std::shared_ptr<Door> myDoors = {};
-	std::shared_ptr<Key> myKey = {};
+
 
 };

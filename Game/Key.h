@@ -1,17 +1,18 @@
 #pragma once
+#include "Entity.h"
 #include <memory>
 #include <CommonUtilities/Vector2.hpp>
 class Player;
 class RenderCommand;
 class Camera;
 
-class Key
+class Key : public Entity
 {
 public:
 	Key() = default;
 	~Key() = default;
 
-	void Init(std::shared_ptr<Player> aPlayer, const int aId);
+	void Init(std::shared_ptr<Player> aPlayer);
 	void Update();
 	void Render(std::shared_ptr<Camera> aCamera);
 	bool CheckState();
@@ -23,11 +24,14 @@ public:
 	{
 		myPosition = aPosition;
 	}
-
+	inline int GetIndex() const 
+	{
+		return myIndex;
+	}
 private:
 
 	bool myIsPickedUp = false;
-	const int myId = 0;          // Detta är ett id som level design ska kunna använda för att ha flera olika nycklar i samma level
+    int myIndex = 0;          // Detta är ett id som level design ska kunna använda för att ha flera olika nycklar i samma level
 	const float myRange = 0.025f;
 
 

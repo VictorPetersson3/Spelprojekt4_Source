@@ -1,19 +1,20 @@
 #pragma once
+#include "Entity.h"
 #include <memory>
 #include <CommonUtilities/Vector2.hpp>
 class Key;
 class Collider;
 class Camera;
 
-class Door
+class Door : public Entity
 {
 public:
 	Door() = default;
 	~Door() = default;
 
 	void Init(std::shared_ptr<Key>);
-	void Update();
-	void Render(std::shared_ptr<Camera> aCamera);
+	void Update(float) override;
+	void Render(std::shared_ptr<Camera> aCamera) override;
 
 	void Unlock();
 
@@ -30,7 +31,18 @@ public:
 	{
 		return myRenderCommand;
 	}
+	inline int GetIndex() const
+	{
+		return myIndex;
+	}
+	inline void SetIndex(const int aIndex) 
+	{
+		myIndex = aIndex;
+	}
 private:
+
+	int myIndex = 0;
+
 	CommonUtilities::Vector2f myPosition = {};
 	std::shared_ptr<Key> myKey = {};
 	std::shared_ptr<Collider> myCollider = {};

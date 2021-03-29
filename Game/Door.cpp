@@ -18,7 +18,7 @@ void Door::Init(std::shared_ptr<Key> aKey)
 
 }
 
-void Door::Update()
+void Door::Update(float)
 {
 	//myRenderCommand->SetSpritePosition(myPosition);
 	if (!myIsDestoryed)
