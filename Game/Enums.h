@@ -12,6 +12,13 @@ enum class EStateType
 	eGame,
 	eCutsceneManager
 };
+enum class EWorldLevel
+{
+	eWorld1,
+	eWorld2,
+	eWorld3,
+	eWorld4
+};
 enum class EPlayerAnimationClips
 {
 	eIdleR,

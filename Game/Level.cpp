@@ -24,6 +24,8 @@
 #include "PauseMenu.h"
 #include "EndOfLevelScreen.h"
 
+#include "LevelSelect_SpecificLevelData.h"
+
 Level::Level()
 {
 	myPlayer = std::make_unique<Player>();
@@ -92,12 +94,7 @@ void Level::Update()
 	{
 		Restart();
 	}
-
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_F4))
-	{
-		Load(1);
-	}
-	
+		
 	if (myPlayer.get() != nullptr)
 	{
 		myPlayer.get()->Update();
@@ -129,7 +126,7 @@ void Level::Update()
 	}
 }
 
-void Level::Load(std::shared_ptr<LevelData> aData)
+void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData* someLevelData)
 {
 	for (int i = 0; i < mySpriteBatches.Size(); i++)
 	{
@@ -182,20 +179,23 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 	//}
 }
 
-void Level::Load(int aIndex)
+void Level::Load(int aIndex, LevelSelect_SpecificLevelData* someLevelData)
 {
 	LevelLoader levelLoader;
+	mylevelButtondata = someLevelData;
+	//amountOfLevels = levelLoader.GetAmountOfLevels();
+	//Lägg in att den skall spela en cutscene här och att den laddar in den
 
-	amountOfLevels = levelLoader.GetAmountOfLevels();
+	Load(levelLoader.LoadLevel(mylevelButtondata), mylevelButtondata);
+	myBackground->Init(*(myPlayer.get()));
 
-	Load(levelLoader.LoadLevel(aIndex));
 	currentLevelIndex = aIndex;
 }
 
 void Level::Restart()
 {
 	LevelLoader levelLoader;
-	Load(levelLoader.LoadLevel(currentLevelIndex));
+	Load(levelLoader.LoadLevel(mylevelButtondata), mylevelButtondata);
 }
 
 void Level::LoadNextLevel()
@@ -206,7 +206,7 @@ void Level::LoadNextLevel()
 	}
 	else
 	{
-		Load(currentLevelIndex++);
+		StateManager::GetInstance().AddNextLevelOnStack(mylevelButtondata->myLevelNumber);
 	}
 }
 
@@ -218,5 +218,4 @@ void Level::Init(const EStateType& aState)
 
 	currentLevelIndex = 0;
 
-	myBackground->Init(*(myPlayer.get()));
 }

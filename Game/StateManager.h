@@ -7,6 +7,7 @@ class OptionsMenu;
 class Level;
 class LevelSelect;
 class CutsceneManager;
+
 class StateManager
 {
 public:
@@ -25,7 +26,10 @@ public:
 	static void AddStateOnStack(std::shared_ptr<State> aState);
 	static void AddOptionsOnStack();
 	static void AddLevelSelectOnStack();
+
 	static void AddLevelOnStack(int aLevelIndex);
+	static void AddNextLevelOnStack(int aLevelIndex);
+
 	static void AddAndPlayCutscene(int aLevelIndex);
 
 private:

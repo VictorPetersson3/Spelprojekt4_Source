@@ -7,6 +7,7 @@
 #include "LevelSelect.h"
 #include "CutsceneManager.h"
 
+
 StateManager* StateManager::myInstance = nullptr;
 
 uint32_t globalAllocCounter = 0ui32;
@@ -41,7 +42,6 @@ void StateManager::Init()
 	//Main Menu is the default beginning state
 	myInstance->myGameStates.Push(GetInstance().myMainMenu);
 	myInstance->myGameStates.GetTop()->OnPushed();
-
 	
 	// 
 	//If you want to test a state, Push it on to myGameStates above the main menu
@@ -102,9 +102,26 @@ void StateManager::AddLevelSelectOnStack()
 void StateManager::AddLevelOnStack(int aLevelIndex)
 {
 	myInstance->myGameStates.Push(myInstance->myLevel);
-	myInstance->myLevel.get()->Load(aLevelIndex);
+
+	//const std::shared_ptr<LevelSelect_SpecificLevelData> temp = myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex);
+	myInstance->myLevel.get()->Load(aLevelIndex, myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex));
+
 	myInstance->myGameStates.GetTop()->OnPushed();
 }
+
+void StateManager::AddNextLevelOnStack(int aLevelIndex)
+{
+	if (aLevelIndex + 1 < myInstance->myLevelSelect->GetLevelAmount())
+	{
+		myInstance->RemoveStateFromTop();
+		myInstance->AddLevelOnStack(aLevelIndex + 1);
+	}
+	else
+	{
+		//Play Game over stuff and final cutscenes
+	}
+}
+
 
 void StateManager::AddAndPlayCutscene(int aLevelIndex)
 {

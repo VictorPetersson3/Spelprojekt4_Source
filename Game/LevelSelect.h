@@ -1,6 +1,8 @@
 #pragma once
 #include "MenuObject.h"
 
+class LevelSelectLoadData;
+class LevelSelect_SpecificLevelData;
 class UIImage;
 namespace Tga2D
 {
@@ -16,7 +18,11 @@ public:
     void Update() final;
     void Render() final;
     void OnPushed() final;
+    LevelSelect_SpecificLevelData* GetSpecificLevelData(const int aIndex) const;
+    const int GetLevelAmount() const;
+
 private:
+    void LoadLevelButtons();
     void BackButtonPress();
     void MapMarkerPress(int aVal);
 
@@ -30,6 +36,9 @@ private:
     std::unique_ptr<UIImage> myPanningBackground;
     std::unique_ptr<UIImage> myPlayerAvatar;
 
+
     std::shared_ptr<Tga2D::CCustomShader> myPanningShader;
+
+    std::shared_ptr < LevelSelectLoadData> myLevels_LevelData;
 };
 

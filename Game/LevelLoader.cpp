@@ -24,6 +24,10 @@
 #include "TerrainTile.h"
 #include "EntityFactory.h"
 
+#include "LevelSelect_SpecificLevelData.h"
+
+#define WINDOW_WIDTH 1920.0f
+#define WINDOW_HEIGTH 1080.0f
 
 LevelLoader::LevelLoader()
 {
@@ -46,16 +50,12 @@ int LevelLoader::GetAmountOfLevels()
 	return document["levels"].Capacity();
 }
 
-std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
+std::shared_ptr<LevelData> LevelLoader::LoadLevel(LevelSelect_SpecificLevelData* someLevelData)
 {
 	JsonParser jsonParser;
 	EntityFactory entityFactory;
 
-	myDocument = jsonParser.GetDocument(aLevelPath);
-
-
-
-	rapidjson::Document levelPropertiesDocument = jsonParser.GetDocument("Json/Levels.json");
+	myDocument = jsonParser.GetDocument(someLevelData->myLevelPath.GetString());
 
 	std::shared_ptr<LevelData> levelToPushBack = std::make_shared<LevelData>();
 
@@ -69,7 +69,7 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 	float renderSizeY = 720.f;
 	bool hasAddedPlayerStart = false;
 
-	levelToPushBack->AddEntities(entityFactory.LoadEntities(aLevelPath));
+	levelToPushBack->AddEntities(entityFactory.LoadEntities(someLevelData->myLevelPath.GetString()));
 
 	for (int j = 0; j < myDocument["levels"][0]["layerInstances"].Capacity(); j++)
 	{
@@ -87,7 +87,7 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 
 				std::shared_ptr<Tga2D::CSpriteBatch> spriteBatch = std::make_shared<Tga2D::CSpriteBatch>(false);
 
-				const char* aTileSheetPath = levelPropertiesDocument["levels"][myLevelindex]["propsTileSheetPath"].GetString();
+				const char* aTileSheetPath = someLevelData->myTileSheetPath.GetString();
 
 				spriteBatch->Init(aTileSheetPath);
 
@@ -103,7 +103,7 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 
 				std::shared_ptr<Tga2D::CSpriteBatch> spriteBatch = std::make_shared<Tga2D::CSpriteBatch>(false);
 
-				const char* aTileSheetPath = levelPropertiesDocument["levels"][myLevelindex]["gameplayAreaTileSheetPath"].GetString();
+				const char* aTileSheetPath = someLevelData->myTileSheetPath.GetString();
 
 				spriteBatch->Init(aTileSheetPath);
 
@@ -127,8 +127,8 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 					float xPosition = myDocument["levels"][0]["layerInstances"][j]["entityInstances"][i]["px"][0].GetFloat();
 					float yPosition = myDocument["levels"][0]["layerInstances"][j]["entityInstances"][i]["px"][1].GetFloat();
 
-					xPosition /= 1280.f;
-					yPosition /= 720.f;
+					xPosition /= WINDOW_WIDTH;
+					yPosition /= WINDOW_HEIGTH;
 
 					levelToPushBack.get()->AddPlayerStart({ xPosition,yPosition });
 
@@ -140,14 +140,14 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(const char* aLevelPath)
 					float xPosition = myDocument["levels"][0]["layerInstances"][j]["entityInstances"][i]["px"][0].GetFloat();
 					float yPosition = myDocument["levels"][0]["layerInstances"][j]["entityInstances"][i]["px"][1].GetFloat();
 
-					xPosition /= 1280.f;
-					yPosition /= 720.f;
+					xPosition /= WINDOW_WIDTH;
+					yPosition /= WINDOW_HEIGTH;
 
 					float width = myDocument["levels"][0]["layerInstances"][j]["entityInstances"][i]["width"].GetFloat();
 					float height = myDocument["levels"][0]["layerInstances"][j]["entityInstances"][i]["height"].GetFloat();
 
-					width /= 1280.f;
-					height /= 720.f;
+					width /= WINDOW_WIDTH;
+					height /= WINDOW_HEIGTH;
 
 					CommonUtilities::Vector2f aColliderPosition = { xPosition,yPosition };
 
@@ -204,22 +204,6 @@ std::shared_ptr<TerrainTile> LevelLoader::LoadTileMap(const char* aImagePath, in
 	}
 }
 
-std::shared_ptr<LevelData> LevelLoader::LoadLevel(int aLevelIndex)
-{
-	JsonParser jsonParser;
-
-	rapidjson::Document document;
-
-	myLevelindex = aLevelIndex;
-
-	document = jsonParser.GetDocument("Json/Levels.json");
-
-	assert(aLevelIndex <= document["levels"].Capacity());
-
-	const char* path = document["levels"][aLevelIndex]["path"].GetString();
-
-	return LoadLevel(path);
-}
 
 void LevelLoader::SetRect(RenderCommand& aRenderCommand, int gridTileindex, int layerIndex)
 {
@@ -247,7 +231,7 @@ void LevelLoader::SetPosition(RenderCommand& aRenderCommand, int aGridTileIndex,
 	float posY = myDocument["levels"][0]["layerInstances"][aLayerIndex]["gridTiles"][aGridTileIndex]["px"][1].GetFloat();
 
 	aRenderCommand.SetPivot({ 0.5f,0.5f });
-	aRenderCommand.Update({ posX / 1280.f, posY / 720.f });
+	aRenderCommand.Update({ posX / WINDOW_WIDTH, posY / WINDOW_HEIGTH });
 }
 
 void LevelLoader::SetSpriteSize(RenderCommand& aRenderCommand, float aGridSize)

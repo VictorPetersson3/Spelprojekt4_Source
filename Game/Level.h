@@ -13,6 +13,7 @@ class LevelData;
 class Collider;
 class PauseMenu;
 class EndOfLevelScreen;
+struct LevelSelect_SpecificLevelData;
 struct TerrainTile;
 
 namespace Tga2D
@@ -29,8 +30,8 @@ public:
 	void OnPushed() override;
 	virtual void Render() override;
 	virtual void Update() override;
-	void Load(std::shared_ptr<LevelData> aData);
-	void Load(int aIndex);
+	void Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData* someLevelData);
+	void Load(int aIndex, LevelSelect_SpecificLevelData* someLevelData);
 	void Restart();
 	void LoadNextLevel();
 
@@ -38,7 +39,7 @@ public:
 
 private:
 
-	
+	LevelSelect_SpecificLevelData* mylevelButtondata;
 
 	std::shared_ptr<PauseMenu> myPauseMenu;
 	std::shared_ptr<EndOfLevelScreen> myEndOfLevelScreen;

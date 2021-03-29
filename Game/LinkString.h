@@ -8,13 +8,13 @@ public:
 	LinkString() = default;
 	LinkString(const char* aString);
 	~LinkString() = default;
-	LinkString(LinkString&&) = delete;
-	LinkString(const LinkString&) = delete;
+	LinkString(LinkString&& aString);
+	LinkString(const LinkString& aString);
 
 	const char* GetString() const;
 
-	LinkString& operator=(LinkString&) = delete;
-	LinkString& operator=(const LinkString&) = delete;
+	LinkString& operator=(LinkString& aString);
+	LinkString& operator=(const LinkString& aString);
 
 	bool operator< (const char* aString) const;
 	bool operator< (const LinkString& aString) const;

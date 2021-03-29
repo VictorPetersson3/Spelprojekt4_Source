@@ -162,6 +162,8 @@
     <ClInclude Include="EntityFactory.h" />
     <ClInclude Include="Key.h" />
     <ClInclude Include="Door.h" />
+    <ClInclude Include="LevelSelect_SpecificLevelData.h" />
+    <ClInclude Include="LevelSelectLoadData.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -266,5 +268,6 @@
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="Door.cpp" />
+    <ClCompile Include="LevelSelect_SpecificLevelData.cpp" />
   </ItemGroup>
 </Project>
