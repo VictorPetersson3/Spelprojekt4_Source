@@ -154,8 +154,6 @@ std::shared_ptr<MovingPlatform> EntityFactory::LoadMovingPlatform(int aEntityInd
 	return std::make_shared<MovingPlatform>(aPlatformToPushBack);
 
 }
-
-
 std::shared_ptr<CollapsingTile> EntityFactory::LoadCollapsingTile(int aEntityIndex, int aLayerindex)
 {
 	float xPosition = myDocument["levels"][0]["layerInstances"][aLayerindex]["entityInstances"][aEntityIndex]["px"][0].GetFloat();
