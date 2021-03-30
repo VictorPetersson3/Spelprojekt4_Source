@@ -24,20 +24,17 @@ void CharacterSelectionScreen::Init(const EStateType& aState)
 	myNormalCharacter->GetRenderCommand().Update({ 0.4f, 0.75f });
 	myNormalCharacter->PlayAnimLoop();
 
+	myDoubleJumpCharacter = std::make_unique<AnimationClip>("Sprites/Player/State2/player_idle_R.dds", 0, 0);
+	myDoubleJumpCharacter->Init({ 8, 1 }, { 7, 1 });
+	myDoubleJumpCharacter->PlayAnimLoop();
+	myDoubleJumpCharacter->GetRenderCommand().Update({ 0.5f, 0.75f });
+	myDoubleJumpCharacter->GetRenderCommand().SetColor(Tga2D::CColor{ 0.50f, 0.50f, 0.50f, 1.0f });
 
 	myGlideCharacter = std::make_unique<AnimationClip>("Sprites/Player/State3/player_idle_R.dds", 0, 0);
 	myGlideCharacter->Init({ 8, 1 }, { 7, 1 });
 	myGlideCharacter->PlayAnimLoop();
-	myGlideCharacter->GetRenderCommand().Update({ 0.5f, 0.75f });
+	myGlideCharacter->GetRenderCommand().Update({ 0.6f, 0.75f });
 	myGlideCharacter->GetRenderCommand().SetColor(Tga2D::CColor{ 0.50f, 0.50f, 0.50f, 1.0f });
-
-
-	myDoubleJumpCharacter = std::make_unique<AnimationClip>("Sprites/Player/State2/player_idle_R.dds", 0, 0);
-	myDoubleJumpCharacter->Init({ 8, 1 }, { 7, 1 });
-	myDoubleJumpCharacter->PlayAnimLoop();
-	myDoubleJumpCharacter->GetRenderCommand().Update({ 0.6f, 0.75f });
-	myDoubleJumpCharacter->GetRenderCommand().SetColor(Tga2D::CColor{ 0.50f, 0.50f, 0.50f, 1.0f });
-
 
 	myCharacterDescription = std::make_unique<Tga2D::CText>("Text/Tomodachy.otf", Tga2D::EFontSize_18);
 	myCharacterDescription->SetPosition({ 0.3f, 0.6f });
@@ -102,23 +99,6 @@ void CharacterSelectionScreen::Update()
 		case 1:
 			if (myCurrentUnlockedWorld > 1)
 			{
-				myGlideCharacter->Activate();
-			}
-			else
-			{
-				myGlideCharacter->GetRenderCommand().SetColor(Tga2D::CColor{ 0.50f, 0.50f, 0.50f, 1.0f });
-			}
-			myNormalCharacter->SetScaleRelativeToFrame({ -1.0f, 1.0f });
-			myGlideCharacter->SetScaleRelativeToFrame({ 1.2f, 1.2f });
-			myDoubleJumpCharacter->SetScaleRelativeToFrame({ -1.0f, 1.0f });
-
-			myTitle->SetText(myGlideCharacterTitle);
-			myCharacterDescription->SetText(myGlideCharacterDescription);
-
-			break;
-		case 2:
-			if (myCurrentUnlockedWorld > 2)
-			{
 				myDoubleJumpCharacter->Activate();
 			}
 			else
@@ -131,6 +111,23 @@ void CharacterSelectionScreen::Update()
 
 			myTitle->SetText(myDoubleJumpCharacterTitle);
 			myCharacterDescription->SetText(myDoubleJumpCharacterDescription);
+
+			break;
+		case 2:
+			if (myCurrentUnlockedWorld > 2)
+			{
+				myGlideCharacter->Activate();
+			}
+			else
+			{
+				myGlideCharacter->GetRenderCommand().SetColor(Tga2D::CColor{ 0.50f, 0.50f, 0.50f, 1.0f });
+			}
+			myNormalCharacter->SetScaleRelativeToFrame({ -1.0f, 1.0f });
+			myGlideCharacter->SetScaleRelativeToFrame({ 1.2f, 1.2f });
+			myDoubleJumpCharacter->SetScaleRelativeToFrame({ -1.0f, 1.0f });
+
+			myTitle->SetText(myGlideCharacterTitle);
+			myCharacterDescription->SetText(myGlideCharacterDescription);
 
 			break;
 		default:
@@ -197,7 +194,7 @@ void CharacterSelectionScreen::UnlockNewWorld(EWorldLevel aWorldLevel)
 		if (myCurrentUnlockedWorld < 2)
 		{
 			myCurrentUnlockedWorld = 2;
-			myGlideCharacter->GetRenderCommand().SetColor(Tga2D::CColor{ 1.0f, 1.0f, 1.0f, 1.0f });
+			myDoubleJumpCharacter->GetRenderCommand().SetColor(Tga2D::CColor{ 1.0f, 1.0f, 1.0f, 1.0f });
 		}
 		break;
 	case EWorldLevel::eWorld3:
@@ -235,18 +232,6 @@ void CharacterSelectionScreen::CharacterChoicePress()
 		sucessfulPress = true;
 		break;
 	case 1:
-		if (myCurrentUnlockedWorld > 1)
-		{
-			// Load Level with this character
-			myGlideCharacter;
-			sucessfulPress = true;
-		}
-		else
-		{
-			// Play nono sounds not unlocked
-		}
-		break;
-	case 2:
 		if (myCurrentUnlockedWorld > 2)
 		{
 			// Load Level with this character
@@ -256,6 +241,18 @@ void CharacterSelectionScreen::CharacterChoicePress()
 		else
 		{
 			// Play nono sounds
+		}
+		break;
+	case 2:
+		if (myCurrentUnlockedWorld > 1)
+		{
+			// Load Level with this character
+			myGlideCharacter;
+			sucessfulPress = true;
+		}
+		else
+		{
+			// Play nono sounds not unlocked
 		}
 		break;
 	default:
