@@ -137,6 +137,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="AnimationClip.h" />
     <ClInclude Include="Background.h" />
+    <ClInclude Include="CameraBehavoir.h" />
     <ClInclude Include="CharacterSelectionScreen.h" />
     <ClInclude Include="CollapsingTile.h" />
     <ClInclude Include="Collider.h" />
@@ -191,6 +192,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="AnimationClip.cpp" />
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="CameraBehavoir.cpp" />
     <ClCompile Include="CharacterSelectionScreen.cpp" />
     <ClCompile Include="CollapsingTile.cpp" />
     <ClCompile Include="Collider.cpp" />

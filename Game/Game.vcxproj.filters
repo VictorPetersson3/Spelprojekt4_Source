@@ -182,6 +182,7 @@
       <Filter>StateTypes\MenuStates\SubMenuStates\LevelSelect</Filter>
     </ClInclude>
     <ClInclude Include="CharacterSelectionScreen.h" />
+    <ClInclude Include="CameraBehavoir.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -297,5 +298,6 @@
       <Filter>StateTypes\MenuStates\SubMenuStates\LevelSelect</Filter>
     </ClCompile>
     <ClCompile Include="CharacterSelectionScreen.cpp" />
+    <ClCompile Include="CameraBehavoir.cpp" />
   </ItemGroup>
 </Project>

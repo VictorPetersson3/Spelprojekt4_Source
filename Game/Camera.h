@@ -12,6 +12,11 @@ public:
 	void BatchRenderSprite(RenderCommand& aRenderCommand);
 	void RenderSprite(RenderCommand& aRenderCommand);
 
+	
+	inline void SetPosition(CommonUtilities::Vector2f aPosition) 
+	{
+		myPosition = aPosition;
+	}
 private:
 	CommonUtilities::Vector2f myPosition;
 	float myMovementSpeed;
