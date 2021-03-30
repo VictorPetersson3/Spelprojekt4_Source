@@ -134,16 +134,18 @@ void Player::InitAnimations()
 	switch (myCurrentPower)
 	{
 	case EPowerUp::DoubleJump:
-		myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State2/player_doubleJump_R.dds", 0, (int)EPlayerAnimationClips::eDoubleJumpR));
-		myAnimations[20]->Init({ 16, 1 }, { 9, 1 });
-		myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State2/player_doubleJump_L.dds", 0, (int)EPlayerAnimationClips::eDoubleJumpL));
-		myAnimations[21]->Init({ 16, 1 }, { 9, 1 });
+		myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State2/player_doubleJump_R.dds", 0, (int)EPlayerAnimationClips::ePowerR));
+		myAnimations[20]->Init({ 4, 1 }, { 4, 1 });
+		myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State2/player_doubleJump_L.dds", 0, (int)EPlayerAnimationClips::ePowerL));
+		myAnimations[21]->Init({ 4, 1 }, { 4, 1 });
 		break;
 	case EPowerUp::Glide:
-		myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State3/player_glidflyg_R.dds", 0, (int)EPlayerAnimationClips::eGlideR));
-		myAnimations[20]->Init({ 16, 1 }, { 9, 1 });
-		myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State3/player_glidflyg_L.dds", 0, (int)EPlayerAnimationClips::eGlideL));
-		myAnimations[21]->Init({ 16, 1 }, { 9, 1 });
+		myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State3/player_glidflyg_R.dds", 0, (int)EPlayerAnimationClips::ePowerR));
+		myAnimations[20]->Init({ 4, 1 }, { 3, 1 });
+		myAnimations[20]->PlayAnimLoop();
+		myAnimations.push_back(std::make_shared<AnimationClip>("sprites/Player/State3/player_glidflyg_L.dds", 0, (int)EPlayerAnimationClips::ePowerL));
+		myAnimations[21]->Init({ 4, 1 }, { 3, 1 });
+		myAnimations[21]->PlayAnimLoop();
 		break;
 	}
 }
@@ -155,26 +157,26 @@ void Player::InitCollider()
 }
 
 //temp
-void Player::ChangePower()
-{
-	if (INPUT.GetKeyDown(DIK_1) && myCurrentPower != EPowerUp::Default)
-	{
-		myCurrentPower = EPowerUp::Default;
-	}
-	if (INPUT.GetKeyDown(DIK_2) && myCurrentPower != EPowerUp::DoubleJump)
-	{
-		myCurrentPower = EPowerUp::DoubleJump;
-	}
-	if (INPUT.GetKeyDown(DIK_3) && myCurrentPower != EPowerUp::Glide)
-	{
-		myCurrentPower = EPowerUp::Glide;
-	}
-}
+//void Player::ChangePower()
+//{
+//	if (INPUT.GetKeyDown(DIK_1) && myCurrentPower != EPowerUp::Default)
+//	{
+//		myCurrentPower = EPowerUp::Default;
+//	}
+//	if (INPUT.GetKeyDown(DIK_2) && myCurrentPower != EPowerUp::DoubleJump)
+//	{
+//		myCurrentPower = EPowerUp::DoubleJump;
+//	}
+//	if (INPUT.GetKeyDown(DIK_3) && myCurrentPower != EPowerUp::Glide)
+//	{
+//		myCurrentPower = EPowerUp::Glide;
+//	}
+//}
 
 void Player::Update()
 {
 	//Sleep(1);
-	ChangePower();
+	//ChangePower();
 
 	UpdateJumping();
 
@@ -513,6 +515,7 @@ void Player::Walk()
 void Player::Falling()
 {
 	if (myHuggedLeftWall || myHuggedRightWall) myCurrentAnimation = EAnimationState::W_Jump;
+	else if (myIsGliding || !myCanDoubleJump) myCurrentAnimation = EAnimationState::Power;
 	else myCurrentAnimation = EAnimationState::Jump;
 
 	if (myCurrentVelocity.y >= myMaxVerticalVelocity) myCurrentVelocity.y = myMaxVerticalVelocity;
@@ -571,8 +574,9 @@ void Player::Falling()
 		{
 			myCurrentVelocity.y = -myJumpSpeed;
 
-		/*	if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eDoubleJumpL);
-			else PlaySpecificAnimation(EPlayerAnimationClips::eDoubleJumpR);*/
+			myCurrentAnimation = EAnimationState::Power;
+			if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::ePowerL);
+			else PlaySpecificAnimation(EPlayerAnimationClips::ePowerR);
 
 			myCanDoubleJump = false;
 			myCanJumpAgain = false;
@@ -581,7 +585,7 @@ void Player::Falling()
 	case EPowerUp::Glide:
 		if (INPUT.GetKey(myJump) && myCanGlide && myCurrentVelocity.y > 0.0f && myCanJumpAgain)
 		{
-			//myCurrentAnimation = EAnimationState::Glide;
+			myCurrentAnimation = EAnimationState::Power;
 
 			myIsGliding = true;
 			myCanGlide = false;
@@ -680,8 +684,8 @@ void Player::Die()
 
 void Player::PlaySpecificAnimation(EPlayerAnimationClips anAnimEnum)
 {
-	if (anAnimEnum == EPlayerAnimationClips::eJumpL ||
-		anAnimEnum == EPlayerAnimationClips::eJumpR ||
+	if (anAnimEnum == EPlayerAnimationClips::ePowerL ||
+		anAnimEnum == EPlayerAnimationClips::ePowerR ||
 		anAnimEnum == EPlayerAnimationClips::eWallJumpL ||
 		anAnimEnum == EPlayerAnimationClips::eWallJumpR)
 		myAnimations[(int)anAnimEnum]->PlayAnimOnce(0.1666666666666667f);

@@ -42,10 +42,8 @@ enum class EPlayerAnimationClips
 	eWallJumpL,
 	eDeathR,
 	eDeathL,
-	eDoubleJumpR,
-	eDoubleJumpL,
-	eGlideR,
-	eGlideL
+	ePowerR,
+	ePowerL
 };
 
 enum class EPowerUp
