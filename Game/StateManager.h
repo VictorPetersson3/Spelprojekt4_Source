@@ -1,12 +1,14 @@
 #pragma once
 #include "CommonUtilities/Stack.hpp"
 #include "State.h"
+#include "Enums.h"
 
 class MainMenu;
 class OptionsMenu;
 class Level;
 class LevelSelect;
 class CutsceneManager;
+class CharacterSelectionScreen;
 
 class StateManager
 {
@@ -32,6 +34,10 @@ public:
 
 	static void AddAndPlayCutscene(int aCutsceneIndex);
 
+	static void AddCharacterSelectOnStack(const int aLevelIndex);
+	static EPowerUp GetSelectedCharacter();
+
+
 private:
 	StateManager() = default;
 	static StateManager* myInstance;
@@ -40,6 +46,7 @@ private:
 	std::shared_ptr<OptionsMenu> myOptionsMenu;
 	std::shared_ptr<Level> myLevel;
 	std::shared_ptr<CutsceneManager> myCutsceneManager;
+	std::shared_ptr<CharacterSelectionScreen> myCharacterSelection;
 	//Add States here as an object, 1 per state, Init the states after in Init
 
 

@@ -1,12 +1,13 @@
 #pragma once
 #include "MenuObject.h"
+#include "Enums.h"
+#include "AnimationClip.h"
+#include "tga2d/text/text.h"
 
 class UIImage;
 class AnimationClip;
-namespace Tga2D
-{
-    class CText;
-}
+
+
 class CharacterSelectionScreen :
     public MenuObject
 {
@@ -17,7 +18,10 @@ public:
     void Update() final;
     void Render() final;
     void OnPushed() final;
-    void UnlockNewWorld(EWorldLevel);
+    void AddCurrentLevelIndex(const int aLevelIndex);
+    void UnlockNewWorld(EWorldLevel aWorldLevel);
+    EPowerUp GetCharacterChosen();
+
 private:
     void CharacterChoicePress();
     void BackToLevelSelectPress();
@@ -26,7 +30,8 @@ private:
     std::unique_ptr<AnimationClip> myGlideCharacter;
     std::unique_ptr<AnimationClip> myDoubleJumpCharacter;
     std::unique_ptr<Tga2D::CText> myCharacterDescription;
-    std::unique_ptr<Tga2D::CText> myTitle; //This says please choose a character
+    std::unique_ptr<Tga2D::CText> myTitle; 
+    int myCurrentLevelIndex = 0;
     int myCurrentHoveredButton = 0;
     int myCurrentHoveredCharacter = 0;
     int myCurrentUnlockedWorld = 1;
