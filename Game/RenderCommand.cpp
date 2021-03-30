@@ -19,14 +19,14 @@ RenderCommand::RenderCommand(const char* aImagePath)
 	mySprite = std::make_shared<Tga2D::CSprite>(aImagePath);
 	mySprite->SetPivot({ 0.5f, 0.5f });
 	myLayer = 0;
-	mySprite->SetSizeRelativeToImage({ 0.5f, 0.5f });
+	mySprite->SetSizeRelativeToImage({ 1.0f, 1.0f });
 }
 RenderCommand::RenderCommand(const char* aImagePath, int aLayer, bool aShouldBeCulled)
 {
 	mySprite = std::make_shared<Tga2D::CSprite>(aImagePath);
 	mySprite->SetPivot({ 0.5f, 0.5f });
 	myLayer = aLayer;
-	mySprite->SetSizeRelativeToImage({ 0.5f, 0.5f });
+	mySprite->SetSizeRelativeToImage({ 1.0f, 1.0f });
 	myShouldBeCulled = aShouldBeCulled;
 }
 
@@ -35,7 +35,7 @@ RenderCommand::RenderCommand(const char* aImagePath, int aLayer, const CommonUti
 	mySprite = std::make_shared<Tga2D::CSprite>(aImagePath);
 	mySprite->SetPivot({ 0.5f, 0.5f });
 	mySprite->SetPosition({ aPos.x, aPos.y });
-	mySprite->SetSizeRelativeToImage({ 0.5f, 0.5f });
+	mySprite->SetSizeRelativeToImage({ 1.0f, 1.0f });
 	myLayer = aLayer;
 	myShouldBeCulled = aShouldBeCulled;
 }
