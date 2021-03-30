@@ -166,6 +166,9 @@
     <ClInclude Include="Key.h" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="CollapsingTile.h" />
+    <ClInclude Include="MovingPlatform.h">
+      <Filter>Obstacles</Filter>
+    </ClInclude>
     <ClInclude Include="CutsceneManager.h">
       <Filter>Cutscenes</Filter>
     </ClInclude>
@@ -284,6 +287,9 @@
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="CollapsingTile.cpp" />
+    <ClCompile Include="MovingPlatform.cpp">
+      <Filter>Obstacles</Filter>
+    </ClCompile>
     <ClCompile Include="CutsceneCharacter.cpp">
       <Filter>Cutscenes</Filter>
     </ClCompile>

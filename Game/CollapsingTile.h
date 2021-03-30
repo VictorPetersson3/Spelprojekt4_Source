@@ -1,4 +1,9 @@
 #pragma once
+#include <iostream>
+#include <vector>
+#include <CommonUtilities/Vector2.hpp>
+#include <memory>
+#include "Collider.h"
 #include "Entity.h"
 #include "Timer.h"
 
