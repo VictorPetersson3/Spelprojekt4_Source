@@ -25,14 +25,14 @@ void CharacterSelectionScreen::Init(const EStateType& aState)
 	myNormalCharacter->PlayAnimLoop();
 
 
-	myGlideCharacter = std::make_unique<AnimationClip>("Sprites/Player/State2/player_idle_R.dds", 0, 0);
+	myGlideCharacter = std::make_unique<AnimationClip>("Sprites/Player/State3/player_idle_R.dds", 0, 0);
 	myGlideCharacter->Init({ 8, 1 }, { 7, 1 });
 	myGlideCharacter->PlayAnimLoop();
 	myGlideCharacter->GetRenderCommand().Update({ 0.5f, 0.75f });
 	myGlideCharacter->GetRenderCommand().SetColor(Tga2D::CColor{ 0.50f, 0.50f, 0.50f, 1.0f });
 
 
-	myDoubleJumpCharacter = std::make_unique<AnimationClip>("Sprites/Player/State3/player_idle_R.dds", 0, 0);
+	myDoubleJumpCharacter = std::make_unique<AnimationClip>("Sprites/Player/State2/player_idle_R.dds", 0, 0);
 	myDoubleJumpCharacter->Init({ 8, 1 }, { 7, 1 });
 	myDoubleJumpCharacter->PlayAnimLoop();
 	myDoubleJumpCharacter->GetRenderCommand().Update({ 0.6f, 0.75f });

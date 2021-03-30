@@ -28,10 +28,13 @@ public:
 	//Getters
 	const RenderCommand& GetRenderCommand() const;
 	const int GetLayer() const;
+	const float GetRotation() const;
 	const Tga2D::Vector2ui& GetImageSize() const;
 	const CommonUtilities::Vector2f& GetSize() const;
 	const CommonUtilities::Vector2f& GetPosition() const;
 	//Setters
+
+	void SetRotation(const float aAngleInRadian);
 	void SetSpritePosition(const CommonUtilities::Vector2f& aPos);
 	void SetTextureRect(float aStartX, float aStartY, float aEndX, float aEndY);
 	void SetSizeRelativeToImage(const CommonUtilities::Vector2f& aSize);

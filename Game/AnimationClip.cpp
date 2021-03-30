@@ -110,6 +110,11 @@ const bool AnimationClip::GetAnimIsPlaying() const{	return myIsAnimating;}
 
 const CommonUtilities::Vector2ui& AnimationClip::GetCurrentFrame() const { return myCurrentFrame; }
 
+const float AnimationClip::GetRotation() const
+{
+	return myRenderCommand->GetRotation();
+}
+
 
 void AnimationClip::SetScaleRelativeToFrame(const CommonUtilities::Vector2f& aScale)
 {
@@ -132,6 +137,10 @@ void AnimationClip::SetFrame(const CommonUtilities::Vector2ui& aCurrentFrame)
 		myRectSize.y * myCurrentFrame.y - myRectSize.y,	//TopLeftY Current Frame
 		myRectSize.x * myCurrentFrame.x,				//BotLeftX Current Frame
 		myRectSize.y * myCurrentFrame.y);				//BotLeftY Current Frame
+}
+void AnimationClip::SetRotation(const float aAngleInRadian)
+{
+	myRenderCommand->SetRotation(aAngleInRadian);
 }
 //Internal Setter for the animator
 void AnimationClip::SetFrame()

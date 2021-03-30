@@ -61,6 +61,16 @@ const int RenderCommand::GetLayer() const
 	return myLayer;
 }
 
+const float RenderCommand::GetRotation() const
+{
+	return mySprite->GetRotation();
+}
+
+void RenderCommand::SetRotation(const float aAngleInRadian)
+{
+	mySprite->SetRotation(aAngleInRadian);
+}
+
 void RenderCommand::SetSpritePosition(const CommonUtilities::Vector2f& aPos)
 {
 	mySprite->SetPosition({ aPos.x, aPos.y });
