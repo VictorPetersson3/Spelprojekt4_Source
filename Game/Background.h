@@ -2,6 +2,7 @@
 #include <array>
 #include "CommonUtilities/Vector2.hpp"
 #include "RenderCommand.h"
+#include "Enums.h"
 
 class AnimationClip;
 class Camera;
@@ -30,7 +31,7 @@ public:
 	Background(EWorld_but_like_just_a_placeholder_for_the_real_tag aWorld = EWorld_but_like_just_a_placeholder_for_the_real_tag::Forest);
 	~Background() {}
 
-	void Init(Player& aPlayer, CommonUtilities::Vector2f aPosition = { 0.0f, 0.25f });
+	void Init(Player& aPlayer, EWorldLevel aWorld);
 	void Update();
 	void Render(Camera& aCamera);
 

@@ -8,9 +8,31 @@ LinkString::LinkString(const char* aString)
 	strcpy_s(myString, aString);
 }
 
+LinkString::LinkString(LinkString&& aString)
+{
+	strcpy(myString, aString.myString);
+}
+
+LinkString::LinkString(const LinkString& aString)
+{
+	strcpy(myString, aString.myString);
+}
+
 const char* LinkString::GetString() const
 {
 	return myString;
+}
+
+LinkString& LinkString::operator=(LinkString& aString)
+{
+	strcpy(myString, aString.myString);
+	return *this;
+}
+
+LinkString& LinkString::operator=(const LinkString& aString)
+{
+	strcpy(myString, aString.myString);
+	return *this;
 }
 
 bool LinkString::operator<(const char* aString) const

@@ -59,13 +59,11 @@ void AudioManager::PlayEffect(const char* aPath, bool aLooping, float volume)
 	if (sound != nullptr)
 	{
 		sound->setDefaultVolume(volume);
-
-		myEffectEngine->play2D(sound, aLooping, false, false);
-
+		myEffectEngine->play2D(sound, aLooping, false, true);
 	}
 	else
 	{
-		myEffectEngine->play2D(myMusicEngine->getSoundSource(aPath), aLooping, false, false);
+		myEffectEngine->play2D(myEffectEngine->getSoundSource(aPath), aLooping, false, false);
 	}
 }
 
@@ -124,15 +122,19 @@ void AudioManager::RemoveAllAudioFromEffectEngine()
 void AudioManager::SetMusicVolumeMultiplier(float aNewMultiplier)
 {
 	myMusicMultiplier = aNewMultiplier;
-
-	myMusicEngine->setSoundVolume(myMusicMultiplier);
+	SetVolume();
 }
 
 void AudioManager::SetEffectVolumeMultiplier(float aNewMultiplier)
 {
 	myEffectsMultiplier = aNewMultiplier;
+	SetVolume();
+}
 
-	myEffectEngine->setSoundVolume(myEffectsMultiplier);
+void AudioManager::SetSoundVolumeMultiplier(float aNewMultiplier)
+{
+	mySoundMultiplier = aNewMultiplier;
+	SetVolume();
 }
 
 const bool AudioManager::IsMusicCurrentlyPlaying(const char* aPath) const
@@ -143,4 +145,10 @@ const bool AudioManager::IsMusicCurrentlyPlaying(const char* aPath) const
 const bool AudioManager::IsEffectCurrentlyPlaying(const char* aPath) const
 {
 	return myEffectEngine->isCurrentlyPlaying(aPath);
+}
+
+void AudioManager::SetVolume()
+{
+	myEffectEngine->setSoundVolume(myEffectsMultiplier * mySoundMultiplier);
+	myMusicEngine->setSoundVolume(myMusicMultiplier * mySoundMultiplier);
 }

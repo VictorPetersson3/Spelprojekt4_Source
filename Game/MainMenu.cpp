@@ -9,8 +9,8 @@
 
 void MainMenu::TestMe(int aVal)
 {
+	StateManager::GetInstance().AddAndPlayCutscene(aVal);
 	printf("Hello World %i\n", aVal);
-	StateManager::GetInstance().AddLevelOnStack(aVal);
 }
 
 
@@ -31,6 +31,8 @@ void MainMenu::PlayButtonPress()
 	StateManager::GetInstance().AddLevelSelectOnStack();
 }
 
+
+
 void MainMenu::Init(const EStateType& aState)
 {
 	SetStateType(aState);
@@ -46,13 +48,15 @@ void MainMenu::Init(const EStateType& aState)
 		AddButton(std::make_shared<UIButton>());
 	}
 	GetButtonElement(0)->Init({ 0.7f, 0.5f + 0.13f }, tempImagePaths[0].GetString(), 0, [this]() {PlayButtonPress(); });
-	GetButtonElement(1)->Init({ 0.74f, 0.65f + 0.07f * 1 }, tempImagePaths[1].GetString(), 0, [this](int index) {TestMe(index); }, 1);
+	GetButtonElement(1)->Init({ 0.74f, 0.65f + 0.07f * 1 }, tempImagePaths[1].GetString(), 0, [this](int index) {TestMe(index); }, 0);
 	GetButtonElement(2)->Init({ 0.74f, 0.65f + 0.07f * 2 }, tempImagePaths[2].GetString(), 0, [this]() { OptionsButtonPress(); });
 	GetButtonElement(3)->Init({ 0.74f, 0.65f + 0.07f * 3 }, tempImagePaths[3].GetString(), 0, [this]() { ExitButtonPress();});
+
 	myPanningShader = std::make_shared<Tga2D::CCustomShader>();
+	myPanningShader->Init("shaders/sprite_shader_panning_vs.fx", "shaders/sprite_shader_ps.fx");
+
 	myPanningBackground = std::make_unique<UIImage>();
 	myPanningBackground->Init({ 0.5f, 0.5f }, "sprites/UI/MainMenu/huvudmeny_bg_tile.dds", -1);
-	myPanningShader->Init("shaders/sprite_shader_panning_vs.fx", "shaders/sprite_shader_ps.fx");
 	myPanningBackground.get()->GetRenderCommand().SetSamplerState(ESamplerFilter::ESamplerFilter_Bilinear, ESamplerAddressMode::ESamplerAddressMode_Wrap);
 	myPanningBackground.get()->GetRenderCommand().SetTextureRect(0,0,2,2);
 	myPanningBackground.get()->GetRenderCommand().SetSizeRelativeToImage({ 2.0f, 2.0f });
@@ -64,6 +68,41 @@ void MainMenu::Init(const EStateType& aState)
 	myBackground.get()->GetRenderCommand().SetPivot({ 0.0f, 1.0f });
 	myBackground.get()->GetRenderCommand().SetSizeRelativeToImage({ 0.6f, 0.6f });
 	myBackground.get()->SetPosition({ 0.0f, 1.0f });
+
+
+	myBeatingShader = std::make_shared<Tga2D::CCustomShader>();
+	myBeatingShader->Init("shaders/sprite_shader_beating_vs.fx", "shaders/sprite_shader_ps.fx");
+
+	myLogo = std::make_unique<UIImage>();
+	myLogo->Init({ 0.75f, 0.22f }, "sprites/UI/GameLogo.dds", -1);
+	myLogo->GetRenderCommand().SetSizeRelativeToImage({ 0.6f, 0.6f });
+	myLogo->SetShader(*myBeatingShader.get());
+	myLogo->ActivatePulse(0.4, 0.5f, 0.6f);
+
+	myLogoHeart1 = std::make_unique<UIImage>();
+	myLogoHeart1->Init({ 0.54f, 0.12f }, "sprites/UI/P_Heart01.dds", -1);
+	myLogoHeart1->GetRenderCommand().SetSizeRelativeToImage({ 0.6f, 0.6f });
+	myLogoHeart1->SetShader(*myBeatingShader.get());
+	myLogoHeart1->ActivatePulse(0.9, 0.5f, 0.7f);
+
+	myLogoHeart2 = std::make_unique<UIImage>();
+	myLogoHeart2->Init({ 0.97f, 0.11f }, "sprites/UI/P_Heart02.dds", -1);
+	myLogoHeart2->GetRenderCommand().SetSizeRelativeToImage({ 0.6f, 0.6f });
+	myLogoHeart2->SetShader(*myBeatingShader.get());
+	myLogoHeart2->ActivatePulse(0.3, 0.3f, 0.6f);
+	
+	myLogoHeart3 = std::make_unique<UIImage>();
+	myLogoHeart3->Init({ 0.66f, 0.06f }, "sprites/UI/P_Heart03.dds", -1);
+	myLogoHeart3->GetRenderCommand().SetSizeRelativeToImage({ 0.6f, 0.6f });
+	myLogoHeart3->SetShader(*myBeatingShader.get());
+	myLogoHeart3->ActivatePulse(0.7, 0.5f, 0.8f);
+	
+	myLogoHeart4 = std::make_unique<UIImage>();
+	myLogoHeart4->Init({ 0.81f, 0.05f }, "sprites/UI/P_Heart04.dds", -1);
+	myLogoHeart4->GetRenderCommand().SetSizeRelativeToImage({ 0.6f, 0.6f });
+	myLogoHeart4->SetShader(*myBeatingShader.get());
+	myLogoHeart4->ActivatePulse(0.1, 0.5f, 0.9f);
+
 }
 
 void MainMenu::Update()
@@ -95,6 +134,11 @@ void MainMenu::Update()
 		}
 		GetButtonElement(i)->Update();
 	}
+	myLogo->Update();
+	myLogoHeart1->Update();
+	myLogoHeart2->Update();
+	myLogoHeart3->Update();
+	myLogoHeart4->Update();
 }
 
 void MainMenu::Render()
@@ -102,6 +146,11 @@ void MainMenu::Render()
 	myPanningBackground->Render();
 	myBackground.get()->Render();
 	MenuObject::Render();
+	myLogo->Render();
+	myLogoHeart1->Render();
+	myLogoHeart2->Render();
+	myLogoHeart3->Render();
+	myLogoHeart4->Render();
 }
 
 void MainMenu::OnPushed()

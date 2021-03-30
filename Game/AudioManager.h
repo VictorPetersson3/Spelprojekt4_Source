@@ -33,13 +33,17 @@ public:
 
 	void SetMusicVolumeMultiplier(float aNewMultiplier);
 	void SetEffectVolumeMultiplier(float aNewMultiplier);
+	void SetSoundVolumeMultiplier(float aNewMultiplier);
 
 	const bool IsMusicCurrentlyPlaying(const char* aPath) const;
 	const bool IsEffectCurrentlyPlaying(const char* aPath) const;
 
 private:
+
+	void SetVolume();
 	float myMusicMultiplier = 1;
 	float myEffectsMultiplier = 1;
+	float mySoundMultiplier = 1;
 
 	irrklang::ISoundEngine* myMusicEngine;
 	irrklang::ISoundEngine* myEffectEngine;

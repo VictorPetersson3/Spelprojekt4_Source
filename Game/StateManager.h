@@ -6,6 +6,8 @@ class MainMenu;
 class OptionsMenu;
 class Level;
 class LevelSelect;
+class CutsceneManager;
+
 class StateManager
 {
 public:
@@ -24,7 +26,11 @@ public:
 	static void AddStateOnStack(std::shared_ptr<State> aState);
 	static void AddOptionsOnStack();
 	static void AddLevelSelectOnStack();
+
 	static void AddLevelOnStack(int aLevelIndex);
+	static void AddNextLevelOnStack(int aLevelIndex);
+
+	static void AddAndPlayCutscene(int aCutsceneIndex);
 
 private:
 	StateManager() = default;
@@ -33,6 +39,7 @@ private:
 	std::shared_ptr<MainMenu> myMainMenu;
 	std::shared_ptr<OptionsMenu> myOptionsMenu;
 	std::shared_ptr<Level> myLevel;
+	std::shared_ptr<CutsceneManager> myCutsceneManager;
 	//Add States here as an object, 1 per state, Init the states after in Init
 
 

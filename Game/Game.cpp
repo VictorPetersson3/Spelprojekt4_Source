@@ -21,7 +21,6 @@ std::wstring BUILD_NAME = L"Retail";
 
 CGame::CGame() : myGameWorld()
 {
-	
 	Timer::Init();
 }
 

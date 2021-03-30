@@ -8,7 +8,16 @@ enum class EStateType
 	eLevelSelect,
 	ePauseMenu,
 	eEndOfLevelScreen,
-	eGame
+	eResolutionMenu,
+	eGame,
+	eCutsceneManager
+};
+enum class EWorldLevel
+{
+	eWorld1,
+	eWorld2,
+	eWorld3,
+	eWorld4
 };
 enum class EPlayerAnimationClips
 {

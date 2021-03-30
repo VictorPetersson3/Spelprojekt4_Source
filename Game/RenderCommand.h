@@ -15,6 +15,7 @@ public:
 	RenderCommand();
 	RenderCommand(const RenderCommand& aRenderCommand);
 
+	RenderCommand(const char* aImagePath);
 	RenderCommand(const char* aImagePath, int aLayer, bool aShouldBeCulled = true);
 	RenderCommand(const char* aImagePath, int aLayer, const CommonUtilities::Vector2f& aPos, bool aShouldBeCulled = true);
 	

@@ -12,6 +12,8 @@
 #include "CollisionManager.h"
 #include "Background.h"
 #include "Shooter.h"
+#include "Door.h"
+#include "Key.h"
 
 #include "LevelData.h"
 #include "Saw.h"
@@ -24,16 +26,18 @@
 #include "PauseMenu.h"
 #include "EndOfLevelScreen.h"
 
+#include "LevelSelect_SpecificLevelData.h"
+
 Level::Level()
 {
-	myPlayer = std::make_unique<Player>();
+	myPlayer = std::make_shared<Player>();
 	mySpriteBatches.Init(10);
 
 	myPauseMenu = std::make_shared<PauseMenu>();
 	myPauseMenu->Init(EStateType::ePauseMenu);
 	myEndOfLevelScreen = std::make_shared<EndOfLevelScreen>(this);
 	myEndOfLevelScreen->Init(EStateType::eEndOfLevelScreen);
-	
+
 	myBackground = std::make_unique<Background>(/*EWorld_but_like_just_a_placeholder_for_the_real_tag::Forest*/);
 }
 
@@ -75,7 +79,7 @@ void Level::Update()
 		StateManager::AddStateOnStack(myPauseMenu);
 	}
 	//Player
-	myCamera->Update({ 0,0 });	
+	myCamera->Update({ 0,0 });
 	float deltaTime = Timer::GetInstance().GetDeltaTime();
 
 	for (auto t : myTerrain)
@@ -92,12 +96,7 @@ void Level::Update()
 	{
 		Restart();
 	}
-
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_F4))
-	{
-		Load(1);
-	}
-	
+		
 	if (myPlayer.get() != nullptr)
 	{
 		myPlayer.get()->Update();
@@ -108,12 +107,12 @@ void Level::Update()
 			return;
 		}
 	}
-	
+
 	if (myLevelEndCollider != nullptr)
 	{
 		myLevelEndCollider->Draw();
 	}
-	
+
 	if (myLevelEndCollider != nullptr && myPlayer.get() != nullptr)
 	{
 		if (CollisionManager::GetInstance().CheckCollision(myPlayer->GetCollider().get(), myLevelEndCollider.get()))
@@ -121,7 +120,7 @@ void Level::Update()
 			StateManager::AddStateOnStack(myEndOfLevelScreen);
 			std::cout << "Level ended" << std::endl;
 		}
-	}	
+	}
 	// Background
 	//if (myBackground != nullptr)
 	{
@@ -129,7 +128,7 @@ void Level::Update()
 	}
 }
 
-void Level::Load(std::shared_ptr<LevelData> aData)
+void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData* someLevelData)
 {
 	for (int i = 0; i < mySpriteBatches.Size(); i++)
 	{
@@ -145,7 +144,7 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 	{
 		t.get()->myCollider.get()->RemoveFromManager();
 	}
-	
+
 	if (myLevelEndCollider != nullptr)
 	{
 		myLevelEndCollider.get()->RemoveFromManager();
@@ -157,6 +156,34 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 
 	myTerrain = aData->GetTiles();
 	myEntities = aData->GetEntities();
+
+	std::vector<std::shared_ptr<Key>> keyList = {};
+	std::vector<Door*> doorList = {};
+	for (int i = 0; i < myEntities.size(); i++)
+	{
+		if (Key* key = dynamic_cast<Key*>(myEntities[i].get()))
+		{
+			keyList.emplace_back(dynamic_cast<Key*>(myEntities[i].get()));
+			key->Init(myPlayer);
+		}
+		if (Door* door = dynamic_cast<Door*>(myEntities[i].get()))
+		{
+			doorList.emplace_back(dynamic_cast<Door*>(myEntities[i].get()));
+		}
+	}
+	for (int i = 0; i < doorList.size(); i++)
+	{
+		for (int j = 0; j < keyList.size(); j++)
+		{
+			if (doorList[i]->GetIndex() == keyList[j]->GetIndex())
+			{
+				doorList[i]->Init(keyList[j]);
+			}
+		}
+	}
+	keyList.clear();
+	doorList.clear();
+
 
 	for (int i = 0; i < aData->GetSpriteBatches().Size(); i++)
 	{
@@ -182,32 +209,32 @@ void Level::Load(std::shared_ptr<LevelData> aData)
 	//}
 }
 
-void Level::Load(int aIndex)
+void Level::Load(LevelSelect_SpecificLevelData* someLevelData)
 {
 	LevelLoader levelLoader;
+	mylevelButtondata = someLevelData;
+	myEndOfLevelScreen->SetCurrentLevel(mylevelButtondata->myLevelNumber);
+	//L�gg in att den skall spela en cutscene h�r och att den laddar in den
 
-	amountOfLevels = levelLoader.GetAmountOfLevels();
-
-	Load(levelLoader.LoadLevel(aIndex));
-	currentLevelIndex = aIndex;
+	Load(levelLoader.LoadLevel(mylevelButtondata), mylevelButtondata);
+	myBackground->Init(*(myPlayer.get()), mylevelButtondata->myWorld);
+	if (mylevelButtondata->myHasCutscene)
+	{
+		StateManager::AddAndPlayCutscene(mylevelButtondata->myCutsceneConversation);
+	}
 }
 
 void Level::Restart()
 {
 	LevelLoader levelLoader;
-	Load(levelLoader.LoadLevel(currentLevelIndex));
+	Load(levelLoader.LoadLevel(mylevelButtondata), mylevelButtondata);
 }
 
 void Level::LoadNextLevel()
 {
-	if (currentLevelIndex == amountOfLevels)
-	{
-		StateManager::GetInstance().RemoveDownToState(EStateType::eMainMenu);
-	}
-	else
-	{
-		Load(currentLevelIndex++);
-	}
+	bool amILastLevel = false;
+	StateManager::GetInstance().AddNextLevelOnStack(mylevelButtondata->myLevelNumber);
+	return;
 }
 
 void Level::Init(const EStateType& aState)
@@ -215,8 +242,4 @@ void Level::Init(const EStateType& aState)
 	std::cout << "level inited\n";
 	//Creating a camera and then a renderer for the camera
 	myCamera = std::make_shared<Camera>();
-
-	currentLevelIndex = 0;
-
-	myBackground->Init(*(myPlayer.get()));
 }

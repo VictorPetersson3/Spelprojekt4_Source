@@ -5,6 +5,10 @@
 #include "OptionsMenu.h"
 #include "Level.h"
 #include "LevelSelect.h"
+#include "CutsceneManager.h"
+
+#include "LevelSelect_SpecificLevelData.h"
+
 
 StateManager* StateManager::myInstance = nullptr;
 
@@ -26,7 +30,7 @@ void StateManager::Init()
 	myInstance->myOptionsMenu = std::make_shared<OptionsMenu>();
 	myInstance->myLevel = std::make_shared<Level>();
 	myInstance->myLevelSelect = std::make_shared<LevelSelect>();
-
+	myInstance->myCutsceneManager = std::make_shared<CutsceneManager>();
 
 
 	//Init the states you made here, rest will work automagically,
@@ -34,13 +38,14 @@ void StateManager::Init()
 	myInstance->myOptionsMenu.get()->Init(EStateType::eOptionsMenu);
 	myInstance->myLevel.get()->Init(EStateType::eGame);
 	myInstance->myLevelSelect->Init(EStateType::eLevelSelect);
+	myInstance->myCutsceneManager->Init(EStateType::eCutsceneManager);
 	
 	
 	//Main Menu is the default beginning state
 	myInstance->myGameStates.Push(GetInstance().myMainMenu);
 	myInstance->myGameStates.GetTop()->OnPushed();
-
-
+	
+	// 
 	//If you want to test a state, Push it on to myGameStates above the main menu
 
 
@@ -98,8 +103,34 @@ void StateManager::AddLevelSelectOnStack()
 
 void StateManager::AddLevelOnStack(int aLevelIndex)
 {
-	myInstance->myGameStates.Push(myInstance->myLevel);
-	myInstance->myLevel.get()->Load(aLevelIndex);
+	if (myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex)->myIsUnlocked)
+	{
+		myInstance->RemoveDownToState(EStateType::eLevelSelect);
+		myInstance->myGameStates.Push(myInstance->myLevel);
+		myInstance->myLevel.get()->Load(myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex));
+		myInstance->myGameStates.GetTop()->OnPushed();
+	}
+}
+
+void StateManager::AddNextLevelOnStack(int aCurrentLevelIndex)
+{
+	if (aCurrentLevelIndex + 1 < myInstance->myLevelSelect->GetLevelAmount())
+	{
+		myInstance->myLevelSelect->GetSpecificLevelData(aCurrentLevelIndex + 1)->myIsUnlocked = true;
+		myInstance->AddLevelOnStack(aCurrentLevelIndex + 1);
+	}
+	else
+	{
+		myInstance->RemoveDownToState(EStateType::eLevelSelect);
+		//Play Game over stuff and final cutscenes
+	}
+}
+
+
+void StateManager::AddAndPlayCutscene(int aCutsceneIndex)
+{
+	myInstance->myGameStates.Push(GetInstance().myCutsceneManager);
+	myInstance->myCutsceneManager->PlayCutscene(aCutsceneIndex);
 	myInstance->myGameStates.GetTop()->OnPushed();
 }
 

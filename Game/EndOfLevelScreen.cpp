@@ -69,9 +69,15 @@ void EndOfLevelScreen::OnPushed()
 	SetRenderThrough(true);
 }
 
+void EndOfLevelScreen::SetCurrentLevel(const int aLevelIndex)
+{
+	myCurrentLevel = aLevelIndex;
+}
+
 void EndOfLevelScreen::NextLevelPress()
 {
 	StateManager::GetInstance().RemoveStateFromTop();
+	StateManager::GetInstance().AddNextLevelOnStack(myCurrentLevel);
 }
 
 void EndOfLevelScreen::BackToMainButton()
