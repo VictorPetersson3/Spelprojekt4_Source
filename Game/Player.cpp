@@ -76,7 +76,6 @@ void Player::InitJSON()
 void Player::InitAnimations()
 {
 	std::string folder = "sprites/Player/State" + std::to_string((int)myCurrentPower);
-	//printf(folder.c_str());
 
 	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_idle_R.dds").c_str(), 0, (int)EPlayerAnimationClips::eIdleR));
 	myAnimations[0]->Init({ 8, 1 }, { 7, 1 });				
@@ -278,8 +277,8 @@ void Player::UpdatePhysics()
 	Collider* verticalCollider = nullptr;
 	Collider* horizontalCollider = nullptr;
 
-	myHugsLeftWall = false;
-	myHugsRightWall = false;
+	/*myHugsLeftWall = false;
+	myHugsRightWall = false;*/
 
 	auto delta = myOldPosition - myPosition;
 
@@ -327,6 +326,7 @@ void Player::UpdatePhysics()
 		}
 
 		positionCorrection *= posCorrNormal;
+		//positionCorrection.x += 0.1f / Tga2D::CEngine::GetInstance()->GetRenderSize().x * -posCorrNormal.x;
 
 		if (posCorrNormal.y > 0)
 		{
@@ -336,7 +336,8 @@ void Player::UpdatePhysics()
 		}
 		else if (posCorrNormal.y < 0)
 		{
-			myPosition.y += positionCorrection.y;
+			myPosition.y += positionCorrection.y + 0.1f / Tga2D::CEngine::GetInstance()->GetRenderSize().y;
+			if (myWasGrounded) myCurrentVelocity.y = 0;
 			myIsGrounded = true;
 		}
 		else
@@ -345,18 +346,18 @@ void Player::UpdatePhysics()
 			myIsRoofied = false;
 		}
 		if (posCorrNormal.x > 0 &&
-			myCollider->GetPosition().y < horizontalCollider->GetPosition().y + horizontalCollider->GetSize().y * 0.5f &&
-			myCollider->GetPosition().y > horizontalCollider->GetPosition().y - horizontalCollider->GetSize().y * 0.5f)
+			myCollider->GetPosition().y < horizontalCollider->GetPosition().y + horizontalCollider->GetSize().y &&
+			myCollider->GetPosition().y > horizontalCollider->GetPosition().y - horizontalCollider->GetSize().y)
 		{
 			myPosition.x += positionCorrection.x;
-			if (myCurrentVelocity.x < 0) myHugsLeftWall = true;
+			/*if (myCurrentVelocity.x < 0) */myHugsLeftWall = true;
 		}
 		else if (posCorrNormal.x < 0 &&
-			myCollider->GetPosition().y < horizontalCollider->GetPosition().y + horizontalCollider->GetSize().y * 0.5f &&
-			myCollider->GetPosition().y > horizontalCollider->GetPosition().y - horizontalCollider->GetSize().y * 0.5f)
+			myCollider->GetPosition().y < horizontalCollider->GetPosition().y + horizontalCollider->GetSize().y &&
+			myCollider->GetPosition().y > horizontalCollider->GetPosition().y - horizontalCollider->GetSize().y)
 		{
 			myPosition.x += positionCorrection.x;
-			if (myCurrentVelocity.x > 0) myHugsRightWall = true;
+			/*if (myCurrentVelocity.x > 0) */myHugsRightWall = true;
 		}
 		else
 		{
@@ -432,6 +433,7 @@ void Player::Idle()
 	}
 	else if (INPUT.GetKey(myJump) && myCanJumpAgain)
 	{
+		myIsGrounded = false;
 		myCurrentVelocity.y = -myJumpSpeed;
 		if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eJumpL);
 		else PlaySpecificAnimation(EPlayerAnimationClips::eJumpR);
@@ -494,6 +496,8 @@ void Player::Walk()
 
 	if (INPUT.GetKey(myJump) && myCanJumpAgain)
 	{
+		myIsGrounded = false;
+
 		myCurrentVelocity.y = -myJumpSpeed;
 		myMoveState = EPlayerState::Falling;
 
@@ -501,6 +505,7 @@ void Player::Walk()
 		else PlaySpecificAnimation(EPlayerAnimationClips::eJumpR);
 		
 		myCanJumpAgain = false;
+		myMoveState = EPlayerState::Falling;
 		return;
 	}
 	else if (!myIsGrounded)
@@ -512,6 +517,12 @@ void Player::Walk()
 
 void Player::Falling()
 {
+	if (INPUT.GetKey(myLeft) != INPUT.GetKey(myRight) && myHuggedLeftWall)
+	{
+		myMoveState = EPlayerState::Ledge;
+		return;
+	}
+
 	if (myHuggedLeftWall || myHuggedRightWall) myCurrentAnimation = EAnimationState::W_Jump;
 	else myCurrentAnimation = EAnimationState::Jump;
 
@@ -521,7 +532,11 @@ void Player::Falling()
 
 	if (INPUT.GetKey(myLeft) == INPUT.GetKey(myRight))
 	{
-		if (myIsGrounded) myMoveState = EPlayerState::Idle;
+		if (myIsGrounded)
+		{
+			myMoveState = EPlayerState::Idle;
+			return;
+		}
 		if (myCurrentVelocity.x > 0) myCurrentVelocity.x -= myAirDecceleration * DELTA_TIME;
 		if (myCurrentVelocity.x < 0) myCurrentVelocity.x += myAirDecceleration * DELTA_TIME;
 	}
@@ -533,7 +548,7 @@ void Player::Falling()
 		if (myHugsRightWall && !myIsGrounded && !myWasGrounded)
 		{
 			myMoveState = EPlayerState::Ledge;
-			myCurrentVelocity.x = 0.0f;
+			return;
 		}
 		else
 		{
@@ -552,7 +567,7 @@ void Player::Falling()
 		if (myHugsLeftWall && !myIsGrounded && !myWasGrounded)
 		{
 			myMoveState = EPlayerState::Ledge;
-			myCurrentVelocity.x = 0.0f;
+			return;
 		}
 		else
 		{
@@ -598,12 +613,6 @@ void Player::Falling()
 
 void Player::Ledge()
 {
-	if (myIsGrounded)
-	{
-		myMoveState = EPlayerState::Idle;
-		return;
-	}
-
 	if (myCurrentVelocity.y == 0) myCurrentAnimation = EAnimationState::W_Idle;
 	else if (myCurrentVelocity.y > 0) myCurrentAnimation = EAnimationState::W_Down;
 	else if (myCurrentVelocity.y < 0) myCurrentAnimation = EAnimationState::W_Up;
@@ -626,6 +635,11 @@ void Player::Ledge()
 		{
 			myCurrentVelocity.x = 0.0f;
 		}
+		else
+		{
+			myMoveState = EPlayerState::Falling;
+			return;
+		}
 		if (INPUT.GetKey(myJump) && myCanJumpAgain && !myIsGliding)
 		{
 			myCurrentVelocity.x = -myWallJumpSpeed * myWallJumpFactorX;
@@ -645,6 +659,11 @@ void Player::Ledge()
 		if (myHugsLeftWall)
 		{
 			myCurrentVelocity.x = 0.0f;
+		}
+		else
+		{
+			myMoveState = EPlayerState::Falling;
+			return;
 		}
 		if (INPUT.GetKey(myJump) && myCanJumpAgain && !myIsGliding)
 		{
@@ -667,7 +686,10 @@ void Player::Die()
 	if (!myWasDead)
 	{
 		myIsDead = true;
-		myCurrentVelocity.x = 0;
+		if (myIsGrounded) myCurrentVelocity.x -= myWalkDecceleration * myDirection * DELTA_TIME;
+		else myCurrentVelocity.x -= myAirDecceleration * myDirection * DELTA_TIME;
+
+		if (std::abs(myCurrentVelocity.x) < 0) myCurrentVelocity.x = 0;
 
 		myCurrentAnimation = EAnimationState::Death;
 
