@@ -6,7 +6,11 @@ void CameraBehavoir::Init(std::shared_ptr<Camera> aCamera, std::shared_ptr<Playe
 	myMovementFunctions[0] = &CameraBehavoir::Static;
 	myMovementFunctions[1] = &CameraBehavoir::MoveX;
 	myMovementFunctions[2] = &CameraBehavoir::MoveY;
+	
+	myCameraToMove = aCamera;
+	myPlayerToFollow = aPlayer;
 
+	myPosition = myCameraToMove->GetPosition();
 }
 
 void CameraBehavoir::Update(const float aDt)
@@ -19,6 +23,7 @@ void CameraBehavoir::Update(const float aDt)
 	
 	myPosition += myFrameVelocity * aDt;
 	myCameraToMove->SetPosition(myPosition);
+
 }
 
 void CameraBehavoir::MoveY(const float aDt)

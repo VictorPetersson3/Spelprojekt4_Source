@@ -26,8 +26,7 @@ private:
 
 
 	CommonUtilities::Vector2f myPosition = {};
-	CommonUtilities::Vector2f myFrameVelocity = {};
-	 
+	CommonUtilities::Vector2f myFrameVelocity = {}; 
 
 	CommonUtilities::Vector2f myBoundaries = {};
 	CommonUtilities::Vector2f myCenterOfMap = {};
@@ -35,7 +34,7 @@ private:
 	// myBoundaries + myCenterOfMap = myWorldBoundaries
 	CommonUtilities::Vector2f myWorldBoundaries = {};
 
-
+	
 	std::shared_ptr<Player> myPlayerToFollow = {};
 	std::shared_ptr<Camera> myCameraToMove = {};
 	MovementFunctions myMovementFunctions[3] = {};
