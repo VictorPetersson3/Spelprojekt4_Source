@@ -20,7 +20,7 @@ void LevelSelect::Init(const EStateType& aState)
 	//Add levels here and all the buttons
 	myLevels_LevelData = std::make_shared<LevelSelectLoadData>();
 	myLevels_LevelData->CreateLevelSelectButtonData();
-
+	myLevels_LevelData->myLevelSelectLoadData[0]->myIsUnlocked = true;
 	for (int i = 0; i < myLevels_LevelData->myLevelSelectLoadData.Size(); i++)
 	{
 		AddButton(std::make_shared<UIButton>());
@@ -60,7 +60,7 @@ void LevelSelect::Update()
 {
 	myBackground->Update(); 
 	myPanningBackground->Update();
-
+	
 	if (myCharacterMoveTimer < 1.0f)
 	{
 		myCharacterMoveTimer += Timer::GetInstance().GetDeltaTime() * 2.5f;
@@ -123,6 +123,20 @@ void LevelSelect::Update()
 		CommonUtilities::Lerp(GetButtonElement(myCharactersPreviousIndex)->GetPosition().x, GetButtonElement(myCharactersCurrentIndex)->GetPosition().x, myCharacterMoveTimer),
 		CommonUtilities::Lerp(GetButtonElement(myCharactersPreviousIndex)->GetPosition().y, GetButtonElement(myCharactersCurrentIndex)->GetPosition().y, myCharacterMoveTimer)
 		});
+	for (int i = 0; i < myLevels_LevelData->myLevelSelectLoadData.Size(); i++)
+	{
+		if (!myLevels_LevelData->myLevelSelectLoadData[i]->myIsUnlocked)
+		{
+			GetButtonElement(i)->GetRenderCommand().SetColor(Tga2D::CColor{ 0.50f, 0.50f, 0.50f, 1.0f });
+		}
+	}
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_L))
+	{
+		for (int i = 0; i < myLevels_LevelData->myLevelSelectLoadData.Size(); i++)
+		{
+			myLevels_LevelData->myLevelSelectLoadData[i]->myIsUnlocked = true;
+		}
+	}
 }
 
 void LevelSelect::Render()

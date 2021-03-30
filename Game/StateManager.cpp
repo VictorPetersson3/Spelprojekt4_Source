@@ -7,6 +7,8 @@
 #include "LevelSelect.h"
 #include "CutsceneManager.h"
 
+#include "LevelSelect_SpecificLevelData.h"
+
 
 StateManager* StateManager::myInstance = nullptr;
 
@@ -101,19 +103,20 @@ void StateManager::AddLevelSelectOnStack()
 
 void StateManager::AddLevelOnStack(int aLevelIndex)
 {
-	myInstance->RemoveDownToState(EStateType::eLevelSelect);
-	myInstance->myGameStates.Push(myInstance->myLevel);
-
-	//const std::shared_ptr<LevelSelect_SpecificLevelData> temp = myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex);
-	myInstance->myLevel.get()->Load(myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex));
-
-	myInstance->myGameStates.GetTop()->OnPushed();
+	if (myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex)->myIsUnlocked)
+	{
+		myInstance->RemoveDownToState(EStateType::eLevelSelect);
+		myInstance->myGameStates.Push(myInstance->myLevel);
+		myInstance->myLevel.get()->Load(myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex));
+		myInstance->myGameStates.GetTop()->OnPushed();
+	}
 }
 
 void StateManager::AddNextLevelOnStack(int aCurrentLevelIndex)
 {
 	if (aCurrentLevelIndex + 1 < myInstance->myLevelSelect->GetLevelAmount())
 	{
+		myInstance->myLevelSelect->GetSpecificLevelData(aCurrentLevelIndex + 1)->myIsUnlocked = true;
 		myInstance->AddLevelOnStack(aCurrentLevelIndex + 1);
 	}
 	else

@@ -218,6 +218,10 @@ void Level::Load(LevelSelect_SpecificLevelData* someLevelData)
 
 	Load(levelLoader.LoadLevel(mylevelButtondata), mylevelButtondata);
 	myBackground->Init(*(myPlayer.get()), mylevelButtondata->myWorld);
+	if (mylevelButtondata->myHasCutscene)
+	{
+		StateManager::AddAndPlayCutscene(mylevelButtondata->myCutsceneConversation);
+	}
 }
 
 void Level::Restart()

@@ -181,6 +181,7 @@
     <ClInclude Include="LevelSelectLoadData.h">
       <Filter>StateTypes\MenuStates\SubMenuStates\LevelSelect</Filter>
     </ClInclude>
+    <ClInclude Include="CharacterSelectionScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -292,8 +293,9 @@
     <ClCompile Include="CutsceneManager.cpp">
       <Filter>Cutscenes</Filter>
     </ClCompile>
-    <ClCompile Include="LevelSelect_SpecificLevelData.cpp">
+    <ClCompile Include="LevelSelectLoadData.cpp">
       <Filter>StateTypes\MenuStates\SubMenuStates\LevelSelect</Filter>
     </ClCompile>
+    <ClCompile Include="CharacterSelectionScreen.cpp" />
   </ItemGroup>
 </Project>

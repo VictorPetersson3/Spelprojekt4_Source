@@ -30,7 +30,7 @@ public:
 	static void AddLevelOnStack(int aLevelIndex);
 	static void AddNextLevelOnStack(int aLevelIndex);
 
-	static void AddAndPlayCutscene(int aLevelIndex);
+	static void AddAndPlayCutscene(int aCutsceneIndex);
 
 private:
 	StateManager() = default;

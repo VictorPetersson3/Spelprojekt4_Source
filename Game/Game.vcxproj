@@ -137,6 +137,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="AnimationClip.h" />
     <ClInclude Include="Background.h" />
+    <ClInclude Include="CharacterSelectionScreen.h" />
     <ClInclude Include="CollapsingTile.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="CollisionManager.h" />
@@ -190,6 +191,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="AnimationClip.cpp" />
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="CharacterSelectionScreen.cpp" />
     <ClCompile Include="CollapsingTile.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
@@ -203,7 +205,7 @@
     <ClCompile Include="EndOfLevelScreen.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="LevelSelect_SpecificLevelData.cpp" />
+    <ClCompile Include="LevelSelectLoadData.cpp" />
     <ClCompile Include="Shooter.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="LevelSelect.cpp" />
