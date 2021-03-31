@@ -60,6 +60,11 @@ void Level::Render()
 		mySpriteBatches[i]->Render();
 	}
 
+	/*for (auto& tile : myTerrain)
+	{
+		tile->myCollider->Draw();
+	}*/
+
 	for (auto entity : myEntities)
 	{
 		entity->Render(myCamera);

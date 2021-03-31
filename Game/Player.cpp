@@ -14,12 +14,12 @@
 #define DELTA_TIME Timer::GetInstance().GetDeltaTime()
 
 Player::Player(EPowerUp aPowerup) : myCurrentPower(aPowerup) {}
-Player::~Player(){}
+Player::~Player() {}
 
 void Player::Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower)
 {
 	myAnimations.clear();
-	
+
 	myCurrentPower = aPower;
 	myPosition = aPosition;
 
@@ -78,55 +78,55 @@ void Player::InitAnimations()
 	std::string folder = "sprites/Player/State" + std::to_string((int)myCurrentPower);
 
 	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_idle_R.dds").c_str(), 0, (int)EPlayerAnimationClips::eIdleR));
-	myAnimations[0]->Init({ 8, 1 }, { 7, 1 });				
-	myAnimations[0]->PlayAnimLoop();								
+	myAnimations[0]->Init({ 8, 1 }, { 7, 1 });
+	myAnimations[0]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_idle_L.dds").c_str(), 0, (int)EPlayerAnimationClips::eIdleL));
-	myAnimations[1]->Init({ 8, 1 }, { 7, 1 });				 
-	myAnimations[1]->PlayAnimLoop();								 
+	myAnimations[1]->Init({ 8, 1 }, { 7, 1 });
+	myAnimations[1]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_run_R.dds").c_str(), 0, (int)EPlayerAnimationClips::eRunR));
-	myAnimations[2]->Init({ 8, 1 }, { 5, 1 });				
-	myAnimations[2]->PlayAnimLoop();								
+	myAnimations[2]->Init({ 8, 1 }, { 5, 1 });
+	myAnimations[2]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_run_L.dds").c_str(), 0, (int)EPlayerAnimationClips::eRunL));
-	myAnimations[3]->Init({ 8, 1 }, { 5, 1 });				
-	myAnimations[3]->PlayAnimLoop();								
+	myAnimations[3]->Init({ 8, 1 }, { 5, 1 });
+	myAnimations[3]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_sprint_R.dds").c_str(), 0, (int)EPlayerAnimationClips::eSprintR));
-	myAnimations[4]->Init({ 8, 1 }, { 5, 1 });				 
-	myAnimations[4]->PlayAnimLoop();								 
+	myAnimations[4]->Init({ 8, 1 }, { 5, 1 });
+	myAnimations[4]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_sprint_L.dds").c_str(), 0, (int)EPlayerAnimationClips::eSprintL));
-	myAnimations[5]->Init({ 8, 1 }, { 5, 1 });				
-	myAnimations[5]->PlayAnimLoop();								
+	myAnimations[5]->Init({ 8, 1 }, { 5, 1 });
+	myAnimations[5]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_jump_R.dds").c_str(), 0, (int)EPlayerAnimationClips::eJumpR));
-	myAnimations[6]->Init({ 8, 1 }, { 5, 1 });			
+	myAnimations[6]->Init({ 8, 1 }, { 5, 1 });
 	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_jump_L.dds").c_str(), 0, (int)EPlayerAnimationClips::eJumpL));
-	myAnimations[7]->Init({ 8, 1 }, { 5, 1 });				
+	myAnimations[7]->Init({ 8, 1 }, { 5, 1 });
 	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_land_R.dds").c_str(), 0, (int)EPlayerAnimationClips::eLandR));
-	myAnimations[8]->Init({ 8, 1 }, { 5, 1 });			
+	myAnimations[8]->Init({ 8, 1 }, { 5, 1 });
 	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_land_L.dds").c_str(), 0, (int)EPlayerAnimationClips::eLandL));
-	myAnimations[9]->Init({ 8, 1 }, { 5, 1 });			
+	myAnimations[9]->Init({ 8, 1 }, { 5, 1 });
 	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_wallidle_R.dds").c_str(), 0, (int)EPlayerAnimationClips::eWallIdleR));
-	myAnimations[10]->Init({ 4, 1 }, { 4, 1 });			 
-	myAnimations[10]->PlayAnimLoop();						 
+	myAnimations[10]->Init({ 4, 1 }, { 4, 1 });
+	myAnimations[10]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_wallidle_L.dds").c_str(), 0, (int)EPlayerAnimationClips::eWallIdleL));
-	myAnimations[11]->Init({ 4, 1 }, { 4, 1 });				
-	myAnimations[11]->PlayAnimLoop();							
+	myAnimations[11]->Init({ 4, 1 }, { 4, 1 });
+	myAnimations[11]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_wallDown_R.dds").c_str(), 0, (int)EPlayerAnimationClips::eWallDownR));
-	myAnimations[12]->Init({ 4, 1 }, { 4, 1 });			
-	myAnimations[12]->PlayAnimLoop();						
+	myAnimations[12]->Init({ 4, 1 }, { 4, 1 });
+	myAnimations[12]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_wallDown_L.dds").c_str(), 0, (int)EPlayerAnimationClips::eWallDownL));
-	myAnimations[13]->Init({ 4, 1 }, { 4, 1 });				
-	myAnimations[13]->PlayAnimLoop();							
+	myAnimations[13]->Init({ 4, 1 }, { 4, 1 });
+	myAnimations[13]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_wallUp_R.dds").c_str(), 0, (int)EPlayerAnimationClips::eWallUpR));
-	myAnimations[14]->Init({ 4, 1 }, { 4, 1 });				 
-	myAnimations[14]->PlayAnimLoop();							 
+	myAnimations[14]->Init({ 4, 1 }, { 4, 1 });
+	myAnimations[14]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_wallUp_L.dds").c_str(), 0, (int)EPlayerAnimationClips::eWallUpL));
-	myAnimations[15]->Init({ 4, 1 }, { 4, 1 });			
-	myAnimations[15]->PlayAnimLoop();						
+	myAnimations[15]->Init({ 4, 1 }, { 4, 1 });
+	myAnimations[15]->PlayAnimLoop();
 	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_wallJump_R.dds").c_str(), 0, (int)EPlayerAnimationClips::eWallJumpR));
-	myAnimations[16]->Init({ 8, 1 }, { 6, 1 });				
+	myAnimations[16]->Init({ 8, 1 }, { 6, 1 });
 	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_wallJump_L.dds").c_str(), 0, (int)EPlayerAnimationClips::eWallJumpL));
-	myAnimations[17]->Init({ 8, 1 }, { 6, 1 });				 
+	myAnimations[17]->Init({ 8, 1 }, { 6, 1 });
 	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_death_R.dds").c_str(), 0, (int)EPlayerAnimationClips::eDeathR));
-	myAnimations[18]->Init({ 16, 1 }, { 9, 1 });				
+	myAnimations[18]->Init({ 16, 1 }, { 9, 1 });
 	myAnimations.push_back(std::make_shared<AnimationClip>((folder + "/player_death_L.dds").c_str(), 0, (int)EPlayerAnimationClips::eDeathL));
 	myAnimations[19]->Init({ 16, 1 }, { 9, 1 });
 
@@ -172,13 +172,15 @@ void Player::ChangePower()
 
 void Player::Update()
 {
-	//Sleep(1);
+	////printf("%f : %f\n", myPosition.x, myPosition.y);
+   Sleep(1);
+
 	ChangePower();
 
 	UpdateJumping();
 
 	ManageStates();
-	
+
 	UpdatePhysics();
 
 	HandleAnimations();
@@ -241,14 +243,14 @@ void Player::ChangeInput(EInputType anInputType)
 		myJump = DIK_SPACE;
 		myBoost = DIK_LSHIFT;
 		break;
-	//case EInputType::Controller:
-	//	myUp = XINPUT_GAMEPAD_DPAD_UP;
-	//	myLeft = XINPUT_GAMEPAD_DPAD_LEFT;
-	//	myDown = XINPUT_GAMEPAD_DPAD_DOWN;
-	//	myRight = XINPUT_GAMEPAD_DPAD_RIGHT;
-	//	myJump = XINPUT_GAMEPAD_A;
-	//	myBoost = XINPUT_GAMEPAD_B;
-	//	break;
+		//case EInputType::Controller:
+		//	myUp = XINPUT_GAMEPAD_DPAD_UP;
+		//	myLeft = XINPUT_GAMEPAD_DPAD_LEFT;
+		//	myDown = XINPUT_GAMEPAD_DPAD_DOWN;
+		//	myRight = XINPUT_GAMEPAD_DPAD_RIGHT;
+		//	myJump = XINPUT_GAMEPAD_A;
+		//	myBoost = XINPUT_GAMEPAD_B;
+		//	break;
 	}
 }
 
@@ -294,7 +296,7 @@ void Player::UpdatePhysics()
 
 		if (verticalCollider != nullptr && normal.y != 0)
 		{
-			if ((verticalCollider->GetPosition() - myCollider->GetPosition() * normal).Length() >= (myCollider->GetCollidedWith()[i]->GetPosition() - myCollider->GetPosition()).Length())
+			if ((verticalCollider->GetPosition() - myCollider->GetPosition()).Length() > (myCollider->GetCollidedWith()[i]->GetPosition() - myCollider->GetPosition()).Length())
 				verticalCollider = myCollider->GetCollidedWith()[i];
 		}
 		else if (verticalCollider == nullptr && normal.y != 0)
@@ -303,7 +305,7 @@ void Player::UpdatePhysics()
 		}
 		if (horizontalCollider != nullptr && normal.x != 0)
 		{
-			if ((horizontalCollider->GetPosition() - myCollider->GetPosition() * normal).Length() >= (myCollider->GetCollidedWith()[i]->GetPosition() - myCollider->GetPosition()).Length())
+			if ((horizontalCollider->GetPosition() - myCollider->GetPosition()).Length() > (myCollider->GetCollidedWith()[i]->GetPosition() - myCollider->GetPosition()).Length())
 				horizontalCollider = myCollider->GetCollidedWith()[i];
 		}
 		else if (horizontalCollider == nullptr && normal.x != 0)
@@ -326,18 +328,18 @@ void Player::UpdatePhysics()
 		}
 
 		positionCorrection *= posCorrNormal;
-		//positionCorrection.x += 0.1f / Tga2D::CEngine::GetInstance()->GetRenderSize().x * -posCorrNormal.x;
+		positionCorrection.x += 0.1f / Tga2D::CEngine::GetInstance()->GetRenderSize().x * -posCorrNormal.x;
 
 		if (posCorrNormal.y > 0)
 		{
 			myPosition.y += positionCorrection.y;
-			myCurrentVelocity.y = 0;
+			if (myWasRoofied && myCurrentVelocity.y < 0) myCurrentVelocity.y = 0;
 			myIsRoofied = true;
 		}
 		else if (posCorrNormal.y < 0)
 		{
 			myPosition.y += positionCorrection.y + 0.1f / Tga2D::CEngine::GetInstance()->GetRenderSize().y;
-			if (myWasGrounded) myCurrentVelocity.y = 0;
+			if (myWasGrounded && myCurrentVelocity.y > 0) myCurrentVelocity.y = 0;
 			myIsGrounded = true;
 		}
 		else
@@ -346,17 +348,19 @@ void Player::UpdatePhysics()
 			myIsRoofied = false;
 		}
 		if (posCorrNormal.x > 0 &&
-			myCollider->GetPosition().y < horizontalCollider->GetPosition().y + horizontalCollider->GetSize().y &&
-			myCollider->GetPosition().y > horizontalCollider->GetPosition().y - horizontalCollider->GetSize().y)
+			myCollider->GetPosition().y <= horizontalCollider->GetPosition().y + horizontalCollider->GetSize().y &&
+			myCollider->GetPosition().y >= horizontalCollider->GetPosition().y - horizontalCollider->GetSize().y)
 		{
 			myPosition.x += positionCorrection.x;
+			if (myHuggedLeftWall && myCurrentVelocity.x < 0) myCurrentVelocity.x = 0;
 			/*if (myCurrentVelocity.x < 0) */myHugsLeftWall = true;
 		}
 		else if (posCorrNormal.x < 0 &&
-			myCollider->GetPosition().y < horizontalCollider->GetPosition().y + horizontalCollider->GetSize().y &&
-			myCollider->GetPosition().y > horizontalCollider->GetPosition().y - horizontalCollider->GetSize().y)
+			myCollider->GetPosition().y <= horizontalCollider->GetPosition().y + horizontalCollider->GetSize().y &&
+			myCollider->GetPosition().y >= horizontalCollider->GetPosition().y - horizontalCollider->GetSize().y)
 		{
 			myPosition.x += positionCorrection.x;
+			if (myHuggedRightWall && myCurrentVelocity.x > 0) myCurrentVelocity.x = 0;
 			/*if (myCurrentVelocity.x > 0) */myHugsRightWall = true;
 		}
 		else
@@ -418,6 +422,7 @@ void Player::Idle()
 
 	if (myCurrentVelocity.x > 0) myCurrentVelocity.x -= myWalkDecceleration * DELTA_TIME;
 	if (myCurrentVelocity.x < 0) myCurrentVelocity.x += myWalkDecceleration * DELTA_TIME;
+	if (myCurrentVelocity.x <= myWalkDecceleration * DELTA_TIME && myCurrentVelocity.x >= -myWalkDecceleration * DELTA_TIME) myCurrentVelocity.x = 0;
 
 	myCurrentAnimation = EAnimationState::Idle;
 
@@ -457,6 +462,7 @@ void Player::Walk()
 	if (INPUT.GetKey(myLeft) == INPUT.GetKey(myRight))
 	{
 		myMoveState = EPlayerState::Idle;
+		Idle();
 		return;
 	}
 	else if (INPUT.GetKey(myRight))
@@ -503,7 +509,7 @@ void Player::Walk()
 
 		if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eJumpL);
 		else PlaySpecificAnimation(EPlayerAnimationClips::eJumpR);
-		
+
 		myCanJumpAgain = false;
 		myMoveState = EPlayerState::Falling;
 		return;
@@ -517,14 +523,23 @@ void Player::Walk()
 
 void Player::Falling()
 {
-	if (INPUT.GetKey(myLeft) != INPUT.GetKey(myRight) && myHuggedLeftWall)
-	{
-		myMoveState = EPlayerState::Ledge;
-		return;
-	}
-
 	if (myHuggedLeftWall || myHuggedRightWall) myCurrentAnimation = EAnimationState::W_Jump;
-	else myCurrentAnimation = EAnimationState::Jump;
+	else if (!myIsGrounded && !myHugsLeftWall && !myHugsRightWall)
+	{
+		myCurrentAnimation = EAnimationState::Jump;
+	}/*
+	else if (myIsGrounded)
+	{
+		myMoveState = EPlayerState::Walk;
+		Walk();
+		return;
+	}*/
+	//else
+	//{
+	//	myMoveState = EPlayerState::Ledge;
+	//	Ledge();
+	//	return;
+	//}
 
 	if (myCurrentVelocity.y >= myMaxVerticalVelocity) myCurrentVelocity.y = myMaxVerticalVelocity;
 	else if (myIsGliding) myCurrentVelocity.y = myGlideSpeed;
@@ -544,7 +559,7 @@ void Player::Falling()
 	{
 		myDirection = 1;
 
-		if (myIsGrounded) myMoveState = EPlayerState::Walk;
+		if (myIsGrounded && !myHugsLeftWall && !myHugsRightWall) myMoveState = EPlayerState::Walk;
 		if (myHugsRightWall && !myIsGrounded && !myWasGrounded)
 		{
 			myMoveState = EPlayerState::Ledge;
@@ -586,8 +601,8 @@ void Player::Falling()
 		{
 			myCurrentVelocity.y = -myJumpSpeed;
 
-		/*	if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eDoubleJumpL);
-			else PlaySpecificAnimation(EPlayerAnimationClips::eDoubleJumpR);*/
+			/*	if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eDoubleJumpL);
+				else PlaySpecificAnimation(EPlayerAnimationClips::eDoubleJumpR);*/
 
 			myCanDoubleJump = false;
 			myCanJumpAgain = false;
@@ -613,11 +628,19 @@ void Player::Falling()
 
 void Player::Ledge()
 {
-	if (myCurrentVelocity.y == 0) myCurrentAnimation = EAnimationState::W_Idle;
-	else if (myCurrentVelocity.y > 0) myCurrentAnimation = EAnimationState::W_Down;
-	else if (myCurrentVelocity.y < 0) myCurrentAnimation = EAnimationState::W_Up;
+	if (myIsGrounded)
+	{
+		myMoveState = EPlayerState::Walk;  // ta bort om han ska chilla på väggen när han har glidit ned
+		return;
+	}
 
-   if (myCurrentVelocity.y < 0) myCurrentVelocity.y += myWallDrag * DELTA_TIME;
+	if (INPUT.GetKey(myLeft) != INPUT.GetKey(myRight))
+	{
+		if (myCurrentVelocity.y == 0) myCurrentAnimation = EAnimationState::W_Idle;
+		else if (myCurrentVelocity.y > 0) myCurrentAnimation = EAnimationState::W_Down;
+		else if (myCurrentVelocity.y < 0) myCurrentAnimation = EAnimationState::W_Up;
+	}
+	if (myCurrentVelocity.y < 0) myCurrentVelocity.y += myWallDrag * DELTA_TIME;
 	myCurrentVelocity.y += myGravity * DELTA_TIME;
 	if (myCurrentVelocity.y >= myMaxWallSlideSpeed) myCurrentVelocity.y = myMaxWallSlideSpeed;
 
@@ -648,7 +671,7 @@ void Player::Ledge()
 			PlaySpecificAnimation(EPlayerAnimationClips::eWallJumpL);
 
 			myMoveState = EPlayerState::Falling;
-			
+
 			myCanJumpAgain = false;
 			return;
 		}
@@ -674,7 +697,7 @@ void Player::Ledge()
 
 			myMoveState = EPlayerState::Falling;
 			myCurrentAnimation = EAnimationState::W_Jump;
-			
+
 			myCanJumpAgain = false;
 			return;
 		}

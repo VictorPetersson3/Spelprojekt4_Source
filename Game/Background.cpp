@@ -89,13 +89,13 @@ void Background::Update()
 		for (int j = 0; j < 3; j++)
 		{
 			mySets[i][j].myPosition.x += *mySpeed.x * mySpeedFactor[j] * DELTA_TIME;
-			mySets[i][j].myPosition.y += *mySpeed.y * mySpeedFactor[0] * DELTA_TIME;
+			mySets[i][j].myPosition.y -= *mySpeed.y * mySpeedFactor[j] / 4 * DELTA_TIME;
 
 			if (mySets[i][j].myPosition.x > 1 && *mySpeed.x > 0)
 			{
 				mySets[i][j].myPosition.x -= 4 * + 1024.0f / 1280.0f * 2.0f / 3.0f - 0.5f / RESOLUTION.x;
 			}
-			else if (mySets[i][j].myPosition.x + 1024.0f / 1280.0f * 2.0f / 3.0f - 0.5f / RESOLUTION.x < 0 && *mySpeed.x < 0)
+			if (mySets[i][j].myPosition.x + 1024.0f / 1280.0f * 2.0f / 3.0f - 0.5f / RESOLUTION.x < 0 && *mySpeed.x < 0)
 			{
 				mySets[i][j].myPosition.x += 4 * + 1024.0f / 1280.0f * 2.0f / 3.0f - 0.5f / RESOLUTION.x;
 			}
