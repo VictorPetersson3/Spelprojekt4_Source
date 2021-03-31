@@ -2,35 +2,25 @@
 #include "CameraBehavoir.h"
 #include "Camera.h"
 #include "Player.h"
+#include <iostream>
 void CameraBehavoir::Init(std::shared_ptr<Camera> aCamera, std::shared_ptr<Player> aPlayer)
 {
-	myMovementFunctions[0] = &CameraBehavoir::Static;
-	myMovementFunctions[1] = &CameraBehavoir::MoveX;
-	myMovementFunctions[2] = &CameraBehavoir::MoveY;
-	
 	myCameraToMove = aCamera;
 	myPlayerToFollow = aPlayer;
 
-	myPosition = myCameraToMove->GetPosition();
+	myPosition = CommonUtilities::Vector2f(.5f, .5f);
 }
 
 void CameraBehavoir::Update(const float aDt)
-{	
-	const int moveX = (myMoveX * (!myStatic));
-	const int moveY = ((myMoveY * 2) * (!myStatic));
+{
+	CenterCamera();
 
-	if (GetPlayerDistance() > myRangeToMove)
-	{
-		(this->*myMovementFunctions[moveX])(aDt);
-		(this->*myMovementFunctions[moveY])(aDt);
-	}
-	else 
-	{
-		CenterCamera();
-	}
+	std::cout << myPosition.x << ", " << myPosition.y << std::endl;
 	
 	myPosition += myFrameVelocity * aDt;
-	myCameraToMove->SetPosition(myPosition);
+	myPosition.Clamp({ 0.25f,0.25f, }, { 0.75f, 0.75f });
+	myCameraToMove->SetPosition(myPosition - CommonUtilities::Vector2f(.5f, .5f));
+	myFrameVelocity = CommonUtilities::Vector2f::Zero();
 
 }
 
@@ -41,37 +31,18 @@ void CameraBehavoir::AddForce(CommonUtilities::Vector2f aForceToAdd)
 
 void CameraBehavoir::CenterCamera()
 {
-	CommonUtilities::Vector2f dir = myPlayerToFollow->GetPosition() - myPosition;
-	AddForce({ dir * myAcceleration });
-}
+	CommonUtilities::Vector2f playerPos = myPlayerToFollow->GetPosition();
 
-void CameraBehavoir::MoveY(const float aDt)
-{	
-	if (GetPlayerNextFramePos().y > myPosition.y)
+	if (playerPos != CommonUtilities::Vector2f::Zero())
 	{
-		// move up
-		AddForce({ 0, -myAcceleration * myPlayerToFollow->GetCurrentVelocity().y});
-		return;
+		std::cout << myPlayerToFollow->GetPosition().x << ", " << myPlayerToFollow->GetPosition().y << std::endl;
+		CommonUtilities::Vector2f dir = playerPos - myPosition;
+		AddForce((dir * myMoveX) * myAcceleration);
+		
+		
+		
 	}
-	// move down
-	AddForce({ 0, myAcceleration * myPlayerToFollow->GetCurrentVelocity().y });
-}
 
-void CameraBehavoir::MoveX(const float aDt)
-{
-	if (GetPlayerNextFramePos().x > myPosition.x)
-	{
-		// move right
-		AddForce({ myAcceleration * myPlayerToFollow->GetCurrentVelocity().x, 0 });
-		return;
-	}
-	// move left
-	AddForce({ -myAcceleration * myPlayerToFollow->GetCurrentVelocity().x, 0 });
-}
-
-void CameraBehavoir::Static(const float aDt)
-{
-	
 }
 
 float CameraBehavoir::GetPlayerDistance() const

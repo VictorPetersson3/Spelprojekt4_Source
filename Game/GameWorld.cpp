@@ -42,8 +42,7 @@ void CGameWorld::Init()
 void CGameWorld::Update(float /*aTimeDelta*/)
 {
 	StateManager::GetInstance().Update();
-	myCamera->Update(myPlayer->GetPosition());
-	myCameraController->Update(Timer::GetInstance().GetDeltaTime());
+	//myCamera->Update(myPlayer->GetPosition());
 
 	//myCollider->Draw();
 	//If you want to render something send in the sprite to the Camera
