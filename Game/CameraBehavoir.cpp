@@ -14,14 +14,11 @@ void CameraBehavoir::Init(std::shared_ptr<Camera> aCamera, std::shared_ptr<Playe
 void CameraBehavoir::Update(const float aDt)
 {
 	CenterCamera();
-
-	std::cout << myPosition.x << ", " << myPosition.y << std::endl;
 	
 	myPosition += myFrameVelocity * aDt;
-	myPosition.Clamp({ 0.25f,0.25f, }, { 0.75f, 0.75f });
+	myPosition.Clamp({ myMinBoarderX, myMinBoarderY, }, { myMaxBoarderX, myMaxBoarderY });
 	myCameraToMove->SetPosition(myPosition - CommonUtilities::Vector2f(.5f, .5f));
 	myFrameVelocity = CommonUtilities::Vector2f::Zero();
-
 }
 
 void CameraBehavoir::AddForce(CommonUtilities::Vector2f aForceToAdd)
@@ -35,14 +32,10 @@ void CameraBehavoir::CenterCamera()
 
 	if (playerPos != CommonUtilities::Vector2f::Zero())
 	{
-		std::cout << myPlayerToFollow->GetPosition().x << ", " << myPlayerToFollow->GetPosition().y << std::endl;
 		CommonUtilities::Vector2f dir = playerPos - myPosition;
-		AddForce((dir * myMoveX) * myAcceleration);
-		
-		
-		
+		AddForce({ (dir.x * myMoveX) * myAcceleration, 0 });
+		AddForce({ 0 , (dir.y * myMoveY) * myAcceleration });
 	}
-
 }
 
 float CameraBehavoir::GetPlayerDistance() const

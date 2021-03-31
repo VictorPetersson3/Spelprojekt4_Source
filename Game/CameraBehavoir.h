@@ -27,17 +27,15 @@ private:
 	 	 myMoveX = true;
 
 	float myAcceleration = 5.f,
-		  myRangeToMove = 0.1f;
+		myRangeToMove = 0.1f,
+		myMinBoarderX = 0.45f,
+		myMaxBoarderX = 0.55f,
+		myMinBoarderY = 0.25f,
+		myMaxBoarderY = 0.35f;
 
 	CommonUtilities::Vector2f myPosition = {};
 	CommonUtilities::Vector2f myFrameVelocity = {}; 
 
-	CommonUtilities::Vector2f myBoundaries = {};
-	CommonUtilities::Vector2f myCenterOfMap = {};
-
-	// myBoundaries + myCenterOfMap = myWorldBoundaries
-	CommonUtilities::Vector2f myWorldBoundaries = {};
-	
 	std::shared_ptr<Player> myPlayerToFollow = {};
 	std::shared_ptr<Camera> myCameraToMove = {};
 };
