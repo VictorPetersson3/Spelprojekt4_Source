@@ -41,8 +41,7 @@ enum class EAnimationState
 	W_Up,
 	W_Jump,
 	Death,
-	D_Jump,
-	Glide
+	Power
 };
 
 class Player
@@ -74,7 +73,7 @@ protected:
 	void HandleAnimations();
 
 	void CacheCurrentValues();
-	void ChangePower();
+	//void ChangePower();
 
 	void Idle();
 	void Walk();

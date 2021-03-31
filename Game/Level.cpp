@@ -201,7 +201,7 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 		t->myCollider->AddToManager();
 	}
 
-	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y });
+	myPlayer->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y }, StateManager::GetInstance().GetSelectedCharacter());
 
 	if (myLevelEndCollider != nullptr)
 	{

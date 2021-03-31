@@ -16,6 +16,7 @@ AnimationClip::AnimationClip(const char* aImagePath, const int aLayer, const int
 	myCurrentAnimationTime = 0;
 	myAnimationSpeed = 0.08333f;
 	mySize = mySize.One();
+	myOriginalSize = mySize;
 	myRenderCommand = std::make_unique<RenderCommand>(aImagePath, aLayer);
 }
 
@@ -27,6 +28,7 @@ void AnimationClip::Init(const CommonUtilities::Vector2ui& aAmountOfFrames, cons
 	myRenderCommand->SetTextureRect(myRectSize.x - myRectSize.x, myRectSize.y - myRectSize.y, myRectSize.x, myRectSize.y);
 	mySize.x = mySize.x / static_cast<float>(aAmountOfFrames.x);
 	mySize.y = mySize.y / static_cast<float>(aAmountOfFrames.y);
+	myOriginalSize = mySize;
 	myRenderCommand->SetSizeRelativeToImage(mySize);
 	myAmountOfFrames = aAmountOfFrames;
 	myEndFrame = aEndFrame;
@@ -108,6 +110,19 @@ const bool AnimationClip::GetAnimIsPlaying() const{	return myIsAnimating;}
 
 const CommonUtilities::Vector2ui& AnimationClip::GetCurrentFrame() const { return myCurrentFrame; }
 
+const float AnimationClip::GetRotation() const
+{
+	return myRenderCommand->GetRotation();
+}
+
+
+void AnimationClip::SetScaleRelativeToFrame(const CommonUtilities::Vector2f& aScale)
+{
+
+	mySize = myOriginalSize * aScale;
+	myRenderCommand->SetSizeRelativeToImage(mySize);
+}
+
 void AnimationClip::ResetAnimation()
 {
 	myCurrentFrame = { 1 , 1 };
@@ -122,6 +137,10 @@ void AnimationClip::SetFrame(const CommonUtilities::Vector2ui& aCurrentFrame)
 		myRectSize.y * myCurrentFrame.y - myRectSize.y,	//TopLeftY Current Frame
 		myRectSize.x * myCurrentFrame.x,				//BotLeftX Current Frame
 		myRectSize.y * myCurrentFrame.y);				//BotLeftY Current Frame
+}
+void AnimationClip::SetRotation(const float aAngleInRadian)
+{
+	myRenderCommand->SetRotation(aAngleInRadian);
 }
 //Internal Setter for the animator
 void AnimationClip::SetFrame()

@@ -34,9 +34,13 @@ public:
 	const bool GetAnimIsDone() const;
 	const bool GetAnimIsPlaying() const;
 	const CommonUtilities::Vector2ui& GetCurrentFrame() const;
+	const float GetRotation() const;
+	//1.f, 1.f is normal scale.
+	void SetScaleRelativeToFrame(const CommonUtilities::Vector2f& aScale);
 
 	//Reset to frame (1, 1)
 	void ResetAnimation();
+	void SetRotation(const float aAngleInRadian);
 	void SetFrame(const CommonUtilities::Vector2ui& aCurrentFrame);
 
 
@@ -62,6 +66,7 @@ private:
 
 	CommonUtilities::Vector2f myPosition;
 	CommonUtilities::Vector2f mySize;
+	CommonUtilities::Vector2f myOriginalSize;
 	CommonUtilities::Vector2f myRectSize;
 
 	float myCurrentAnimationTime;
