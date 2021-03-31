@@ -187,6 +187,9 @@
     <ClInclude Include="CharacterSelectionScreen.h">
       <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
     </ClInclude>
+    <ClInclude Include="CameraBehavoir.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -306,6 +309,9 @@
     </ClCompile>
     <ClCompile Include="CharacterSelectionScreen.cpp">
       <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraBehavoir.cpp">
+      <Filter>Rendering</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
