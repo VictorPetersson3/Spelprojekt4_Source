@@ -183,27 +183,9 @@ bool Player::Input(int anInput)
 	}
 }
 
-//temp
-//void Player::ChangePower()
-//{
-//	if (INPUT.GetKeyDown(DIK_1) && myCurrentPower != EPowerUp::Default)
-//	{
-//		myCurrentPower = EPowerUp::Default;
-//	}
-//	if (INPUT.GetKeyDown(DIK_2) && myCurrentPower != EPowerUp::DoubleJump)
-//	{
-//		myCurrentPower = EPowerUp::DoubleJump;
-//	}
-//	if (INPUT.GetKeyDown(DIK_3) && myCurrentPower != EPowerUp::Glide)
-//	{
-//		myCurrentPower = EPowerUp::Glide;
-//	}
-//}
-
 void Player::Update()
 {
 	//Sleep(1);
-	ChangePower();
 
 	UpdateJumping();
 

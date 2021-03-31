@@ -49,7 +49,7 @@ enum class EAnimationState
 class Player
 {
 public:
-	Player(std::shared_ptr<XController> aController, EPowerUp aPowerup = EPowerUp::Default);
+	Player(std::shared_ptr<XController> aController = nullptr, EPowerUp aPowerup = EPowerUp::Default);
 	~Player();
 
 	virtual void Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower = EPowerUp::Default);
@@ -77,7 +77,6 @@ protected:
 	void CacheCurrentValues();
 
 	void ChangeInput();
-	void ChangePower();
 
 	void Idle();
 	void Walk();
