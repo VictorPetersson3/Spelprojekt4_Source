@@ -35,8 +35,10 @@ private:
 	float myRadius = 0.5;
 	float mySpeed = 0.1;
 	int myDirection = 1;
+	Vector2 myDownVector;
 	bool myRepeating = false;
 
-	const float EPSILON = 0.01;
+	const float EPSILON = 0.000000001;
+	const float PI = 3.14159;
 };
 

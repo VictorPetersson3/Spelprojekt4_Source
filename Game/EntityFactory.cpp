@@ -41,7 +41,7 @@ std::vector<std::shared_ptr<Entity>> EntityFactory::LoadEntities(const char* aPa
 				if (entityType == "MovingPlatform" || entityType == "movingplatform")
 				{
 					myEntities.push_back(LoadMovingPlatform(i, j));
-					
+
 				}
 				if (entityType == "CollapsingTile")
 				{
@@ -72,10 +72,8 @@ std::shared_ptr<Saw> EntityFactory::LoadSaw(int aEntityIndex, int aLayerIndex)
 
 	if (myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"].Capacity() > 1)
 	{
-		if (myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][1].IsBool())
-		{
-			aSawToPushBack.SetRepeating(myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][1].GetBool());
-		}
+		aSawToPushBack.SetRepeating(myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][1]["__value"].GetBool());
+
 	}
 
 	collider = std::make_shared<Collider>(16 / renderSizeX, CommonUtilities::Vector2f{ myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / renderSizeX * gridSize,
@@ -139,7 +137,7 @@ std::shared_ptr<MovingPlatform> EntityFactory::LoadMovingPlatform(int aEntityInd
 		}
 	}
 
-	Vector2 position = CommonUtilities::Vector2f{	myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / renderSizeX * gridSize,
+	Vector2 position = CommonUtilities::Vector2f{ myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / renderSizeX * gridSize,
 													myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / renderSizeY * gridSize };
 	Vector2 size = Vector2{ myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["width"].GetFloat(),
 							myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["height"].GetFloat() };
@@ -160,6 +158,6 @@ std::shared_ptr<CollapsingTile> EntityFactory::LoadCollapsingTile(int aEntityInd
 	float yPosition = myDocument["levels"][0]["layerInstances"][aLayerindex]["entityInstances"][aEntityIndex]["px"][1].GetFloat();
 
 
-	return std::make_shared<CollapsingTile>(CommonUtilities::Vector2f(xPosition,yPosition));
+	return std::make_shared<CollapsingTile>(CommonUtilities::Vector2f(xPosition, yPosition));
 }
 
