@@ -9,12 +9,17 @@
 #include "JsonParser.h"
 #include "RenderCommand.h"
 #include "Timer.h"
+#include "XController.h"
 
 #define INPUT InputManagerS::GetInstance() 
 #define DELTA_TIME Timer::GetInstance().GetDeltaTime()
 
-Player::Player(EPowerUp aPowerup) : myCurrentPower(aPowerup) {}
-Player::~Player() {}
+Player::Player(std::shared_ptr<XController> aController, EPowerUp aPowerup) :
+	myCurrentPower(aPowerup),
+	myController(aController)
+{
+}
+Player::~Player(){}
 
 void Player::Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower)
 {
@@ -155,6 +160,29 @@ void Player::InitCollider()
 	myCollider->SetTag(EColliderTag::Player);
 }
 
+bool Player::Input(int anInput)
+{
+	switch (anInput)
+	{
+	case DIK_UP: case DIK_LEFT: case DIK_DOWN: case DIK_RIGHT: case DIK_X: case DIK_Z:
+	case DIK_W: case DIK_A: case DIK_S: case DIK_D: case DIK_SPACE: case DIK_LSHIFT:
+		return INPUT.GetKey(anInput);
+		break;
+	case XINPUT_GAMEPAD_DPAD_UP:
+		return myController->GetLeftTumbStick().y > 0 || myController->GetDPadInput().y > 0;
+	case XINPUT_GAMEPAD_DPAD_LEFT:
+		return myController->GetLeftTumbStick().x < 0 || myController->GetDPadInput().x < 0;
+	case XINPUT_GAMEPAD_DPAD_DOWN:
+		return myController->GetLeftTumbStick().y < 0 || myController->GetDPadInput().y < 0;
+	case XINPUT_GAMEPAD_DPAD_RIGHT:
+		return myController->GetLeftTumbStick().x > 0 || myController->GetDPadInput().x > 0;
+	case XINPUT_GAMEPAD_A:
+		return myController->IsButton_A_Pressed();
+	case XINPUT_GAMEPAD_B:
+		return (myController->IsButton_B_Pressed() || myController->IsButton_X_Pressed());
+	}
+}
+
 //temp
 //void Player::ChangePower()
 //{
@@ -174,6 +202,9 @@ void Player::InitCollider()
 
 void Player::Update()
 {
+	//Sleep(1);
+	ChangePower();
+
 	UpdateJumping();
 
 	ManageStates();
@@ -220,41 +251,50 @@ std::shared_ptr<Collider> Player::GetCollider()
 	return myCollider;
 }
 
-void Player::ChangeInput(EInputType anInputType)
+void Player::ChangeInput()
 {
-	switch (anInputType)
+	EInputType inputType;
+
+	if (INPUT.GetKey(DIK_UP) || INPUT.GetKey(DIK_LEFT) || INPUT.GetKey(DIK_DOWN) || INPUT.GetKey(DIK_RIGHT) || INPUT.GetKey(DIK_Z) || INPUT.GetKey(DIK_X))
+		inputType = EInputType::ArrowKeys;
+	else if (INPUT.GetKey(DIK_W) || INPUT.GetKey(DIK_A) || INPUT.GetKey(DIK_S) || INPUT.GetKey(DIK_D) || INPUT.GetKey(DIK_SPACE) || INPUT.GetKey(DIK_LSHIFT))
+		inputType = EInputType::WASD;
+	else if (INPUT.GetKey(XINPUT_GAMEPAD_DPAD_UP) || INPUT.GetKey(XINPUT_GAMEPAD_DPAD_LEFT) || INPUT.GetKey(XINPUT_GAMEPAD_DPAD_DOWN) || INPUT.GetKey(XINPUT_GAMEPAD_DPAD_RIGHT) || INPUT.GetKey(XINPUT_GAMEPAD_A) || INPUT.GetKey(XINPUT_GAMEPAD_B) || INPUT.GetKey(XINPUT_GAMEPAD_X))
+		inputType = EInputType::Controller;
+
+	switch (inputType)
 	{
 	case EInputType::ArrowKeys:
-		myUp = DIK_UP;
-		myLeft = DIK_LEFT;
-		myDown = DIK_DOWN;
+		myUp    = DIK_UP;
+		myLeft  = DIK_LEFT;
+		myDown  = DIK_DOWN;
 		myRight = DIK_RIGHT;
-		myJump = DIK_X;
+		myJump  = DIK_X;
 		myBoost = DIK_Z;
 		break;
 	case EInputType::WASD:
-		myUp = DIK_W;
-		myLeft = DIK_A;
-		myDown = DIK_S;
+		myUp    = DIK_W;
+		myLeft  = DIK_A;
+		myDown  = DIK_S;
 		myRight = DIK_D;
-		myJump = DIK_SPACE;
+		myJump  = DIK_SPACE;
 		myBoost = DIK_LSHIFT;
 		break;
-		//case EInputType::Controller:
-		//	myUp = XINPUT_GAMEPAD_DPAD_UP;
-		//	myLeft = XINPUT_GAMEPAD_DPAD_LEFT;
-		//	myDown = XINPUT_GAMEPAD_DPAD_DOWN;
-		//	myRight = XINPUT_GAMEPAD_DPAD_RIGHT;
-		//	myJump = XINPUT_GAMEPAD_A;
-		//	myBoost = XINPUT_GAMEPAD_B;
-		//	break;
+	case EInputType::Controller:
+		myUp    = XINPUT_GAMEPAD_DPAD_UP;
+		myLeft  = XINPUT_GAMEPAD_DPAD_LEFT;
+		myDown  = XINPUT_GAMEPAD_DPAD_DOWN;
+		myRight = XINPUT_GAMEPAD_DPAD_RIGHT;
+		myJump  = XINPUT_GAMEPAD_A;
+		myBoost = XINPUT_GAMEPAD_B;
+		break;
 	}
 }
 
 void Player::UpdateJumping()
 {
 	if (myIsGrounded) myCanDoubleJump = true;
-	if (INPUT.GetKeyUp(myJump))
+	if (!Input(myJump)) // kanske buggar h�r
 	{
 		myCanJumpAgain = true;
 		myIsGliding = false;
@@ -428,12 +468,12 @@ void Player::Idle()
 		myMoveState = EPlayerState::Falling;
 		return;
 	}
-	if (INPUT.GetKey(myLeft) != INPUT.GetKey(myRight))
+	if (Input(myLeft) != Input(myRight))
 	{
 		myMoveState = EPlayerState::Walk;
 		return;
 	}
-	else if (INPUT.GetKey(myJump) && myCanJumpAgain)
+	else if (Input(myJump) && myCanJumpAgain)
 	{
 		myIsGrounded = false;
 		myCurrentVelocity.y = -myJumpSpeed;
@@ -456,13 +496,13 @@ void Player::Walk()
 
 	myCurrentAnimation = EAnimationState::Run;
 
-	if (INPUT.GetKey(myLeft) == INPUT.GetKey(myRight))
+	if (Input(myLeft) == Input(myRight))
 	{
 		myMoveState = EPlayerState::Idle;
 		Idle();
 		return;
 	}
-	else if (INPUT.GetKey(myRight))
+	else if (Input(myRight))
 	{
 		myDirection = 1;
 		if (myHugsRightWall)
@@ -471,7 +511,7 @@ void Player::Walk()
 		}
 		else
 		{
-			if (INPUT.GetKey(myBoost))
+			if (Input(myBoost))
 			{
 				myCurrentAnimation = EAnimationState::Sprint;
 				if (myCurrentVelocity.x <= myMaxAirSpeed * myBoostFactor) myCurrentVelocity.x += myWalkSpeed * DELTA_TIME * myBoostFactor;
@@ -479,7 +519,7 @@ void Player::Walk()
 			else if (myCurrentVelocity.x <= myMaxHorizontalVelocity) myCurrentVelocity.x += myWalkSpeed * DELTA_TIME;
 		}
 	}
-	else if (INPUT.GetKey(myLeft))
+	else if (Input(myLeft))
 	{
 		myDirection = -1;
 		if (myHugsLeftWall)
@@ -488,7 +528,7 @@ void Player::Walk()
 		}
 		else
 		{
-			if (INPUT.GetKey(myBoost))
+			if (Input(myBoost))
 			{
 				myCurrentAnimation = EAnimationState::Sprint;
 				if (myCurrentVelocity.x >= -myMaxAirSpeed * myBoostFactor) myCurrentVelocity.x -= myWalkSpeed * DELTA_TIME * myBoostFactor;
@@ -497,7 +537,7 @@ void Player::Walk()
 		}
 	}
 
-	if (INPUT.GetKey(myJump) && myCanJumpAgain)
+	if (Input(myJump) && myCanJumpAgain)
 	{
 		myIsGrounded = false;
 
@@ -528,7 +568,7 @@ void Player::Falling()
 	else if (myIsGliding) myCurrentVelocity.y = myGlideSpeed;
 	else myCurrentVelocity.y += myGravity * DELTA_TIME;
 
-	if (INPUT.GetKey(myLeft) == INPUT.GetKey(myRight))
+	if (Input(myLeft) == Input(myRight))
 	{
 		if (myIsGrounded)
 		{
@@ -538,7 +578,7 @@ void Player::Falling()
 		if (myCurrentVelocity.x > 0) myCurrentVelocity.x -= myAirDecceleration * DELTA_TIME;
 		if (myCurrentVelocity.x < 0) myCurrentVelocity.x += myAirDecceleration * DELTA_TIME;
 	}
-	else if (INPUT.GetKey(myRight))
+	else if (Input(myRight))
 	{
 		myDirection = 1;
 
@@ -550,14 +590,14 @@ void Player::Falling()
 		}
 		else
 		{
-			if (INPUT.GetKey(myBoost))
+			if (Input(myBoost))
 			{
 				if (myCurrentVelocity.x <= myMaxAirSpeed * myBoostFactor) myCurrentVelocity.x += myAirAcceleration * DELTA_TIME * myBoostFactor;
 			}
 			else if (myCurrentVelocity.x <= myMaxAirSpeed) myCurrentVelocity.x += myAirAcceleration * DELTA_TIME;
 		}
 	}
-	else if (INPUT.GetKey(myLeft))
+	else if (Input(myLeft))
 	{
 		myDirection = -1;
 
@@ -569,7 +609,7 @@ void Player::Falling()
 		}
 		else
 		{
-			if (INPUT.GetKey(myBoost))
+			if (Input(myBoost))
 			{
 				if (myCurrentVelocity.x >= -myMaxAirSpeed * myBoostFactor) myCurrentVelocity.x -= myAirAcceleration * DELTA_TIME * myBoostFactor;
 			}
@@ -580,7 +620,7 @@ void Player::Falling()
 	switch (myCurrentPower)
 	{
 	case EPowerUp::DoubleJump:
-		if (INPUT.GetKey(myJump) && myCanDoubleJump && myCanJumpAgain)
+		if (Input(myJump) && myCanDoubleJump && myCanJumpAgain)
 		{
 			myCurrentVelocity.y = -myJumpSpeed;
 
@@ -593,7 +633,7 @@ void Player::Falling()
 		}
 		break;
 	case EPowerUp::Glide:
-		if (INPUT.GetKey(myJump) && myCanGlide && myCurrentVelocity.y > 0.0f && myCanJumpAgain)
+		if (Input(myJump) && myCanGlide && myCurrentVelocity.y > 0.0f && myCanJumpAgain)
 		{
 			myCurrentAnimation = EAnimationState::Power;
 
@@ -604,7 +644,7 @@ void Player::Falling()
 	default:
 		break;
 	}
-	if (!INPUT.GetKey(myJump) && myCurrentVelocity.y < 0.0f)
+	if (!Input(myJump) && myCurrentVelocity.y < 0.0f)
 	{
 		myCurrentVelocity.y += myJumpDecceleration * DELTA_TIME;
 	}
@@ -629,12 +669,12 @@ void Player::Ledge()
 	if (myCurrentVelocity.y >= myMaxWallSlideSpeed) myCurrentVelocity.y = myMaxWallSlideSpeed;
 
 
-	if (INPUT.GetKey(myLeft) == INPUT.GetKey(myRight))
+	if (Input(myLeft) == Input(myRight))
 	{
 		myCurrentVelocity.x = 0;
 		myMoveState = EPlayerState::Idle;
 	}
-	else if (INPUT.GetKey(myRight))
+	else if (Input(myRight))
 	{
 		myDirection = 1;
 
@@ -647,7 +687,7 @@ void Player::Ledge()
 			myMoveState = EPlayerState::Falling;
 			return;
 		}
-		if (INPUT.GetKey(myJump) && myCanJumpAgain && !myIsGliding)
+		if (Input(myJump) && myCanJumpAgain && !myIsGliding)
 		{
 			myCurrentVelocity.x = -myWallJumpSpeed * myWallJumpFactorX;
 			myCurrentVelocity.y = -myWallJumpSpeed;
@@ -660,7 +700,7 @@ void Player::Ledge()
 			return;
 		}
 	}
-	else if (INPUT.GetKey(myLeft))
+	else if (Input(myLeft))
 	{
 		myDirection = -1;
 		if (myHugsLeftWall)
@@ -672,7 +712,7 @@ void Player::Ledge()
 			myMoveState = EPlayerState::Falling;
 			return;
 		}
-		if (INPUT.GetKey(myJump) && myCanJumpAgain && !myIsGliding)
+		if (Input(myJump) && myCanJumpAgain && !myIsGliding)
 		{
 			myCurrentVelocity.x = myWallJumpSpeed * myWallJumpFactorX;
 			myCurrentVelocity.y = -myWallJumpSpeed;
@@ -690,6 +730,7 @@ void Player::Ledge()
 
 void Player::Die()
 {
+	myCurrentVelocity.y += myGravity * DELTA_TIME;
 	if (!myWasDead)
 	{
 		myIsDead = true;
