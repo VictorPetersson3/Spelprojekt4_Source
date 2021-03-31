@@ -42,7 +42,7 @@ void CutsceneManager::Init(const EStateType& aState)
 	myTextBackground->Init({ 0.5f, 0.85f }, "sprites/Cutscenes/TextFrame.dds", -1);
 	myTextBackground->GetRenderCommand().SetSizeRelativeToImage({ 1.6f, 1.6f });
 
-	myTextToPrint = std::make_shared<Tga2D::CText>("Text/BarlowSemiCondensed-Regular.ttf", Tga2D::EFontSize_18);
+	myTextToPrint = std::make_shared<Tga2D::CText>("Text/Tomodachy.otf", Tga2D::EFontSize_14);
 	myTextToPrint->SetColor({ 0,0,0,1 });
 	myTextToPrint->SetPosition({ 0.25f, 0.78f });
 	myHasReachedEndOfSentence = false;
@@ -105,9 +105,9 @@ void CutsceneManager::PlayCutscene(int aLevelIndex)
 
 	//Setting the current speaking characters
 	myLeftCharacter = myLevelCharacterDialogues[aLevelIndex]->GetLeftCharacter();
-	myLeftCharacter->SetPosition({ 0.25f, 0.75f });
+	myLeftCharacter->SetPosition({ 0.25f, 0.55f });
 	myRightCharacter = myLevelCharacterDialogues[aLevelIndex]->GetRightCharacter();
-	myRightCharacter->SetPosition({ 0.75f, 0.75f });
+	myRightCharacter->SetPosition({ 0.75f, 0.55f });
 	myCurrentLineIndexToPlay = 0;
 	myCurrentLetterInLineToPlay = 0;
 	//Getting the first line and activating the speakin character

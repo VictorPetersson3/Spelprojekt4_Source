@@ -34,8 +34,8 @@ void LevelSelect::Init(const EStateType& aState)
 	GetButtonElement(myLevels_LevelData->myLevelSelectLoadData.Size())->Init({ 0.5f, 0.8f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {BackButtonPress(); });
 
 	myBackground = std::make_unique<UIImage>();
-	myBackground.get()->Init({ 0.5f, 0.5f }, "sprites/UI/LevelSelect/LevelSelect_Map.dds", 2);
-	myBackground.get()->GetRenderCommand().SetSizeRelativeToImage({ 0.95f, 0.95f });
+	myBackground.get()->Init({ 0.5f, 0.5f }, "sprites/UI/LevelSelect/lvlmap_ph.dds", 2);
+	myBackground.get()->GetRenderCommand().SetSizeRelativeToImage({ 0.670f, 0.670f });
 	myBackground.get()->Activate();
 
 
@@ -173,6 +173,6 @@ void LevelSelect::BackButtonPress()
 
 void LevelSelect::MapMarkerPress(int aVal)
 {
-	StateManager::GetInstance().AddLevelOnStack(aVal);
+	StateManager::AddCharacterSelectOnStack(aVal);
 	printf("Pressed Map Number %i\n", aVal);
 }

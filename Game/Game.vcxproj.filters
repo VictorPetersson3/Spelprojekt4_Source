@@ -166,6 +166,9 @@
     <ClInclude Include="Key.h" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="CollapsingTile.h" />
+    <ClInclude Include="MovingPlatform.h">
+      <Filter>Obstacles</Filter>
+    </ClInclude>
     <ClInclude Include="CutsceneManager.h">
       <Filter>Cutscenes</Filter>
     </ClInclude>
@@ -181,8 +184,9 @@
     <ClInclude Include="LevelSelectLoadData.h">
       <Filter>StateTypes\MenuStates\SubMenuStates\LevelSelect</Filter>
     </ClInclude>
-    <ClInclude Include="CharacterSelectionScreen.h" />
-    <ClInclude Include="CameraBehavoir.h" />
+    <ClInclude Include="CharacterSelectionScreen.h">
+      <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -285,6 +289,9 @@
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="CollapsingTile.cpp" />
+    <ClCompile Include="MovingPlatform.cpp">
+      <Filter>Obstacles</Filter>
+    </ClCompile>
     <ClCompile Include="CutsceneCharacter.cpp">
       <Filter>Cutscenes</Filter>
     </ClCompile>
@@ -297,7 +304,8 @@
     <ClCompile Include="LevelSelectLoadData.cpp">
       <Filter>StateTypes\MenuStates\SubMenuStates\LevelSelect</Filter>
     </ClCompile>
-    <ClCompile Include="CharacterSelectionScreen.cpp" />
-    <ClCompile Include="CameraBehavoir.cpp" />
+    <ClCompile Include="CharacterSelectionScreen.cpp">
+      <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

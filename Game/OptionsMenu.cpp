@@ -22,6 +22,7 @@ void OptionsMenu::Init(const EStateType& aState)
 
 	mySliderBackground = std::make_unique<UIImage>();
 	mySliderBackground.get()->Init({ 0.5f, 0.44f }, "sprites/UI/OptionsMenu/B_Volume.dds", 2);
+	mySliderBackground->GetRenderCommand().SetSizeRelativeToImage({ 0.5f, 0.5f });
 	mySliderBackground.get()->Activate();
 
 	myBackground = std::make_unique<UIImage>();

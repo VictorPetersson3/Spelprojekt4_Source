@@ -154,6 +154,7 @@
     <ClInclude Include="EntityFactory.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="MovingPlatform.h" />
     <ClInclude Include="LevelSelectLoadData.h" />
     <ClInclude Include="LevelSelect_SpecificLevelData.h" />
     <ClInclude Include="Shooter.h" />
@@ -207,6 +208,7 @@
     <ClCompile Include="EndOfLevelScreen.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="MovingPlatform.cpp" />
     <ClCompile Include="LevelSelectLoadData.cpp" />
     <ClCompile Include="Shooter.cpp" />
     <ClCompile Include="Key.cpp" />

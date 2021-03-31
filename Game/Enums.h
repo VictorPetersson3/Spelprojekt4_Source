@@ -10,7 +10,8 @@ enum class EStateType
 	eEndOfLevelScreen,
 	eResolutionMenu,
 	eGame,
-	eCutsceneManager
+	eCutsceneManager,
+	eCharacterSelection
 };
 enum class EWorldLevel
 {
@@ -41,10 +42,8 @@ enum class EPlayerAnimationClips
 	eWallJumpL,
 	eDeathR,
 	eDeathL,
-	eDoubleJumpR,
-	eDoubleJumpL,
-	eGlideR,
-	eGlideL
+	ePowerR,
+	ePowerL
 };
 
 enum class EPowerUp

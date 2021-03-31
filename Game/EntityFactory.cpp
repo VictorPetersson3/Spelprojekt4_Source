@@ -2,6 +2,7 @@
 #include "EntityFactory.h"
 #include "Saw.h"
 #include "Shooter.h"
+#include "MovingPlatform.h"
 #include "JsonParser.h"
 #include "CollapsingTile.h"
 
@@ -36,6 +37,11 @@ std::vector<std::shared_ptr<Entity>> EntityFactory::LoadEntities(const char* aPa
 				if (entityType == "Shooter" || entityType == "shooter")
 				{
 					myEntities.push_back(LoadShooter(i, j));
+				}
+				if (entityType == "MovingPlatform" || entityType == "movingplatform")
+				{
+					myEntities.push_back(LoadMovingPlatform(i, j));
+					
 				}
 				if (entityType == "CollapsingTile")
 				{
@@ -109,7 +115,45 @@ std::shared_ptr<Shooter> EntityFactory::LoadShooter(int aEntityIndex, int aLayer
 	return std::make_shared<Shooter>(shooterToPushBack);
 
 }
+std::shared_ptr<MovingPlatform> EntityFactory::LoadMovingPlatform(int aEntityIndex, int aLayerIndex)
+{
+	MovingPlatform aPlatformToPushBack = MovingPlatform({ myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / renderSizeX * 16 ,
+								myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / renderSizeY * 16 });
 
+	std::shared_ptr<Collider> collider;
+
+	int pointAmounts = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][0]["__value"].Capacity();
+
+	for (int k = 0; k < pointAmounts; k++)
+	{
+		aPlatformToPushBack.AddPoint({ myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][0]["__value"][k]["cx"].GetFloat() / renderSizeX * 16,
+								  myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][0]["__value"][k]["cy"].GetFloat() / renderSizeY * 16 });
+
+	}
+
+	if (myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"].Capacity() > 1)
+	{
+		if (myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][1].IsBool())
+		{
+			aPlatformToPushBack.SetRepeating(myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][1].GetBool());
+		}
+	}
+
+	Vector2 position = CommonUtilities::Vector2f{	myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / renderSizeX * gridSize,
+													myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / renderSizeY * gridSize };
+	Vector2 size = Vector2{ myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["width"].GetFloat(),
+							myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["height"].GetFloat() };
+
+	aPlatformToPushBack.SetSize(size, gridSize);
+	collider = std::make_shared<Collider>(position, size.X / renderSizeX, size.Y / renderSizeY);
+
+	collider->SetTag(EColliderTag::Terrain);
+
+	aPlatformToPushBack.SetCollider(collider);
+
+	return std::make_shared<MovingPlatform>(aPlatformToPushBack);
+
+}
 std::shared_ptr<CollapsingTile> EntityFactory::LoadCollapsingTile(int aEntityIndex, int aLayerindex)
 {
 	float xPosition = myDocument["levels"][0]["layerInstances"][aLayerindex]["entityInstances"][aEntityIndex]["px"][0].GetFloat();
@@ -118,3 +162,4 @@ std::shared_ptr<CollapsingTile> EntityFactory::LoadCollapsingTile(int aEntityInd
 
 	return std::make_shared<CollapsingTile>(CommonUtilities::Vector2f(xPosition,yPosition));
 }
+

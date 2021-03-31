@@ -16,8 +16,8 @@ Background::Background(EWorld_but_like_just_a_placeholder_for_the_real_tag aWorl
 
 void Background::Init(Player& aPlayer, EWorldLevel aWorld)
 {
-	CommonUtilities::Vector2f position = { 0.0f, 0.25f };
-	mySpeed = { &(aPlayer.GetCurrentVelocity().x), &(aPlayer.GetCurrentVelocity().x) };
+	CommonUtilities::Vector2f position = { 0.0f, 1.0f };
+	mySpeed = { &(aPlayer.GetCurrentVelocity().x), &(aPlayer.GetCurrentVelocity().y) };
 
 	Layer layer1;
 	Layer layer2;
@@ -63,15 +63,21 @@ void Background::Init(Player& aPlayer, EWorldLevel aWorld)
 	{
 		for (auto& layer : set)
 		{
-			layer.mySprite.SetPivot({ 0, 0.5f });
+			layer.mySprite.SetPivot({ 0, 1.0f });
+			layer.mySprite.SetSizeRelativeToImage({ 2.0f / 3.0f, 2.0f / 3.0f });
 		}
 	}
-
+	//printf("render size x : %d, y : %d\n", RESOLUTION.x, RESOLUTION.y);
+	//printf("size of image : %f\n", layer1.mySprite.GetSize().x);
+	//printf("size of image size/res : %f\n", (float)layer1.mySprite.GetImageSize().x / (float)RESOLUTION.x);
+	//printf("size of 1024 : %f\n", 1024.0f / RESOLUTION.x);
+	//printf("size of size * 2 / 3 : %f\n", (float)layer1.mySprite.GetSize().x * 2.0f / 3.0f);
+	//printf("size of 1024 / res * 2 / 3 : %f\n", 1024.0f / RESOLUTION.x * 2.0f / 3.0f);
 	for (int i = 0; i < 4; i++)
 	{
 		for (auto& layer : mySets[i])
 		{
-			layer.myPosition = { position.x + i * 511.5f / RESOLUTION.x , position.y };
+			layer.myPosition = { position.x + i * 1024.0f / 1280.0f * 2.0f / 3.0f - 0.5f / RESOLUTION.x, position.y };
 		}
 	}
 }
@@ -83,15 +89,15 @@ void Background::Update()
 		for (int j = 0; j < 3; j++)
 		{
 			mySets[i][j].myPosition.x += *mySpeed.x * mySpeedFactor[j] * DELTA_TIME;
-			//mySets[i][j].myPosition.y += *mySpeed.y * mySpeedFactor[0] * DELTA_TIME;
+			mySets[i][j].myPosition.y += *mySpeed.y * mySpeedFactor[0] * DELTA_TIME;
 
 			if (mySets[i][j].myPosition.x > 1 && *mySpeed.x > 0)
 			{
-				mySets[i][j].myPosition.x -= 4 * + 511.5f / RESOLUTION.x;
+				mySets[i][j].myPosition.x -= 4 * + 1024.0f / 1280.0f * 2.0f / 3.0f - 0.5f / RESOLUTION.x;
 			}
-			else if (mySets[i][j].myPosition.x + 511.5f / RESOLUTION.x < 0 && *mySpeed.x < 0)
+			else if (mySets[i][j].myPosition.x + 1024.0f / 1280.0f * 2.0f / 3.0f - 0.5f / RESOLUTION.x < 0 && *mySpeed.x < 0)
 			{
-				mySets[i][j].myPosition.x += 4 * + 511.5f / RESOLUTION.x;
+				mySets[i][j].myPosition.x += 4 * + 1024.0f / 1280.0f * 2.0f / 3.0f - 0.5f / RESOLUTION.x;
 			}
 			mySets[i][j].Update();
 		}

@@ -3,6 +3,7 @@
 
 #include "MainMenu.h"
 #include "OptionsMenu.h"
+#include "CharacterSelectionScreen.h"
 #include "Level.h"
 #include "LevelSelect.h"
 #include "CutsceneManager.h"
@@ -31,6 +32,7 @@ void StateManager::Init()
 	myInstance->myLevel = std::make_shared<Level>();
 	myInstance->myLevelSelect = std::make_shared<LevelSelect>();
 	myInstance->myCutsceneManager = std::make_shared<CutsceneManager>();
+	myInstance->myCharacterSelection = std::make_shared<CharacterSelectionScreen>();
 
 
 	//Init the states you made here, rest will work automagically,
@@ -39,7 +41,8 @@ void StateManager::Init()
 	myInstance->myLevel.get()->Init(EStateType::eGame);
 	myInstance->myLevelSelect->Init(EStateType::eLevelSelect);
 	myInstance->myCutsceneManager->Init(EStateType::eCutsceneManager);
-	
+	myInstance->myCharacterSelection->Init(EStateType::eCharacterSelection);
+
 	
 	//Main Menu is the default beginning state
 	myInstance->myGameStates.Push(GetInstance().myMainMenu);
@@ -117,7 +120,7 @@ void StateManager::AddNextLevelOnStack(int aCurrentLevelIndex)
 	if (aCurrentLevelIndex + 1 < myInstance->myLevelSelect->GetLevelAmount())
 	{
 		myInstance->myLevelSelect->GetSpecificLevelData(aCurrentLevelIndex + 1)->myIsUnlocked = true;
-		myInstance->AddLevelOnStack(aCurrentLevelIndex + 1);
+		myInstance->AddCharacterSelectOnStack(aCurrentLevelIndex + 1);
 	}
 	else
 	{
@@ -132,6 +135,19 @@ void StateManager::AddAndPlayCutscene(int aCutsceneIndex)
 	myInstance->myGameStates.Push(GetInstance().myCutsceneManager);
 	myInstance->myCutsceneManager->PlayCutscene(aCutsceneIndex);
 	myInstance->myGameStates.GetTop()->OnPushed();
+}
+
+void StateManager::AddCharacterSelectOnStack(const int aLevelIndex)
+{
+	myInstance->myGameStates.Push(myInstance->myCharacterSelection);
+	myInstance->myCharacterSelection->AddCurrentLevelIndex(aLevelIndex);
+	myInstance->myCharacterSelection->UnlockNewWorld(myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex)->myWorld);
+	myInstance->myGameStates.GetTop()->OnPushed();
+}
+
+EPowerUp StateManager::GetSelectedCharacter()
+{
+	return myInstance->myCharacterSelection->GetCharacterChosen();
 }
 
 void StateManager::Update()
