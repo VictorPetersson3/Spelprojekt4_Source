@@ -13,9 +13,9 @@ class LevelData;
 class Collider;
 class PauseMenu;
 class EndOfLevelScreen;
+class CameraBehavoir;
 struct LevelSelect_SpecificLevelData;
 struct TerrainTile;
-
 namespace Tga2D
 {
 	class CSpriteBatch;
@@ -45,6 +45,7 @@ private:
 	std::shared_ptr<EndOfLevelScreen> myEndOfLevelScreen;
 	std::shared_ptr<Camera> myCamera;
 	std::shared_ptr<Player> myPlayer;
+	std::shared_ptr<CameraBehavoir> myCameraController;
 	std::unique_ptr<Background> myBackground;
 
 	std::shared_ptr<LevelData> currentLevelData;

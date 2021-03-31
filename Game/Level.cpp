@@ -3,7 +3,7 @@
 #include "LevelLoader.h"
 #include "Player.h"
 #include "Camera.h"
-#include "Camera.h"
+
 #include "Timer.h"
 #include "InputManager.h"
 #include "RenderCommand.h"
@@ -14,7 +14,7 @@
 #include "Shooter.h"
 #include "Door.h"
 #include "Key.h"
-
+#include "CameraBehavoir.h"
 #include "LevelData.h"
 #include "Saw.h"
 #include "TerrainTile.h"
@@ -85,6 +85,7 @@ void Level::Update()
 	}
 	//Player
 	myCamera->Update({ 0,0 });
+	
 	float deltaTime = Timer::GetInstance().GetDeltaTime();
 
 	for (auto t : myTerrain)
@@ -131,6 +132,7 @@ void Level::Update()
 	{
 		myBackground->Update();
 	}
+	myCameraController->Update(Timer::GetInstance().GetDeltaTime());
 }
 
 void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData* someLevelData)
@@ -247,4 +249,7 @@ void Level::Init(const EStateType& aState)
 	std::cout << "level inited\n";
 	//Creating a camera and then a renderer for the camera
 	myCamera = std::make_shared<Camera>();
+	myCameraController = std::make_shared<CameraBehavoir>();
+	myCameraController->Init(myCamera, myPlayer);
+
 }

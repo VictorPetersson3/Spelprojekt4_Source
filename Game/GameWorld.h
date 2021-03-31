@@ -5,7 +5,7 @@
 
 class Player;
 class XController;
-
+class CameraBehavoir;
 namespace Tga2D
 {
 	class CSprite;
@@ -30,7 +30,7 @@ private:
 	std::shared_ptr<Player> myPlayer;
 	std::shared_ptr<XController> myController = {};
 	std::shared_ptr<Camera> myCamera;
-	
+	std::shared_ptr<CameraBehavoir> myCameraController;
 
 
 };

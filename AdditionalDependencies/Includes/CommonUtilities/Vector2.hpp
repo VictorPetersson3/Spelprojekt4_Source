@@ -41,6 +41,21 @@ namespace CommonUtilities
 			Vector2<T> a = aTo - aFrom;
 			return a.Length();
 		}
+		Vector2<T> Clamp(const Vector2<T>& aMin, const Vector2<T>& aMax)
+		{
+			if (myX > aMax.myX)
+				myX = aMax.myX;
+
+			if (myY > aMax.myY)
+				myY = aMax.myY;
+
+			if (myX < aMin.myX)
+				myX = aMin.myX;
+
+			if (myY < aMin.myY)
+				myY = aMin.myY;
+			return *this;	
+		}
 		//Längd funktioner
 		T Length() const
 		{
