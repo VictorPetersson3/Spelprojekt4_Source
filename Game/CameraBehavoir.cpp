@@ -21,6 +21,11 @@ void CameraBehavoir::Update(const float aDt)
 	myFrameVelocity = CommonUtilities::Vector2f::Zero();
 }
 
+void CameraBehavoir::ResetCamera()
+{
+	myPosition = CommonUtilities::Vector2f(.5f, .5f);
+}
+
 void CameraBehavoir::AddForce(const CommonUtilities::Vector2f aForceToAdd)
 {
 	myFrameVelocity += aForceToAdd;
@@ -33,8 +38,7 @@ void CameraBehavoir::CenterCamera()
 	if (playerPos != CommonUtilities::Vector2f::Zero())
 	{
 		const CommonUtilities::Vector2f dir = playerPos - myPosition;
-		AddForce({ (dir.x * myMoveX) * myAcceleration, 0 });
-		AddForce({ 0 , (dir.y * myMoveY) * myAcceleration });
+		AddForce({ (dir.x * myMoveX) * myAcceleration, (dir.y * myMoveY) * myAcceleration });
 	}
 }
 

@@ -11,7 +11,7 @@ public:
 	~CameraBehavoir() = default;
 	void Init(std::shared_ptr<Camera> aCamera, std::shared_ptr<Player> aPlayer);
 	void Update(const float aDt);
-	
+	void ResetCamera();
 
 
 
