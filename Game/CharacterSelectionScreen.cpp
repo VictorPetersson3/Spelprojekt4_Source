@@ -79,7 +79,7 @@ void CharacterSelectionScreen::Update()
 		{
 			myCurrentHoveredCharacter--;
 		}
-		else if (InputManagerS::GetInstance().GetKeyDown(DIK_D) && myCurrentHoveredCharacter < 3)
+		else if (InputManagerS::GetInstance().GetKeyDown(DIK_D) && myCurrentHoveredCharacter < 2)
 		{
 			myCurrentHoveredCharacter++;
 		}
@@ -91,7 +91,8 @@ void CharacterSelectionScreen::Update()
 			myNormalCharacter->SetScaleRelativeToFrame({ 1.2f, 1.2f });
 			myGlideCharacter->SetScaleRelativeToFrame({ -1.0f, 1.0f });
 			myDoubleJumpCharacter->SetScaleRelativeToFrame({ -1.0f, 1.0f });
-			
+			myGlideCharacter->Deactivate();
+			myDoubleJumpCharacter->Deactivate();
 			myTitle->SetText(myNormalCharacterTitle);
 			myCharacterDescription->SetText(myNormalCharacterDescription);
 
@@ -108,7 +109,8 @@ void CharacterSelectionScreen::Update()
 			myNormalCharacter->SetScaleRelativeToFrame({ -1.0f, 1.0f });
 			myGlideCharacter->SetScaleRelativeToFrame({ -1.0f, 1.0f });
 			myDoubleJumpCharacter->SetScaleRelativeToFrame({ 1.2f, 1.2f });
-
+			myNormalCharacter->Deactivate();
+			myGlideCharacter->Deactivate();
 			myTitle->SetText(myDoubleJumpCharacterTitle);
 			myCharacterDescription->SetText(myDoubleJumpCharacterDescription);
 
@@ -128,7 +130,8 @@ void CharacterSelectionScreen::Update()
 
 			myTitle->SetText(myGlideCharacterTitle);
 			myCharacterDescription->SetText(myGlideCharacterDescription);
-
+			myNormalCharacter->Deactivate();
+			myDoubleJumpCharacter->Deactivate();
 			break;
 		default:
 			break;

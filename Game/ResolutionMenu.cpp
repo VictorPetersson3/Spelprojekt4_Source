@@ -63,7 +63,7 @@ void ResolutionMenu::Update()
 	{
 		myCurrentHoveredButton--;
 	}
-	else if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButton < GetUIButtonElementsSize() + 1)
+	else if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButton < GetUIButtonElementsSize())
 	{
 		myCurrentHoveredButton++;
 	}
