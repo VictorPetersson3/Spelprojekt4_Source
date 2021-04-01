@@ -16,7 +16,7 @@ public:
 
 
 private:
-	void AddForce(CommonUtilities::Vector2f aForceToAdd);
+	void AddForce(const CommonUtilities::Vector2f aForceToAdd);
 	void CenterCamera();
 	float GetPlayerDistance() const;
 	
@@ -27,11 +27,11 @@ private:
 	 	 myMoveX = true;
 
 	float myAcceleration = 5.f,
-		myRangeToMove = 0.1f,
-		myMinBoarderX = 0.45f,
-		myMaxBoarderX = 0.55f,
-		myMinBoarderY = 0.25f,
-		myMaxBoarderY = 0.35f;
+		  myRangeToMove = 0.1f,
+		  myMinBoarderX = 0.0f,
+		  myMaxBoarderX = 1.0f,
+		  myMinBoarderY = 0.0f,
+		  myMaxBoarderY = 1.0f;
 
 	CommonUtilities::Vector2f myPosition = {};
 	CommonUtilities::Vector2f myFrameVelocity = {}; 
