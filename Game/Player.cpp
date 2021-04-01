@@ -190,8 +190,11 @@ void Player::Update()
 	UpdateJumping();
 
 	ManageStates();
-
-	UpdatePhysics();
+	
+	if (myShouldUpdatePhysics)
+	{
+		UpdatePhysics();
+	}
 
 	HandleAnimations();
 }
@@ -226,6 +229,11 @@ const bool Player::IsDead() const
 void Player::SetPosition(const CommonUtilities::Vector2f& aPosition)
 {
 	myPosition = aPosition;
+}
+
+void Player::SetShouldUpdatePhysics(bool aState)
+{
+	myShouldUpdatePhysics = aState;
 }
 
 std::shared_ptr<Collider> Player::GetCollider()

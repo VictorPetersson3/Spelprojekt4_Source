@@ -140,8 +140,11 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(LevelSelect_SpecificLevelData*
 					float xPosition = myDocument["levels"][0]["layerInstances"][j]["entityInstances"][i]["px"][0].GetFloat();
 					float yPosition = myDocument["levels"][0]["layerInstances"][j]["entityInstances"][i]["px"][1].GetFloat();
 
-					xPosition /= WINDOW_WIDTH;
-					yPosition /= WINDOW_HEIGTH;
+					xPosition -= 16.f;
+					yPosition -= 16.f;
+
+					xPosition /= 1280.f;
+					yPosition /= 720.f;
 
 					float width = myDocument["levels"][0]["layerInstances"][j]["entityInstances"][i]["width"].GetFloat();
 					float height = myDocument["levels"][0]["layerInstances"][j]["entityInstances"][i]["height"].GetFloat();
