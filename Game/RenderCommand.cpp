@@ -20,6 +20,7 @@ RenderCommand::RenderCommand(const char* aImagePath)
 	mySprite->SetPivot({ 0.5f, 0.5f });
 	myLayer = 0;
 	mySprite->SetSizeRelativeToImage({ 1.0f, 1.0f });
+	mySize = CommonUtilities::Vector2f(1.0f, 1.0f);
 }
 RenderCommand::RenderCommand(const char* aImagePath, int aLayer, bool aShouldBeCulled)
 {
@@ -27,6 +28,7 @@ RenderCommand::RenderCommand(const char* aImagePath, int aLayer, bool aShouldBeC
 	mySprite->SetPivot({ 0.5f, 0.5f });
 	myLayer = aLayer;
 	mySprite->SetSizeRelativeToImage({ 1.0f, 1.0f });
+	mySize = CommonUtilities::Vector2f(1.0f, 1.0f);
 	myShouldBeCulled = aShouldBeCulled;
 }
 
@@ -36,6 +38,7 @@ RenderCommand::RenderCommand(const char* aImagePath, int aLayer, const CommonUti
 	mySprite->SetPivot({ 0.5f, 0.5f });
 	mySprite->SetPosition({ aPos.x, aPos.y });
 	mySprite->SetSizeRelativeToImage({ 1.0f, 1.0f });
+	mySize = CommonUtilities::Vector2f(1.0f, 1.0f);
 	myLayer = aLayer;
 	myShouldBeCulled = aShouldBeCulled;
 }
@@ -83,6 +86,7 @@ void RenderCommand::SetTextureRect(float aStartX, float aStartY, float aEndX, fl
 
 void RenderCommand::SetSizeRelativeToImage(const CommonUtilities::Vector2f& aSize)
 {
+	mySize = aSize;
 	mySprite->SetSizeRelativeToImage({aSize.x, aSize.y});
 }
 
@@ -104,6 +108,11 @@ void RenderCommand::SetShader(Tga2D::CCustomShader& aShader)
 void RenderCommand::SetColor(Tga2D::CColor& aColor)
 {
 	mySprite->SetColor(aColor);
+}
+
+void RenderCommand::SetScaleFromCamera(const float& aScaleFactor)
+{
+	mySprite->SetSizeRelativeToImage({ mySize.x * aScaleFactor, mySize.y * aScaleFactor });
 }
 
 void RenderCommand::ReplaceSpritePointerContent(const Tga2D::CSprite& aSprite)

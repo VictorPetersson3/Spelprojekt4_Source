@@ -18,4 +18,5 @@ public:
 private:
 	CommonUtilities::Vector2f myPosition;
 	float myMovementSpeed;
+	float myZoomFactor;
 };

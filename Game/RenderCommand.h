@@ -42,6 +42,7 @@ public:
 	void SetPivot(const CommonUtilities::Vector2f& aPivot);
 	void SetShader(Tga2D::CCustomShader& aShader);
 	void SetColor(Tga2D::CColor& aColor);
+	void SetScaleFromCamera(const float& aScaleFactor);
 
 private:
 	void ReplaceSpritePointerContent(const Tga2D::CSprite& aSprite);
@@ -50,6 +51,7 @@ private:
 	friend class Camera;
 	friend class LevelLoader;
 	CommonUtilities::Vector2f myPosition;
+	CommonUtilities::Vector2f mySize;
 	std::shared_ptr<Tga2D::CSprite> mySprite;
 	int myLayer;
 	bool myShouldBeCulled;
