@@ -19,7 +19,7 @@ Player::Player(std::shared_ptr<XController> aController, EPowerUp aPowerup) :
 	myController(aController)
 {
 }
-Player::~Player(){}
+Player::~Player() {}
 
 void Player::Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower)
 {
@@ -190,7 +190,7 @@ void Player::Update()
 	UpdateJumping();
 
 	ManageStates();
-	
+
 	if (myShouldUpdatePhysics)
 	{
 		UpdatePhysics();
@@ -255,27 +255,27 @@ void Player::ChangeInput()
 	switch (inputType)
 	{
 	case EInputType::ArrowKeys:
-		myUp    = DIK_UP;
-		myLeft  = DIK_LEFT;
-		myDown  = DIK_DOWN;
+		myUp = DIK_UP;
+		myLeft = DIK_LEFT;
+		myDown = DIK_DOWN;
 		myRight = DIK_RIGHT;
-		myJump  = DIK_X;
+		myJump = DIK_X;
 		myBoost = DIK_Z;
 		break;
 	case EInputType::WASD:
-		myUp    = DIK_W;
-		myLeft  = DIK_A;
-		myDown  = DIK_S;
+		myUp = DIK_W;
+		myLeft = DIK_A;
+		myDown = DIK_S;
 		myRight = DIK_D;
-		myJump  = DIK_SPACE;
+		myJump = DIK_SPACE;
 		myBoost = DIK_LSHIFT;
 		break;
 	case EInputType::Controller:
-		myUp    = XINPUT_GAMEPAD_DPAD_UP;
-		myLeft  = XINPUT_GAMEPAD_DPAD_LEFT;
-		myDown  = XINPUT_GAMEPAD_DPAD_DOWN;
+		myUp = XINPUT_GAMEPAD_DPAD_UP;
+		myLeft = XINPUT_GAMEPAD_DPAD_LEFT;
+		myDown = XINPUT_GAMEPAD_DPAD_DOWN;
 		myRight = XINPUT_GAMEPAD_DPAD_RIGHT;
-		myJump  = XINPUT_GAMEPAD_A;
+		myJump = XINPUT_GAMEPAD_A;
 		myBoost = XINPUT_GAMEPAD_B;
 		break;
 	}
@@ -721,13 +721,13 @@ void Player::Ledge()
 void Player::Die()
 {
 	myCurrentVelocity.y += myGravity * DELTA_TIME;
+	if (myIsGrounded) myCurrentVelocity.x -= myWalkDecceleration * myDirection * DELTA_TIME;
+	else myCurrentVelocity.x -= myAirDecceleration * myDirection * DELTA_TIME;
+	if (std::abs(myCurrentVelocity.x) < 0) myCurrentVelocity.x = 0;
+
 	if (!myWasDead)
 	{
 		myIsDead = true;
-		if (myIsGrounded) myCurrentVelocity.x -= myWalkDecceleration * myDirection * DELTA_TIME;
-		else myCurrentVelocity.x -= myAirDecceleration * myDirection * DELTA_TIME;
-
-		if (std::abs(myCurrentVelocity.x) < 0) myCurrentVelocity.x = 0;
 
 		myCurrentAnimation = EAnimationState::Death;
 
