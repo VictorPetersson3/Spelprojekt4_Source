@@ -49,8 +49,8 @@ void Camera::RenderSprite(Tga2D::CSprite aSprite)
 void Camera::BatchRenderSprite(RenderCommand& aRenderCommand)
 {
 	CommonUtilities::Vector2f spritePos;
-	spritePos.x = aRenderCommand.GetPosition().x - (myPosition.x * myZoomFactor);
-	spritePos.y = aRenderCommand.GetPosition().y - (myPosition.y * myZoomFactor);
+	spritePos.x = aRenderCommand.GetPosition().x - myPosition.x;
+	spritePos.y = aRenderCommand.GetPosition().y - myPosition.y;
 	if (spritePos.x < 1.20f && spritePos.x > -0.20f && spritePos.y < 1.20f && spritePos.y > -0.20f)
 	{
 		spritePos.x *= myZoomFactor;
@@ -68,8 +68,8 @@ void Camera::BatchRenderSprite(RenderCommand& aRenderCommand)
 void Camera::RenderSprite(RenderCommand& aRenderCommand)
 {
 	CommonUtilities::Vector2f spritePos;
-	spritePos.x = aRenderCommand.GetPosition().x - (myPosition.x * myZoomFactor);
-	spritePos.y = aRenderCommand.GetPosition().y - (myPosition.y * myZoomFactor);
+	spritePos.x = aRenderCommand.GetPosition().x - myPosition.x;
+	spritePos.y = aRenderCommand.GetPosition().y - myPosition.y;
 	if (aRenderCommand.myShouldBeCulled)
 	{
 		if (spritePos.x < 1.20f && spritePos.x > -0.20f && spritePos.y < 1.20f && spritePos.y > -0.20f)
