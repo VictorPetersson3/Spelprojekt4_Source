@@ -721,10 +721,18 @@ void Player::Ledge()
 void Player::Die()
 {
 	myCurrentVelocity.y += myGravity * DELTA_TIME;
-	if (myIsGrounded) myCurrentVelocity.x -= myWalkDecceleration * myDirection * DELTA_TIME;
-	else myCurrentVelocity.x -= myAirDecceleration * myDirection * DELTA_TIME;
-	if (std::abs(myCurrentVelocity.x) < 0) myCurrentVelocity.x = 0;
-
+	if (myIsGrounded)
+	{
+		if (myCurrentVelocity.x > 0) myCurrentVelocity.x -= myWalkDecceleration * DELTA_TIME;
+		else if (myCurrentVelocity.x < 0) myCurrentVelocity.x += myWalkDecceleration * DELTA_TIME;
+		if (myCurrentVelocity.x <= myWalkDecceleration * DELTA_TIME && myCurrentVelocity.x >= -myWalkDecceleration * DELTA_TIME) myCurrentVelocity.x = 0;
+	}
+	else
+	{
+		if (myCurrentVelocity.x > 0) myCurrentVelocity.x -= myAirDecceleration * DELTA_TIME;
+		else if (myCurrentVelocity.x < 0) myCurrentVelocity.x += myAirDecceleration * DELTA_TIME;
+		if (myCurrentVelocity.x <= myAirDecceleration * DELTA_TIME && myCurrentVelocity.x >= -myAirDecceleration * DELTA_TIME) myCurrentVelocity.x = 0;
+	}
 	if (!myWasDead)
 	{
 		myIsDead = true;
