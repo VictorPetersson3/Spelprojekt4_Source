@@ -33,12 +33,11 @@ void CameraBehavoir::AddForce(const CommonUtilities::Vector2f aForceToAdd)
 
 void CameraBehavoir::CenterCamera()
 {
-	const CommonUtilities::Vector2f playerPos = myPlayerToFollow->GetPosition() + (myPlayerToFollow->GetCurrentVelocity().GetNormalized() * 0.25f);
+	const CommonUtilities::Vector2f playerPos = myPlayerToFollow->GetPosition() + (myPlayerToFollow->GetCurrentVelocity().GetNormalized() * 0.1f);
 
 	if (playerPos != CommonUtilities::Vector2f::Zero())
 	{
-		CommonUtilities::Vector2f dir = playerPos - myPosition;
-		dir *= 0.5f;
+		CommonUtilities::Vector2f dir = playerPos - myPosition;	
 		AddForce({ (dir.x * myMoveX) * myAcceleration, (dir.y * myMoveY) * myAcceleration });
 	}
 }
