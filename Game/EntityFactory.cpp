@@ -5,6 +5,7 @@
 #include "MovingPlatform.h"
 #include "JsonParser.h"
 #include "CollapsingTile.h"
+#include "KillZone.h"
 
 std::vector<std::shared_ptr<Entity>> EntityFactory::LoadEntities(const char* aPath)
 {
@@ -47,6 +48,10 @@ std::vector<std::shared_ptr<Entity>> EntityFactory::LoadEntities(const char* aPa
 				{
 					myEntities.push_back(LoadCollapsingTile(i, j));
 				}
+				if (entityType == "KillZone")
+				{
+					myEntities.push_back(LoadKillZone(i, j));
+				}
 			}
 		}
 	}
@@ -69,6 +74,8 @@ std::shared_ptr<Saw> EntityFactory::LoadSaw(int aEntityIndex, int aLayerIndex)
 								  myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][0]["__value"][k]["cy"].GetFloat() / renderSizeY * 16 });
 
 	}
+
+	
 
 	if (myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"].Capacity() > 1)
 	{
@@ -163,3 +170,13 @@ std::shared_ptr<CollapsingTile> EntityFactory::LoadCollapsingTile(int aEntityInd
 	return std::make_shared<CollapsingTile>(CommonUtilities::Vector2f(xPosition,yPosition));
 }
 
+std::shared_ptr<KillZone> EntityFactory::LoadKillZone(int aEntityIndex, int aLayerIndex)
+{
+	float width = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["width"].GetFloat();
+	float height = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["height"].GetFloat();
+
+	float xPosition = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["px"][0].GetFloat();
+	float yPosition = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["px"][1].GetFloat();
+
+	return std::make_shared<KillZone>(width, height, CommonUtilities::Vector2f{ xPosition,yPosition });
+}

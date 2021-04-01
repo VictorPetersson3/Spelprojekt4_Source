@@ -57,11 +57,12 @@ public:
 	void Render(Camera& aCamera);
 
 	void SetPosition(const CommonUtilities::Vector2f& aPosition);
-
+	void SetShouldUpdatePhysics(bool aState);
 	CommonUtilities::Vector2f GetPosition() const;
 	CommonUtilities::Vector2f& GetCurrentVelocity();
 	std::shared_ptr<Collider> GetCollider();
 	const bool IsDead() const;
+	
 
 protected:
 	void InitJSON();
@@ -148,6 +149,8 @@ protected:
 	bool myCanDoubleJump = true;
 	bool myIsGliding = false;
 	bool myCanGlide = true;
+	bool myShouldUpdatePhysics = true;
+
 
 	int myDirection = 1;
 

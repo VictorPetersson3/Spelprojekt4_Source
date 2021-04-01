@@ -208,6 +208,7 @@
     <ClCompile Include="EndOfLevelScreen.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="KillZone.cpp" />
     <ClCompile Include="MovingPlatform.cpp" />
     <ClCompile Include="LevelSelectLoadData.cpp" />
     <ClCompile Include="Shooter.cpp" />

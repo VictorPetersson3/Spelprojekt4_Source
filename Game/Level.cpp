@@ -70,6 +70,7 @@ void Level::Render()
 		entity->Render(myCamera);
 	}
 
+
 	myPlayer->Render(*myCamera);
 }
 
@@ -78,15 +79,29 @@ void Level::Render()
 
 void Level::Update()
 {
+	float deltaTime = Timer::GetInstance().GetDeltaTime();
+
+	if (myPlayerHasDied == true)
+	{
+		myPlayer->SetShouldUpdatePhysics(false);
+
+		myPlayerPhysicsUpdateCountdownTimer += deltaTime;
+		if (myPlayerPhysicsUpdateCountdownTimer >= myPlayerPhysicsUpdateCountdown)
+		{
+			myPlayerHasDied = false;
+			myPlayer->SetShouldUpdatePhysics(true);
+			myPlayerPhysicsUpdateCountdownTimer = 0.f;
+		}
+		
+	}
+
 	//Pause Menu
 	if (InputManagerS::GetInstance().GetKeyDown(DIK_ESCAPE))
 	{
 		StateManager::AddStateOnStack(myPauseMenu);
 	}
 	//Player
-	myCamera->Update({ 0,0 });
-	
-	float deltaTime = Timer::GetInstance().GetDeltaTime();
+	myCamera->Update({ 0,0 });	
 
 	for (auto t : myTerrain)
 	{
@@ -107,8 +122,9 @@ void Level::Update()
 	{
 		myPlayer.get()->Update();
 		myPlayer.get()->GetCollider().get()->Draw();
-		if (myPlayer->IsDead())
+		if (myPlayer->IsDead() && myPlayerHasDied == false)
 		{
+			myPlayerHasDied = true;
 			Restart();
 			return;
 		}
@@ -198,22 +214,25 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 
 	}
 
+	std::cout << "Player start: " << aData->GetPlayerStart().x << " x " << aData->GetPlayerStart().y << '\n';
+
+
 	for (auto t : myTerrain)
 	{
 		t->myCollider->AddToManager();
 	}
 
-	myPlayer->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y }, StateManager::GetInstance().GetSelectedCharacter());
 
 	if (myLevelEndCollider != nullptr)
 	{
 		myLevelEndCollider->AddToManager();
 	}
 
-	//if (myPlayer->GetCollider().get() != nullptr)
-	//{
-	//	myPlayer->GetCollider()->AddToManager();
-	//}
+
+	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y });
+
+	//myPlayer->SetShouldUpdatePhysics(false);
+
 }
 
 void Level::Load(LevelSelect_SpecificLevelData* someLevelData)

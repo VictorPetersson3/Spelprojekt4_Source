@@ -56,5 +56,13 @@ private:
 	std::shared_ptr<Collider> myLevelEndCollider;
 
 	CommonUtilities::GrowingArray<std::shared_ptr<Tga2D::CSpriteBatch>> mySpriteBatches;
+
+	int currentLevelIndex = 0;
+	int amountOfLevels = 0;
+
+	float myPlayerPhysicsUpdateCountdownTimer = 0.f;
+	float myPlayerPhysicsUpdateCountdown = 0.2f;
+
+	bool myPlayerHasDied = false;
 };
 
