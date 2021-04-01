@@ -34,6 +34,5 @@ void Key::Render(std::shared_ptr<Camera> aCamera)
 
 bool Key::CheckState()
 {
-	const float dist = CommonUtilities::Vector2f::Distance(myPosition, myPlayer->GetPosition());
-	return dist <= myRange;
+	return CommonUtilities::Vector2f::Distance(myPosition, myPlayer->GetPosition()) <= myRange;
 }
