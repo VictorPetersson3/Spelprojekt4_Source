@@ -58,6 +58,7 @@ void Background::Init(Player& aPlayer, EWorldLevel aWorld)
 	mySets[1] = mySets[0];
 	mySets[2] = mySets[0];
 	mySets[3] = mySets[0];
+	mySets[4] = mySets[0];
 
 	for (auto& set : mySets)
 	{
@@ -73,31 +74,31 @@ void Background::Init(Player& aPlayer, EWorldLevel aWorld)
 	//printf("size of 1024 : %f\n", 1024.0f / RESOLUTION.x);
 	//printf("size of size * 2 / 3 : %f\n", (float)layer1.mySprite.GetSize().x * 2.0f / 3.0f);
 	//printf("size of 1024 / res * 2 / 3 : %f\n", 1024.0f / RESOLUTION.x * 2.0f / 3.0f);
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		for (auto& layer : mySets[i])
 		{
-			layer.myPosition = { position.x + i * 1024.0f / 1280.0f * 2.0f / 3.0f - 0.5f / RESOLUTION.x, position.y };
+			layer.myPosition = { position.x + (i - 1) * 1024.0f / 1280.0f * 2.0f / 3.0f - 0.5f / RESOLUTION.x, position.y };
 		}
 	}
 }
 
 void Background::Update()
 {
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		for (int j = 0; j < 3; j++)
 		{
-			mySets[i][j].myPosition.x += *mySpeed.x * mySpeedFactor[j] * DELTA_TIME;
+			mySets[i][j].myPosition.x -= *mySpeed.x * mySpeedFactor[j] * DELTA_TIME;
 			mySets[i][j].myPosition.y -= *mySpeed.y * mySpeedFactor[j] / 4 * DELTA_TIME;
 
-			if (mySets[i][j].myPosition.x > 1 && *mySpeed.x > 0)
+			if (mySets[i][j].myPosition.x - 1024.0f / 1280.0f * 2.0f / 3.0f - 0.5f / RESOLUTION.x > 1 && *mySpeed.x > 0)
 			{
-				mySets[i][j].myPosition.x -= 4 * + 1024.0f / 1280.0f * 2.0f / 3.0f - 0.5f / RESOLUTION.x;
+				mySets[i][j].myPosition.x -= mySets.size() * + 1024.0f / 1280.0f * 2.0f / 3.0f - 0.5f / RESOLUTION.x;
 			}
-			if (mySets[i][j].myPosition.x + 1024.0f / 1280.0f * 2.0f / 3.0f - 0.5f / RESOLUTION.x < 0 && *mySpeed.x < 0)
+			if (mySets[i][j].myPosition.x + 2 * (1024.0f / 1280.0f * 2.0f / 3.0f - 0.5f / RESOLUTION.x) < 0 && *mySpeed.x < 0)
 			{
-				mySets[i][j].myPosition.x += 4 * + 1024.0f / 1280.0f * 2.0f / 3.0f - 0.5f / RESOLUTION.x;
+				mySets[i][j].myPosition.x += mySets.size() * + 1024.0f / 1280.0f * 2.0f / 3.0f - 0.5f / RESOLUTION.x;
 			}
 			mySets[i][j].Update();
 		}
@@ -110,14 +111,17 @@ void Background::Render(Camera& aCamera)
 	mySets[1][0].Render(aCamera);
 	mySets[2][0].Render(aCamera);
 	mySets[3][0].Render(aCamera);
+	mySets[4][0].Render(aCamera);
 	mySets[0][1].Render(aCamera);
 	mySets[1][1].Render(aCamera);
 	mySets[2][1].Render(aCamera);
 	mySets[3][1].Render(aCamera);
+	mySets[4][1].Render(aCamera);
 	mySets[0][2].Render(aCamera);
 	mySets[1][2].Render(aCamera);
 	mySets[2][2].Render(aCamera);
 	mySets[3][2].Render(aCamera);
+	mySets[4][2].Render(aCamera);
 }
 
 void Layer::Update()
