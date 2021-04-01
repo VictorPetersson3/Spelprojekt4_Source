@@ -31,7 +31,7 @@ private:
 		  myMinBoarderX = 0.0f,
 		  myMaxBoarderX = 1.0f,
 		  myMinBoarderY = 0.0f,
-		  myMaxBoarderY = 1.0f;
+		  myMaxBoarderY = 0.45f;
 
 	CommonUtilities::Vector2f myPosition = {};
 	CommonUtilities::Vector2f myFrameVelocity = {}; 
