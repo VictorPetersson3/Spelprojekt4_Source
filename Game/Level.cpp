@@ -235,6 +235,7 @@ void Level::Restart()
 {
 	LevelLoader levelLoader;
 	Load(levelLoader.LoadLevel(mylevelButtondata), mylevelButtondata);
+	myCameraController->ResetCamera();
 }
 
 void Level::LoadNextLevel()

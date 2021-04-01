@@ -11,12 +11,12 @@ public:
 	~CameraBehavoir() = default;
 	void Init(std::shared_ptr<Camera> aCamera, std::shared_ptr<Player> aPlayer);
 	void Update(const float aDt);
-	
+	void ResetCamera();
 
 
 
 private:
-	void AddForce(CommonUtilities::Vector2f aForceToAdd);
+	void AddForce(const CommonUtilities::Vector2f aForceToAdd);
 	void CenterCamera();
 	float GetPlayerDistance() const;
 	
@@ -27,17 +27,15 @@ private:
 	 	 myMoveX = true;
 
 	float myAcceleration = 5.f,
-		  myRangeToMove = 0.1f;
+		  myRangeToMove = 0.1f,
+		  myMinBoarderX = 0.0f,
+		  myMaxBoarderX = 1.0f,
+		  myMinBoarderY = 0.0f,
+		  myMaxBoarderY = 1.0f;
 
 	CommonUtilities::Vector2f myPosition = {};
 	CommonUtilities::Vector2f myFrameVelocity = {}; 
 
-	CommonUtilities::Vector2f myBoundaries = {};
-	CommonUtilities::Vector2f myCenterOfMap = {};
-
-	// myBoundaries + myCenterOfMap = myWorldBoundaries
-	CommonUtilities::Vector2f myWorldBoundaries = {};
-	
 	std::shared_ptr<Player> myPlayerToFollow = {};
 	std::shared_ptr<Camera> myCameraToMove = {};
 };
