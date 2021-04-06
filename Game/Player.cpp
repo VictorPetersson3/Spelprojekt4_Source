@@ -192,9 +192,7 @@ void Player::Update()
 
 	ManageStates();
 
-
 	UpdatePhysics();
-
 
 	HandleAnimations();
 }
@@ -357,7 +355,7 @@ void Player::UpdatePhysics()
 		}
 
 		float resolutionscale = (Tga2D::CEngine::GetInstance()->GetRenderSize().x / 1280.0f);
-		printf("resolution scale : %f\n", resolutionscale);
+
 		positionCorrection *= resolutionscale;
 		positionCorrection *= posCorrNormal;
 		positionCorrection.x += 0.1f / Tga2D::CEngine::GetInstance()->GetRenderSize().x * -posCorrNormal.x;
