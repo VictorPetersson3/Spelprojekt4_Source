@@ -753,5 +753,8 @@ void Player::PlaySpecificAnimation(EPlayerAnimationClips anAnimEnum)
 		anAnimEnum == EPlayerAnimationClips::eWallJumpL ||
 		anAnimEnum == EPlayerAnimationClips::eWallJumpR)
 		myAnimations[(int)anAnimEnum]->PlayAnimOnce(0.1666666666666667f);
+	else if (anAnimEnum == EPlayerAnimationClips::eDeathL ||
+		anAnimEnum == EPlayerAnimationClips::eDeathR)
+		myAnimations[(int)anAnimEnum]->PlayAnimOnce(0.125f);
 	else myAnimations[(int)anAnimEnum]->PlayAnimOnce();
 }
