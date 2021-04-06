@@ -4,6 +4,7 @@
 #include <vector>
 class Camera;
 class Player;
+class Collider;
 class RenderCommand;
 class Boss
 {
@@ -19,9 +20,9 @@ public:
 
 private:
 	int PickPosition();
+	void Move(const float aDt);
 	void PickNewPosition(const float aDt);
 	void AddForce(const CommonUtilities::Vector2f aForce);
-	void Move(const float aDt);
 
 private:
 	int myPositionIndex = 0;
@@ -29,9 +30,12 @@ private:
 	float myMoveTimer = 0.f;
 	float myMoveTime = 5.f;
 
+	bool myIsDead = false;
+
 	CommonUtilities::Vector2f myPosition = {};
 	CommonUtilities::Vector2f myDirection = {};
 
+	std::shared_ptr<Collider> myCollider = {};
 	std::shared_ptr<Player> myPlayerToAttack = {};
 	std::shared_ptr<RenderCommand> myRenderCommand = {};
 	std::vector<CommonUtilities::Vector2f> myPostionsToMoveTo = {};

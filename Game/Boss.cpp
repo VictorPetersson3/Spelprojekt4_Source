@@ -6,23 +6,29 @@
 #include <CommonUtilities/Random.h>
 void Boss::Init(const std::shared_ptr<Player> aPlayer) 
 {
+	myRenderCommand = std::make_shared<RenderCommand>("sprites/tga_logo.dds");
+
 	myPlayerToAttack = aPlayer;
-	myPosition = { 0.5f, 0.5f };
+	myPosition = { 0.5f, 0.5f }; // start pos
 	myPostionsToMoveTo.emplace_back(myPosition);
 	myRenderCommand->SetSpritePosition(myPosition);
 }
 
 void Boss::Update(const float aDt)
 {
-	Move(aDt);
-	myPosition += myDirection * aDt;
-	myDirection = CommonUtilities::Vector2f::Zero();
-	myRenderCommand->SetSpritePosition(myPosition);
+	if (!myIsDead)
+	{
+		Move(aDt);
+		myPosition += myDirection * aDt;
+		myDirection = CommonUtilities::Vector2f::Zero();
+		myRenderCommand->SetSpritePosition(myPosition);
+	}
 }
 
 void Boss::Render(const std::shared_ptr<Camera> aCamera)
 {
-	aCamera->RenderSprite(*myRenderCommand);
+	if (myIsDead)
+		aCamera->RenderSprite(*myRenderCommand);
 }
 
 void Boss::AddForce(const CommonUtilities::Vector2f aForce)
