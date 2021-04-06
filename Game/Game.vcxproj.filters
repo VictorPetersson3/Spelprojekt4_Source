@@ -40,14 +40,14 @@
     <Filter Include="StateTypes\MenuStates\SubMenuStates">
       <UniqueIdentifier>{2301b333-1205-441b-82fc-039bc06212b4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Entities">
-      <UniqueIdentifier>{1d02941e-43eb-4ec8-8ad2-f83325e6a1ae}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Cutscenes">
       <UniqueIdentifier>{00c9469a-ee7d-4dfb-a475-e5662784dd4c}</UniqueIdentifier>
     </Filter>
     <Filter Include="StateTypes\MenuStates\SubMenuStates\LevelSelect">
       <UniqueIdentifier>{24e7be9c-28bb-4375-b878-7c8fb7610b43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Precompiled\Entities">
+      <UniqueIdentifier>{1d02941e-43eb-4ec8-8ad2-f83325e6a1ae}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -133,7 +133,6 @@
     <ClInclude Include="AnimationClip.h">
       <Filter>Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="XController.h" />
     <ClInclude Include="UISlider.h">
       <Filter>UI Components</Filter>
     </ClInclude>
@@ -160,13 +159,11 @@
     </ClInclude>
     <ClInclude Include="Background.h" />
     <ClInclude Include="Entity.h">
-      <Filter>Entities</Filter>
+      <Filter>Precompiled\Entities</Filter>
     </ClInclude>
     <ClInclude Include="EntityFactory.h" />
-    <ClInclude Include="Key.h" />
-    <ClInclude Include="Door.h" />
     <ClInclude Include="CollapsingTile.h">
-      <Filter>Entities</Filter>
+      <Filter>Precompiled\Entities</Filter>
     </ClInclude>
     <ClInclude Include="CollapsingTile.h" />
     <ClInclude Include="MovingPlatform.h">
@@ -193,6 +190,16 @@
     <ClInclude Include="CameraBehavoir.h">
       <Filter>Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="Key.h">
+      <Filter>Precompiled\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Door.h">
+      <Filter>Precompiled\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="XController.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -265,7 +272,6 @@
     <ClCompile Include="AnimationClip.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="XController.cpp" />
     <ClCompile Include="UISlider.cpp">
       <Filter>UI Components</Filter>
     </ClCompile>
@@ -292,8 +298,6 @@
     </ClCompile>
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
-    <ClCompile Include="Key.cpp" />
-    <ClCompile Include="Door.cpp" />
     <ClCompile Include="CollapsingTile.cpp" />
     <ClCompile Include="MovingPlatform.cpp">
       <Filter>Obstacles</Filter>
@@ -320,5 +324,15 @@
     <ClCompile Include="CameraBehavoir.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="Key.cpp">
+      <Filter>Precompiled\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Door.cpp">
+      <Filter>Precompiled\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="XController.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp" />
   </ItemGroup>
 </Project>
