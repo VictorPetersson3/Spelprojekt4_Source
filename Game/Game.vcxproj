@@ -134,9 +134,11 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Boss.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="AnimationClip.h" />
     <ClInclude Include="Background.h" />
+    <ClInclude Include="CameraBehavoir.h" />
     <ClInclude Include="CharacterSelectionScreen.h" />
     <ClInclude Include="CollapsingTile.h" />
     <ClInclude Include="Collider.h" />
@@ -189,9 +191,11 @@
     <ClInclude Include="XController.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="AnimationClip.cpp" />
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="CameraBehavoir.cpp" />
     <ClCompile Include="CharacterSelectionScreen.cpp" />
     <ClCompile Include="CollapsingTile.cpp" />
     <ClCompile Include="Collider.cpp" />
@@ -206,6 +210,7 @@
     <ClCompile Include="EndOfLevelScreen.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="KillZone.cpp" />
     <ClCompile Include="MovingPlatform.cpp" />
     <ClCompile Include="LevelSelectLoadData.cpp" />
     <ClCompile Include="Shooter.cpp" />

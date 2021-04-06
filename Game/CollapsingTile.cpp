@@ -28,7 +28,6 @@ CollapsingTile::CollapsingTile(CommonUtilities::Vector2f aPosition)
 
 	myCollider = std::make_shared<Collider>(colliderPosition, width/2.f, height/2.f);
 
-	std::cout << "ColliderPosition : " << colliderPosition.x << " x " << colliderPosition.y << std::endl;
 }
 
 CollapsingTile::~CollapsingTile()

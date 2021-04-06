@@ -1,6 +1,7 @@
 #pragma once
 #include <CommonUtilities/Vector2.hpp>
 #include <memory>
+#include "XController.h"
 
 #include "Enums.h"
 
@@ -9,9 +10,10 @@ namespace Tga2D
 	class CSprite;
 }
 
+class AnimationClip;
 class Camera;
 class Collider;
-class AnimationClip;
+//class XController;
 
 enum class EPlayerState
 {
@@ -47,25 +49,27 @@ enum class EAnimationState
 class Player
 {
 public:
-	Player(EPowerUp aPowerup = EPowerUp::Default);
+	Player(std::shared_ptr<XController> aController = nullptr, EPowerUp aPowerup = EPowerUp::Default);
 	~Player();
 
 	virtual void Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower = EPowerUp::Default);
 	virtual void Update();
 	void Render(Camera& aCamera);
 
-	void ChangeInput(const EInputType anInputType);
-
 	void SetPosition(const CommonUtilities::Vector2f& aPosition);
+	void SetShouldUpdatePhysics(bool aState);
 	CommonUtilities::Vector2f GetPosition() const;
 	CommonUtilities::Vector2f& GetCurrentVelocity();
 	std::shared_ptr<Collider> GetCollider();
 	const bool IsDead() const;
+	
 
 protected:
 	void InitJSON();
 	void InitAnimations();
 	void InitCollider();
+
+	bool Input(int anInput);
 
 	void ManageStates();
 	void UpdatePhysics();
@@ -73,7 +77,8 @@ protected:
 	void HandleAnimations();
 
 	void CacheCurrentValues();
-	//void ChangePower();
+
+	void ChangeInput();
 
 	void Idle();
 	void Walk();
@@ -133,17 +138,19 @@ protected:
 
 	float myDeathTimer;
 
-	int myUp = 0x11;
-	int myLeft = 0x1E;
-	int myDown = 0x1F;
+	int    myUp = 0x11;
+	int  myLeft = 0x1E;
+	int  myDown = 0x1F;
 	int myRight = 0x20;
-	int myJump = 0x39;
+	int  myJump = 0x39;
 	int myBoost = 0x2A;
 	
 	bool myCanJumpAgain = true;
 	bool myCanDoubleJump = true;
 	bool myIsGliding = false;
 	bool myCanGlide = true;
+	bool myShouldUpdatePhysics = true;
+
 
 	int myDirection = 1;
 
@@ -153,4 +160,5 @@ protected:
 
 	std::shared_ptr<Collider> myCollider;
 	std::vector<std::shared_ptr<AnimationClip>> myAnimations;
+	std::shared_ptr<XController> myController;
 };

@@ -3,7 +3,7 @@
 #include "LevelLoader.h"
 #include "Player.h"
 #include "Camera.h"
-#include "Camera.h"
+
 #include "Timer.h"
 #include "InputManager.h"
 #include "RenderCommand.h"
@@ -14,7 +14,7 @@
 #include "Shooter.h"
 #include "Door.h"
 #include "Key.h"
-
+#include "CameraBehavoir.h"
 #include "LevelData.h"
 #include "Saw.h"
 #include "TerrainTile.h"
@@ -60,10 +60,16 @@ void Level::Render()
 		mySpriteBatches[i]->Render();
 	}
 
+	/*for (auto& tile : myTerrain)
+	{
+		tile->myCollider->Draw();
+	}*/
+
 	for (auto entity : myEntities)
 	{
 		entity->Render(myCamera);
 	}
+
 
 	myPlayer->Render(*myCamera);
 }
@@ -73,14 +79,29 @@ void Level::Render()
 
 void Level::Update()
 {
+	float deltaTime = Timer::GetInstance().GetDeltaTime();
+
+	if (myPlayerHasDied == true)
+	{
+		myPlayer->SetShouldUpdatePhysics(false);
+
+		myPlayerPhysicsUpdateCountdownTimer += deltaTime;
+		if (myPlayerPhysicsUpdateCountdownTimer >= myPlayerPhysicsUpdateCountdown)
+		{
+			myPlayerHasDied = false;
+			myPlayer->SetShouldUpdatePhysics(true);
+			myPlayerPhysicsUpdateCountdownTimer = 0.f;
+		}
+		
+	}
+
 	//Pause Menu
 	if (InputManagerS::GetInstance().GetKeyDown(DIK_ESCAPE))
 	{
 		StateManager::AddStateOnStack(myPauseMenu);
 	}
 	//Player
-	myCamera->Update({ 0,0 });
-	float deltaTime = Timer::GetInstance().GetDeltaTime();
+	myCamera->Update({ 0,0 });	
 
 	for (auto t : myTerrain)
 	{
@@ -101,8 +122,9 @@ void Level::Update()
 	{
 		myPlayer.get()->Update();
 		myPlayer.get()->GetCollider().get()->Draw();
-		if (myPlayer->IsDead())
+		if (myPlayer->IsDead() && myPlayerHasDied == false)
 		{
+			myPlayerHasDied = true;
 			Restart();
 			return;
 		}
@@ -126,6 +148,7 @@ void Level::Update()
 	{
 		myBackground->Update();
 	}
+	myCameraController->Update(Timer::GetInstance().GetDeltaTime());
 }
 
 void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData* someLevelData)
@@ -191,22 +214,25 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 
 	}
 
+	std::cout << "Player start: " << aData->GetPlayerStart().x << " x " << aData->GetPlayerStart().y << '\n';
+
+
 	for (auto t : myTerrain)
 	{
 		t->myCollider->AddToManager();
 	}
 
-	myPlayer->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y }, StateManager::GetInstance().GetSelectedCharacter());
 
 	if (myLevelEndCollider != nullptr)
 	{
 		myLevelEndCollider->AddToManager();
 	}
 
-	//if (myPlayer->GetCollider().get() != nullptr)
-	//{
-	//	myPlayer->GetCollider()->AddToManager();
-	//}
+
+	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y });
+
+	//myPlayer->SetShouldUpdatePhysics(false);
+
 }
 
 void Level::Load(LevelSelect_SpecificLevelData* someLevelData)
@@ -218,6 +244,7 @@ void Level::Load(LevelSelect_SpecificLevelData* someLevelData)
 
 	Load(levelLoader.LoadLevel(mylevelButtondata), mylevelButtondata);
 	myBackground->Init(*(myPlayer.get()), mylevelButtondata->myWorld);
+	myBackground->Update();
 	if (mylevelButtondata->myHasCutscene)
 	{
 		StateManager::AddAndPlayCutscene(mylevelButtondata->myCutsceneConversation);
@@ -228,6 +255,7 @@ void Level::Restart()
 {
 	LevelLoader levelLoader;
 	Load(levelLoader.LoadLevel(mylevelButtondata), mylevelButtondata);
+	myCameraController->ResetCamera();
 }
 
 void Level::LoadNextLevel()
@@ -242,4 +270,7 @@ void Level::Init(const EStateType& aState)
 	std::cout << "level inited\n";
 	//Creating a camera and then a renderer for the camera
 	myCamera = std::make_shared<Camera>();
+	myCameraController = std::make_shared<CameraBehavoir>();
+	myCameraController->Init(myCamera, myPlayer);
+
 }

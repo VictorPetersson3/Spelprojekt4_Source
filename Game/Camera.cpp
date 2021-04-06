@@ -9,6 +9,7 @@ Camera::Camera()
 {
 	myPosition.Zero;
 	myMovementSpeed = 0.15f;
+	myZoomFactor = 1;
 }
 
 void Camera::Init(const CommonUtilities::Vector2f& aPos)
@@ -21,55 +22,69 @@ void Camera::Update(const CommonUtilities::Vector2f aPositionToFollow)
 {
 	if (InputManagerS::GetInstance().GetKey(DIK_I))
 	{
-		myPosition.y -= myMovementSpeed * Timer::GetInstance().GetDeltaTime();
+		myZoomFactor += myMovementSpeed * Timer::GetInstance().GetDeltaTime();
+		myPosition *= myZoomFactor;
 	}
-	if (InputManagerS::GetInstance().GetKey(DIK_L))
-	{
-		myPosition.x += myMovementSpeed * Timer::GetInstance().GetDeltaTime();
-	}
-	if (InputManagerS::GetInstance().GetKey(DIK_J))
-	{
-		myPosition.x -= myMovementSpeed * Timer::GetInstance().GetDeltaTime();
-	}
+
 	if (InputManagerS::GetInstance().GetKey(DIK_K))
 	{
-		myPosition.y += myMovementSpeed * Timer::GetInstance().GetDeltaTime();
+		myZoomFactor -= myMovementSpeed * Timer::GetInstance().GetDeltaTime();
+		myPosition *= myZoomFactor;
 	}
-	//printf("CameraPos x: %f y: %f\n", myPosition.x, myPosition.y);
 }
 
 void Camera::RenderSprite(Tga2D::CSprite aSprite)
 {
+	const float boundMax = 1.20f / myZoomFactor;
+	const float boundMin = -0.20f / myZoomFactor;
 	CommonUtilities::Vector2f spritePos;
 	spritePos.x = aSprite.GetPosition().x;
 	spritePos.y = aSprite.GetPosition().y;
 	spritePos -= myPosition;
-	if (spritePos.x < 1.0f && spritePos.x > 0.0f && spritePos.y < 1.0f && spritePos.y > 0.0f)
+	if (spritePos.x < boundMax && spritePos.x > boundMin && spritePos.y < boundMax && spritePos.y > boundMin)
 	{
+		spritePos.x *= myZoomFactor;
+		spritePos.y *= myZoomFactor;
+		aSprite.SetSizeRelativeToImage({1 * myZoomFactor, 1 * myZoomFactor});
 		aSprite.SetPosition({ spritePos.x, spritePos.y });
 	}
 }
 
 void Camera::BatchRenderSprite(RenderCommand& aRenderCommand)
 {
+	const float boundMax = 1.20f / myZoomFactor;
+	const float boundMin = -0.20f / myZoomFactor;
 	CommonUtilities::Vector2f spritePos;
 	spritePos.x = aRenderCommand.GetPosition().x - myPosition.x;
 	spritePos.y = aRenderCommand.GetPosition().y - myPosition.y;
-	if (spritePos.x < 1.0f && spritePos.x > 0.0f && spritePos.y < 1.0f && spritePos.y > 0.0f)
+	if (spritePos.x < boundMax && spritePos.x > boundMin && spritePos.y < boundMax && spritePos.y > boundMin)
 	{
+		spritePos.x *= myZoomFactor;
+		spritePos.y *= myZoomFactor;
+		aRenderCommand.mySprite.get()->SetShouldRender(true);
+		aRenderCommand.SetScaleFromCamera(myZoomFactor);
 		aRenderCommand.SetSpritePosition(spritePos);
+	}
+	else
+	{
+		aRenderCommand.mySprite.get()->SetShouldRender(false);
 	}
 }
 
 void Camera::RenderSprite(RenderCommand& aRenderCommand)
 {
+	const float boundMax = 1.20f / myZoomFactor;
+	const float boundMin = -0.20f / myZoomFactor;
 	CommonUtilities::Vector2f spritePos;
 	spritePos.x = aRenderCommand.GetPosition().x - myPosition.x;
 	spritePos.y = aRenderCommand.GetPosition().y - myPosition.y;
 	if (aRenderCommand.myShouldBeCulled)
 	{
-		if (spritePos.x < 1.0f && spritePos.x > 0.0f && spritePos.y < 1.0f && spritePos.y > 0.0f)
+		if (spritePos.x < boundMax && spritePos.x > boundMin && spritePos.y < boundMax && spritePos.y > boundMin)
 		{
+			spritePos.x *= myZoomFactor;
+			spritePos.y *= myZoomFactor;
+			aRenderCommand.SetScaleFromCamera(myZoomFactor);
 			aRenderCommand.SetSpritePosition(spritePos);
 			aRenderCommand.Render();
 		}
