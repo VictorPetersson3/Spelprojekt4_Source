@@ -30,5 +30,7 @@ private:
 	float mySize = 0.001;
 	float myRemainingLifetime;
 	bool myIsActive;	
+	const float PI = 3.14159;
+
 };
 

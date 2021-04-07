@@ -25,7 +25,7 @@ static enum class EFireDirection
 	Shooter() = default;
 	~Shooter() = default;
 
-	void Init(Vector2 aPosition, Shooter::EFireDirection aFireDirection);
+	void Init(Vector2 aPosition, Shooter::EFireDirection aFireDirection, bool aFlipped);
 	void Update(float aDeltaTime) override;
 	void Render(std::shared_ptr<Camera> aCamera)override;
 	void Shoot();
@@ -38,6 +38,6 @@ private:
 	float myFireRate = 5;
 	float myFireTimer;
 	std::array<Bullet, 10> myBullets;
-
+	const float PI = 3.14159;
 };
 

@@ -4,7 +4,7 @@
 #include "AnimationClip.h"
 #include "Camera.h"
 
-void Shooter::Init(Vector2 aPosition, Shooter::EFireDirection aFireDirection)
+void Shooter::Init(Vector2 aPosition, Shooter::EFireDirection aFireDirection, bool aFlipped)
 {
 	myPosition = aPosition;
 	myAnimationClip = std::make_shared<AnimationClip>("Sprites/obstacles/obstacle_shooter.dds", 0, 0);
@@ -15,10 +15,10 @@ void Shooter::Init(Vector2 aPosition, Shooter::EFireDirection aFireDirection)
 	switch (aFireDirection)
 	{
 	case Shooter::EFireDirection::Up:
-		myFireDirection = { 0,1 };
+		myFireDirection = { 0,-1 };
 		break;
 	case Shooter::EFireDirection::Down:
-		myFireDirection = { 0,-1 };
+		myFireDirection = { 0,1 };
 		break;
 	case Shooter::EFireDirection::Right:
 		myFireDirection = { 1,0 };
@@ -28,6 +28,20 @@ void Shooter::Init(Vector2 aPosition, Shooter::EFireDirection aFireDirection)
 		break;
 	default:
 		break;
+	}
+
+	myAnimationClip->SetRotation(std::atan2(myFireDirection.Y, myFireDirection.X) + ((2 * PI) / 4) * 2);
+	
+	if (aFlipped)
+	{
+		if (aFireDirection == Shooter::EFireDirection::Right || aFireDirection == Shooter::EFireDirection::Left)
+		{
+			myAnimationClip->SetScaleRelativeToFrame({ 1, -1 });
+		}
+		else
+		{
+			myAnimationClip->SetScaleRelativeToFrame({ -1, 1 });
+		}
 	}
 }
 

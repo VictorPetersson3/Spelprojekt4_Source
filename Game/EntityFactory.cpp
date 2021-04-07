@@ -99,22 +99,28 @@ std::shared_ptr<Shooter> EntityFactory::LoadShooter(int aEntityIndex, int aLayer
 	std::string shootDirection = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][0]["__value"].GetString();
 	float xPosition = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / renderSizeX * 16;
 	float yPosition = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / renderSizeY * 16;
+	bool isFlipped = false;
+
+	if (myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"].Capacity() > 1)
+	{
+		isFlipped = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][1]["__value"].GetBool();
+	}
 
 	if (shootDirection == "Up")
 	{
-		shooterToPushBack.Init({ xPosition, yPosition }, Shooter::EFireDirection::Up);
+		shooterToPushBack.Init({ xPosition, yPosition }, Shooter::EFireDirection::Up, isFlipped);
 	}
 	else if (shootDirection == "Down")
 	{
-		shooterToPushBack.Init({ xPosition, yPosition }, Shooter::EFireDirection::Down);
+		shooterToPushBack.Init({ xPosition, yPosition }, Shooter::EFireDirection::Down, isFlipped);
 	}
 	else if (shootDirection == "Right")
 	{
-		shooterToPushBack.Init({ xPosition, yPosition }, Shooter::EFireDirection::Right);
+		shooterToPushBack.Init({ xPosition, yPosition }, Shooter::EFireDirection::Right, isFlipped);
 	}
 	else
 	{
-		shooterToPushBack.Init({ xPosition, yPosition }, Shooter::EFireDirection::Left);
+		shooterToPushBack.Init({ xPosition, yPosition }, Shooter::EFireDirection::Left, isFlipped);
 	}
 
 	return std::make_shared<Shooter>(shooterToPushBack);
