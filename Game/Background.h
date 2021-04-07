@@ -38,7 +38,7 @@ public:
 private:
 	std::array<std::array<Layer, 3>, 5> mySets;
 
-	std::array<float, 3> mySpeedFactor = { 1.0f / 16.0f, 1.0f / 8.0f, 1.0f / 4.0f };
+	std::array<float, 3> mySpeedFactor = { 1.0f / 32.0f, 1.0f / 16.0f, 1.0f / 8.0f };
 
 	CommonUtilities::Vector2<float*> mySpeed;
 

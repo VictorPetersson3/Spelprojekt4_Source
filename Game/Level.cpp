@@ -232,6 +232,7 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y });
 
 	//myPlayer->SetShouldUpdatePhysics(false);
+	myBackground->Init(*(myPlayer.get()), mylevelButtondata->myWorld);
 
 }
 
@@ -244,7 +245,6 @@ void Level::Load(LevelSelect_SpecificLevelData* someLevelData)
 
 	Load(levelLoader.LoadLevel(mylevelButtondata), mylevelButtondata);
 	myBackground->Init(*(myPlayer.get()), mylevelButtondata->myWorld);
-	myBackground->Update();
 	if (mylevelButtondata->myHasCutscene)
 	{
 		StateManager::AddAndPlayCutscene(mylevelButtondata->myCutsceneConversation);
