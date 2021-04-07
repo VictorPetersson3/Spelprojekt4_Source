@@ -83,23 +83,27 @@ void Player::InitJSON()
 	{
 		ele = "Audio/Player/";
 	}
+	printf("\"");
+	printf(mySounds[7].c_str());
+	printf("\"");
+	printf("\n");
 	mySounds[0] += doc["Audio"]["Looping"][0]["Running"].GetString();
-	mySounds[1] = doc["Audio"]["Looping"][1]["Sprinting"].GetString();
-	mySounds[2] = doc["Audio"]["Looping"][2]["Gliding"].GetString();
-	mySounds[3] = doc["Audio"]["Looping"][3]["Wall sliding"].GetString();
+	mySounds[1] += doc["Audio"]["Looping"][1]["Sprinting"].GetString();
+	mySounds[2] += doc["Audio"]["Looping"][2]["Gliding"].GetString();
+	mySounds[3] += doc["Audio"]["Looping"][3]["Wall sliding"].GetString();
 
-	mySounds[4] = doc["Audio"]["One shot"][0]["Jump"].GetString();
-	mySounds[5] = doc["Audio"]["One shot"][1]["Double jump"].GetString();
-	mySounds[6] = doc["Audio"]["One shot"][2]["Wall jump"].GetString();
-	mySounds[7] = doc["Audio"]["One shot"][3]["Landing"].GetString();
+	mySounds[4] += doc["Audio"]["One shot"][0]["Jump"].GetString();
+	mySounds[5] += doc["Audio"]["One shot"][1]["Double jump"].GetString();
+	mySounds[6] += doc["Audio"]["One shot"][2]["Wall jump"].GetString();
+	mySounds[7] += doc["Audio"]["One shot"][3]["Landing"].GetString();
 
-	mySounds[8] = doc["Audio"]["Death by"][0]["Snail"].GetString();
-	mySounds[9] = doc["Audio"]["Death by"][1]["Lava"].GetString();
-	mySounds[10] = doc["Audio"]["Death by"][2]["Saw"].GetString();
-	mySounds[11] = doc["Audio"]["Death by"][3]["Lizard"].GetString();
+	mySounds[8] += doc["Audio"]["Death by"][0]["Snail"].GetString();
+	mySounds[9] += doc["Audio"]["Death by"][1]["Lava"].GetString();
+	mySounds[10] += doc["Audio"]["Death by"][2]["Saw"].GetString();
+	mySounds[11] += doc["Audio"]["Death by"][3]["Lizard"].GetString();
 
 	printf("\"");
-	printf(mySounds[0].c_str());
+	printf(mySounds[7].c_str());
 	printf("\"");
 	printf("\n");
 }
@@ -219,6 +223,7 @@ void Player::Action(EAnimationState anAnimState)
 		myCurrentVelocity.y = -myJumpSpeed;
 		if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eJumpL);
 		else PlaySpecificAnimation(EPlayerAnimationClips::eJumpR);
+		PlaySpecificAudio(EAnimationState::Jump);
 		myMoveState = EPlayerState::Falling;
 
 		myCanJumpAgain = false;
@@ -234,6 +239,7 @@ void Player::Action(EAnimationState anAnimState)
 				myCurrentAnimation = EAnimationState::Power;
 				if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::ePowerL);
 				else PlaySpecificAnimation(EPlayerAnimationClips::ePowerR);
+				PlaySpecificAudio(EAnimationState::Power);
 
 				myCanDoubleJump = false;
 				myCanJumpAgain = false;
@@ -259,6 +265,7 @@ void Player::Action(EAnimationState anAnimState)
 			myCurrentVelocity.y = -myWallJumpSpeed;
 
 			PlaySpecificAnimation(EPlayerAnimationClips::eWallJumpL);
+			PlaySpecificAudio(EAnimationState::W_Jump);
 
 			myMoveState = EPlayerState::Falling;
 
@@ -270,6 +277,7 @@ void Player::Action(EAnimationState anAnimState)
 			myCurrentVelocity.y = -myWallJumpSpeed;
 
 			PlaySpecificAnimation(EPlayerAnimationClips::eWallJumpR);
+			PlaySpecificAudio(EAnimationState::W_Jump);
 
 			myMoveState = EPlayerState::Falling;
 			myCurrentAnimation = EAnimationState::W_Jump;
@@ -287,7 +295,7 @@ void Player::Action(EAnimationState anAnimState)
 			if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eDeathL);
 			else PlaySpecificAnimation(EPlayerAnimationClips::eDeathR);
 
-
+			PlaySpecificAudio(EAnimationState::Death);
 
 			myDeathTimer = Timer::GetInstance().GetTotalTime();
 		}
@@ -597,6 +605,7 @@ void Player::Idle()
 	{
 		if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eLandL);
 		else PlaySpecificAnimation(EPlayerAnimationClips::eLandR);
+		PlaySpecificAudio(EAnimationState::Land);
 	}
 
 	if (myCurrentVelocity.x > 0) myCurrentVelocity.x -= myWalkDecceleration * DELTA_TIME;
