@@ -11,6 +11,7 @@ class Boss
 public:
 	Boss() = default;
 	~Boss() = default;
+	
 	void Init(const std::shared_ptr<Player> aPlayer);
 	void Update(const float aDt);
 	void Render(const std::shared_ptr<Camera> aCamera);
@@ -19,12 +20,14 @@ public:
 	inline void AddDashPositions(std::vector<CommonUtilities::Vector2f>& somePositions);
 
 private:
+
 	int PickPosition();
 	void Move(const float aDt);
 	void PickNewPosition(const float aDt);
 	void AddForce(const CommonUtilities::Vector2f aForce);
 
 private:
+
 	int myPositionIndex = 0;
 
 	float myMoveTimer = 0.f;
