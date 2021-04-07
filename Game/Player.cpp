@@ -156,7 +156,8 @@ void Player::InitAnimations()
 
 void Player::InitCollider()
 {
-	myCollider = std::make_shared<Collider>(myPosition, mySize.x/* * (9.0f / 16.0f)*/, mySize.y);
+	float resolutionscale = (Tga2D::CEngine::GetInstance()->GetRenderSize().x / 1280.0f);
+	myCollider = std::make_shared<Collider>(myPosition, mySize.x * resolutionscale, mySize.y * resolutionscale);
 	myCollider->SetTag(EColliderTag::Player);
 }
 
@@ -191,10 +192,7 @@ void Player::Update()
 
 	ManageStates();
 
-	if (myShouldUpdatePhysics)
-	{
-		UpdatePhysics();
-	}
+	UpdatePhysics();
 
 	HandleAnimations();
 }
@@ -294,6 +292,8 @@ void Player::UpdateJumping()
 
 void Player::UpdatePhysics()
 {
+	if (!myShouldUpdatePhysics) return;
+
 	CacheCurrentValues();
 	myPosition += myCurrentVelocity * DELTA_TIME;
 
@@ -354,6 +354,9 @@ void Player::UpdatePhysics()
 			posCorrNormal.y = CollisionManager::GetInstance().CollisionNormal(myCollider.get(), verticalCollider).y;
 		}
 
+		float resolutionscale = (Tga2D::CEngine::GetInstance()->GetRenderSize().x / 1280.0f);
+
+		positionCorrection *= resolutionscale;
 		positionCorrection *= posCorrNormal;
 		positionCorrection.x += 0.1f / Tga2D::CEngine::GetInstance()->GetRenderSize().x * -posCorrNormal.x;
 
@@ -753,5 +756,8 @@ void Player::PlaySpecificAnimation(EPlayerAnimationClips anAnimEnum)
 		anAnimEnum == EPlayerAnimationClips::eWallJumpL ||
 		anAnimEnum == EPlayerAnimationClips::eWallJumpR)
 		myAnimations[(int)anAnimEnum]->PlayAnimOnce(0.1666666666666667f);
+	else if (anAnimEnum == EPlayerAnimationClips::eDeathL ||
+		anAnimEnum == EPlayerAnimationClips::eDeathR)
+		myAnimations[(int)anAnimEnum]->PlayAnimOnce(0.125f);
 	else myAnimations[(int)anAnimEnum]->PlayAnimOnce();
 }
