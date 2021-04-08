@@ -47,9 +47,9 @@ void Background::Init(Player& aPlayer, EWorldLevel aWorld)
 		break;
 	}
 
-	layer1.mySprite.SetSamplerState(ESamplerFilter::ESamplerFilter_Point, ESamplerAddressMode::ESamplerAddressMode_Clamp);
-	layer2.mySprite.SetSamplerState(ESamplerFilter::ESamplerFilter_Point, ESamplerAddressMode::ESamplerAddressMode_Clamp);
-	layer3.mySprite.SetSamplerState(ESamplerFilter::ESamplerFilter_Point, ESamplerAddressMode::ESamplerAddressMode_Clamp);
+	layer1.mySprite.SetSamplerState(ESamplerFilter::ESamplerFilter_Bilinear, ESamplerAddressMode::ESamplerAddressMode_Clamp);
+	layer2.mySprite.SetSamplerState(ESamplerFilter::ESamplerFilter_Bilinear, ESamplerAddressMode::ESamplerAddressMode_Clamp);
+	layer3.mySprite.SetSamplerState(ESamplerFilter::ESamplerFilter_Bilinear, ESamplerAddressMode::ESamplerAddressMode_Clamp);
 	layer1.mySprite.SetBlendState(EBlendState::EBlendState_Alphablend);
 	layer2.mySprite.SetBlendState(EBlendState::EBlendState_Alphablend);
 	layer3.mySprite.SetBlendState(EBlendState::EBlendState_Alphablend);
