@@ -83,10 +83,6 @@ void Player::InitJSON()
 	{
 		ele = "Audio/Player/";
 	}
-	printf("\"");
-	printf(mySounds[7].c_str());
-	printf("\"");
-	printf("\n");
 	mySounds[0] += doc["Audio"]["Looping"][0]["Running"].GetString();
 	mySounds[1] += doc["Audio"]["Looping"][1]["Sprinting"].GetString();
 	mySounds[2] += doc["Audio"]["Looping"][2]["Gliding"].GetString();
@@ -101,11 +97,6 @@ void Player::InitJSON()
 	mySounds[9] += doc["Audio"]["Death by"][1]["Lava"].GetString();
 	mySounds[10] += doc["Audio"]["Death by"][2]["Saw"].GetString();
 	mySounds[11] += doc["Audio"]["Death by"][3]["Lizard"].GetString();
-
-	printf("\"");
-	printf(mySounds[7].c_str());
-	printf("\"");
-	printf("\n");
 }
 
 void Player::InitAnimations()
@@ -461,7 +452,6 @@ void Player::UpdatePhysics()
 	{
 		if (myCollider->GetCollidedWith()[i]->GetTag() == EColliderTag::MovingPlatform)
 		{
-			printf("%f\n", myCollider->GetCollidedWith()[i]->GetPlatformSpeed());
 			myPosition += myCollider->GetCollidedWith()[i]->GetPlatformSpeed();
 		}
 	}
