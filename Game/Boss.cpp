@@ -8,7 +8,7 @@
 #include <CommonUtilities/Random.h>
 void Boss::Init(const std::shared_ptr<Player> aPlayer) 
 {
-	myCollider = std::make_shared<Collider>(myPosition, 0.2f, 0.2f);
+	myCollider = std::make_shared<Collider>(myPosition, 0.1f, 0.1f);
 	myCollider->SetTag(EColliderTag::KillZone);
 
 	myRenderCommand = std::make_shared<RenderCommand>("sprites/HästfanDDS.dds", 1, true);
@@ -28,11 +28,11 @@ void Boss::Update(const float aDt)
 		Move(aDt);		
 		CheckCollisionWithPlayer();
 		myPosition += myDirection * aDt;
-		myDirection = CommonUtilities::Vector2f::Zero();
 		myRenderCommand->SetSpritePosition(myPosition);
 		myRenderCommand->Update(myPosition);
 		myCollider->Update();
 		myCollider->UpdateCollider(myPosition);
+		myDirection = CommonUtilities::Vector2f::Zero();
 	}
 }
 
