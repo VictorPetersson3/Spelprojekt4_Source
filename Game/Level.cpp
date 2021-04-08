@@ -174,6 +174,7 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 	{
 		myLevelEndCollider.get()->RemoveFromManager();
 	}
+	CollisionManager::GetInstance().Clear();
 
 	myLevelEndCollider = aData.get()->GetLevelEnd();
 
@@ -218,11 +219,14 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 	std::cout << "Player start: " << aData->GetPlayerStart().x << " x " << aData->GetPlayerStart().y << '\n';
 
 
-	for (auto t : myTerrain)
+	for (auto& t : myTerrain)
 	{
 		t->myCollider->AddToManager();
 	}
-
+	for (auto& e : myEntities)
+	{
+		e->myCollider->AddToManager();
+	}
 
 	if (myLevelEndCollider != nullptr)
 	{

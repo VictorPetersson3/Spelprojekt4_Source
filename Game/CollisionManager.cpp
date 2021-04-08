@@ -30,10 +30,6 @@ void CollisionManager::Update()
 		{
 			if (myColliders[i]->GetTag() == EColliderTag::Player)
 			{
-				if (myColliders[i] != myPlayerCollider && myPlayerCollider != nullptr)
-				{
-					myColliders.erase(myColliders.begin() + i);
-				}
 				myPlayerCollider = myColliders[i];
 				myColliders.erase(myColliders.begin() + i);
 			}

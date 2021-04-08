@@ -22,7 +22,6 @@ public:
 
 private:
 	std::shared_ptr<RenderCommand> myRenderCommand;
-	std::shared_ptr<Collider> myCollider;
 
 	float myTimer = 0.f;
 	float myCooldownTime = 2.5f;
