@@ -1,6 +1,7 @@
 #pragma once
 #include <CommonUtilities/Vector2.hpp>
 #include <memory>
+#include <array>
 #include "XController.h"
 
 #include "Enums.h"
@@ -71,11 +72,13 @@ protected:
 
 	bool Input(int anInput);
 
+	void Action(EAnimationState anAnimState);
+
 	void ManageStates();
 	void UpdatePhysics();
 	void UpdateJumping();
 	void HandleAnimations();
-
+	void HandleAudio();
 	void CacheCurrentValues();
 
 	void ChangeInput();
@@ -87,6 +90,7 @@ protected:
 	void Die();
 
 	void PlaySpecificAnimation(EPlayerAnimationClips anAnimEnum);
+	void PlaySpecificAudio(EAnimationState anAnimState);
 
 protected:
 	CommonUtilities::Vector2f mySize = {};
@@ -158,6 +162,7 @@ protected:
 	EAnimationState myCurrentAnimation = EAnimationState::Idle;
 	EPowerUp myCurrentPower = EPowerUp::Default;
 
+	std::array<std::string, 12> mySounds;
 	std::shared_ptr<Collider> myCollider;
 	std::vector<std::shared_ptr<AnimationClip>> myAnimations;
 	std::shared_ptr<XController> myController;

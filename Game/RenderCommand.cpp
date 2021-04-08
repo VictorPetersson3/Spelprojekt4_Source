@@ -69,6 +69,11 @@ const float RenderCommand::GetRotation() const
 	return mySprite->GetRotation();
 }
 
+void RenderCommand::SetBlendState(EBlendState aBlendState)
+{
+	mySprite->SetBlendState(aBlendState);
+}
+
 void RenderCommand::SetRotation(const float aAngleInRadian)
 {
 	mySprite->SetRotation(aAngleInRadian);
