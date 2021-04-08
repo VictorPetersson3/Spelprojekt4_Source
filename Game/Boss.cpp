@@ -8,21 +8,21 @@
 #include <CommonUtilities/Random.h>
 void Boss::Init(const std::shared_ptr<Player> aPlayer) 
 {
-	myCollider = std::make_shared<Collider>(myPosition, 0.1f, 0.1f);
-	myCollider->SetTag(EColliderTag::KillZone);
+	//myCollider = std::make_shared<Collider>(myPosition, 0.1f, 0.1f);
+	//myCollider->SetTag(EColliderTag::KillZone);
 
-	myRenderCommand = std::make_shared<RenderCommand>("sprites/HästfanDDS.dds", 1, true);
-	myRenderCommand->SetSizeRelativeToImage({ 3.f,3.f });
-	myPlayerToAttack = aPlayer;
-	myPosition = { 0.5f, 0.5f }; // start pos
-	myPostionsToMoveTo.emplace_back(myPosition);
-	myRenderCommand->SetSpritePosition(myPosition);
+	//myRenderCommand = std::make_shared<RenderCommand>("sprites/HästfanDDS.dds", 1, true);
+	//myRenderCommand->SetSizeRelativeToImage({ 3.f,3.f });
+	//myPlayerToAttack = aPlayer;
+	//myPosition = { 0.5f, 0.5f }; // start pos
+	//myPostionsToMoveTo.emplace_back(myPosition);
+	//myRenderCommand->SetSpritePosition(myPosition);
 
 }
 
 void Boss::Update(const float aDt)
 {
-
+/*
 	if (!myIsDead)
 	{
 		Move(aDt);		
@@ -33,61 +33,62 @@ void Boss::Update(const float aDt)
 		myCollider->Update();
 		myCollider->UpdateCollider(myPosition);
 		myDirection = CommonUtilities::Vector2f::Zero();
-	}
+	}*/
 }
 
 void Boss::Render(Camera& aCamera)
 {
-	if (!myIsDead)
-		aCamera.RenderSprite(*myRenderCommand);
+	//if (!myIsDead)
+	//	aCamera.RenderSprite(*myRenderCommand);
 }
 
 void Boss::AddForce(const CommonUtilities::Vector2f aForce)
 {
-	myDirection += aForce;
+	//myDirection += aForce;
 }
 
 void Boss::CheckCollisionWithPlayer()
-{
+{/*
 	for (int i = 0; i < myCollider->GetCollidedWith().size(); i++)
 	{
 		if (myCollider->GetCollidedWith()[i]->GetTag() == EColliderTag::Player)
 		{
 			std::cout << "Kill the player\n";
 		}
-	}
+	}*/
 }
 
 void Boss::Move(const float aDt)
 {
-	PickNewPosition(aDt);
+	/*PickNewPosition(aDt);
 	const float dist = CommonUtilities::Vector2f::Distance(myPostionsToMoveTo[myPositionIndex], myPlayerToAttack->GetPosition());	
 	if (dist > 0.01f)
 	{
 		const float maxSpeed = mySpeed * 2;
 		CommonUtilities::Vector2f direction = myPostionsToMoveTo[myPositionIndex] - myPosition;
 		AddForce((direction.Clamp(-maxSpeed, maxSpeed) * mySpeed));
-	}
+	}*/
 }
 
 int Boss::PickPosition()
 {
-	int index = 0;
-	float dist = 0, closestDist = 0;
-	for (int i = 0; i < myPostionsToMoveTo.size(); ++i)
-	{
-		dist = CommonUtilities::Vector2f::Distance(myPostionsToMoveTo[i], myPlayerToAttack->GetPosition());	
-		if (dist < closestDist || closestDist == 0)
-		{
-			closestDist = dist;
-			index = i;
-		}
-	}	
-	return index;
+	//int index = 0;
+	//float dist = 0, closestDist = 0;
+	//for (int i = 0; i < myPostionsToMoveTo.size(); ++i)
+	//{
+	//	dist = CommonUtilities::Vector2f::Distance(myPostionsToMoveTo[i], myPlayerToAttack->GetPosition());	
+	//	if (dist < closestDist || closestDist == 0)
+	//	{
+	//		closestDist = dist;
+	//		index = i;
+	//	}
+	//}	
+	//return index;
+	return 0;
 }
 
 void Boss::PickNewPosition(const float aDt)
-{
+{/*
 	if (myMoveTimer >= myMoveTime)
 	{
 		myPositionIndex = PickPosition();
@@ -95,5 +96,5 @@ void Boss::PickNewPosition(const float aDt)
 		myMoveTime = CommonUtilities::GetRandomFloat(2.f, 4.f);
 		return;
 	}
-	myMoveTimer += aDt;
+	myMoveTimer += aDt;*/
 }

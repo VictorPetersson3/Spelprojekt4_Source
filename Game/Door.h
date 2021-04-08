@@ -45,7 +45,6 @@ private:
 
 	CommonUtilities::Vector2f myPosition = {};
 	std::shared_ptr<Key> myKey = {};
-	std::shared_ptr<Collider> myCollider = {};
 	std::shared_ptr<RenderCommand> myRenderCommand = {};
 	bool myIsDestoryed = false;
 };
