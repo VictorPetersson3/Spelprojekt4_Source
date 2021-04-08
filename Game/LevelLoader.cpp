@@ -188,6 +188,8 @@ std::shared_ptr<TerrainTile> LevelLoader::LoadTileMap(const char* aImagePath, in
 
 	aSpriteBatch->AddObject(tempRenderCommand.mySprite.get());
 
+	tempRenderCommand.SetSamplerState(ESamplerFilter::ESamplerFilter_Point, ESamplerAddressMode::ESamplerAddressMode_Clamp);
+
 	if (layerIdentifier != "Background" && layerIdentifier != "background" && layerIdentifier != "Props" && layerIdentifier != "props")
 	{
 		CommonUtilities::Vector2f aColliderPosition = { tempRenderCommand.GetPosition().x, tempRenderCommand.GetPosition().y };

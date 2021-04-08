@@ -182,6 +182,10 @@ void Player::InitAnimations()
 		myAnimations[21]->PlayAnimLoop();
 		break;
 	}
+	for (int i = 0; i < myAnimations.size(); i++)
+	{
+		myAnimations[i]->GetRenderCommand().SetSamplerState(ESamplerFilter::ESamplerFilter_Point, ESamplerAddressMode::ESamplerAddressMode_Clamp);
+	}
 }
 
 void Player::InitCollider()
