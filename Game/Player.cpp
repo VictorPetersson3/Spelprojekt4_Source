@@ -479,6 +479,10 @@ void Player::UpdatePhysics()
 			myMoveState = EPlayerState::Death;
 			continue;
 		}
+		if (myCollider->GetCollidedWith()[i]->GetTag() == EColliderTag::MovingPlatform)
+		{
+			myCurrentVelocity += myCollider->GetCollidedWith()[i]->GetPlatformSpeed();
+		}
 
 		normal = myCollider->GetCollisionNormal(i);
 
