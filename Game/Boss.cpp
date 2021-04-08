@@ -9,6 +9,7 @@
 void Boss::Init(const std::shared_ptr<Player> aPlayer) 
 {
 	myCollider = std::make_shared<Collider>(myPosition, 0.2f, 0.2f);
+	myCollider->SetTag(EColliderTag::KillZone);
 
 	myRenderCommand = std::make_shared<RenderCommand>("sprites/HästfanDDS.dds", 1, true);
 	myRenderCommand->SetSizeRelativeToImage({ 3.f,3.f });
@@ -25,7 +26,7 @@ void Boss::Update(const float aDt)
 	if (!myIsDead)
 	{
 		Move(aDt);		
-
+		CheckCollisionWithPlayer();
 		myPosition += myDirection * aDt;
 		myDirection = CommonUtilities::Vector2f::Zero();
 		myRenderCommand->SetSpritePosition(myPosition);
@@ -48,7 +49,13 @@ void Boss::AddForce(const CommonUtilities::Vector2f aForce)
 
 void Boss::CheckCollisionWithPlayer()
 {
-	
+	for (int i = 0; i < myCollider->GetCollidedWith().size(); i++)
+	{
+		if (myCollider->GetCollidedWith()[i]->GetTag() == EColliderTag::Player)
+		{
+			std::cout << "Kill the player\n";
+		}
+	}
 }
 
 void Boss::Move(const float aDt)
