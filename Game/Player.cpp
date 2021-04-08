@@ -456,6 +456,16 @@ void Player::UpdatePhysics()
 	if (!myShouldUpdatePhysics) return;
 
 	CacheCurrentValues();
+
+	for (int i = 0; i < myCollider->GetCollidedWith().size(); i++)
+	{
+		if (myCollider->GetCollidedWith()[i]->GetTag() == EColliderTag::MovingPlatform)
+		{
+			printf("%f\n", myCollider->GetCollidedWith()[i]->GetPlatformSpeed());
+			myPosition += myCollider->GetCollidedWith()[i]->GetPlatformSpeed();
+		}
+	}
+
 	myPosition += myCurrentVelocity * DELTA_TIME;
 
 	CollisionManager::GetInstance().Update();
@@ -478,10 +488,6 @@ void Player::UpdatePhysics()
 		{
 			myMoveState = EPlayerState::Death;
 			continue;
-		}
-		if (myCollider->GetCollidedWith()[i]->GetTag() == EColliderTag::MovingPlatform)
-		{
-			myCurrentVelocity += myCollider->GetCollidedWith()[i]->GetPlatformSpeed();
 		}
 
 		normal = myCollider->GetCollisionNormal(i);

@@ -45,7 +45,7 @@ public:
 	void AddToManager();
 	bool& HasCollided();
 
-	const float& GetPlatformSpeed();
+	const CommonUtilities::Vector2f& GetPlatformSpeed();
 	std::vector<Collider*>& GetCollidedWith();
 	const CommonUtilities::Vector2f GetCollisionNormal(const int anIndex);
 	const void Draw() const;
@@ -61,7 +61,7 @@ private:
 	EColliderTag myTag = EColliderTag::Terrain;
 
 	float myRadius;
-	float myPlatformSpeed = 0;
+	CommonUtilities::Vector2f myPlatformSpeed;
 
 	CommonUtilities::Vector2f myPosition;
 	AABB myAABB;
