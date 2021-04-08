@@ -213,7 +213,6 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 	for (int i = 0; i < aData->GetSpriteBatches().Size(); i++)
 	{
 		mySpriteBatches.Add(aData->GetSpriteBatches()[i]);
-
 	}
 
 	std::cout << "Player start: " << aData->GetPlayerStart().x << " x " << aData->GetPlayerStart().y << '\n';
@@ -277,9 +276,9 @@ void Level::Init(const EStateType& aState)
 	
 	myBoss->Init(myPlayer);
 
-	for (float i = 0; i < 10; i++)
+	for (float i = 0; i < 10; i += 2.5f)
 	{
-		for (float j = 0; j < 10; j++)
+		for (float j = 0; j < 10; j += 2.5f)
 		{
 			myBoss->AddDashPosition({ i / 10, j / 10 });
 		}

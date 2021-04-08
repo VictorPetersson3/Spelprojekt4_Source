@@ -8,15 +8,17 @@
 #include <CommonUtilities/Random.h>
 void Boss::Init(const std::shared_ptr<Player> aPlayer) 
 {
-	myCollider = std::make_shared<Collider>(myPosition, 0.1f, 0.1f);
-	myCollider->SetTag(EColliderTag::KillZone);
 
 	myRenderCommand = std::make_shared<RenderCommand>("sprites/HästfanDDS.dds", 1, true);
 	myRenderCommand->SetSizeRelativeToImage({ 3.f,3.f });
+	myRenderCommand->SetPivot({ 0.5f,0.5f });
+
 	myPlayerToAttack = aPlayer;
 	myPosition = { 0.5f, 0.5f }; // start pos
 	myPostionsToMoveTo.emplace_back(myPosition);
 	myRenderCommand->SetSpritePosition(myPosition);
+	myCollider = std::make_shared<Collider>(myPosition, 0.15f, 0.15f);
+	myCollider->SetTag(EColliderTag::KillZone);
 
 }
 
