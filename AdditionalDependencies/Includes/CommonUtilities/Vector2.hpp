@@ -56,6 +56,23 @@ namespace CommonUtilities
 				myY = aMin.myY;
 			return *this;	
 		}
+		Vector2<T> Clamp(const float aMin, const float aMax)
+		{
+			if (myX > aMax)
+				myX = aMax;
+
+			if (myY > aMax)
+				myY = aMax;
+
+			if (myX < aMin)
+				myX = aMin;
+
+			if (myY < aMin)
+				myY = aMin;
+
+			return *this;
+		}
+
 		//Längd funktioner
 		T Length() const
 		{

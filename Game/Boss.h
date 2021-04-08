@@ -14,24 +14,26 @@ public:
 	
 	void Init(const std::shared_ptr<Player> aPlayer);
 	void Update(const float aDt);
-	void Render(const std::shared_ptr<Camera> aCamera);
+	void Render(Camera& aCamera);
 	
 	inline void AddDashPosition(const CommonUtilities::Vector2f aPosition);
 	inline void AddDashPositions(std::vector<CommonUtilities::Vector2f>& somePositions);
+	inline void SetDeadState(const bool aBool);
 
 private:
-
 	int PickPosition();
 	void Move(const float aDt);
 	void PickNewPosition(const float aDt);
 	void AddForce(const CommonUtilities::Vector2f aForce);
-
+	void CheckCollisionWithPlayer();
 private:
 
 	int myPositionIndex = 0;
 
 	float myMoveTimer = 0.f;
-	float myMoveTime = 5.f;
+	float myMoveTime = 2.f;
+
+	float mySpeed = 1.5f;
 
 	bool myIsDead = false;
 
@@ -50,4 +52,8 @@ inline void Boss::AddDashPosition(const CommonUtilities::Vector2f aPosition)
 inline void Boss::AddDashPositions(std::vector<CommonUtilities::Vector2f>& somePositions)
 {
 	myPostionsToMoveTo = somePositions;
+}
+inline void Boss::SetDeadState(const bool aBool) 
+{
+	myIsDead = aBool;
 }

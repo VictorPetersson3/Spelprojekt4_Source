@@ -3,10 +3,15 @@
 #include "Player.h"
 #include "RenderCommand.h"
 #include "Camera.h"
+#include "Collider.h"
+#include <iostream>
 #include <CommonUtilities/Random.h>
 void Boss::Init(const std::shared_ptr<Player> aPlayer) 
 {
-	myRenderCommand = std::make_shared<RenderCommand>("sprites/tga_logo.dds");
+	myCollider = std::make_shared<Collider>(myPosition, 0.2f, 0.2f);
+
+	myRenderCommand = std::make_shared<RenderCommand>("sprites/HästfanDDS.dds", 1, true);
+	myRenderCommand->SetSizeRelativeToImage({ 3.f,3.f });
 	myPlayerToAttack = aPlayer;
 	myPosition = { 0.5f, 0.5f }; // start pos
 	myPostionsToMoveTo.emplace_back(myPosition);
@@ -16,26 +21,34 @@ void Boss::Init(const std::shared_ptr<Player> aPlayer)
 
 void Boss::Update(const float aDt)
 {
+
 	if (!myIsDead)
 	{
-		Move(aDt);
-		
+		Move(aDt);		
+
 		myPosition += myDirection * aDt;
 		myDirection = CommonUtilities::Vector2f::Zero();
 		myRenderCommand->SetSpritePosition(myPosition);
-
+		myRenderCommand->Update(myPosition);
+		myCollider->Update();
+		myCollider->UpdateCollider(myPosition);
 	}
 }
 
-void Boss::Render(const std::shared_ptr<Camera> aCamera)
+void Boss::Render(Camera& aCamera)
 {
 	if (!myIsDead)
-		aCamera->RenderSprite(*myRenderCommand);
+		aCamera.RenderSprite(*myRenderCommand);
 }
 
 void Boss::AddForce(const CommonUtilities::Vector2f aForce)
 {
 	myDirection += aForce;
+}
+
+void Boss::CheckCollisionWithPlayer()
+{
+	
 }
 
 void Boss::Move(const float aDt)
@@ -44,8 +57,9 @@ void Boss::Move(const float aDt)
 	const float dist = CommonUtilities::Vector2f::Distance(myPostionsToMoveTo[myPositionIndex], myPlayerToAttack->GetPosition());	
 	if (dist > 0.01f)
 	{
-		const CommonUtilities::Vector2f direction = myPostionsToMoveTo[myPositionIndex] - myPosition;
-		AddForce(direction);
+		const float maxSpeed = mySpeed * 2;
+		CommonUtilities::Vector2f direction = myPostionsToMoveTo[myPositionIndex] - myPosition;
+		AddForce((direction.Clamp(-maxSpeed, maxSpeed) * mySpeed));
 	}
 }
 
@@ -71,7 +85,7 @@ void Boss::PickNewPosition(const float aDt)
 	{
 		myPositionIndex = PickPosition();
 		myMoveTimer = 0;
-		myMoveTime = CommonUtilities::GetRandomFloat(5.f, 7.f);
+		myMoveTime = CommonUtilities::GetRandomFloat(2.f, 4.f);
 		return;
 	}
 	myMoveTimer += aDt;
