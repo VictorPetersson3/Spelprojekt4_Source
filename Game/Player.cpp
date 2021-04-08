@@ -2,6 +2,7 @@
 #include "Player.h"
 
 #include "AnimationClip.h"
+#include "AudioManager.h"
 #include "Camera.h"
 #include "Collider.h"
 #include "CollisionManager.h"
@@ -76,6 +77,35 @@ void Player::InitJSON()
 		doc["Collider"]["Size in pixels"]["X"].GetFloat() / (float)Tga2D::CEngine::GetInstance()->GetRenderSize().x,
 		doc["Collider"]["Size in pixels"]["Y"].GetFloat() / (float)Tga2D::CEngine::GetInstance()->GetRenderSize().y
 	};
+
+	// Sound
+	for (auto& ele : mySounds)
+	{
+		ele = "Audio/Player/";
+	}
+	printf("\"");
+	printf(mySounds[7].c_str());
+	printf("\"");
+	printf("\n");
+	mySounds[0] += doc["Audio"]["Looping"][0]["Running"].GetString();
+	mySounds[1] += doc["Audio"]["Looping"][1]["Sprinting"].GetString();
+	mySounds[2] += doc["Audio"]["Looping"][2]["Gliding"].GetString();
+	mySounds[3] += doc["Audio"]["Looping"][3]["Wall sliding"].GetString();
+
+	mySounds[4] += doc["Audio"]["One shot"][0]["Jump"].GetString();
+	mySounds[5] += doc["Audio"]["One shot"][1]["Double jump"].GetString();
+	mySounds[6] += doc["Audio"]["One shot"][2]["Wall jump"].GetString();
+	mySounds[7] += doc["Audio"]["One shot"][3]["Landing"].GetString();
+
+	mySounds[8] += doc["Audio"]["Death by"][0]["Snail"].GetString();
+	mySounds[9] += doc["Audio"]["Death by"][1]["Lava"].GetString();
+	mySounds[10] += doc["Audio"]["Death by"][2]["Saw"].GetString();
+	mySounds[11] += doc["Audio"]["Death by"][3]["Lizard"].GetString();
+
+	printf("\"");
+	printf(mySounds[7].c_str());
+	printf("\"");
+	printf("\n");
 }
 
 void Player::InitAnimations()
@@ -184,6 +214,95 @@ bool Player::Input(int anInput)
 	}
 }
 
+void Player::Action(EAnimationState anAnimState)
+{
+	switch (anAnimState)
+	{
+	case EAnimationState::Jump:
+		myIsGrounded = false;
+		myCurrentVelocity.y = -myJumpSpeed;
+		if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eJumpL);
+		else PlaySpecificAnimation(EPlayerAnimationClips::eJumpR);
+		PlaySpecificAudio(EAnimationState::Jump);
+		myMoveState = EPlayerState::Falling;
+
+		myCanJumpAgain = false;
+		break;
+	case EAnimationState::Power:
+		switch (myCurrentPower)
+		{
+		case EPowerUp::DoubleJump:
+			if (Input(myJump) && myCanDoubleJump && myCanJumpAgain)
+			{
+				myCurrentVelocity.y = -myJumpSpeed;
+
+				myCurrentAnimation = EAnimationState::Power;
+				if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::ePowerL);
+				else PlaySpecificAnimation(EPlayerAnimationClips::ePowerR);
+				PlaySpecificAudio(EAnimationState::Power);
+
+				myCanDoubleJump = false;
+				myCanJumpAgain = false;
+			}
+			break;
+		case EPowerUp::Glide:
+			if (Input(myJump) && myCanGlide && myCurrentVelocity.y > 0.0f && myCanJumpAgain)
+			{
+				myCurrentAnimation = EAnimationState::Power;
+
+				myIsGliding = true;
+				myCanGlide = false;
+			}
+			break;
+		default:
+			break;
+		}
+		break;
+	case EAnimationState::W_Jump:
+		if (myDirection)
+		{
+			myCurrentVelocity.x = -myWallJumpSpeed * myWallJumpFactorX;
+			myCurrentVelocity.y = -myWallJumpSpeed;
+
+			PlaySpecificAnimation(EPlayerAnimationClips::eWallJumpL);
+			PlaySpecificAudio(EAnimationState::W_Jump);
+
+			myMoveState = EPlayerState::Falling;
+
+			myCanJumpAgain = false;
+		}
+		else
+		{
+			myCurrentVelocity.x = myWallJumpSpeed * myWallJumpFactorX;
+			myCurrentVelocity.y = -myWallJumpSpeed;
+
+			PlaySpecificAnimation(EPlayerAnimationClips::eWallJumpR);
+			PlaySpecificAudio(EAnimationState::W_Jump);
+
+			myMoveState = EPlayerState::Falling;
+			myCurrentAnimation = EAnimationState::W_Jump;
+
+			myCanJumpAgain = false;
+		}
+		break;
+	case EAnimationState::Death:
+		if (!myWasDead)
+		{
+			myIsDead = true;
+
+			myCurrentAnimation = EAnimationState::Death;
+
+			if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eDeathL);
+			else PlaySpecificAnimation(EPlayerAnimationClips::eDeathR);
+
+			PlaySpecificAudio(EAnimationState::Death);
+
+			myDeathTimer = Timer::GetInstance().GetTotalTime();
+		}
+		break;
+	}
+}
+
 void Player::Update()
 {
 	//Sleep(1);
@@ -195,6 +314,8 @@ void Player::Update()
 	UpdatePhysics();
 
 	HandleAnimations();
+
+	HandleAudio();
 }
 
 void Player::HandleAnimations()
@@ -202,6 +323,42 @@ void Player::HandleAnimations()
 	for (auto& anim : myAnimations)
 	{
 		anim->UpdateAnimation(myPosition);
+	}
+}
+
+void Player::HandleAudio()
+{
+	int index = -1;
+	switch (myCurrentAnimation)
+	{
+	case EAnimationState::Run:
+		index = 0;
+		break;
+	case EAnimationState::Sprint:
+		index = 1;
+		break;
+	case EAnimationState::Power:
+		if (myCurrentPower == EPowerUp::Glide) index = 2;
+		break;
+	case EAnimationState::W_Down: case EAnimationState::W_Up:
+		index = 3;
+		break;
+	}
+
+	if (!(index < 0) && mySounds[index] != "Audio/Player/" && !AudioManager::GetInstance().IsEffectCurrentlyPlaying(mySounds[index].c_str()))
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			AudioManager::GetInstance().StopEffectSound(mySounds[i].c_str());
+		}
+		AudioManager::GetInstance().PlayEffect(mySounds[index].c_str(), true);
+	}
+	else if (index < 0)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			AudioManager::GetInstance().StopEffectSound(mySounds[i].c_str());
+		}
 	}
 }
 
@@ -444,10 +601,11 @@ void Player::ManageStates()
 
 void Player::Idle()
 {
-	if (!myWasGrounded)
+	if (!myWasGrounded && myIsGrounded)
 	{
 		if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eLandL);
 		else PlaySpecificAnimation(EPlayerAnimationClips::eLandR);
+		PlaySpecificAudio(EAnimationState::Land);
 	}
 
 	if (myCurrentVelocity.x > 0) myCurrentVelocity.x -= myWalkDecceleration * DELTA_TIME;
@@ -468,13 +626,7 @@ void Player::Idle()
 	}
 	else if (Input(myJump) && myCanJumpAgain)
 	{
-		myIsGrounded = false;
-		myCurrentVelocity.y = -myJumpSpeed;
-		if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eJumpL);
-		else PlaySpecificAnimation(EPlayerAnimationClips::eJumpR);
-		myMoveState = EPlayerState::Falling;
-
-		myCanJumpAgain = false;
+		Action(EAnimationState::Jump);
 		return;
 	}
 }
@@ -532,16 +684,7 @@ void Player::Walk()
 
 	if (Input(myJump) && myCanJumpAgain)
 	{
-		myIsGrounded = false;
-
-		myCurrentVelocity.y = -myJumpSpeed;
-		myMoveState = EPlayerState::Falling;
-
-		if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eJumpL);
-		else PlaySpecificAnimation(EPlayerAnimationClips::eJumpR);
-
-		myCanJumpAgain = false;
-		myMoveState = EPlayerState::Falling;
+		Action(EAnimationState::Jump);
 		return;
 	}
 	else if (!myIsGrounded)
@@ -575,7 +718,8 @@ void Player::Falling()
 	{
 		myDirection = 1;
 
-		if (myIsGrounded && !myHugsLeftWall && !myHugsRightWall) myMoveState = EPlayerState::Walk;
+		//if (myIsGrounded && !myHugsLeftWall && !myHugsRightWall) myMoveState = EPlayerState::Walk;
+		if (myIsGrounded) myMoveState = EPlayerState::Walk;
 		if (myHugsRightWall && !myIsGrounded && !myWasGrounded)
 		{
 			myMoveState = EPlayerState::Ledge;
@@ -610,33 +754,8 @@ void Player::Falling()
 		}
 	}
 
-	switch (myCurrentPower)
-	{
-	case EPowerUp::DoubleJump:
-		if (Input(myJump) && myCanDoubleJump && myCanJumpAgain)
-		{
-			myCurrentVelocity.y = -myJumpSpeed;
+	Action(EAnimationState::Power);
 
-			myCurrentAnimation = EAnimationState::Power;
-			if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::ePowerL);
-			else PlaySpecificAnimation(EPlayerAnimationClips::ePowerR);
-
-			myCanDoubleJump = false;
-			myCanJumpAgain = false;
-		}
-		break;
-	case EPowerUp::Glide:
-		if (Input(myJump) && myCanGlide && myCurrentVelocity.y > 0.0f && myCanJumpAgain)
-		{
-			myCurrentAnimation = EAnimationState::Power;
-
-			myIsGliding = true;
-			myCanGlide = false;
-		}
-		break;
-	default:
-		break;
-	}
 	if (!Input(myJump) && myCurrentVelocity.y < 0.0f)
 	{
 		myCurrentVelocity.y += myJumpDecceleration * DELTA_TIME;
@@ -670,55 +789,27 @@ void Player::Ledge()
 	else if (Input(myRight))
 	{
 		myDirection = 1;
-
-		if (myHugsRightWall)
-		{
-			myCurrentVelocity.x = 0.0f;
-		}
-		else
-		{
-			myMoveState = EPlayerState::Falling;
-			return;
-		}
-		if (Input(myJump) && myCanJumpAgain && !myIsGliding)
-		{
-			myCurrentVelocity.x = -myWallJumpSpeed * myWallJumpFactorX;
-			myCurrentVelocity.y = -myWallJumpSpeed;
-
-			PlaySpecificAnimation(EPlayerAnimationClips::eWallJumpL);
-
-			myMoveState = EPlayerState::Falling;
-
-			myCanJumpAgain = false;
-			return;
-		}
 	}
 	else if (Input(myLeft))
 	{
 		myDirection = -1;
-		if (myHugsLeftWall)
-		{
-			myCurrentVelocity.x = 0.0f;
-		}
-		else
-		{
-			myMoveState = EPlayerState::Falling;
-			return;
-		}
-		if (Input(myJump) && myCanJumpAgain && !myIsGliding)
-		{
-			myCurrentVelocity.x = myWallJumpSpeed * myWallJumpFactorX;
-			myCurrentVelocity.y = -myWallJumpSpeed;
-
-			PlaySpecificAnimation(EPlayerAnimationClips::eWallJumpR);
-
-			myMoveState = EPlayerState::Falling;
-			myCurrentAnimation = EAnimationState::W_Jump;
-
-			myCanJumpAgain = false;
-			return;
-		}
 	}
+
+	if (myHugsRightWall || myHugsLeftWall)
+	{
+		myCurrentVelocity.x = 0.0f;
+	}
+	else
+	{
+		myMoveState = EPlayerState::Falling;
+		return;
+	}
+	if (Input(myJump) && myCanJumpAgain && !myIsGliding)
+	{
+		Action(EAnimationState::W_Jump);
+		return;
+	}
+
 }
 
 void Player::Die()
@@ -736,17 +827,7 @@ void Player::Die()
 		else if (myCurrentVelocity.x < 0) myCurrentVelocity.x += myAirDecceleration * DELTA_TIME;
 		if (myCurrentVelocity.x <= myAirDecceleration * DELTA_TIME && myCurrentVelocity.x >= -myAirDecceleration * DELTA_TIME) myCurrentVelocity.x = 0;
 	}
-	if (!myWasDead)
-	{
-		myIsDead = true;
-
-		myCurrentAnimation = EAnimationState::Death;
-
-		if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eDeathL);
-		else PlaySpecificAnimation(EPlayerAnimationClips::eDeathR);
-
-		myDeathTimer = Timer::GetInstance().GetTotalTime();
-	}
+	Action(EAnimationState::Death);
 }
 
 void Player::PlaySpecificAnimation(EPlayerAnimationClips anAnimEnum)
@@ -760,4 +841,32 @@ void Player::PlaySpecificAnimation(EPlayerAnimationClips anAnimEnum)
 		anAnimEnum == EPlayerAnimationClips::eDeathR)
 		myAnimations[(int)anAnimEnum]->PlayAnimOnce(0.125f);
 	else myAnimations[(int)anAnimEnum]->PlayAnimOnce();
+}
+
+void Player::PlaySpecificAudio(EAnimationState anAnimState)
+{
+	switch (anAnimState)
+	{
+	case EAnimationState::Jump:
+		if (mySounds[4] != "Audio/Player/")
+			AudioManager::GetInstance().PlayEffect(mySounds[4].c_str());
+		break;
+	case EAnimationState::Power:
+		if (myCurrentPower == EPowerUp::DoubleJump)
+			if (mySounds[5] != "Audio/Player/")
+				AudioManager::GetInstance().PlayEffect(mySounds[5].c_str());
+		break;
+	case EAnimationState::W_Jump:
+		if (mySounds[6] != "Audio/Player/")
+			AudioManager::GetInstance().PlayEffect(mySounds[6].c_str());
+		break;
+	case EAnimationState::Land:
+		if (mySounds[7] != "Audio/Player/")
+			AudioManager::GetInstance().PlayEffect(mySounds[7].c_str());
+		break;
+	case EAnimationState::Death:
+		if (mySounds[8] != "Audio/Player/")
+			AudioManager::GetInstance().PlayEffect(mySounds[8].c_str());
+		break;
+	}
 }

@@ -33,7 +33,7 @@ public:
 	const CommonUtilities::Vector2f& GetSize() const;
 	const CommonUtilities::Vector2f& GetPosition() const;
 	//Setters
-
+	void SetBlendState(EBlendState aBlendState);
 	void SetRotation(const float aAngleInRadian);
 	void SetSpritePosition(const CommonUtilities::Vector2f& aPos);
 	void SetTextureRect(float aStartX, float aStartY, float aEndX, float aEndY);
