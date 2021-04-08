@@ -13,6 +13,8 @@ RenderCommand::RenderCommand(const RenderCommand& aRenderCommand)
 	myLayer = aRenderCommand.myLayer;
 	mySprite = aRenderCommand.mySprite;
 	myShouldBeCulled = aRenderCommand.myShouldBeCulled;
+	myPosition = aRenderCommand.myPosition;
+	mySize = aRenderCommand.mySize;
 }
 RenderCommand::RenderCommand(const char* aImagePath)
 {

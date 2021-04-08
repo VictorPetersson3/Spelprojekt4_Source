@@ -4,7 +4,7 @@
 #include "Enums.h"
 #include <memory>
 #include "CommonUtilities/GrowingArray.hpp"
-
+class Boss;
 class Entity;
 class Player;
 class Background;
@@ -41,12 +41,14 @@ private:
 
 	LevelSelect_SpecificLevelData* mylevelButtondata;
 
-	std::shared_ptr<PauseMenu> myPauseMenu;
-	std::shared_ptr<EndOfLevelScreen> myEndOfLevelScreen;
-	std::shared_ptr<Camera> myCamera;
-	std::shared_ptr<Player> myPlayer;
-	std::shared_ptr<CameraBehavoir> myCameraController;
-	std::unique_ptr<Background> myBackground;
+	std::shared_ptr<Boss> myBoss = {};
+	std::shared_ptr<Camera> myCamera = {};
+	std::shared_ptr<Player> myPlayer = {};
+	std::shared_ptr<PauseMenu> myPauseMenu = {};
+	std::unique_ptr<Background> myBackground = {};
+	std::shared_ptr<CameraBehavoir> myCameraController = {};
+	std::shared_ptr<EndOfLevelScreen> myEndOfLevelScreen = {};
+
 
 	std::shared_ptr<LevelData> currentLevelData;
 
