@@ -67,8 +67,8 @@ bool CGame::Init(const std::wstring& aVersion, HWND /*aHWND*/)
 	createParameters.myUpdateFunctionToCall = [this] {UpdateCallBack(); };
 	createParameters.myApplicationName = L"TGA 2D " + BUILD_NAME + L"[" + aVersion + L"] ";
 	createParameters.myPreferedMultiSamplingQuality = Tga2D::EMultiSamplingQuality_High;
-	createParameters.myClearColor = Tga2D::CColor({0,0,0, 1});
-	createParameters.myStartInFullScreen = true;
+	createParameters.myClearColor = Tga2D::CColor({0.5f, 0, 0, 1});
+	//createParameters.myStartInFullScreen = true;
 	createParameters.myActivateDebugSystems = Tga2D::eDebugFeature_Fps |
 		Tga2D::eDebugFeature_Mem |
 		Tga2D::eDebugFeature_Drawcalls |

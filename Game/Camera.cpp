@@ -4,6 +4,8 @@
 #include "InputManager.h"
 #include "tga2d/sprite/sprite.h"
 #include "RenderCommand.h"
+#include "CommonUtilities/Random.h"
+#include <math.h>
 
 Camera::Camera()
 {
@@ -31,6 +33,8 @@ void Camera::Update(const CommonUtilities::Vector2f aPositionToFollow)
 		myZoomFactor -= myMovementSpeed * Timer::GetInstance().GetDeltaTime();
 		myPosition *= myZoomFactor;
 	}
+
+	myPosition += myCameraShakePosition;
 }
 
 void Camera::RenderSprite(Tga2D::CSprite aSprite)
@@ -93,5 +97,34 @@ void Camera::RenderSprite(RenderCommand& aRenderCommand)
 	{
 		aRenderCommand.SetSpritePosition(spritePos);
 		aRenderCommand.Render();
+	}
+}
+
+void Camera::ShakeCamera(const float aShakeAmount, const float aAmountOfTime)
+{
+	myCameraShakeTimer = aAmountOfTime;
+	myCameraShakeMultiplier = aShakeAmount;
+}
+
+CommonUtilities::Vector2f Camera::InsideUnitCircle()
+{
+	float radius = CommonUtilities::GetRandomFloat(0.0f, 1.0f);
+	float angle = CommonUtilities::GetRandomFloat(0.0f, 3.141592653589793238f);
+
+	return CommonUtilities::Vector2<float>(std::cos(angle), std::sin(angle)) * radius;
+
+}
+
+void Camera::CameraShakingFunctionality()
+{
+	if (myCameraShakeTimer > 0)
+	{
+		myCameraShakeTimer -= Timer::GetInstance().GetDeltaTime();
+		myCameraShakePosition = InsideUnitCircle() * myCameraShakeMultiplier * 0.001;
+	}
+	else
+	{
+		myCameraShakePosition = myCameraShakePosition.Zero();
+		myCameraShakeTimer = 0;
 	}
 }

@@ -63,6 +63,7 @@ public:
 	CommonUtilities::Vector2f& GetCurrentVelocity();
 	std::shared_ptr<Collider> GetCollider();
 	const bool IsDead() const;
+	const bool GetHasLanded() const { return myHasLanded; };
 	
 
 protected:
@@ -154,6 +155,7 @@ protected:
 	bool myIsGliding = false;
 	bool myCanGlide = true;
 	bool myShouldUpdatePhysics = true;
+	bool myHasLanded = false;
 
 
 	int myDirection = 1;

@@ -300,8 +300,8 @@ void Player::Action(EAnimationState anAnimState)
 
 void Player::Update()
 {
+	myHasLanded = false;
 	//Sleep(1);
-
 	UpdateJumping();
 
 	ManageStates();
@@ -712,6 +712,7 @@ void Player::Falling()
 	{
 		if (myIsGrounded)
 		{
+			myHasLanded = true;
 			myMoveState = EPlayerState::Idle;
 			return;
 		}

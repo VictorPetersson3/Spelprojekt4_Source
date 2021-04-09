@@ -151,6 +151,10 @@ void Level::Update()
 		myBackground->Update();
 	}
 	myCameraController->Update(Timer::GetInstance().GetDeltaTime());
+	if (myPlayer->GetHasLanded())
+	{
+		myCamera->ShakeCamera(1, 0.3f);
+	}
 }
 
 void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData* someLevelData)
