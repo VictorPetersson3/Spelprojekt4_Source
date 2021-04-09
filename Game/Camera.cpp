@@ -4,6 +4,8 @@
 #include "InputManager.h"
 #include "tga2d/sprite/sprite.h"
 #include "RenderCommand.h"
+#include "CommonUtilities/Random.h"
+#include <math.h>
 
 Camera::Camera()
 {
@@ -18,19 +20,24 @@ void Camera::Init(const CommonUtilities::Vector2f& aPos)
 }
 
 //Here the logic for following the player will be or whatever we will follow or the rules we have
-void Camera::Update(const CommonUtilities::Vector2f aPositionToFollow)
+void Camera::Update()
 {
-	if (InputManagerS::GetInstance().GetKey(DIK_I))
-	{
-		myZoomFactor += myMovementSpeed * Timer::GetInstance().GetDeltaTime();
-		myPosition *= myZoomFactor;
-	}
-
-	if (InputManagerS::GetInstance().GetKey(DIK_K))
-	{
-		myZoomFactor -= myMovementSpeed * Timer::GetInstance().GetDeltaTime();
-		myPosition *= myZoomFactor;
-	}
+	//if (InputManagerS::GetInstance().GetKey(DIK_I))
+	//{
+	//	myZoomFactor += myMovementSpeed * Timer::GetInstance().GetDeltaTime();
+	//	myPosition *= myZoomFactor;
+	//}
+	//
+	//if (InputManagerS::GetInstance().GetKey(DIK_K))
+	//{
+	//	myZoomFactor -= myMovementSpeed * Timer::GetInstance().GetDeltaTime();
+	//	myPosition *= myZoomFactor;
+	//}
+	ImGui::Begin("Camera Zoom");
+	ImGui::DragFloat("Camera Zoom", &myZoomFactor);
+	ImGui::End();
+	CameraShakingFunctionality();
+	myPosition += myCameraShakePosition;
 }
 
 void Camera::RenderSprite(Tga2D::CSprite aSprite)
@@ -93,5 +100,37 @@ void Camera::RenderSprite(RenderCommand& aRenderCommand)
 	{
 		aRenderCommand.SetSpritePosition(spritePos);
 		aRenderCommand.Render();
+	}
+}
+
+void Camera::ShakeCamera(const float aShakeAmount, const float aAmountOfTime)
+{
+	myCameraShakeTimer = aAmountOfTime;
+	myCameraShakeMultiplier = aShakeAmount;
+}
+
+CommonUtilities::Vector2f Camera::InsideUnitCircle()
+{
+	float radius = CommonUtilities::GetRandomFloat(0.0f, 1.0f);
+	float angle = CommonUtilities::GetRandomFloat(0.0f, 3.141592653589793238f);
+
+	return CommonUtilities::Vector2<float>(std::cos(angle), std::sin(angle)) * radius;
+
+}
+
+void Camera::CameraShakingFunctionality()
+{
+	//ImGui::Begin("Shake");
+	//ImGui::DragFloat("Shake", &myTestMult);
+	//ImGui::End();
+	if (myCameraShakeTimer > 0)
+	{
+		myCameraShakeTimer -= Timer::GetInstance().GetDeltaTime();
+		myCameraShakePosition = InsideUnitCircle() * myCameraShakeMultiplier * 0.01f;
+	}
+	else
+	{
+		myCameraShakePosition = myCameraShakePosition.Zero();
+		myCameraShakeTimer = 0;
 	}
 }

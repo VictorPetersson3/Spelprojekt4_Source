@@ -53,6 +53,13 @@ void LevelSelectLoadData::FillData(rapidjson::Value& aJsonValue, int& aLevelIter
 		myLevelSelectLoadData[aLevelIterator]->myMapTile = aJsonValue[i]["mapTilePath"].GetString();
 		myLevelSelectLoadData[aLevelIterator]->myPosition.x = aJsonValue[i]["positionX"].GetFloat() / 1920;
 		myLevelSelectLoadData[aLevelIterator]->myPosition.y = aJsonValue[i]["positionY"].GetFloat() / 1080;
+		myLevelSelectLoadData[aLevelIterator]->myCameraAcceleration = aJsonValue[i]["cameraAcceleration"].GetFloat();
+		myLevelSelectLoadData[aLevelIterator]->myCameraMinBorderX = aJsonValue[i]["cameraMinBorderX"].GetFloat();
+		myLevelSelectLoadData[aLevelIterator]->myCameraMaxBorderX = aJsonValue[i]["cameraMaxBorderX"].GetFloat();
+		myLevelSelectLoadData[aLevelIterator]->myCameraMinBorderY = aJsonValue[i]["cameraMinBorderY"].GetFloat();
+		myLevelSelectLoadData[aLevelIterator]->myCameraMaxBorderY = aJsonValue[i]["cameraMaxBorderY"].GetFloat();
+		myLevelSelectLoadData[aLevelIterator]->myCameraPosition.x = aJsonValue[i]["cameraPosition"][0].GetFloat();
+		myLevelSelectLoadData[aLevelIterator]->myCameraPosition.y = aJsonValue[i]["cameraPosition"][1].GetFloat();
 
 		if (aJsonValue[i]["hasCutscene"].GetBool())
 		{
