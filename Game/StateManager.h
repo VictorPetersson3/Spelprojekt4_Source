@@ -31,6 +31,7 @@ public:
 
 	static void AddLevelOnStack(int aLevelIndex);
 	static void AddNextLevelOnStack(int aLevelIndex);
+	static void UnlockNextlevel(int aCurrentLevelIndex);
 
 	static void AddAndPlayCutscene(int aCutsceneIndex);
 

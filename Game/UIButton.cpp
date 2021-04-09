@@ -13,7 +13,7 @@ UIButton::UIButton()
 	myIsHovered = false;
 	myHasReachedApex = false;
 	myHoverCurrentScale = 0.55f;
-	myHoverMaxScale = 0.65f;
+	myHoverMaxScale = 0.62f;
 	myHoverMinScale = 0.55f;
 }
 

@@ -115,7 +115,6 @@ CommonUtilities::Vector2f Camera::InsideUnitCircle()
 	float angle = CommonUtilities::GetRandomFloat(0.0f, 3.141592653589793238f);
 
 	return CommonUtilities::Vector2<float>(std::cos(angle), std::sin(angle)) * radius;
-
 }
 
 void Camera::CameraShakingFunctionality()

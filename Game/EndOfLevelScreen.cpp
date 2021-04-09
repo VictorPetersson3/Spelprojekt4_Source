@@ -20,13 +20,13 @@ void EndOfLevelScreen::Init(const EStateType& aState)
 {
 	SetStateType(aState);
 	AddButton(std::make_shared<UIButton>());
-	GetButtonElement(0)->Init({ 0.5f, 0.7f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {BackToMainButton(); });
+	GetButtonElement(0)->Init({ 0.5f, 0.7f }, "sprites/UI/PauseMenu/B_LevelSelect.dds", 0, [this]() {BackToMainButton(); });
 	AddButton(std::make_shared<UIButton>());
-	GetButtonElement(1)->Init({ 0.5f, 0.5f }, "sprites/UI/PauseMenu/MainMenuButton.dds", 0, [this]() {NextLevelPress(); });
+	GetButtonElement(1)->Init({ 0.5f, 0.5f }, "sprites/UI/PauseMenu/B_NextLevel.dds", 0, [this]() {NextLevelPress(); });
 	myCurrentHoveredButton = 1;
 
 	myBackground = std::make_unique<UIImage>();
-	myBackground.get()->Init({ 0.5f, 0.5f }, "sprites/UI/OptionsMenu/settings_MenuBoard.dds", 2);
+	myBackground.get()->Init({ 0.5f, 0.5f }, "sprites/UI/PauseMenu/Pause_MenuBoard.dds", 2);
 	myBackground.get()->GetRenderCommand().SetSizeRelativeToImage({ 0.6f, 0.6f });
 }
 
@@ -40,7 +40,7 @@ void EndOfLevelScreen::Update()
 	{
 		myCurrentHoveredButton--;
 	}
-	else if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButton < GetUIButtonElementsSize())
+	else if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButton < GetUIButtonElementsSize() - 1)
 	{
 		myCurrentHoveredButton++;
 	}
@@ -67,6 +67,7 @@ void EndOfLevelScreen::Render()
 void EndOfLevelScreen::OnPushed()
 {
 	SetRenderThrough(true);
+	StateManager::GetInstance().UnlockNextlevel(myCurrentLevel);
 }
 
 void EndOfLevelScreen::SetCurrentLevel(const int aLevelIndex)
@@ -81,5 +82,5 @@ void EndOfLevelScreen::NextLevelPress()
 
 void EndOfLevelScreen::BackToMainButton()
 {
-	StateManager::GetInstance().RemoveDownToState(EStateType::eMainMenu);
+	StateManager::GetInstance().RemoveDownToState(EStateType::eLevelSelect);
 }
