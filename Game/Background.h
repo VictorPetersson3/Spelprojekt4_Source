@@ -19,6 +19,8 @@ enum class EWorld_but_like_just_a_placeholder_for_the_real_tag
 struct Layer
 {
 public:
+	Layer() = default;
+	Layer(const RenderCommand aRenderCommand);
 	void Update();
 	void Render(Camera& aCamera);
 	RenderCommand mySprite;
@@ -36,6 +38,8 @@ public:
 	void Render(Camera& aCamera);
 
 private:
+	bool myShouldPanY = false;
+
 	std::array<std::array<Layer, 3>, 5> mySets;
 
 	std::array<float, 3> mySpeedFactor = { 1.0f / 32.0f, 1.0f / 16.0f, 1.0f / 8.0f };
