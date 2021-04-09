@@ -238,7 +238,7 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y }, StateManager::GetInstance().GetSelectedCharacter());
 
 	//myPlayer->SetShouldUpdatePhysics(false);
-	myBackground->Init(*(myPlayer.get()), mylevelButtondata->myWorld);
+	myBackground->Init(*(myPlayer.get()), mylevelButtondata->myWorld, mylevelButtondata->myLevelNumber);
 
 }
 

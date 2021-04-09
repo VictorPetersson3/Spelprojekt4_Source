@@ -10,21 +10,15 @@
 #define DELTA_TIME Timer::GetInstance().GetDeltaTime()
 #define RESOLUTION Tga2D::CEngine::GetInstance()->GetRenderSize()
 
-Background::Background(EWorld_but_like_just_a_placeholder_for_the_real_tag aWorld)
-{
-	myWorld = aWorld;
-}
-
-void Background::Init(Player& aPlayer, EWorldLevel aWorld)
+void Background::Init(Player& aPlayer, EWorldLevel aWorld, const int aLevelIndex)
 {
 	JsonParser parser;
-	//auto cameraDoc = parser.GetDocument("Json/Camera.json");
 	auto worldDoc = parser.GetDocument("Json/Levels.json");
 
-	if (true/*!cameraDoc["..."]["IsStatic"].GetBool()*/) 
+	if (true/*!worldDoc["Worlds"][(int)aWorld]["levels"][aLevelIndex]["..."].GetBool()*/) 
 		mySpeed = { &(aPlayer.GetCurrentVelocity().x), &(aPlayer.GetCurrentVelocity().y) };
 	
-	CommonUtilities::Vector2f position = { 0.0f, aPlayer.GetPosition().y + 0.51f/*cameraDoc["..."]["MaxY"].GetFloat()*/ };
+	CommonUtilities::Vector2f position = { 0.0f, aPlayer.GetPosition().y + 0.51f/*worldDoc["Worlds"][(int)aWorld]["levels"][aLevelIndex]["MaxY"].GetFloat()*/ };
 
 	std::string path = worldDoc["Worlds"][(int)aWorld]["backgroundFolderPath"].GetString();
 
