@@ -251,6 +251,13 @@ void Level::Load(LevelSelect_SpecificLevelData* someLevelData)
 
 	Load(levelLoader.LoadLevel(mylevelButtondata), mylevelButtondata);
 
+	myCameraController->SetAcceleration(someLevelData->myCameraAcceleration);
+	myCameraController->SetMaxBoarderX(someLevelData->myCameraMaxBorderX);
+	myCameraController->SetMinBoarderX(someLevelData->myCameraMinBorderX);
+	myCameraController->SetMinBoarderY(someLevelData->myCameraMinBorderY);
+	myCameraController->SetMaxBoarderY(someLevelData->myCameraMaxBorderY);
+	myCameraController->SetPosition(someLevelData->myCameraPosition);
+
 	if (mylevelButtondata->myHasCutscene)
 	{
 		StateManager::AddAndPlayCutscene(mylevelButtondata->myCutsceneConversation);
