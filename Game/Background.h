@@ -8,14 +8,6 @@ class AnimationClip;
 class Camera;
 class Player;
 
-enum class EWorld_but_like_just_a_placeholder_for_the_real_tag
-{
-	Forest,
-	Level2,
-	Factory_Kanske,
-	MinnsInteVadDennaSkulleVaraHeller
-};
-
 struct Layer
 {
 public:
@@ -30,10 +22,10 @@ public:
 class Background
 {
 public:
-	Background(EWorld_but_like_just_a_placeholder_for_the_real_tag aWorld = EWorld_but_like_just_a_placeholder_for_the_real_tag::Forest);
+	Background() {}
 	~Background() {}
 
-	void Init(Player& aPlayer, EWorldLevel aWorld);
+	void Init(Player& aPlayer, EWorldLevel aWorld, const int aLevelIndex);
 	void Update();
 	void Render(Camera& aCamera);
 
@@ -45,7 +37,5 @@ private:
 	std::array<float, 3> mySpeedFactor = { 1.0f / 32.0f, 1.0f / 16.0f, 1.0f / 8.0f };
 
 	CommonUtilities::Vector2<float*> mySpeed;
-
-	EWorld_but_like_just_a_placeholder_for_the_real_tag myWorld;
 };
 

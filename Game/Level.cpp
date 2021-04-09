@@ -40,7 +40,7 @@ Level::Level()
 	myEndOfLevelScreen = std::make_shared<EndOfLevelScreen>(this);
 	myEndOfLevelScreen->Init(EStateType::eEndOfLevelScreen);
 
-	myBackground = std::make_unique<Background>(/*EWorld_but_like_just_a_placeholder_for_the_real_tag::Forest*/);
+	myBackground = std::make_unique<Background>();
 }
 
 Level::~Level()
@@ -239,7 +239,7 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y }, StateManager::GetInstance().GetSelectedCharacter());
 
 	//myPlayer->SetShouldUpdatePhysics(false);
-	myBackground->Init(*(myPlayer.get()), mylevelButtondata->myWorld);
+	myBackground->Init(*(myPlayer.get()), mylevelButtondata->myWorld, mylevelButtondata->myLevelNumber);
 
 }
 
@@ -251,6 +251,13 @@ void Level::Load(LevelSelect_SpecificLevelData* someLevelData)
 	//L�gg in att den skall spela en cutscene h�r och att den laddar in den
 
 	Load(levelLoader.LoadLevel(mylevelButtondata), mylevelButtondata);
+
+	myCameraController->SetAcceleration(someLevelData->myCameraAcceleration);
+	myCameraController->SetMaxBoarderX(someLevelData->myCameraMaxBorderX);
+	myCameraController->SetMinBoarderX(someLevelData->myCameraMinBorderX);
+	myCameraController->SetMinBoarderY(someLevelData->myCameraMinBorderY);
+	myCameraController->SetMaxBoarderY(someLevelData->myCameraMaxBorderY);
+	myCameraController->SetPosition(someLevelData->myCameraPosition);
 
 	if (mylevelButtondata->myHasCutscene)
 	{
