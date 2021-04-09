@@ -11,10 +11,17 @@ struct LevelSelect_SpecificLevelData
 	LinkString myMapTile;
 	EWorldLevel myWorld;
 	CommonUtilities::Vector2f myPosition;
+	CommonUtilities::Vector2f myCameraPosition;
 	bool myHasCutscene = false;
 	bool myIsUnlocked = false;
 	int myCutsceneConversation = INFINITY;
 	int myLevelNumber;
+	float myCameraAcceleration;
+	float myCameraMinBorderX;
+	float myCameraMinBorderY;
+	float myCameraMaxBorderX;
+	float myCameraMaxBorderY;
+	
 	
 };
 

@@ -13,7 +13,5 @@ public:
 	void Update(float aDeltaTime) override;
 	void Render(const std::shared_ptr<Camera> aCamera) override;
 
-private:
-	std::shared_ptr<Collider> myCollider;
 };
 

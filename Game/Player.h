@@ -63,7 +63,6 @@ public:
 	CommonUtilities::Vector2f& GetCurrentVelocity();
 	std::shared_ptr<Collider> GetCollider();
 	const bool IsDead() const;
-	
 
 protected:
 	void InitJSON();
