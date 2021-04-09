@@ -4,21 +4,26 @@
 #include "AnimationClip.h"
 #include <math.h>
 
-Saw::Saw(Vector2 aStartPoint)
+Saw::Saw(Vector2 aStartPoint, bool isFlipped)
 {
 	myPosition = aStartPoint;
 	myAnimationClip = std::make_shared<AnimationClip>("Sprites/obstacles/obstacle_snail.dds", 0, 0);
 	myAnimationClip->Init({ 8,1 }, { 5,1 });
 	myAnimationClip->PlayAnimLoop();
 	myTravelPoints.push_back(aStartPoint);
+
+	if (isFlipped)
+	{
+		myAnimationClip->SetScaleRelativeToFrame({ -1, 1 });
+	}
 }
 
 void Saw::AddPoint(Vector2 aPoint)
 {
-	if (myTravelPoints.size() == 1 && myTravelPoints[0].myX < aPoint.myX)
-	{
-		myAnimationClip->SetScaleRelativeToFrame({ -1, 1 });
-	}
+	//if (myTravelPoints.size() == 1 && myTravelPoints[0].myX < aPoint.myX)
+	//{
+	//	myAnimationClip->SetScaleRelativeToFrame({ -1, 1 });
+	//}
 
 	myAnimationClip->SetRotation(0);
 	myDownVector = Vector2({ (myTravelPoints[0] - aPoint).myY, (myTravelPoints[0] - aPoint).myX });
