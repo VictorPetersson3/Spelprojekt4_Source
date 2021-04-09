@@ -18,8 +18,9 @@ void MovingPlatform::AddPoint(Vector2 aPoint)
 
 void MovingPlatform::Update(float aDeltatime)
 {
-	if (myPosition.Distance(myPosition, myTravelPoints[myNextPointIndex]) < EPSILON)
+	if (myPosition.Distance(myPosition, myTravelPoints[myNextPointIndex]) < aDeltatime * mySpeed)
 	{
+		myPosition = myTravelPoints[myNextPointIndex];
 		myNextPointIndex += myDirection;
 	}
 	if (myNextPointIndex > myTravelPoints.size() - 1 || myNextPointIndex < 0)

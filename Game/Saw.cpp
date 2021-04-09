@@ -42,14 +42,10 @@ void Saw::Update(float aDeltatime)
 				myNextPointIndex += myDirection;
 				Vector2 tempVector = myPosition - myTravelPoints[myNextPointIndex];
 				myAnimationClip->SetScaleRelativeToFrame({ 1, floatDirection });
-
-				//myAnimationClip->SetRotation((std::atan2(myDownVector.myY, myDownVector.myX) + ((2 * PI) / 4)));
-
 			}
 			else
 			{
 				myNextPointIndex = 0;
-
 			}
 		}
 
