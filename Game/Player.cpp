@@ -300,7 +300,6 @@ void Player::Action(EAnimationState anAnimState)
 
 void Player::Update()
 {
-	myHasLanded = false;
 	//Sleep(1);
 	UpdateJumping();
 
@@ -531,7 +530,7 @@ void Player::UpdatePhysics()
 		{
 			myPosition.y += positionCorrection.y + 0.1f / Tga2D::CEngine::GetInstance()->GetRenderSize().y;
 			if (myWasGrounded && myCurrentVelocity.y > 0) myCurrentVelocity.y = 0;
-			myIsGrounded = true;
+			myIsGrounded = true;			
 		}
 		else
 		{
@@ -711,8 +710,7 @@ void Player::Falling()
 	if (Input(myLeft) == Input(myRight))
 	{
 		if (myIsGrounded)
-		{
-			myHasLanded = true;
+		{				
 			myMoveState = EPlayerState::Idle;
 			return;
 		}

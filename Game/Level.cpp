@@ -56,6 +56,10 @@ void Level::OnPushed()
 void Level::Render()
 {
 	myBackground->Render(*myCamera);
+	for (auto t : myTerrain)
+	{
+		myCamera->BatchRenderSprite(t.get()->myRenderCommand);
+	}
 	for (int i = 0; i < mySpriteBatches.Size(); i++)
 	{
 		mySpriteBatches[i]->Render();
@@ -96,23 +100,15 @@ void Level::Update()
 		}
 		
 	}
-	
 	//Pause Menu
 	if (InputManagerS::GetInstance().GetKeyDown(DIK_ESCAPE))
 	{
 		StateManager::AddStateOnStack(myPauseMenu);
 	}
 	//Player
-	myCamera->Update({ 0,0 });	
-
-	for (auto t : myTerrain)
-	{
-		myCamera->BatchRenderSprite(t.get()->myRenderCommand);
-	}
 	for (auto entity : myEntities)
 	{
 		entity.get()->Update(deltaTime);
-		entity->Render(myCamera);
 	}
 
 	if (InputManagerS::GetInstance().GetKeyDown(DIK_F5))
@@ -120,10 +116,10 @@ void Level::Update()
 		Restart();
 	}
 		
-	if (myPlayer.get() != nullptr)
+	if (myPlayer != nullptr)
 	{
-		myPlayer.get()->Update();
-		myPlayer.get()->GetCollider().get()->Draw();
+		myPlayer->Update();
+		myPlayer->GetCollider()->Draw();
 		if (myPlayer->IsDead() && myPlayerHasDied == false)
 		{
 			myPlayerHasDied = true;
@@ -136,6 +132,17 @@ void Level::Update()
 	{
 		myLevelEndCollider->Draw();
 	}
+	// Background
+	//if (myBackground != nullptr)
+	{
+		myBackground->Update();
+	}
+	myCameraController->Update(Timer::GetInstance().GetDeltaTime());
+	myCamera->Update();	
+	if (InputManagerS::GetInstance().GetKey(DIK_I))
+	{
+		myCamera->ShakeCamera(1, 0.5f);
+	}
 
 	if (myLevelEndCollider != nullptr && myPlayer.get() != nullptr)
 	{
@@ -144,16 +151,6 @@ void Level::Update()
 			StateManager::AddStateOnStack(myEndOfLevelScreen);
 			std::cout << "Level ended" << std::endl;
 		}
-	}
-	// Background
-	//if (myBackground != nullptr)
-	{
-		myBackground->Update();
-	}
-	myCameraController->Update(Timer::GetInstance().GetDeltaTime());
-	if (myPlayer->GetHasLanded())
-	{
-		myCamera->ShakeCamera(1, 0.3f);
 	}
 }
 
