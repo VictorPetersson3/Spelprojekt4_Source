@@ -15,10 +15,10 @@ void Background::Init(Player& aPlayer, EWorldLevel aWorld, const int aLevelIndex
 	JsonParser parser;
 	auto worldDoc = parser.GetDocument("Json/Levels.json");
 
-	if (true/*!worldDoc["Worlds"][(int)aWorld]["levels"][aLevelIndex]["..."].GetBool()*/) 
+	if (worldDoc["Worlds"][(int)aWorld]["levels"][aLevelIndex]["cameraAcceleration"].GetFloat())
 		mySpeed = { &(aPlayer.GetCurrentVelocity().x), &(aPlayer.GetCurrentVelocity().y) };
-	
-	CommonUtilities::Vector2f position = { 0.0f, aPlayer.GetPosition().y + 0.51f/*worldDoc["Worlds"][(int)aWorld]["levels"][aLevelIndex]["MaxY"].GetFloat()*/ };
+
+	CommonUtilities::Vector2f position = { 0.0f, worldDoc["Worlds"][(int)aWorld]["levels"][aLevelIndex]["cameraMaxBorderY"].GetFloat() + 0.5f };
 
 	std::string path = worldDoc["Worlds"][(int)aWorld]["backgroundFolderPath"].GetString();
 
@@ -51,7 +51,8 @@ void Background::Init(Player& aPlayer, EWorldLevel aWorld, const int aLevelIndex
 void Background::Update()
 {
 	float bigDelta = 0.8f;
-	float smallDelta = *mySpeed.x * DELTA_TIME;
+	float smallDelta = 0;
+	if (mySpeed.x != nullptr) smallDelta = *mySpeed.x * DELTA_TIME;
 
 	int smolIndex = 5;
 	float smolness = 10;
