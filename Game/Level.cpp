@@ -211,6 +211,7 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 			}
 		}
 	}
+
 	keyList.clear();
 	doorList.clear();
 
@@ -253,7 +254,7 @@ void Level::Load(LevelSelect_SpecificLevelData* someLevelData)
 	//L�gg in att den skall spela en cutscene h�r och att den laddar in den
 
 	Load(levelLoader.LoadLevel(mylevelButtondata), mylevelButtondata);
-	myBackground->Init(*(myPlayer.get()), mylevelButtondata->myWorld);
+
 	if (mylevelButtondata->myHasCutscene)
 	{
 		StateManager::AddAndPlayCutscene(mylevelButtondata->myCutsceneConversation);
