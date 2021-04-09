@@ -282,7 +282,7 @@ void CutsceneManager::ParseAndAddText()
 			}
 			if (myHasResumed)
 			{
-				myTextTimer = -0.5f;
+				myTextTimer = -0.25f;
 				myCurrentLineToPlay = myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].first;
 
 				if (myLeftCharacter->GetName() == myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->GetName())
