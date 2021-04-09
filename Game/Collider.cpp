@@ -36,7 +36,13 @@ void Collider::Update()
 
 void Collider::UpdateCollider(CommonUtilities::Vector2f anUpdatedPosition)
 {
+	myPlatformSpeed = anUpdatedPosition - myPosition;
 	myPosition = anUpdatedPosition;
+}
+
+const CommonUtilities::Vector2f& Collider::GetPlatformSpeed()
+{
+	return myPlatformSpeed;
 }
 
 std::vector<Collider*>& Collider::GetCollidedWith()

@@ -18,6 +18,7 @@
 #include "LevelData.h"
 #include "Saw.h"
 #include "TerrainTile.h"
+#include "Boss.h"
 
 #include "UIImage.h"
 
@@ -25,13 +26,14 @@
 #include "StateManager.h"
 #include "PauseMenu.h"
 #include "EndOfLevelScreen.h"
-
 #include "LevelSelect_SpecificLevelData.h"
 
 Level::Level()
 {
 	myPlayer = std::make_shared<Player>();
 	mySpriteBatches.Init(10);
+
+	myBoss = std::make_shared<Boss>();
 
 	myPauseMenu = std::make_shared<PauseMenu>();
 	myPauseMenu->Init(EStateType::ePauseMenu);
@@ -54,7 +56,6 @@ void Level::OnPushed()
 void Level::Render()
 {
 	myBackground->Render(*myCamera);
-
 	for (int i = 0; i < mySpriteBatches.Size(); i++)
 	{
 		mySpriteBatches[i]->Render();
@@ -71,6 +72,7 @@ void Level::Render()
 	}
 
 
+	myBoss->Render(*myCamera);
 	myPlayer->Render(*myCamera);
 }
 
@@ -79,8 +81,8 @@ void Level::Render()
 
 void Level::Update()
 {
-	float deltaTime = Timer::GetInstance().GetDeltaTime();
-
+	const float deltaTime = Timer::GetInstance().GetDeltaTime();
+	myBoss->Update(deltaTime);
 	if (myPlayerHasDied == true)
 	{
 		myPlayer->SetShouldUpdatePhysics(false);
@@ -94,7 +96,7 @@ void Level::Update()
 		}
 		
 	}
-
+	
 	//Pause Menu
 	if (InputManagerS::GetInstance().GetKeyDown(DIK_ESCAPE))
 	{
@@ -172,6 +174,7 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 	{
 		myLevelEndCollider.get()->RemoveFromManager();
 	}
+	CollisionManager::GetInstance().Clear();
 
 	myLevelEndCollider = aData.get()->GetLevelEnd();
 
@@ -211,17 +214,19 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 	for (int i = 0; i < aData->GetSpriteBatches().Size(); i++)
 	{
 		mySpriteBatches.Add(aData->GetSpriteBatches()[i]);
-
 	}
 
 	std::cout << "Player start: " << aData->GetPlayerStart().x << " x " << aData->GetPlayerStart().y << '\n';
 
 
-	for (auto t : myTerrain)
+	for (auto& t : myTerrain)
 	{
 		t->myCollider->AddToManager();
 	}
-
+	for (auto& e : myEntities)
+	{
+		e->myCollider->AddToManager();
+	}
 
 	if (myLevelEndCollider != nullptr)
 	{
@@ -272,5 +277,14 @@ void Level::Init(const EStateType& aState)
 	myCamera = std::make_shared<Camera>();
 	myCameraController = std::make_shared<CameraBehavoir>();
 	myCameraController->Init(myCamera, myPlayer);
+	
+	myBoss->Init(myPlayer);
 
+	for (float i = 0; i < 10; i += 2.5f)
+	{
+		for (float j = 0; j < 10; j += 2.5f)
+		{
+			myBoss->AddDashPosition({ i / 10, j / 10 });
+		}
+	}
 }

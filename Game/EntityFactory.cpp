@@ -159,7 +159,7 @@ std::shared_ptr<MovingPlatform> EntityFactory::LoadMovingPlatform(int aEntityInd
 	aPlatformToPushBack.SetSize(size, gridSize);
 	collider = std::make_shared<Collider>(position, size.X / renderSizeX, size.Y / renderSizeY);
 
-	collider->SetTag(EColliderTag::Terrain);
+	collider->SetTag(EColliderTag::MovingPlatform);
 
 	aPlatformToPushBack.SetCollider(collider);
 

@@ -176,18 +176,17 @@ std::shared_ptr<TerrainTile> LevelLoader::LoadTileMap(const char* aImagePath, in
 {
 	RenderCommand tempRenderCommand = RenderCommand(aImagePath, aLayerIndex);
 
-	tempRenderCommand.SetSamplerState(ESamplerFilter::ESamplerFilter_Point, ESamplerAddressMode::ESamplerAddressMode_Clamp);
-
 	SetRect(tempRenderCommand, aTileIndex, aLayerIndex);
 
 	SetSpriteSize(tempRenderCommand, aGridSize);
 
 	SetPosition(tempRenderCommand, aTileIndex, aLayerIndex);
-
-	std::string layerIdentifier = myDocument["levels"][0]["layerInstances"][aLayerIndex]["__identifier"].GetString();
+	
+	tempRenderCommand.SetSamplerState(ESamplerFilter::ESamplerFilter_Point, ESamplerAddressMode::ESamplerAddressMode_Clamp);
 
 	aSpriteBatch->AddObject(tempRenderCommand.mySprite.get());
 
+	std::string layerIdentifier = myDocument["levels"][0]["layerInstances"][aLayerIndex]["__identifier"].GetString();	
 	if (layerIdentifier != "Background" && layerIdentifier != "background" && layerIdentifier != "Props" && layerIdentifier != "props")
 	{
 		CommonUtilities::Vector2f aColliderPosition = { tempRenderCommand.GetPosition().x, tempRenderCommand.GetPosition().y };
@@ -210,7 +209,8 @@ std::shared_ptr<TerrainTile> LevelLoader::LoadTileMap(const char* aImagePath, in
 
 void LevelLoader::SetRect(RenderCommand& aRenderCommand, int gridTileindex, int layerIndex)
 {
-	const float EPSILON = 0.000001f;
+	const float EPSILON = 0.0001f;
+	float texelsize = 1.0f / static_cast<float>(aRenderCommand.GetImageSize().x);
 
 	float gridSize = myDocument["defs"]["layers"][0]["gridSize"].GetFloat();
 
@@ -223,7 +223,7 @@ void LevelLoader::SetRect(RenderCommand& aRenderCommand, int gridTileindex, int 
 	startX -= EPSILON;
 	startY -= EPSILON;
 
-	aRenderCommand.SetTextureRect(startX, startY, startX + 32.f / aRenderCommand.GetImageSize().x, startY + 32.f / aRenderCommand.GetImageSize().y);
+	aRenderCommand.SetTextureRect(startX + texelsize, startY + texelsize, startX + 32.f / aRenderCommand.GetImageSize().x - texelsize, startY + 32.f / aRenderCommand.GetImageSize().y - texelsize);
 }
 
 void LevelLoader::SetPosition(RenderCommand& aRenderCommand, int aGridTileIndex, int aLayerIndex)
@@ -237,5 +237,6 @@ void LevelLoader::SetPosition(RenderCommand& aRenderCommand, int aGridTileIndex,
 
 void LevelLoader::SetSpriteSize(RenderCommand& aRenderCommand, float aGridSize)
 {
-	aRenderCommand.SetSizeRelativeToImage({ 1.f / (static_cast<float>(aRenderCommand.GetImageSize().x) / 32),1.f / (static_cast<float>(aRenderCommand.GetImageSize().y) / 32) });
+	const float EPSILON = 0.0001f;
+	aRenderCommand.SetSizeRelativeToImage({ (1.f / (static_cast<float>(aRenderCommand.GetImageSize().x) / 32)) + EPSILON, (1.f / (static_cast<float>(aRenderCommand.GetImageSize().y) / 32)) + EPSILON });
 }

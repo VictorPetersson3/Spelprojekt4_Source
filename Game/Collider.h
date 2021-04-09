@@ -20,7 +20,8 @@ enum class EColliderTag
 	KillZone,
 	EndZone,
 	Terrain,
-	IgnoreCollision
+	IgnoreCollision,
+	MovingPlatform
 };
 
 class Collider
@@ -44,6 +45,7 @@ public:
 	void AddToManager();
 	bool& HasCollided();
 
+	const CommonUtilities::Vector2f& GetPlatformSpeed();
 	std::vector<Collider*>& GetCollidedWith();
 	const CommonUtilities::Vector2f GetCollisionNormal(const int anIndex);
 	const void Draw() const;
@@ -59,6 +61,7 @@ private:
 	EColliderTag myTag = EColliderTag::Terrain;
 
 	float myRadius;
+	CommonUtilities::Vector2f myPlatformSpeed;
 
 	CommonUtilities::Vector2f myPosition;
 	AABB myAABB;
