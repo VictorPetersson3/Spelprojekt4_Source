@@ -254,7 +254,7 @@ void Player::Action(EAnimationState anAnimState)
 		}
 		break;
 	case EAnimationState::W_Jump:
-		if (myDirection)
+		if (myDirection > 0)
 		{
 			myCurrentVelocity.x = -myWallJumpSpeed * myWallJumpFactorX;
 			myCurrentVelocity.y = -myWallJumpSpeed;
@@ -263,10 +263,11 @@ void Player::Action(EAnimationState anAnimState)
 			PlaySpecificAudio(EAnimationState::W_Jump);
 
 			myMoveState = EPlayerState::Falling;
+			myCurrentAnimation = EAnimationState::W_Jump;
 
 			myCanJumpAgain = false;
 		}
-		else
+		else if (myDirection < 0)
 		{
 			myCurrentVelocity.x = myWallJumpSpeed * myWallJumpFactorX;
 			myCurrentVelocity.y = -myWallJumpSpeed;
