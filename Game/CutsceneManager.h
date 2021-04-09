@@ -35,6 +35,7 @@ private:
     bool myIsPrinting = false;
     bool myHasReachedEndOfSentence = false;
     bool myPrintEverything = false;
+    bool myHasResumed = false;
 
     unsigned int myCurrentLineIndexToPlay = 0;
     unsigned int myCurrentLetterInLineToPlay = 0;

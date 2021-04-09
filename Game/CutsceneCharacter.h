@@ -17,6 +17,8 @@ public:
 
 private:
 	std::unique_ptr<Tga2D::CSprite> mySprite;
+	float myScaleTimer = 0;
+	float myCurrentScale = 1;
 	LinkString myName;
 
 };
