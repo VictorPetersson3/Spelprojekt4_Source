@@ -21,6 +21,7 @@ void Bullet::Call(Vector2 aPosition, Vector2 aDirection)
 	myRemainingLifetime = myMaxLifetime;
 	myPosition = aPosition;
 	myDirection = aDirection;
+	myAnimationClip->SetRotation(std::atan2(myDirection.Y, myDirection.X) + ((2 * PI) / 4) * 2);
 }
 
 void Bullet::Return()

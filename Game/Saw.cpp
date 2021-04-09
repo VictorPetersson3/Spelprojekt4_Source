@@ -2,7 +2,7 @@
 #include "Saw.h"
 #include "Camera.h"
 #include "AnimationClip.h"
-
+#include <math.h>
 
 Saw::Saw(Vector2 aStartPoint)
 {
@@ -15,29 +15,47 @@ Saw::Saw(Vector2 aStartPoint)
 
 void Saw::AddPoint(Vector2 aPoint)
 {
+	if (myTravelPoints.size() == 1 && myTravelPoints[0].myX < aPoint.myX)
+	{
+		myAnimationClip->SetScaleRelativeToFrame({ -1, 1 });
+	}
+
+	myAnimationClip->SetRotation(0);
+	myDownVector = Vector2({ (myTravelPoints[0] - aPoint).myY, (myTravelPoints[0] - aPoint).myX });
 	myTravelPoints.push_back(aPoint);
 }
 
 void Saw::Update(float aDeltatime)
 {
-	if (myPosition.Distance(myPosition, myTravelPoints[myNextPointIndex]) < EPSILON)
+
+	if (myPosition.Distance(myPosition, myTravelPoints[myNextPointIndex]) < aDeltatime * mySpeed)
 	{
+		myPosition = myTravelPoints[myNextPointIndex];
 		myNextPointIndex += myDirection;
-	}
-	if (myNextPointIndex > myTravelPoints.size() - 1|| myNextPointIndex < 0)
-	{
-		if (myRepeating)
+
+		if (myNextPointIndex > myTravelPoints.size() - 1 || myNextPointIndex < 0)
 		{
-			myDirection *= -1;
-			myNextPointIndex += myDirection;
+			if (myRepeating)
+			{
+				myDirection *= -1;
+				float floatDirection = myDirection;
+				myNextPointIndex += myDirection;
+				Vector2 tempVector = myPosition - myTravelPoints[myNextPointIndex];
+				myAnimationClip->SetScaleRelativeToFrame({ 1, floatDirection });
+			}
+			else
+			{
+				myNextPointIndex = 0;
+			}
 		}
-		else
-		{
-			myNextPointIndex = 0;
-		}
+
+		myDownVector = (myPosition - myTravelPoints[myNextPointIndex]) * -1;
+		myAnimationClip->SetRotation(std::atan2(myDownVector.myY, myDownVector.myX) + ((2 * PI) / 4) * 2);
+
 	}
+
 	myPosition += (myTravelPoints[myNextPointIndex] - myPosition).GetNormalized() * aDeltatime * mySpeed;
-	myCollider->UpdateCollider(myPosition); 
+	myCollider->UpdateCollider(myPosition);
 	myAnimationClip->UpdateAnimation(myPosition);
 }
 
