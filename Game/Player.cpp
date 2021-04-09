@@ -254,7 +254,7 @@ void Player::Action(EAnimationState anAnimState)
 		}
 		break;
 	case EAnimationState::W_Jump:
-		if (myDirection)
+		if (myDirection > 0)
 		{
 			myCurrentVelocity.x = -myWallJumpSpeed * myWallJumpFactorX;
 			myCurrentVelocity.y = -myWallJumpSpeed;
@@ -263,10 +263,11 @@ void Player::Action(EAnimationState anAnimState)
 			PlaySpecificAudio(EAnimationState::W_Jump);
 
 			myMoveState = EPlayerState::Falling;
+			myCurrentAnimation = EAnimationState::W_Jump;
 
 			myCanJumpAgain = false;
 		}
-		else
+		else if (myDirection < 0)
 		{
 			myCurrentVelocity.x = myWallJumpSpeed * myWallJumpFactorX;
 			myCurrentVelocity.y = -myWallJumpSpeed;
@@ -301,6 +302,8 @@ void Player::Action(EAnimationState anAnimState)
 void Player::Update()
 {
 	//Sleep(1);
+	ChangeInput();
+
 	UpdateJumping();
 
 	ManageStates();
@@ -392,13 +395,13 @@ std::shared_ptr<Collider> Player::GetCollider()
 
 void Player::ChangeInput()
 {
-	EInputType inputType;
+	EInputType inputType = EInputType::WASD;
 
 	if (INPUT.GetKey(DIK_UP) || INPUT.GetKey(DIK_LEFT) || INPUT.GetKey(DIK_DOWN) || INPUT.GetKey(DIK_RIGHT) || INPUT.GetKey(DIK_Z) || INPUT.GetKey(DIK_X))
 		inputType = EInputType::ArrowKeys;
 	else if (INPUT.GetKey(DIK_W) || INPUT.GetKey(DIK_A) || INPUT.GetKey(DIK_S) || INPUT.GetKey(DIK_D) || INPUT.GetKey(DIK_SPACE) || INPUT.GetKey(DIK_LSHIFT))
 		inputType = EInputType::WASD;
-	else if (INPUT.GetKey(XINPUT_GAMEPAD_DPAD_UP) || INPUT.GetKey(XINPUT_GAMEPAD_DPAD_LEFT) || INPUT.GetKey(XINPUT_GAMEPAD_DPAD_DOWN) || INPUT.GetKey(XINPUT_GAMEPAD_DPAD_RIGHT) || INPUT.GetKey(XINPUT_GAMEPAD_A) || INPUT.GetKey(XINPUT_GAMEPAD_B) || INPUT.GetKey(XINPUT_GAMEPAD_X))
+	else if (myController != nullptr && (INPUT.GetKey(XINPUT_GAMEPAD_DPAD_UP) || INPUT.GetKey(XINPUT_GAMEPAD_DPAD_LEFT) || INPUT.GetKey(XINPUT_GAMEPAD_DPAD_DOWN) || INPUT.GetKey(XINPUT_GAMEPAD_DPAD_RIGHT) || INPUT.GetKey(XINPUT_GAMEPAD_A) || INPUT.GetKey(XINPUT_GAMEPAD_B) || INPUT.GetKey(XINPUT_GAMEPAD_X) || myController->GetLeftTumbStick().x != 0 || myController->GetLeftTumbStick().y != 0))
 		inputType = EInputType::Controller;
 
 	switch (inputType)
