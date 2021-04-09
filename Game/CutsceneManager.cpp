@@ -41,6 +41,12 @@ void CutsceneManager::Init(const EStateType& aState)
 	myTextBackground = std::make_unique<UIImage>();
 	myTextBackground->Init({ 0.5f, 0.85f }, "sprites/Cutscenes/TextFrame.dds", -1);
 	myTextBackground->GetRenderCommand().SetSizeRelativeToImage({ 0.60f, 0.60f });
+	myTextBackgroundGradient = std::make_unique<UIImage>();
+	myTextBackgroundGradient->Init({ 0.5f, 0.85f }, "sprites/Cutscenes/AlphaGradient.dds", -1);
+	myTextBackgroundGradient->GetRenderCommand().SetPivot({ 0.5f, 1.0f });
+	myTextBackgroundGradient->GetRenderCommand().SetSpritePosition({ 0.5f, 1.0f });
+	myTextBackgroundGradient->GetRenderCommand().SetSizeRelativeToImage({ 5.0f, 1.0f });
+	myTextBackgroundGradient->GetRenderCommand().SetColor(Tga2D::CColor{0.5f, 0.15f, 0.23f, 1.0f});
 
 	myTextToPrint = std::make_shared<Tga2D::CText>("Text/Tomodachy.otf", Tga2D::EFontSize_14);
 	myTextToPrint->SetColor({ 0,0,0,1 });
@@ -81,6 +87,7 @@ void CutsceneManager::Update()
 
 void CutsceneManager::Render()
 {
+	myTextBackgroundGradient->Render();
 	myLeftCharacter->Render();
 	myRightCharacter->Render();
 	myTextBackground->Render();

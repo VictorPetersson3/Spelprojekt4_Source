@@ -43,6 +43,7 @@ private:
     std::string myCurrentLineToPlay;
     std::string myDialogueToRender;
 
+    std::unique_ptr<UIImage> myTextBackgroundGradient;
     std::unique_ptr<UIImage> myTextBackground;
 
     std::shared_ptr<Tga2D::CText> myTextToPrint;
