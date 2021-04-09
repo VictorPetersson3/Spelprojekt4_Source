@@ -40,7 +40,7 @@ Level::Level()
 	myEndOfLevelScreen = std::make_shared<EndOfLevelScreen>(this);
 	myEndOfLevelScreen->Init(EStateType::eEndOfLevelScreen);
 
-	myBackground = std::make_unique<Background>(/*EWorld_but_like_just_a_placeholder_for_the_real_tag::Forest*/);
+	myBackground = std::make_unique<Background>();
 }
 
 Level::~Level()
