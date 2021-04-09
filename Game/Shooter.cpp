@@ -7,7 +7,7 @@
 void Shooter::Init(Vector2 aPosition, Shooter::EFireDirection aFireDirection, bool aFlipped)
 {
 	myPosition = aPosition;
-	myAnimationClip = std::make_shared<AnimationClip>("Sprites/obstacles/obstacle_shooter.dds", 0, 0);
+	myAnimationClip = std::make_shared<AnimationClip>("Sprites/obstacles/obstacle_shooter_test.dds", 0, 0);
 	myAnimationClip->Init({ 16,1 }, { 9,1 });
 	myAnimationClip->ActivateLooping();
 	myFireTimer = myFireRate;

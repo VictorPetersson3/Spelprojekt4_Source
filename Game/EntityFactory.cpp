@@ -15,8 +15,9 @@ std::vector<std::shared_ptr<Entity>> EntityFactory::LoadEntities(const char* aPa
 
 	gridSize = myDocument["defs"]["layers"][0]["gridSize"].GetFloat();
 
-	renderSizeX = 1280.f;
-	renderSizeY = 720.f;
+
+	renderSizeX = Tga2D::CEngine::GetInstance()->GetRenderSize().myX;
+	renderSizeY = Tga2D::CEngine::GetInstance()->GetRenderSize().myY;
 
 
 	for (int j = 0; j < myDocument["levels"][0]["layerInstances"].Capacity(); j++)
@@ -42,7 +43,6 @@ std::vector<std::shared_ptr<Entity>> EntityFactory::LoadEntities(const char* aPa
 				if (entityType == "MovingPlatform" || entityType == "movingplatform")
 				{
 					myEntities.push_back(LoadMovingPlatform(i, j));
-
 				}
 				if (entityType == "CollapsingTile")
 				{
@@ -97,11 +97,12 @@ std::shared_ptr<Shooter> EntityFactory::LoadShooter(int aEntityIndex, int aLayer
 {
 	Shooter shooterToPushBack = Shooter();
 	std::string shootDirection = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][0]["__value"].GetString();
-	float xPosition = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / renderSizeX * 16;
+	float xPosition = (myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / renderSizeX * 16) - (1/ renderSizeX * 16);
 	float yPosition = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / renderSizeY * 16;
 	bool isFlipped = false;
 
 	if (myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"].Capacity() > 1)
+
 	{
 		isFlipped = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][1]["__value"].GetBool();
 	}
