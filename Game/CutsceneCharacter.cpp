@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "CutsceneCharacter.h"
 #include "tga2d/sprite/sprite.h"
+#include "CommonUtilities/Math.h"
+#include "Timer.h"
 
 CutsceneCharacter::CutsceneCharacter(const char* aImagePath, const char* aName, const CommonUtilities::Vector2f& aPosition) : myName(aName)
 {
@@ -17,18 +19,22 @@ const LinkString& CutsceneCharacter::GetName() const
 
 void CutsceneCharacter::SetActive(const bool aState)
 {
+	myScaleTimer = 0;
 	if (aState)
 	{
-		mySprite->SetSizeRelativeToImage({ 1.0f, 1.0f });
+		myGoalScale = 1;
 	}
 	else
 	{
-		mySprite->SetSizeRelativeToImage({ 0.8f, 0.8f });
+		myGoalScale = 0.8f;
 	}
 }
 
 void CutsceneCharacter::Render()
 {
+	myScaleTimer += Timer::GetInstance().GetDeltaTime() * 0.5;
+	myCurrentScale = CommonUtilities::Lerp(myCurrentScale, myGoalScale, myScaleTimer);
+	mySprite->SetSizeRelativeToImage({ myCurrentScale, myCurrentScale });
 	mySprite->Render();
 }
 
