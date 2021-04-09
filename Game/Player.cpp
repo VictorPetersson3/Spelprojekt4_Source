@@ -302,6 +302,7 @@ void Player::Action(EAnimationState anAnimState)
 void Player::Update()
 {
 	//Sleep(1);
+	ChangeInput();
 
 	UpdateJumping();
 
