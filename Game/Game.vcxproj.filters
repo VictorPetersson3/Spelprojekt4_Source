@@ -52,6 +52,9 @@
     <Filter Include="Particles">
       <UniqueIdentifier>{261585a5-b029-40c5-b694-d90cb6b38ec7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Particles\ParticleTypes">
+      <UniqueIdentifier>{0dd2a76d-40f5-4ddf-b95f-7af150f3bc07}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -207,11 +210,11 @@
     <ClInclude Include="Emitter.h">
       <Filter>Particles</Filter>
     </ClInclude>
-    <ClInclude Include="Snow.h">
-      <Filter>Particles</Filter>
-    </ClInclude>
     <ClInclude Include="Particle.h">
       <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Snow.h">
+      <Filter>Particles\ParticleTypes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -348,14 +351,14 @@
     </ClCompile>
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="EndOfGameCutscene.cpp" />
-    <ClCompile Include="Snow.cpp">
-      <Filter>Particles</Filter>
-    </ClCompile>
     <ClCompile Include="Particle.cpp">
       <Filter>Particles</Filter>
     </ClCompile>
     <ClCompile Include="Emitter.cpp">
       <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Snow.cpp">
+      <Filter>Particles\ParticleTypes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -129,6 +129,8 @@ void Snow::Reset()
 
 void Snow::Update(float aDeltaTime)
 {
+	// Gör vad fan du vill här, det är ingenting som är "permanent".
+
 	myTime += aDeltaTime;
 
 	myVelocity.x = powf(myAcceleration.y, aDeltaTime) * myVelocity.x + sinf(myPeriod * myTime) * 0.05f * aDeltaTime;

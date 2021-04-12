@@ -32,18 +32,15 @@ struct Emission
 class Particle
 {
 public:
-	Particle() {}
-	~Particle() = default;
-
 	virtual void Init() {}
 	virtual void Reset() {}
 	virtual void Update(float aDeltaTime) {}
 	virtual void Render() {}
 	virtual Tga2D::CSprite* GetSprite() { return nullptr; }
 	virtual void SetPosition(VECTOR2F aPosition) { myPosition = aPosition; }
-	bool LifeTime() { return myTime >= myLifeTime; }
-	bool& IsActive() { return myIsActive; }
-	const Emission& GetContents() { return myContents; }
+	virtual bool LifeTime() { return myTime >= myLifeTime; }
+	virtual bool& IsActive() { return myIsActive; }
+	virtual const Emission& GetContents() { return myContents; }
 
 protected:
 	Emission myContents;
@@ -82,6 +79,9 @@ protected:
 
 	Tga2D::Vector2f myMinAcceleration;
 	Tga2D::Vector2f myMaxAcceleration;
+
+	// Lägg eventuellt till värden här, exempelvis hur brett den ska emittas.
+
 	// <\Ranges>
 
 	EBlendState myBlendState = EBlendState::EBlendState_Disabled;

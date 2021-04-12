@@ -28,12 +28,14 @@ Emitter::~Emitter()
 void Emitter::Update(float aDeltaTime)
 {
 	myEmissionTimer += aDeltaTime;
+
+	/* // Detta är bara om man vill att den ska följa musen, använd annars SetPosition separat.
 	auto resolution = Tga2D::CEngine::GetInstance()->GetRenderSize();
 	POINT pos;
 	GetCursorPos(&pos);
 	ScreenToClient(GetActiveWindow(), &pos);
 	SetPosition({ (float)pos.x / resolution.x, (float)pos.y / resolution.y });
-
+	*/
 	Emit(); // add timer stuff here
 
 	for (auto& particle : myParticles)
