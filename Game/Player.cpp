@@ -299,7 +299,7 @@ void Player::Action(EAnimationState anAnimState)
 	}
 }
 
-void Player::Update()
+void Player::Update(Camera& aCamera)
 {
 	//Sleep(1);
 	ChangeInput();
@@ -308,7 +308,7 @@ void Player::Update()
 
 	ManageStates();
 
-	UpdatePhysics();
+	UpdatePhysics(aCamera);
 
 	HandleAnimations();
 
@@ -436,7 +436,7 @@ void Player::ChangeInput()
 void Player::UpdateJumping()
 {
 	if (myIsGrounded) myCanDoubleJump = true;
-	if (!Input(myJump)) // kanske buggar h�r
+	if (!Input(myJump))
 	{
 		myCanJumpAgain = true;
 		myIsGliding = false;
@@ -444,7 +444,7 @@ void Player::UpdateJumping()
 	}
 }
 
-void Player::UpdatePhysics()
+void Player::UpdatePhysics(Camera& aCamera)
 {
 	if (!myShouldUpdatePhysics) return;
 
@@ -479,6 +479,7 @@ void Player::UpdatePhysics()
 		if (myCollider->GetCollidedWith()[i]->GetTag() == EColliderTag::KillZone)
 		{
 			myMoveState = EPlayerState::Death;
+			aCamera.ShakeCamera(0.8, 0.5f);
 			continue;
 		}
 
@@ -532,8 +533,9 @@ void Player::UpdatePhysics()
 		else if (posCorrNormal.y < 0)
 		{
 			myPosition.y += positionCorrection.y + 0.1f / Tga2D::CEngine::GetInstance()->GetRenderSize().y;
+			//if (myWasGrounded && myCurrentVelocity.y >= myMaxVerticalVelocity) aCamera.ShakeCamera(0.2f, 0.2f); //Han når top speed för snabbt för denna
 			if (myWasGrounded && myCurrentVelocity.y > 0) myCurrentVelocity.y = 0;
-			myIsGrounded = true;			
+			myIsGrounded = true;
 		}
 		else
 		{
@@ -545,16 +547,24 @@ void Player::UpdatePhysics()
 			myCollider->GetPosition().y >= horizontalCollider->GetPosition().y - horizontalCollider->GetSize().y)
 		{
 			myPosition.x += positionCorrection.x;
-			if (myHuggedLeftWall && myCurrentVelocity.x < 0) myCurrentVelocity.x = 0;
-			/*if (myCurrentVelocity.x < 0) */myHugsLeftWall = true;
+			if (myHuggedLeftWall && myCurrentVelocity.x < 0)
+			{
+				myCurrentVelocity.x = 0;
+				aCamera.ShakeCamera(0.05, 0.2f);
+			}
+			myHugsLeftWall = true;
 		}
 		else if (posCorrNormal.x < 0 &&
 			myCollider->GetPosition().y <= horizontalCollider->GetPosition().y + horizontalCollider->GetSize().y &&
 			myCollider->GetPosition().y >= horizontalCollider->GetPosition().y - horizontalCollider->GetSize().y)
 		{
 			myPosition.x += positionCorrection.x;
-			if (myHuggedRightWall && myCurrentVelocity.x > 0) myCurrentVelocity.x = 0;
-			/*if (myCurrentVelocity.x > 0) */myHugsRightWall = true;
+			if (myHuggedRightWall && myCurrentVelocity.x > 0)
+			{
+				myCurrentVelocity.x = 0;
+				aCamera.ShakeCamera(0.05, 0.2f);
+			}
+			myHugsRightWall = true;
 		}
 		else
 		{
@@ -713,7 +723,7 @@ void Player::Falling()
 	if (Input(myLeft) == Input(myRight))
 	{
 		if (myIsGrounded)
-		{				
+		{
 			myMoveState = EPlayerState::Idle;
 			return;
 		}

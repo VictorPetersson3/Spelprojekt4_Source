@@ -118,7 +118,7 @@ void Level::Update()
 		
 	if (myPlayer != nullptr)
 	{
-		myPlayer->Update();
+		myPlayer->Update(*myCamera);
 		myPlayer->GetCollider()->Draw();
 		if (myPlayer->IsDead() && myPlayerHasDied == false)
 		{
