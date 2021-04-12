@@ -31,11 +31,11 @@ void LevelSelect::Init(const EStateType& aState)
 	}
 
 	AddButton(std::make_shared<UIButton>());
-	GetButtonElement(myLevels_LevelData->myLevelSelectLoadData.Size())->Init({ 0.5f, 0.8f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {BackButtonPress(); });
+	GetButtonElement(myLevels_LevelData->myLevelSelectLoadData.Size())->Init({ 0.5f, 0.94f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {BackButtonPress(); });
 
 	myBackground = std::make_unique<UIImage>();
-	myBackground.get()->Init({ 0.5f, 0.5f }, "sprites/UI/LevelSelect/lvlmap_ph.dds", 2);
-	myBackground.get()->GetRenderCommand().SetSizeRelativeToImage({ 0.670f, 0.670f });
+	myBackground.get()->Init({ 0.5f, 0.47f }, "sprites/UI/LevelSelect/lvlmap_ph.dds", 2);
+	myBackground.get()->GetRenderCommand().SetSizeRelativeToImage({ 0.60f, 0.60f });
 	myBackground.get()->Activate();
 
 
@@ -51,7 +51,7 @@ void LevelSelect::Init(const EStateType& aState)
 
 	myPlayerAvatar = std::make_unique<UIImage>();
 	myPlayerAvatar.get()->Init({ 0.74f, 0.6f }, "sprites/UI/LevelSelect/LevelSelect_Character.dds", 2);
-	myPlayerAvatar.get()->GetRenderCommand().SetSizeRelativeToImage({ 1.4f, 1.4f });
+	myPlayerAvatar.get()->GetRenderCommand().SetSizeRelativeToImage({ 1.0f, 1.0f });
 	myPlayerAvatar.get()->Activate();
 
 }
