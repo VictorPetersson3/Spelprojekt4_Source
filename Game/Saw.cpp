@@ -14,16 +14,16 @@ Saw::Saw(Vector2 aStartPoint, bool isFlipped)
 
 	if (isFlipped)
 	{
-		myAnimationClip->SetScaleRelativeToFrame({ -1, 1 });
+		myAnimationClip->SetScaleRelativeToFrame({ 1, -1 });
 	}
 }
 
 void Saw::AddPoint(Vector2 aPoint)
 {
-	//if (myTravelPoints.size() == 1 && myTravelPoints[0].myX < aPoint.myX)
-	//{
-	//	myAnimationClip->SetScaleRelativeToFrame({ -1, 1 });
-	//}
+	if (myTravelPoints.size() == 1 && myTravelPoints[0].myX < aPoint.myX)
+	{
+		myAnimationClip->SetScaleRelativeToFrame({ -1, 1 });
+	}
 
 	myAnimationClip->SetRotation(0);
 	myDownVector = Vector2({ (myTravelPoints[0] - aPoint).myY, (myTravelPoints[0] - aPoint).myX });
@@ -46,7 +46,16 @@ void Saw::Update(float aDeltatime)
 				float floatDirection = myDirection;
 				myNextPointIndex += myDirection;
 				Vector2 tempVector = myPosition - myTravelPoints[myNextPointIndex];
-				myAnimationClip->SetScaleRelativeToFrame({ 1, floatDirection });
+
+				Vector2 myNextPositionDistance = myPosition - myTravelPoints[myNextPointIndex];
+				if (myNextPositionDistance.X > myNextPositionDistance.Y)
+				{
+					myAnimationClip->SetScaleRelativeToFrame({ floatDirection, 1 });
+				}
+				else
+				{
+					myAnimationClip->SetScaleRelativeToFrame({ 1, floatDirection });
+				}
 			}
 			else
 			{

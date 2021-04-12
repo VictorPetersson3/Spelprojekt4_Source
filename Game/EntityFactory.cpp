@@ -55,7 +55,6 @@ std::vector<std::shared_ptr<Entity>> EntityFactory::LoadEntities(const char* aPa
 			}
 		}
 	}
-
 	return myEntities;
 }
 
