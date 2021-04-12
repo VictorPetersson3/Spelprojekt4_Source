@@ -117,9 +117,11 @@ void MainMenu::Update()
 	if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButton > 0)
 	{
 		myCurrentHoveredButton--;
+		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 	}
 	else if (InputManagerS::GetInstance().GetKeyDown(DIK_S) && myCurrentHoveredButton < 3)
 	{
+		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 		myCurrentHoveredButton++;
 	}
 	for (int i = 0; i < GetUIButtonElementsSize(); i++)
@@ -157,5 +159,4 @@ void MainMenu::OnPushed()
 {
 	AudioManager::GetInstance().StopAllMusic();
 	AudioManager::GetInstance().PlayMusic("Audio/music/Hell_Clown_Core.mp3", true, 0.15f);
-
 }

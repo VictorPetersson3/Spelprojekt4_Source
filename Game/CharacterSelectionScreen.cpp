@@ -67,10 +67,12 @@ void CharacterSelectionScreen::Update()
 	if (InputManagerS::GetInstance().GetKeyDown(DIK_S) && myCurrentHoveredButton > 0)
 	{
 		myCurrentHoveredButton--;
+		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 	}
 	else if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButton < GetUIButtonElementsSize())
 	{
 		myCurrentHoveredButton++;
+		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 	}
 
 	//If hovering characters
@@ -252,6 +254,7 @@ void CharacterSelectionScreen::CharacterChoicePress()
 		else
 		{
 			// Play nono sounds
+			AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onReturn.mp3");
 		}
 		break;
 	case 2:
@@ -264,6 +267,7 @@ void CharacterSelectionScreen::CharacterChoicePress()
 		else
 		{
 			// Play nono sounds not unlocked
+			AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onReturn.mp3");
 		}
 		break;
 	default:

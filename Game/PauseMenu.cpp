@@ -33,10 +33,12 @@ void PauseMenu::Update()
 	if (InputManagerS::GetInstance().GetKeyDown(DIK_S) && myCurrentHoveredButton < GetUIButtonElementsSize())
 	{
 		myCurrentHoveredButton++;
+		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 	}
 	else if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButton > 0)
 	{
 		myCurrentHoveredButton--;
+		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 	}
 	for (int i = 0; i < GetUIButtonElementsSize(); i++)
 	{

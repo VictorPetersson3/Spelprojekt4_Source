@@ -62,10 +62,12 @@ void ResolutionMenu::Update()
 	if (InputManagerS::GetInstance().GetKeyDown(DIK_S) && myCurrentHoveredButton > 0)
 	{
 		myCurrentHoveredButton--;
+		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 	}
 	else if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButton < GetUIButtonElementsSize())
 	{
 		myCurrentHoveredButton++;
+		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 	}
 	for (int i = 0; i < GetUIButtonElementsSize(); i++)
 	{
@@ -84,10 +86,12 @@ void ResolutionMenu::Update()
 		if (InputManagerS::GetInstance().GetKeyDown(DIK_D) && myCurrentHoveredResolution < static_cast<int>(eResolutions::eEnd) - 1)
 		{
 			myCurrentHoveredResolution++;
+			AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 		}
 		else if (InputManagerS::GetInstance().GetKeyDown(DIK_A) && myCurrentHoveredResolution > 0)
 		{
 			myCurrentHoveredResolution--;
+			AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 		}
 	}
 	ChangeSize();

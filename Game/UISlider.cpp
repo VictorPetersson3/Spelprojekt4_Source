@@ -50,11 +50,13 @@ void UISlider::SlideSlider()
 	if (InputManagerS::GetInstance().GetKey(DIK_A))
 	{
 		sliderDirection = -1;
+		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSlide.mp3");
 		//AddSoundHere
 	}
 	if (InputManagerS::GetInstance().GetKey(DIK_D))
 	{
 		sliderDirection = 1;
+		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSlide.mp3", false, 0.1);
 		//AddSoundHere
 	}
 	
