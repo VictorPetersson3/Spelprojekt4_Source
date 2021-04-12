@@ -551,7 +551,7 @@ void Player::UpdatePhysics(Camera& aCamera)
 			{
 				myCurrentVelocity.x = 0;
 			}
-			if (myHuggedLeftWall && !myIsGrounded) aCamera.ShakeCamera(0.05, 0.1f);
+			//if (myHuggedLeftWall && !myIsGrounded) aCamera.ShakeCamera(0.05, 0.1f); // Fungerar men det blir antingen för mycket eller så lite så att det ser ut som en kollisionsbug
 			myHugsLeftWall = true;
 		}
 		else if (posCorrNormal.x < 0 &&
@@ -563,7 +563,7 @@ void Player::UpdatePhysics(Camera& aCamera)
 			{
 				myCurrentVelocity.x = 0;
 			}
-			if (myHuggedRightWall && !myIsGrounded) aCamera.ShakeCamera(0.05, 0.1f);
+			//if (myHuggedRightWall && !myIsGrounded) aCamera.ShakeCamera(0.05, 0.1f); // Fungerar men det blir antingen för mycket eller så lite så att det ser ut som en kollisionsbug
 			myHugsRightWall = true;
 		}
 		else
