@@ -15,7 +15,13 @@ public:
     void OnResumed() final;
 private:
     void BackButtonPress();
+
+    bool myConversationIsOver = false;
+
     std::unique_ptr<UIImage> myBackground;
     std::shared_ptr<Tga2D::CCustomShader> myPanningShader;
+    std::unique_ptr<UIImage> myCreditsImage;
+    std::unique_ptr<UIImage> mySadKiwi;
+
 };
 
