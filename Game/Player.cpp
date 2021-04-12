@@ -550,8 +550,8 @@ void Player::UpdatePhysics(Camera& aCamera)
 			if (myHuggedLeftWall && myCurrentVelocity.x < 0)
 			{
 				myCurrentVelocity.x = 0;
-				aCamera.ShakeCamera(0.05, 0.2f);
 			}
+			if (myHuggedLeftWall && !myIsGrounded) aCamera.ShakeCamera(0.05, 0.1f);
 			myHugsLeftWall = true;
 		}
 		else if (posCorrNormal.x < 0 &&
@@ -562,8 +562,8 @@ void Player::UpdatePhysics(Camera& aCamera)
 			if (myHuggedRightWall && myCurrentVelocity.x > 0)
 			{
 				myCurrentVelocity.x = 0;
-				aCamera.ShakeCamera(0.05, 0.2f);
 			}
+			if (myHuggedRightWall && !myIsGrounded) aCamera.ShakeCamera(0.05, 0.1f);
 			myHugsRightWall = true;
 		}
 		else
