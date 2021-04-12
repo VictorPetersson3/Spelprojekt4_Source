@@ -21,6 +21,7 @@ public:
     void Render() final;
     void OnPushed() final;
     void PlayCutscene(int aLevelIndex);
+    void PlayLastCutscene();
 private:
     void LoadCharacters();
     void LoadCutscenes();

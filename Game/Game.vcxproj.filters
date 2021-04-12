@@ -200,6 +200,7 @@
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="Boss.h" />
+    <ClInclude Include="EndOfGameCutscene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -334,5 +335,6 @@
       <Filter>Utility</Filter>
     </ClCompile>
     <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="EndOfGameCutscene.cpp" />
   </ItemGroup>
 </Project>

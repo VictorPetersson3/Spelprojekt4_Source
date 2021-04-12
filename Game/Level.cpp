@@ -143,7 +143,10 @@ void Level::Update()
 	{
 		myCamera->ShakeCamera(1, 0.5f);
 	}
-
+	if (InputManagerS::GetInstance().GetKey(DIK_K))
+	{
+		StateManager::AddStateOnStack(myEndOfLevelScreen);
+	}
 	if (myLevelEndCollider != nullptr && myPlayer.get() != nullptr)
 	{
 		if (CollisionManager::GetInstance().CheckCollision(myPlayer->GetCollider().get(), myLevelEndCollider.get()))
@@ -152,6 +155,7 @@ void Level::Update()
 			std::cout << "Level ended" << std::endl;
 		}
 	}
+
 }
 
 void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData* someLevelData)
@@ -236,15 +240,15 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y }, StateManager::GetInstance().GetSelectedCharacter());
 
 	//myPlayer->SetShouldUpdatePhysics(false);
-	myBackground->Init(*(myPlayer.get()), mylevelButtondata->myWorld, mylevelButtondata->myLevelNumber);
+	myBackground->Init(*(myPlayer.get()), mylevelButtondata->myWorld, mylevelButtondata->myWorldLevelNumber);
 
 }
 
-void Level::Load(LevelSelect_SpecificLevelData* someLevelData)
+void Level::Load(LevelSelect_SpecificLevelData* someLevelData, const bool aReloadedLevel)
 {
 	LevelLoader levelLoader;
 	mylevelButtondata = someLevelData;
-	myEndOfLevelScreen->SetCurrentLevel(mylevelButtondata->myLevelNumber);
+	myEndOfLevelScreen->SetCurrentLevel(mylevelButtondata->myLevelSelectNumber);
 	//L�gg in att den skall spela en cutscene h�r och att den laddar in den
 
 	Load(levelLoader.LoadLevel(mylevelButtondata), mylevelButtondata);
@@ -258,7 +262,7 @@ void Level::Load(LevelSelect_SpecificLevelData* someLevelData)
 	myCameraController->SetMoveX(someLevelData->myMoveCameraX);
 	myCameraController->SetMoveY(someLevelData->myMoveCameraY);
 
-	if (mylevelButtondata->myHasCutscene)
+	if (mylevelButtondata->myHasCutscene && !aReloadedLevel)
 	{
 		StateManager::AddAndPlayCutscene(mylevelButtondata->myCutsceneConversation);
 	}
@@ -267,14 +271,14 @@ void Level::Load(LevelSelect_SpecificLevelData* someLevelData)
 void Level::Restart()
 {
 	LevelLoader levelLoader;
-	Load(levelLoader.LoadLevel(mylevelButtondata), mylevelButtondata);
+	Load(mylevelButtondata, true);
 	myCameraController->ResetCamera();
 }
 
 void Level::LoadNextLevel()
 {
 	bool amILastLevel = false;
-	StateManager::GetInstance().AddNextLevelOnStack(mylevelButtondata->myLevelNumber);
+	StateManager::GetInstance().AddNextLevelOnStack(mylevelButtondata->myLevelSelectNumber);
 	return;
 }
 
