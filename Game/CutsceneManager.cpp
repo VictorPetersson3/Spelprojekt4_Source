@@ -57,18 +57,6 @@ void CutsceneManager::Init(const EStateType& aState)
 void CutsceneManager::Update()
 {
 	MenuObject::Update();
-	if (InputManagerS::GetInstance().GetKeyUp(DIK_ESCAPE))
-	{
-		if (myIsPrinting)
-		{
-			ContinuePrint();
-		}
-		else
-		{
-			OnExit();
-		}
-		return;
-	}
 	if (myIsPrinting)
 	{
 		Dialogue();
@@ -77,10 +65,15 @@ void CutsceneManager::Update()
 	{
 		GetButtonElement(1)->SetIsHovered(true);
 		GetButtonElement(1)->Activate();
-		if (InputManagerS::GetInstance().GetKeyUp(DIK_ESCAPE))
-		{
-			OnExit();
-		}
+		//if (InputManagerS::GetInstance().GetKeyUp(DIK_ESCAPE))
+		//{
+		//	OnExit();
+		//}
+	}
+	if (InputManagerS::GetInstance().GetKeyUp(DIK_ESCAPE) && !myPrintEverything)
+	{
+		printf("I will print Everything!!!\n");
+		PrintEverything();
 	}
 	
 }
@@ -103,6 +96,8 @@ void CutsceneManager::OnPushed()
 
 void CutsceneManager::PlayCutscene(int aLevelIndex)
 {
+	myCurrentLineToPlay.clear();
+	myDialogueToRender.clear();
 	mySceneToPlay = aLevelIndex;
 	myIsPrinting = true;
 	myPrintEverything = false;
@@ -324,19 +319,19 @@ void CutsceneManager::ContinuePrint()
 		GetButtonElement(0)->SetIsHovered(false);
 		myHasResumed = true;
 	}
-	else
-	{
-		myPrintEverything = true;
-		GetButtonElement(0)->SetIsHovered(false);
-		GetButtonElement(0)->Deactivate();
-		// Here we play a sound for ending conversation
-	}
+}
+
+void CutsceneManager::PrintEverything()
+{
+	myPrintEverything = true;
+	myHasResumed = true;
+	GetButtonElement(0)->SetIsHovered(false);
+	GetButtonElement(0)->Deactivate();
+	// Here we play a sound for ending conversation
 }
 
 void CutsceneManager::OnExit()
 {
 	printf("On Exit");
-	myCurrentLineToPlay.clear(); 
-	myDialogueToRender.clear();
 	StateManager::GetInstance().RemoveStateFromTop();
 }

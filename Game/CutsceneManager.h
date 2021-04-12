@@ -27,6 +27,7 @@ private:
     void Dialogue();
     void ParseAndAddText();
     void ContinuePrint();
+    void PrintEverything();
     void OnExit();
     
 
