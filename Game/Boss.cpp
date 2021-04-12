@@ -4,6 +4,8 @@
 #include "RenderCommand.h"
 #include "Camera.h"
 #include "Collider.h"
+#include "JsonParser.h"
+
 #include <iostream>
 #include <CommonUtilities/Random.h>
 void Boss::Init(const std::shared_ptr<Player> aPlayer) 
@@ -72,6 +74,20 @@ void Boss::Move(const float aDt)
 	}
 }
 
+void Boss::LoadJson()
+{
+	JsonParser parser;
+	auto doc = parser.GetDocument("Json/Boss.json");
+	
+	myMoveTimerMax = doc["MoveTimerMax"].GetFloat();
+	myMoveTimerMin = doc["MoveTimerMin"].GetFloat();
+
+	myPosition.x = doc["Position"]["X"].GetFloat();
+	myPosition.x = doc["Position"]["Y"].GetFloat();
+	
+	mySpeed = doc["Speed"].GetFloat();
+}
+
 int Boss::PickPosition()
 {
 	int index = 0;
@@ -94,7 +110,7 @@ void Boss::PickNewPosition(const float aDt)
 	{
 		myPositionIndex = PickPosition();
 		myMoveTimer = 0;
-		myMoveTime = CommonUtilities::GetRandomFloat(2.f, 4.f);
+		myMoveTime = CommonUtilities::GetRandomFloat(myMoveTimerMin, myMoveTimerMax);
 		return;
 	}
 	myMoveTimer += aDt;

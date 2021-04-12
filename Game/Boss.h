@@ -21,6 +21,7 @@ public:
 	inline void SetDeadState(const bool aBool);
 
 private:
+	void LoadJson();
 	int PickPosition();
 	void Move(const float aDt);
 	void PickNewPosition(const float aDt);
@@ -32,6 +33,8 @@ private:
 
 	float myMoveTimer = 0.f;
 	float myMoveTime = 2.f;
+	float myMoveTimerMax = 4.f;
+	float myMoveTimerMin = 2.f;
 
 	float mySpeed = 1.5f;
 
