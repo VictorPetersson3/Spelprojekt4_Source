@@ -478,8 +478,8 @@ void Player::UpdatePhysics(Camera& aCamera)
 	{
 		if (myCollider->GetCollidedWith()[i]->GetTag() == EColliderTag::KillZone)
 		{
+			if (myMoveState != EPlayerState::Death) aCamera.ShakeCamera(0.8, 0.5f);
 			myMoveState = EPlayerState::Death;
-			aCamera.ShakeCamera(0.8, 0.5f);
 			continue;
 		}
 
