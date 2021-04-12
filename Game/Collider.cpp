@@ -11,13 +11,17 @@ Collider::Collider(float aRadius, CommonUtilities::Vector2f aPosition)
 }
 
 
-Collider::Collider(CommonUtilities::Vector2f aPosition, float aWidth, float aHeight)
+Collider::Collider(CommonUtilities::Vector2f aPosition, float aWidth, float aHeight, bool aIsPlayer)
 {
 	myType = ECollider::AABB;
-	myAABB.myLowerLeft = { aPosition.x - aWidth * 0.5f, aPosition.y + aHeight * 0.5f };
-	myAABB.myUpperRight = { aPosition.x + aWidth * 0.5f, aPosition.y - aHeight * 0.5f }; 
 	myAABB.mySize = { aWidth, aHeight };
 	myPosition = aPosition;
+
+	if (aIsPlayer)
+	{
+		myPosition = { aPosition.x, aPosition.y + (32.0f / (float)Tga2D::CEngine::GetInstance()->GetRenderSize().y - aHeight) / 2.0f };
+	}
+
 	CollisionManager::GetInstance().AddCollider(this);
 }
 
@@ -27,7 +31,7 @@ void Collider::Update()
 	{
 		myCollidedWith.clear();
 		myHasCollided = false;
-	}	
+	}
 	else
 	{
 		myHasCollided = false;
@@ -38,6 +42,11 @@ void Collider::UpdateCollider(CommonUtilities::Vector2f anUpdatedPosition)
 {
 	myPlatformSpeed = anUpdatedPosition - myPosition;
 	myPosition = anUpdatedPosition;
+	if (myTag == EColliderTag::Player)
+	{
+		float resolutionscale = (Tga2D::CEngine::GetInstance()->GetRenderSize().x / 1280.0f);
+		myPosition = { anUpdatedPosition.x, anUpdatedPosition.y + (32.0f / (float)Tga2D::CEngine::GetInstance()->GetRenderSize().y * resolutionscale - myAABB.mySize.y) / 2.0f };
+	}
 }
 
 const CommonUtilities::Vector2f& Collider::GetPlatformSpeed()
@@ -64,10 +73,10 @@ const void Collider::Draw() const
 		Tga2D::CDebugDrawer::DrawCircle({ myPosition.x, myPosition.y }, myRadius, { 0, 1, 1, 1 });
 		break;
 	case ECollider::AABB:
-		Tga2D::CDebugDrawer::DrawLine({ myAABB.myLowerLeft.x, myAABB.myLowerLeft.y }, {myAABB.myLowerLeft.x, myAABB.myUpperRight.y}, {1, 0.5, 0, 1});
-		Tga2D::CDebugDrawer::DrawLine({ myAABB.myLowerLeft.x, myAABB.myLowerLeft.y }, {myAABB.myUpperRight.x, myAABB.myLowerLeft.y}, {1, 0.5, 0, 1});
-		Tga2D::CDebugDrawer::DrawLine({ myAABB.myUpperRight.x, myAABB.myUpperRight.y }, {myAABB.myLowerLeft.x, myAABB.myUpperRight.y}, {1, 0.5, 0, 1});
-		Tga2D::CDebugDrawer::DrawLine({ myAABB.myUpperRight.x, myAABB.myUpperRight.y }, {myAABB.myUpperRight.x, myAABB.myLowerLeft.y}, {1, 0.5, 0, 1});
+		Tga2D::CDebugDrawer::DrawLine({ myAABB.myLowerLeft.x, myAABB.myLowerLeft.y }, { myAABB.myLowerLeft.x, myAABB.myUpperRight.y }, { 1, 0.5, 0, 1 });
+		Tga2D::CDebugDrawer::DrawLine({ myAABB.myLowerLeft.x, myAABB.myLowerLeft.y }, { myAABB.myUpperRight.x, myAABB.myLowerLeft.y }, { 1, 0.5, 0, 1 });
+		Tga2D::CDebugDrawer::DrawLine({ myAABB.myUpperRight.x, myAABB.myUpperRight.y }, { myAABB.myLowerLeft.x, myAABB.myUpperRight.y }, { 1, 0.5, 0, 1 });
+		Tga2D::CDebugDrawer::DrawLine({ myAABB.myUpperRight.x, myAABB.myUpperRight.y }, { myAABB.myUpperRight.x, myAABB.myLowerLeft.y }, { 1, 0.5, 0, 1 });
 		break;
 	}
 #endif _DEBUG

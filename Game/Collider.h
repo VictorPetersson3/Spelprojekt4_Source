@@ -29,7 +29,7 @@ class Collider
 public:
 	Collider() { myType = ECollider::None; }
 	Collider(float aRadius, CommonUtilities::Vector2f aPosition);
-	Collider(CommonUtilities::Vector2f aPosition, float aWidth, float aHeight);
+	Collider(CommonUtilities::Vector2f aPosition, float aWidth, float aHeight, bool = false);
 	//Collider(/*Line volumes och skit*/);
 
 	void Update();

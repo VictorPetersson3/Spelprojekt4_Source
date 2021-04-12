@@ -8,6 +8,7 @@ struct LevelSelect_SpecificLevelData
 	LinkString myLevelPath;
 	LinkString myTileSheetPath;
 	LinkString myPropsTileSheetPath;
+	LinkString myBackgroundTilesTileSheetPath;
 	LinkString myMapTile;
 	EWorldLevel myWorld;
 	CommonUtilities::Vector2f myPosition;

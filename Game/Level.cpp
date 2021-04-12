@@ -118,8 +118,8 @@ void Level::Update()
 		
 	if (myPlayer != nullptr)
 	{
-		myPlayer->Update(*myCamera);
-		myPlayer->GetCollider()->Draw();
+		if (deltaTime < 0.0166666666666667f) myPlayer->Update(*myCamera);
+		//myPlayer->GetCollider()->Draw();
 		if (myPlayer->IsDead() && myPlayerHasDied == false)
 		{
 			myPlayerHasDied = true;
@@ -130,7 +130,7 @@ void Level::Update()
 
 	if (myLevelEndCollider != nullptr)
 	{
-		myLevelEndCollider->Draw();
+		//myLevelEndCollider->Draw();
 	}
 	// Background
 	//if (myBackground != nullptr)
@@ -221,9 +221,6 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 	{
 		mySpriteBatches.Add(aData->GetSpriteBatches()[i]);
 	}
-
-	std::cout << "Player start: " << aData->GetPlayerStart().x << " x " << aData->GetPlayerStart().y << '\n';
-
 
 	for (auto& t : myTerrain)
 	{

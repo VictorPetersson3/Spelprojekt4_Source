@@ -16,6 +16,7 @@ class EndOfLevelScreen;
 class CameraBehavoir;
 struct LevelSelect_SpecificLevelData;
 struct TerrainTile;
+
 namespace Tga2D
 {
 	class CSpriteBatch;

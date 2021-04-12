@@ -50,6 +50,7 @@ void LevelSelectLoadData::FillData(rapidjson::Value& aJsonValue, int& aLevelIter
 		myLevelSelectLoadData[aLevelIterator]->myLevelPath = aJsonValue[i]["path"].GetString();
 		myLevelSelectLoadData[aLevelIterator]->myTileSheetPath = aJsonValue[i]["gameplayAreaTileSheetPath"].GetString();
 		myLevelSelectLoadData[aLevelIterator]->myPropsTileSheetPath = aJsonValue[i]["propsTileSheetPath"].GetString();
+		myLevelSelectLoadData[aLevelIterator]->myBackgroundTilesTileSheetPath = aJsonValue[i]["backgroundTileSheetPath"].GetString();
 		myLevelSelectLoadData[aLevelIterator]->myMapTile = aJsonValue[i]["mapTilePath"].GetString();
 		myLevelSelectLoadData[aLevelIterator]->myPosition.x = aJsonValue[i]["positionX"].GetFloat() / 1920;
 		myLevelSelectLoadData[aLevelIterator]->myPosition.y = aJsonValue[i]["positionY"].GetFloat() / 1080;
