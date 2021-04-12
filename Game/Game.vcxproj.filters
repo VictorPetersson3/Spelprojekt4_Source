@@ -49,6 +49,9 @@
     <Filter Include="Precompiled\Entities">
       <UniqueIdentifier>{1d02941e-43eb-4ec8-8ad2-f83325e6a1ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Particles">
+      <UniqueIdentifier>{261585a5-b029-40c5-b694-d90cb6b38ec7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -201,6 +204,9 @@
     </ClInclude>
     <ClInclude Include="Boss.h" />
     <ClInclude Include="EndOfGameCutscene.h" />
+    <ClInclude Include="Emitter.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
