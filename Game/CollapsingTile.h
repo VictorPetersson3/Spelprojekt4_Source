@@ -3,12 +3,11 @@
 #include <vector>
 #include <CommonUtilities/Vector2.hpp>
 #include <memory>
-#include "Collider.h"
 #include "Entity.h"
-#include "Timer.h"
 
 class RenderCommand;
 class Collider;
+class AnimationClip;
 
 class CollapsingTile : public Entity
 {
@@ -21,7 +20,7 @@ public:
 	void Render(const std::shared_ptr<Camera> aCamera) override;
 
 private:
-	std::shared_ptr<RenderCommand> myRenderCommand;
+	std::shared_ptr<AnimationClip> myAnimationClip;
 
 	float myTimer = 0.f;
 	float myCooldownTime = 2.5f;

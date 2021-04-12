@@ -204,7 +204,8 @@ std::shared_ptr<TerrainTile> LevelLoader::LoadTileMap(const char* aImagePath, in
 
 	aSpriteBatch->AddObject(tempRenderCommand.mySprite.get());
 
-	std::string layerIdentifier = myDocument["levels"][0]["layerInstances"][aLayerIndex]["__identifier"].GetString();	
+	std::string layerIdentifier = myDocument["levels"][0]["layerInstances"][aLayerIndex]["__identifier"].GetString();
+
 	if (layerIdentifier != "Background" && layerIdentifier != "background" && layerIdentifier != "Props" && layerIdentifier != "props" && layerIdentifier != "backGroundTiles" && layerIdentifier != "BackgroundTiles")
 	{
 		CommonUtilities::Vector2f aColliderPosition = { tempRenderCommand.GetPosition().x, tempRenderCommand.GetPosition().y };

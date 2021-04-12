@@ -17,7 +17,7 @@ class Saw : public Entity
 {
 public:
 
-	Saw(Vector2 aStartPoint);
+	Saw(Vector2 aStartPoint, bool isFlipped);
 	void AddPoint(Vector2 aPoint);
 
 	void Update(float aDeltatime) override;
@@ -35,9 +35,13 @@ private:
 	float mySpeed = 0.1;
 	int myDirection = 1;
 	Vector2 myDownVector;
+	CommonUtilities::Vector2f myPreviousRotation;
 	bool myRepeating = false;
+	bool myFacingRight = false;
 
-	const float EPSILON = 0.000000001;
+	void Flip();
+
+	const float EPSILON = 0.1;
 	const float PI = 3.14159;
 };
 
