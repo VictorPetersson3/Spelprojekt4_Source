@@ -33,6 +33,8 @@ void Player::Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower)
 	myWasDead = false;
 	myMoveState = EPlayerState::Idle;
 
+	myCurrentVelocity = { 0, 0 };
+
 	InitJSON();
 
 	InitAnimations();
@@ -182,7 +184,7 @@ void Player::InitAnimations()
 void Player::InitCollider()
 {
 	float resolutionscale = (Tga2D::CEngine::GetInstance()->GetRenderSize().x / 1280.0f);
-	myCollider = std::make_shared<Collider>(myPosition, mySize.x * resolutionscale, mySize.y * resolutionscale);
+	myCollider = std::make_shared<Collider>(myPosition, mySize.x * resolutionscale, mySize.y * resolutionscale, true);
 	myCollider->SetTag(EColliderTag::Player);
 }
 
@@ -546,25 +548,53 @@ void Player::UpdatePhysics(Camera& aCamera)
 			myCollider->GetPosition().y <= horizontalCollider->GetPosition().y + horizontalCollider->GetSize().y &&
 			myCollider->GetPosition().y >= horizontalCollider->GetPosition().y - horizontalCollider->GetSize().y)
 		{
-			myPosition.x += positionCorrection.x;
-			if (myHuggedLeftWall && myCurrentVelocity.x < 0)
+			if (verticalCollider != nullptr)
 			{
-				myCurrentVelocity.x = 0;
+				if (horizontalCollider->GetPosition().y != verticalCollider->GetPosition().y)
+				{
+					myPosition.x += positionCorrection.x;
+					if (myHuggedLeftWall && myCurrentVelocity.x < 0)
+					{
+						myCurrentVelocity.x = 0;
+					}
+					myHugsLeftWall = true;
+				}
 			}
-			//if (myHuggedLeftWall && !myIsGrounded) aCamera.ShakeCamera(0.05, 0.1f); // Fungerar men det blir antingen för mycket eller så lite så att det ser ut som en kollisionsbug
-			myHugsLeftWall = true;
+			else
+			{
+				myPosition.x += positionCorrection.x;
+				if (myHuggedLeftWall && myCurrentVelocity.x < 0)
+				{
+					myCurrentVelocity.x = 0;
+				}
+				myHugsLeftWall = true;
+			}
 		}
 		else if (posCorrNormal.x < 0 &&
 			myCollider->GetPosition().y <= horizontalCollider->GetPosition().y + horizontalCollider->GetSize().y &&
 			myCollider->GetPosition().y >= horizontalCollider->GetPosition().y - horizontalCollider->GetSize().y)
 		{
-			myPosition.x += positionCorrection.x;
-			if (myHuggedRightWall && myCurrentVelocity.x > 0)
+			if (verticalCollider != nullptr)
 			{
-				myCurrentVelocity.x = 0;
+				if (horizontalCollider->GetPosition().y != verticalCollider->GetPosition().y)
+				{
+					myPosition.x += positionCorrection.x;
+					if (myHuggedRightWall && myCurrentVelocity.x > 0)
+					{
+						myCurrentVelocity.x = 0;
+					}
+					myHugsRightWall = true;
+				}
 			}
-			//if (myHuggedRightWall && !myIsGrounded) aCamera.ShakeCamera(0.05, 0.1f); // Fungerar men det blir antingen för mycket eller så lite så att det ser ut som en kollisionsbug
-			myHugsRightWall = true;
+			else
+			{
+				myPosition.x += positionCorrection.x;
+				if (myHuggedRightWall && myCurrentVelocity.x > 0)
+				{
+					myCurrentVelocity.x = 0;
+				}
+				myHugsRightWall = true;
+			}
 		}
 		else
 		{

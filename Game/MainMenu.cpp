@@ -77,31 +77,31 @@ void MainMenu::Init(const EStateType& aState)
 	myLogo->Init({ 0.75f, 0.22f }, "sprites/UI/GameLogo.dds", -1);
 	myLogo->GetRenderCommand().SetSizeRelativeToImage({ 0.6f, 0.6f });
 	myLogo->SetShader(*myBeatingShader.get());
-	myLogo->ActivatePulse(0.4, 0.5f, 0.6f);
+	myLogo->ActivatePulse(1.71, 0.5f, 0.6f);
 
 	myLogoHeart1 = std::make_unique<UIImage>();
 	myLogoHeart1->Init({ 0.54f, 0.12f }, "sprites/UI/P_Heart01.dds", -1);
 	myLogoHeart1->GetRenderCommand().SetSizeRelativeToImage({ 0.6f, 0.6f });
 	myLogoHeart1->SetShader(*myBeatingShader.get());
-	myLogoHeart1->ActivatePulse(0.9, 0.5f, 0.7f);
+	myLogoHeart1->ActivatePulse(1.9, 0.5f, 0.7f);
 
 	myLogoHeart2 = std::make_unique<UIImage>();
 	myLogoHeart2->Init({ 0.97f, 0.11f }, "sprites/UI/P_Heart02.dds", -1);
 	myLogoHeart2->GetRenderCommand().SetSizeRelativeToImage({ 0.6f, 0.6f });
 	myLogoHeart2->SetShader(*myBeatingShader.get());
-	myLogoHeart2->ActivatePulse(0.3, 0.3f, 0.6f);
+	myLogoHeart2->ActivatePulse(1.35, 0.3f, 0.6f);
 	
 	myLogoHeart3 = std::make_unique<UIImage>();
 	myLogoHeart3->Init({ 0.66f, 0.06f }, "sprites/UI/P_Heart03.dds", -1);
 	myLogoHeart3->GetRenderCommand().SetSizeRelativeToImage({ 0.6f, 0.6f });
 	myLogoHeart3->SetShader(*myBeatingShader.get());
-	myLogoHeart3->ActivatePulse(0.7, 0.5f, 0.8f);
+	myLogoHeart3->ActivatePulse(1.2, 0.5f, 0.8f);
 	
 	myLogoHeart4 = std::make_unique<UIImage>();
 	myLogoHeart4->Init({ 0.81f, 0.05f }, "sprites/UI/P_Heart04.dds", -1);
 	myLogoHeart4->GetRenderCommand().SetSizeRelativeToImage({ 0.6f, 0.6f });
 	myLogoHeart4->SetShader(*myBeatingShader.get());
-	myLogoHeart4->ActivatePulse(0.1, 0.5f, 0.9f);
+	myLogoHeart4->ActivatePulse(1.9, 0.5f, 0.9f);
 
 }
 
