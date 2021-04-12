@@ -60,6 +60,8 @@ void LevelSelectLoadData::FillData(rapidjson::Value& aJsonValue, int& aLevelIter
 		myLevelSelectLoadData[aLevelIterator]->myCameraMaxBorderY = aJsonValue[i]["cameraMaxBorderY"].GetFloat();
 		myLevelSelectLoadData[aLevelIterator]->myCameraPosition.x = aJsonValue[i]["cameraPosition"][0].GetFloat();
 		myLevelSelectLoadData[aLevelIterator]->myCameraPosition.y = aJsonValue[i]["cameraPosition"][1].GetFloat();
+		myLevelSelectLoadData[aLevelIterator]->myMoveCameraX = aJsonValue[i]["moveX"].GetBool();
+		myLevelSelectLoadData[aLevelIterator]->myMoveCameraY = aJsonValue[i]["moveY"].GetBool();
 
 		if (aJsonValue[i]["hasCutscene"].GetBool())
 		{

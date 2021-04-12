@@ -258,6 +258,8 @@ void Level::Load(LevelSelect_SpecificLevelData* someLevelData)
 	myCameraController->SetMinBoarderY(someLevelData->myCameraMinBorderY);
 	myCameraController->SetMaxBoarderY(someLevelData->myCameraMaxBorderY);
 	myCameraController->SetPosition(someLevelData->myCameraPosition);
+	myCameraController->SetMoveX(someLevelData->myMoveCameraX);
+	myCameraController->SetMoveY(someLevelData->myMoveCameraY);
 
 	if (mylevelButtondata->myHasCutscene)
 	{
