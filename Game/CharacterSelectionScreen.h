@@ -26,9 +26,9 @@ private:
     void CharacterChoicePress();
     void BackToLevelSelectPress();
     std::unique_ptr<UIImage> myBackground;
-    std::unique_ptr<AnimationClip> myNormalCharacter;
-    std::unique_ptr<AnimationClip> myGlideCharacter;
-    std::unique_ptr<AnimationClip> myDoubleJumpCharacter;
+    std::unique_ptr<UIImage> myNormalCharacter;
+    std::unique_ptr<UIImage> myGlideCharacter;
+    std::unique_ptr<UIImage> myDoubleJumpCharacter;
     std::unique_ptr<Tga2D::CText> myCharacterDescription;
     std::unique_ptr<Tga2D::CText> myTitle; 
     int myCurrentLevelIndex = 0;

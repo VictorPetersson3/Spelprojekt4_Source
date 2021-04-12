@@ -10,10 +10,6 @@ void UIImage::Update()
 	{
 		UIElement::Update();
 	}
-	if (myIsPulsing)
-	{
-		Pulsing();
-	}
 }
 
 void UIImage::Update(const CommonUtilities::Vector2f& aPos)
@@ -26,10 +22,12 @@ void UIImage::Update(const CommonUtilities::Vector2f& aPos)
 
 void UIImage::Render()
 {
-	if (myIsPulsing)
+	if (GetIsActive())
 	{
-		Pulsing();
-		myRenderCommand->SetSizeRelativeToImage({ mySize, mySize });
+		if (myIsPulsing)
+		{
+			Pulsing();
+		}
 	}
 	UIElement::Render();
 }
@@ -39,11 +37,12 @@ void UIImage::SetShader(Tga2D::CCustomShader& aShader)
 	myRenderCommand->SetShader(aShader);
 }
 
-void UIImage::ActivatePulse(const float aSizeTimer, float aMinSize, float aMaxSize)
+void UIImage::ActivatePulse(const float aSizeTimer, const float aMinSize, const float aMaxSize)
 {
 	myMinSize = aMinSize;
 	myMaxSize = aMaxSize;
 	mySizeTimer = aSizeTimer;
+	mySizeMaxTimer = aSizeTimer;
 	myIsPulsing = true;
 }
 
@@ -51,11 +50,11 @@ void UIImage::Pulsing()
 {
 	if (!myReachedApex)
 	{
-		if (mySizeTimer > 1)
+		if (mySizeTimer > mySizeMaxTimer)
 		{
 			myReachedApex = true;
 		}
-		mySizeTimer += Timer::GetInstance().GetDeltaTime() * 0.35f;
+		mySizeTimer += Timer::GetInstance().GetDeltaTime();
 	}
 	else
 	{
@@ -63,8 +62,10 @@ void UIImage::Pulsing()
 		{
 			myReachedApex = false;
 		}
-		mySizeTimer -= Timer::GetInstance().GetDeltaTime() * 0.35f;
+		mySizeTimer -= Timer::GetInstance().GetDeltaTime();
 	}
-	mySize = CommonUtilities::Lerp(myMinSize, myMaxSize, mySizeTimer);
+	mySize = CommonUtilities::Lerp(myMinSize, myMaxSize, mySizeTimer / mySizeMaxTimer);
+	myRenderCommand->SetSizeRelativeToImage({ mySize, mySize });
+	
 }
 
