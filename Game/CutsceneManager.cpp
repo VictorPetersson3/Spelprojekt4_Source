@@ -30,21 +30,27 @@ void CutsceneManager::Init(const EStateType& aState)
 	LoadCutscenes();
 
 	AddButton(std::make_shared<UIButton>());
-	GetButtonElement(0)->Init({ 0.8f, 0.92f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {ContinuePrint(); });
+	GetButtonElement(0)->Init({ 0.875f, 0.85f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {ContinuePrint(); });
 	GetButtonElement(0)->SetIsHovered(false);
 	GetButtonElement(0)->SetButtonScales(0.7f, 0.9f);
 	AddButton(std::make_shared<UIButton>());
-	GetButtonElement(1)->Init({ 0.8f, 0.92f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {OnExit(); });
+	GetButtonElement(1)->Init({ 0.875f, 0.85f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {OnExit(); });
 	GetButtonElement(1)->SetIsHovered(false);
 	GetButtonElement(1)->Deactivate();
 	GetButtonElement(1)->SetButtonScales(0.7f, 0.9f);
 	myTextBackground = std::make_unique<UIImage>();
 	myTextBackground->Init({ 0.5f, 0.85f }, "sprites/Cutscenes/TextFrame.dds", -1);
-	myTextBackground->GetRenderCommand().SetSizeRelativeToImage({ 1.6f, 1.6f });
+	myTextBackground->GetRenderCommand().SetSizeRelativeToImage({ 0.60f, 0.60f });
+	myTextBackgroundGradient = std::make_unique<UIImage>();
+	myTextBackgroundGradient->Init({ 0.5f, 0.85f }, "sprites/Cutscenes/AlphaGradient.dds", -1);
+	myTextBackgroundGradient->GetRenderCommand().SetPivot({ 0.5f, 1.0f });
+	myTextBackgroundGradient->GetRenderCommand().SetSpritePosition({ 0.5f, 1.0f });
+	myTextBackgroundGradient->GetRenderCommand().SetSizeRelativeToImage({ 5.0f, 1.0f });
+	myTextBackgroundGradient->GetRenderCommand().SetColor(Tga2D::CColor{0.5f, 0.15f, 0.23f, 1.0f});
 
 	myTextToPrint = std::make_shared<Tga2D::CText>("Text/Tomodachy.otf", Tga2D::EFontSize_14);
 	myTextToPrint->SetColor({ 0,0,0,1 });
-	myTextToPrint->SetPosition({ 0.25f, 0.78f });
+	myTextToPrint->SetPosition({ 0.21f, 0.79f });
 	myHasReachedEndOfSentence = false;
 }
 
@@ -75,14 +81,13 @@ void CutsceneManager::Update()
 		{
 			OnExit();
 		}
-		//MakeInputManager To Quite Convo
-		//Quit dialogue
 	}
 	
 }
 
 void CutsceneManager::Render()
 {
+	myTextBackgroundGradient->Render();
 	myLeftCharacter->Render();
 	myRightCharacter->Render();
 	myTextBackground->Render();
@@ -146,10 +151,10 @@ void CutsceneManager::LoadCutscenes()
 		iterator++;
 	}
 	std::sort(cutscenePaths.begin(), cutscenePaths.end());
-	for (int i = 0; i < iterator; i++)
-	{
-		printf("My Sorted Cutscene Path: %s\n", cutscenePaths[i].c_str());
-	}
+	//for (int i = 0; i < iterator; i++)
+	//{
+	//	printf("My Sorted Cutscene Path: %s\n", cutscenePaths[i].c_str());
+	//}
 
 	myLevelCharacterDialogues.Init(iterator);
 
@@ -210,13 +215,12 @@ void CutsceneManager::LoadCharacters()
 		iterator++;
 	}
 	std::sort(characterPaths.begin(), characterPaths.end());
-	for (int i = 0; i < iterator; i++)
-	{
-		printf("My Character Path: %s\n", characterPaths[i].c_str());
-	}
+	//for (int i = 0; i < iterator; i++)
+	//{
+	//	printf("My Character Path: %s\n", characterPaths[i].c_str());
+	//}
 
 	JsonParser parser;
-
 
 	for (int i = 0; i < iterator; i++)
 	{
@@ -225,7 +229,7 @@ void CutsceneManager::LoadCharacters()
 
 		std::string imagePath = document["imagepath"].GetString();
 		std::string name = document["name"].GetString();
-		printf("Character path : %s name : %s \n", imagePath.c_str(), name.c_str());
+		//printf("Character path : %s name : %s \n", imagePath.c_str(), name.c_str());
 		myCharacters.Add(std::make_shared<CutsceneCharacter>(imagePath.c_str(), name.c_str(), CommonUtilities::Vector2f{ 0.5f, 0.5f }));
 	}
 }
@@ -257,7 +261,7 @@ void CutsceneManager::ParseAndAddText()
 	{
 		if (!myHasReachedEndOfSentence)
 		{
-			printf("%c", myCurrentLineToPlay.at(myCurrentLetterInLineToPlay));
+			//printf("%c", myCurrentLineToPlay.at(myCurrentLetterInLineToPlay));
 			myDialogueToRender.push_back(myCurrentLineToPlay.at(myCurrentLetterInLineToPlay));
 			myCurrentLetterInLineToPlay++;
 			if (!myPrintEverything)
@@ -270,33 +274,39 @@ void CutsceneManager::ParseAndAddText()
 	{
 		if (myCurrentLineIndexToPlay < myLevelCharacterDialogues[mySceneToPlay]->GetLines().Size())
 		{
-			myTextTimer = -0.5f;
-			myCurrentLineToPlay = myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].first;
-
-			if (myLeftCharacter->GetName() == myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->GetName())
-			{
-				myLeftCharacter->SetActive(true);
-				myRightCharacter->SetActive(false);
-			}
-			else
-			{
-				myLeftCharacter->SetActive(false);
-				myRightCharacter->SetActive(true);
-			}
-
-			//Print the name of the speaking Character
-			myDialogueToRender.push_back('\n');
-			std::string characterName = myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->GetName().GetString();
-			myDialogueToRender.append(characterName.c_str());
-			myDialogueToRender.push_back('   ');
-
-
-			//printf("\n%s: ", myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->GetName().GetString());
-			myCurrentLineIndexToPlay++;
-			if (!myPrintEverything)
+			if (!myPrintEverything && !myHasReachedEndOfSentence)
 			{
 				GetButtonElement(0)->SetIsHovered(true);
 				myHasReachedEndOfSentence = true;
+				myHasResumed = false;
+			}
+			if (myHasResumed)
+			{
+				myTextTimer = -0.25f;
+				myCurrentLineToPlay = myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].first;
+
+				if (myLeftCharacter->GetName() == myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->GetName())
+				{
+					myLeftCharacter->SetActive(true);
+					myRightCharacter->SetActive(false);
+				}
+				else
+				{
+					myLeftCharacter->SetActive(false);
+					myRightCharacter->SetActive(true);
+				}
+
+				//Print the name of the speaking Character
+				myDialogueToRender.push_back('\n');
+				std::string characterName = myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->GetName().GetString();
+				myDialogueToRender.append(characterName.c_str());
+				myDialogueToRender.push_back('   ');
+
+
+				//printf("\n%s: ", myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->GetName().GetString());
+				myCurrentLineIndexToPlay++;
+				myCurrentLetterInLineToPlay = 0;
+				myHasReachedEndOfSentence = false;
 			}
 		}
 		else
@@ -304,7 +314,6 @@ void CutsceneManager::ParseAndAddText()
 			myCurrentLineIndexToPlay = 0;
 			myIsPrinting = false;
 		}
-		myCurrentLetterInLineToPlay = 0;
 	}
 }
 
@@ -312,8 +321,8 @@ void CutsceneManager::ContinuePrint()
 {
 	if (myHasReachedEndOfSentence)
 	{
-		myHasReachedEndOfSentence = false;
 		GetButtonElement(0)->SetIsHovered(false);
+		myHasResumed = true;
 	}
 	else
 	{

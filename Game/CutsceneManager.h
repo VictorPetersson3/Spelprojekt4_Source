@@ -35,6 +35,7 @@ private:
     bool myIsPrinting = false;
     bool myHasReachedEndOfSentence = false;
     bool myPrintEverything = false;
+    bool myHasResumed = false;
 
     unsigned int myCurrentLineIndexToPlay = 0;
     unsigned int myCurrentLetterInLineToPlay = 0;
@@ -42,6 +43,7 @@ private:
     std::string myCurrentLineToPlay;
     std::string myDialogueToRender;
 
+    std::unique_ptr<UIImage> myTextBackgroundGradient;
     std::unique_ptr<UIImage> myTextBackground;
 
     std::shared_ptr<Tga2D::CText> myTextToPrint;

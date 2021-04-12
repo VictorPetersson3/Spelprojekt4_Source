@@ -22,6 +22,8 @@ public:
 	
 	inline void SetPosition(const CommonUtilities::Vector2f aPosition) { myPosition = aPosition; }
 
+	inline void SetMoveX(const bool aBool) { myMoveX = aBool; }
+	inline void SetMoveY(const bool aBool) { myMoveY = aBool; }
 
 private:
 	void AddForce(const CommonUtilities::Vector2f aForceToAdd);

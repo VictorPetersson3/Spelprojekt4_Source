@@ -129,6 +129,14 @@ void StateManager::AddNextLevelOnStack(int aCurrentLevelIndex)
 	}
 }
 
+void StateManager::UnlockNextlevel(int aCurrentLevelIndex)
+{
+	if (aCurrentLevelIndex + 1 < myInstance->myLevelSelect->GetLevelAmount())
+	{
+		myInstance->myLevelSelect->GetSpecificLevelData(aCurrentLevelIndex + 1)->myIsUnlocked = true;
+	}
+}
+
 
 void StateManager::AddAndPlayCutscene(int aCutsceneIndex)
 {

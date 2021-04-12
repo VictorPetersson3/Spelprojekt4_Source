@@ -54,7 +54,7 @@ public:
 	~Player();
 
 	virtual void Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower = EPowerUp::Default);
-	virtual void Update();
+	virtual void Update(Camera& aCamera);
 	void Render(Camera& aCamera);
 
 	void SetPosition(const CommonUtilities::Vector2f& aPosition);
@@ -74,7 +74,7 @@ protected:
 	void Action(EAnimationState anAnimState);
 
 	void ManageStates();
-	void UpdatePhysics();
+	void UpdatePhysics(Camera& aCamera);
 	void UpdateJumping();
 	void HandleAnimations();
 	void HandleAudio();
