@@ -207,6 +207,12 @@
     <ClInclude Include="Emitter.h">
       <Filter>Particles</Filter>
     </ClInclude>
+    <ClInclude Include="Snow.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -342,5 +348,14 @@
     </ClCompile>
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="EndOfGameCutscene.cpp" />
+    <ClCompile Include="Snow.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Emitter.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
