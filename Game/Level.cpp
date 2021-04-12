@@ -218,9 +218,6 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 		mySpriteBatches.Add(aData->GetSpriteBatches()[i]);
 	}
 
-	std::cout << "Player start: " << aData->GetPlayerStart().x << " x " << aData->GetPlayerStart().y << '\n';
-
-
 	for (auto& t : myTerrain)
 	{
 		t->myCollider->AddToManager();
