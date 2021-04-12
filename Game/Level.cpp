@@ -119,7 +119,7 @@ void Level::Update()
 	if (myPlayer != nullptr)
 	{
 		if (deltaTime < 0.0166666666666667f) myPlayer->Update(*myCamera);
-		myPlayer->GetCollider()->Draw();
+		//myPlayer->GetCollider()->Draw();
 		if (myPlayer->IsDead() && myPlayerHasDied == false)
 		{
 			myPlayerHasDied = true;
@@ -130,7 +130,7 @@ void Level::Update()
 
 	if (myLevelEndCollider != nullptr)
 	{
-		myLevelEndCollider->Draw();
+		//myLevelEndCollider->Draw();
 	}
 	// Background
 	//if (myBackground != nullptr)
