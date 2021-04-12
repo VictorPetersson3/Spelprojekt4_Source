@@ -14,17 +14,12 @@ Saw::Saw(Vector2 aStartPoint, bool isFlipped)
 
 	if (isFlipped)
 	{
-		myAnimationClip->SetScaleRelativeToFrame({ 1, -1 });
+		Flip();
 	}
 }
 
 void Saw::AddPoint(Vector2 aPoint)
 {
-	if (myTravelPoints.size() == 1 && myTravelPoints[0].myX < aPoint.myX)
-	{
-		myAnimationClip->SetScaleRelativeToFrame({ -1, 1 });
-	}
-
 	myAnimationClip->SetRotation(0);
 	myDownVector = Vector2({ (myTravelPoints[0] - aPoint).myY, (myTravelPoints[0] - aPoint).myX });
 	myTravelPoints.push_back(aPoint);
@@ -40,21 +35,16 @@ void Saw::Update(float aDeltatime)
 
 		if (myNextPointIndex > myTravelPoints.size() - 1 || myNextPointIndex < 0)
 		{
+
 			if (myRepeating)
 			{
 				myDirection *= -1;
 				float floatDirection = myDirection;
-				myNextPointIndex += myDirection;
-				Vector2 tempVector = myPosition - myTravelPoints[myNextPointIndex];
+				myNextPointIndex += myDirection * 2;
 
-				Vector2 myNextPositionDistance = myPosition - myTravelPoints[myNextPointIndex];
-				if (myNextPositionDistance.X > myNextPositionDistance.Y)
+				if (myDownVector.x < 0 || myDownVector.y > 0)
 				{
-					myAnimationClip->SetScaleRelativeToFrame({ floatDirection, 1 });
-				}
-				else
-				{
-					myAnimationClip->SetScaleRelativeToFrame({ 1, floatDirection });
+					Flip();
 				}
 			}
 			else
@@ -63,9 +53,16 @@ void Saw::Update(float aDeltatime)
 			}
 		}
 
-		myDownVector = (myPosition - myTravelPoints[myNextPointIndex]) * -1;
-		myAnimationClip->SetRotation(std::atan2(myDownVector.myY, myDownVector.myX) + ((2 * PI) / 4) * 2);
+		if (myFacingRight)
+		{
+			myDownVector = (myPosition - myTravelPoints[myNextPointIndex]) * 1;
+		}
+		else
+		{
+			myDownVector = (myPosition - myTravelPoints[myNextPointIndex]) * -1;
+		}
 
+		myAnimationClip->SetRotation(std::atan2(myDownVector.myY, myDownVector.myX) + ((2 * PI) / 4) * 2);
 	}
 
 	myPosition += (myTravelPoints[myNextPointIndex] - myPosition).GetNormalized() * aDeltatime * mySpeed;
@@ -86,6 +83,19 @@ void Saw::SetCollider(std::shared_ptr<Collider> aCollider)
 void Saw::SetRepeating(bool aRepeating)
 {
 	myRepeating = aRepeating;
+}
+void Saw::Flip()
+{
+	if (myFacingRight)
+	{
+		myFacingRight = false;
+		myAnimationClip->SetScaleRelativeToFrame({ 1, 1 });
+	}
+	else
+	{
+		myFacingRight = true;
+		myAnimationClip->SetScaleRelativeToFrame({ -1, 1 });
+	}
 }
 
 

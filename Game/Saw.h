@@ -35,7 +35,11 @@ private:
 	float mySpeed = 0.1;
 	int myDirection = 1;
 	Vector2 myDownVector;
+	CommonUtilities::Vector2f myPreviousRotation;
 	bool myRepeating = false;
+	bool myFacingRight = false;
+
+	void Flip();
 
 	const float EPSILON = 0.1;
 	const float PI = 3.14159;
