@@ -240,7 +240,7 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y }, StateManager::GetInstance().GetSelectedCharacter());
 
 	//myPlayer->SetShouldUpdatePhysics(false);
-	myBackground->Init(*(myPlayer.get()), mylevelButtondata->myWorld, mylevelButtondata->myLevelNumber);
+	myBackground->Init(*(myPlayer.get()), mylevelButtondata->myWorld, mylevelButtondata->myWorldLevelNumber);
 
 }
 
@@ -248,7 +248,7 @@ void Level::Load(LevelSelect_SpecificLevelData* someLevelData, const bool aReloa
 {
 	LevelLoader levelLoader;
 	mylevelButtondata = someLevelData;
-	myEndOfLevelScreen->SetCurrentLevel(mylevelButtondata->myLevelNumber);
+	myEndOfLevelScreen->SetCurrentLevel(mylevelButtondata->myLevelSelectNumber);
 	//L�gg in att den skall spela en cutscene h�r och att den laddar in den
 
 	Load(levelLoader.LoadLevel(mylevelButtondata), mylevelButtondata);
@@ -278,7 +278,7 @@ void Level::Restart()
 void Level::LoadNextLevel()
 {
 	bool amILastLevel = false;
-	StateManager::GetInstance().AddNextLevelOnStack(mylevelButtondata->myLevelNumber);
+	StateManager::GetInstance().AddNextLevelOnStack(mylevelButtondata->myLevelSelectNumber);
 	return;
 }
 
