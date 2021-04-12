@@ -7,6 +7,11 @@ void State::OnPushed()
 	printf("I got pushed");
 }
 
+void State::OnResumed()
+{
+	printf("I have resumed");
+}
+
 void State::SetRenderThrough(const bool aRenderThroughState)
 {
 	myRenderThrough = aRenderThroughState;

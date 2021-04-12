@@ -46,7 +46,8 @@ void LevelSelectLoadData::FillData(rapidjson::Value& aJsonValue, int& aLevelIter
 	for (rapidjson::SizeType i = 0; i < aJsonValue.Size(); i++)
 	{
 		myLevelSelectLoadData.Add(std::make_shared<LevelSelect_SpecificLevelData>());
-		myLevelSelectLoadData[aLevelIterator]->myLevelNumber = aLevelIterator;
+		myLevelSelectLoadData[aLevelIterator]->myWorldLevelNumber = i;
+		myLevelSelectLoadData[aLevelIterator]->myLevelSelectNumber = aLevelIterator;
 		myLevelSelectLoadData[aLevelIterator]->myLevelPath = aJsonValue[i]["path"].GetString();
 		myLevelSelectLoadData[aLevelIterator]->myTileSheetPath = aJsonValue[i]["gameplayAreaTileSheetPath"].GetString();
 		myLevelSelectLoadData[aLevelIterator]->myPropsTileSheetPath = aJsonValue[i]["propsTileSheetPath"].GetString();

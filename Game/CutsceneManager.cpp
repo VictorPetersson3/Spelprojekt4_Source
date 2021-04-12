@@ -65,10 +65,6 @@ void CutsceneManager::Update()
 	{
 		GetButtonElement(1)->SetIsHovered(true);
 		GetButtonElement(1)->Activate();
-		//if (InputManagerS::GetInstance().GetKeyUp(DIK_ESCAPE))
-		//{
-		//	OnExit();
-		//}
 	}
 	if (InputManagerS::GetInstance().GetKeyUp(DIK_ESCAPE) && !myPrintEverything)
 	{
@@ -125,6 +121,8 @@ void CutsceneManager::PlayCutscene(int aLevelIndex)
 
 
 }
+
+void CutsceneManager::PlayLastCutscene() { PlayCutscene(myLevelCharacterDialogues.Size() - 1); }
 
 void CutsceneManager::LoadCutscenes()
 {

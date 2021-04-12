@@ -150,6 +150,7 @@
     <ClInclude Include="CutsceneCharacter.h" />
     <ClInclude Include="CutsceneData.h" />
     <ClInclude Include="Door.h" />
+    <ClInclude Include="EndOfGameCutscene.h" />
     <ClInclude Include="EndOfLevelScreen.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityFactory.h" />
@@ -207,6 +208,7 @@
     <ClCompile Include="CutsceneCharacter.cpp" />
     <ClCompile Include="CutsceneData.cpp" />
     <ClCompile Include="Door.cpp" />
+    <ClCompile Include="EndOfGameCutscene.cpp" />
     <ClCompile Include="EndOfLevelScreen.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Game.cpp" />

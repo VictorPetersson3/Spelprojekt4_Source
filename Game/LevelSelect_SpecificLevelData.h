@@ -18,7 +18,8 @@ struct LevelSelect_SpecificLevelData
 	bool myMoveCameraX = false;
 	bool myMoveCameraY = false;
 	int myCutsceneConversation = INFINITY;
-	int myLevelNumber;
+	int myLevelSelectNumber;
+	int myWorldLevelNumber;
 	float myCameraAcceleration;
 	float myCameraMinBorderX;
 	float myCameraMinBorderY;
