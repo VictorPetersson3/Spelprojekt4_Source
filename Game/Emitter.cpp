@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Emitter.h"
+#include "Snow.h"
 #include <tga2d/sprite/sprite_batch.h>
 #include <WinUser.h>
 #include <iostream>
@@ -69,9 +70,9 @@ void Emitter::SetParticleType(const ParticleType& aParticleType)
 			particle = nullptr;
 		}
 		myParticles.clear();
-		for (int i = 0; i < 2000; i++)
+		for (int i = 0; i < 1000; i++)
 		{
-			//myParticles.push_back(new Example());
+			myParticles.push_back(new Snow());
 			myParticles[i]->Init();
 			myParticles[i]->IsActive() = false;
 		}
