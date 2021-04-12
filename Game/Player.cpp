@@ -26,6 +26,7 @@ void Player::Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower)
 {
 	myAnimations.clear();
 
+	printf("Player start position : x: %f, y: %f\n", aPosition.x, aPosition.y);
 	myCurrentPower = aPower;
 	myPosition = aPosition;
 
@@ -33,11 +34,15 @@ void Player::Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower)
 	myWasDead = false;
 	myMoveState = EPlayerState::Idle;
 
+	myCurrentVelocity = { 0, 0 };
+
 	InitJSON();
 
 	InitAnimations();
 
 	InitCollider();
+
+	printf("Player after init position : x: %f, y: %f\n", aPosition.x, aPosition.y);
 }
 
 void Player::Render(Camera& aCamera)
