@@ -9,7 +9,7 @@
 #include "LevelSelect.h"
 #include "CutsceneManager.h"
 #include "EndOfGameCutscene.h"
-
+#include "FadeInImage.h"
 #include "LevelSelect_SpecificLevelData.h"
 
 
@@ -36,7 +36,7 @@ void StateManager::Init()
 	myInstance->myCutsceneManager = std::make_shared<CutsceneManager>();
 	myInstance->myCharacterSelection = std::make_shared<CharacterSelectionScreen>();
 	myInstance->myEndOfGameCutscene = std::make_shared<EndOfGameCutscene>();
-
+	myInstance->myFadeInImage = std::make_shared<FadeInImage>();
 
 	//Init the states you made here, rest will work automagically,
 	myInstance->myMainMenu.get()->Init(EStateType::eMainMenu);
@@ -46,11 +46,11 @@ void StateManager::Init()
 	myInstance->myCutsceneManager->Init(EStateType::eCutsceneManager, "Json/Cutscenes/Conversations");
 	myInstance->myCharacterSelection->Init(EStateType::eCharacterSelection);
 	myInstance->myEndOfGameCutscene->Init(EStateType::eEndOfGameCutscene);
-	
+	myInstance->myFadeInImage->Init(EStateType::eFadeIn);
 	//Main Menu is the default beginning state
-	myInstance->myGameStates.Push(GetInstance().myMainMenu);
-	myInstance->myGameStates.GetTop()->OnPushed();
-	
+	myInstance->AddStateOnStack(GetInstance().myMainMenu);
+	myInstance->AddStateOnStack(GetInstance().myFadeInImage);
+	myInstance->myFadeInImage->PlayIntro();
 	// 
 	//If you want to test a state, Push it on to myGameStates above the main menu
 
@@ -106,6 +106,12 @@ void StateManager::AddLevelSelectOnStack()
 {
 	myInstance->myGameStates.Push(myInstance->myLevelSelect);
 	myInstance->myGameStates.GetTop()->OnPushed();
+}
+
+void StateManager::AddAndPlayFadeOnStack(const EFadeImage aFadeImage)
+{
+	myInstance->AddStateOnStack(GetInstance().myFadeInImage);
+	myInstance->myFadeInImage->PlayFade(aFadeImage);
 }
 
 void StateManager::AddLevelOnStack(int aLevelIndex)

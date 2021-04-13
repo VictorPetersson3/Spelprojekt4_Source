@@ -82,7 +82,8 @@ void CutsceneManager::Update()
 		printf("I will print Everything!!!\n");
 		PrintEverything();
 	}
-	
+	myLeftCharacter->Update();
+	myRightCharacter->Update();
 }
 
 void CutsceneManager::Render()

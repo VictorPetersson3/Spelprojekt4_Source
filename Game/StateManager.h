@@ -10,6 +10,7 @@ class LevelSelect;
 class CutsceneManager;
 class CharacterSelectionScreen;
 class EndOfGameCutscene;
+class FadeInImage;
 
 class StateManager
 {
@@ -30,6 +31,8 @@ public:
 	static void AddStateOnStack(std::shared_ptr<State> aState);
 	static void AddOptionsOnStack();
 	static void AddLevelSelectOnStack();
+
+	static void AddAndPlayFadeOnStack(const EFadeImage aFadeImage);
 
 	static void AddLevelOnStack(int aLevelIndex);
 	static void AddNextLevelOnStack(int aLevelIndex);
@@ -53,6 +56,7 @@ private:
 	std::shared_ptr<CutsceneManager> myCutsceneManager;
 	std::shared_ptr<CharacterSelectionScreen> myCharacterSelection;
 	std::shared_ptr<EndOfGameCutscene> myEndOfGameCutscene;
+	std::shared_ptr<FadeInImage> myFadeInImage;
 	//Add States here as an object, 1 per state, Init the states after in Init
 
 

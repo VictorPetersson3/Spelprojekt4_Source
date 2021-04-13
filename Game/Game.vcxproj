@@ -158,6 +158,7 @@
     <ClInclude Include="EntityFactory.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="FadeInImage.h" />
     <ClInclude Include="MovingPlatform.h" />
     <ClInclude Include="LevelSelectLoadData.h" />
     <ClInclude Include="LevelSelect_SpecificLevelData.h" />
@@ -218,6 +219,7 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="FadeInImage.cpp" />
     <ClCompile Include="KillZone.cpp" />
     <ClCompile Include="MovingPlatform.cpp" />
     <ClCompile Include="LevelSelectLoadData.cpp" />

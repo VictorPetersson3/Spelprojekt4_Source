@@ -13,6 +13,7 @@ public:
 	const LinkString& GetName() const;
 	void SetActive(const bool aState);
 	void MakeAngry(const bool aMood);
+	void Update();
 	void Render();
 	void SetPosition(const CommonUtilities::Vector2f& aPos);
 	void InitAngrySprite(const char* aImagePath);

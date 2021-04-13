@@ -277,6 +277,7 @@ void CharacterSelectionScreen::CharacterChoicePress()
 	{
 		StateManager::RemoveStateFromTop();
 		StateManager::AddLevelOnStack(myCurrentLevelIndex);
+		StateManager::AddAndPlayFadeOnStack(EFadeImage::eBlack);
 	}
 }
 

@@ -32,13 +32,16 @@ void CutsceneCharacter::SetActive(const bool aState)
 
 void CutsceneCharacter::MakeAngry(const bool aMood) { myIsAngry = aMood; }
 
-void CutsceneCharacter::Render()
+void CutsceneCharacter::Update()
 {
 	myScaleTimer += Timer::GetInstance().GetDeltaTime() * 0.5;
 	myCurrentScale = CommonUtilities::Lerp(myCurrentScale, myGoalScale, myScaleTimer);
 	mySprite->SetSizeRelativeToImage({ myCurrentScale, myCurrentScale });
 	myAngrySprite->SetSizeRelativeToImage({ myCurrentScale, myCurrentScale });
+}
 
+void CutsceneCharacter::Render()
+{
 	if (myIsAngry)
 	{
 		myAngrySprite->Render();

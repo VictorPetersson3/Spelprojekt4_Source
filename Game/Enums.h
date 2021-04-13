@@ -12,7 +12,8 @@ enum class EStateType
 	eGame,
 	eCutsceneManager,
 	eCharacterSelection,
-	eEndOfGameCutscene
+	eEndOfGameCutscene,
+	eFadeIn
 };
 enum class EWorldLevel
 {
@@ -52,6 +53,12 @@ enum class EPowerUp
 	Default = 1,
 	DoubleJump = 2,
 	Glide = 3
+};
+enum class EFadeImage
+{
+	eBlack,
+	eTgaLogo,
+	eGroupLogo
 };
 
 

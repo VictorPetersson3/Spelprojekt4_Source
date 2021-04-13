@@ -218,6 +218,9 @@
     <ClInclude Include="Ambient.h">
       <Filter>Particles\ParticleTypes</Filter>
     </ClInclude>
+    <ClInclude Include="FadeInImage.h">
+      <Filter>StateTypes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -361,6 +364,9 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Ambient.cpp">
       <Filter>Particles\ParticleTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="FadeInImage.cpp">
+      <Filter>StateTypes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
