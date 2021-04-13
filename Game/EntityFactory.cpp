@@ -107,6 +107,7 @@ std::shared_ptr<Shooter> EntityFactory::LoadShooter(int aEntityIndex, int aLayer
 	float xPosition = (myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / renderSizeX * gridSize) - (1/ renderSizeX * gridSize);
 	float yPosition = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / renderSizeY * gridSize;
 	bool isFlipped = false;
+	float fireRate = 5;
 
 	std::shared_ptr<Collider> collider = std::make_shared<Collider>(gridSize / renderSizeX, CommonUtilities::Vector2f{ myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / renderSizeX * gridSize,
 													myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / renderSizeY * gridSize });
@@ -119,6 +120,11 @@ std::shared_ptr<Shooter> EntityFactory::LoadShooter(int aEntityIndex, int aLayer
 
 	{
 		isFlipped = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][1]["__value"].GetBool();
+	}
+	if (myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"].Capacity() > 2)
+
+	{
+		shooterToPushBack.SetFireRate(myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][2]["__value"].GetFloat());
 	}
 
 	if (shootDirection == "Up")
@@ -188,7 +194,6 @@ std::shared_ptr<CollapsingTile> EntityFactory::LoadCollapsingTile(int aEntityInd
 
 	return std::make_shared<CollapsingTile>(CommonUtilities::Vector2f(xPosition, yPosition));
 }
-
 std::shared_ptr<KillZone> EntityFactory::LoadKillZone(int aEntityIndex, int aLayerIndex)
 {
 	float width = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["width"].GetFloat();
