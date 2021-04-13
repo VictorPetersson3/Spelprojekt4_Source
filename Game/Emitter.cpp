@@ -1,16 +1,20 @@
 #include "stdafx.h"
 #include "Emitter.h"
+#include "Ambient.h"
 #include "Snow.h"
+#include "Timer.h"
 #include <tga2d/sprite/sprite_batch.h>
 #include <WinUser.h>
 #include <iostream>
 #include <random>
 
+#define DELTA_TIME Timer::GetInstance().GetDeltaTime()
 
-Emitter::Emitter()
+Emitter::Emitter(EWorldLevel aWorld)
 {
 	mySpriteBatch = new Tga2D::CSpriteBatch("");
 	mySpriteBatch->Init();
+	myWorld = aWorld;
 }
 
 Emitter::~Emitter()
@@ -26,9 +30,10 @@ Emitter::~Emitter()
 	mySpriteBatch = nullptr;
 }
 
-void Emitter::Update(float aDeltaTime)
+//Separate Update function, use UpdateAndEmit() for non-specific uses.
+void Emitter::Update()
 {
-	myEmissionTimer += aDeltaTime;
+	myEmissionTimer += DELTA_TIME;
 
 	/* // Detta är bara om man vill att den ska följa musen, använd annars SetPosition separat.
 	auto resolution = Tga2D::CEngine::GetInstance()->GetRenderSize();
@@ -44,7 +49,7 @@ void Emitter::Update(float aDeltaTime)
 		//logic
 		if (particle->IsActive())
 		{
-			particle->Update(aDeltaTime);
+			particle->Update(DELTA_TIME);
 
 			mySpriteBatch->AddObject(particle->GetSprite());
 			if (particle->LifeTime())
@@ -60,10 +65,10 @@ void Emitter::SetParticleType(const ParticleType& aParticleType)
 {
 	switch (aParticleType)
 	{
-	case ParticleType::Snow:
-		mySpriteBatch->Init("Sprites/snowflake6.dds");
+	case ParticleType::Ambient:
+		mySpriteBatch->Init("Sprites/leaf_particle_red.dds");
 		mySpriteBatch->SetBlendState(EBlendState::EBlendState_Alphablend);
-		myParticleType = ParticleType::Snow;
+		myParticleType = ParticleType::Ambient;
 		for (auto& particle : myParticles)
 		{
 			delete particle;
@@ -72,7 +77,7 @@ void Emitter::SetParticleType(const ParticleType& aParticleType)
 		myParticles.clear();
 		for (int i = 0; i < 1000; i++)
 		{
-			myParticles.push_back(new Snow());
+			myParticles.push_back(new Ambient(myWorld));
 			myParticles[i]->Init();
 			myParticles[i]->IsActive() = false;
 		}
@@ -85,6 +90,7 @@ void Emitter::SetPosition(const VECTOR2F& aPosition)
 	myPosition = aPosition;
 }
 
+//Separate Emit function, use UpdateAndEmit() for non-specific uses.
 void Emitter::Emit()
 {
 	if (myEmissionTimer >= myEmissionRate)

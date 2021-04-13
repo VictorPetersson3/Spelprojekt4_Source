@@ -11,13 +11,14 @@ namespace Tga2D
 class Emitter
 {
 public:
-	Emitter();
+	Emitter(EWorldLevel aWorld);
 	~Emitter();
 
-	void Update(float aDeltaTime);
+	void Update();
 	void SetParticleType(const ParticleType& aParticleType);
 	void SetPosition(const VECTOR2F& aPosition);
 	void Emit();
+	void UpdateAndEmit();
 
 	void CallRender();
 
@@ -32,5 +33,7 @@ private:
 	Tga2D::CSpriteBatch* mySpriteBatch;
 	double myEmissionRate = 0.0045;
 	float myEmissionTimer = 0;
+
+	EWorldLevel myWorld;
 };
 
