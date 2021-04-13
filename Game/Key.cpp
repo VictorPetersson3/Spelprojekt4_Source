@@ -5,14 +5,18 @@
 #include "Player.h"
 #include "InputManager.h"
 
-void Key::Init(std::shared_ptr<Player> aPlayer) 
+Key::Key()
+{
+}
+
+void Key::Init(std::shared_ptr<Player> aPlayer)
 {
 	myPlayer = aPlayer;
 	myRenderCommand = std::make_shared<RenderCommand>("sprites/tga_logo.dds", 1, true);
 	myPosition = { 0.5f,0.5f };
 }
 
-void Key::Update() 
+void Key::Update(float aDeltaTime)
 {
 	if (InputManagerS::GetInstance().GetKeyDown(DIK_0))
 	{
