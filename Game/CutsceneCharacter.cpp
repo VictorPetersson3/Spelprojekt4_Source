@@ -30,15 +30,35 @@ void CutsceneCharacter::SetActive(const bool aState)
 	}
 }
 
+void CutsceneCharacter::MakeAngry(const bool aMood) { myIsAngry = aMood; }
+
 void CutsceneCharacter::Render()
 {
 	myScaleTimer += Timer::GetInstance().GetDeltaTime() * 0.5;
 	myCurrentScale = CommonUtilities::Lerp(myCurrentScale, myGoalScale, myScaleTimer);
 	mySprite->SetSizeRelativeToImage({ myCurrentScale, myCurrentScale });
-	mySprite->Render();
+	myAngrySprite->SetSizeRelativeToImage({ myCurrentScale, myCurrentScale });
+
+	if (myIsAngry)
+	{
+		myAngrySprite->Render();
+	}
+	else
+	{
+		mySprite->Render();
+	}
 }
 
 void CutsceneCharacter::SetPosition(const CommonUtilities::Vector2f& aPos)
 {
 	mySprite->SetPosition({aPos.x, aPos.y});
+	myAngrySprite->SetPosition(mySprite->GetPosition());
+}
+
+void CutsceneCharacter::InitAngrySprite(const char* aImagePath)
+{
+	myAngrySprite = std::make_unique<Tga2D::CSprite>(aImagePath);
+	myAngrySprite->SetPivot({ 0.5f, 0.5f });
+	myAngrySprite->SetPosition(mySprite->GetPosition());
+	SetActive(false);
 }
