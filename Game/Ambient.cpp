@@ -35,7 +35,7 @@ void Ambient::Init()
 	myMaxStartScale = 1.5f;
 
 	//myStartScale = 1.0f;
-	myEndScale = 0.2f;
+	myEndScale = 0.4f;
 
 	/// Start Speed
 	myMinStartSpeed = 0.1f;
@@ -46,8 +46,8 @@ void Ambient::Init()
 	myMaxRotation = 2.0f;
 
 	/// Lifetime
-	myMinLifeTime = 30.0f;
-	myMaxLifeTime = 60.0f;
+	myMinLifeTime = 20.0f;
+	myMaxLifeTime = 40.0f;
 	/// Color
 	myStartColor = { 1, 1, 1, 1.0f };
 	myEndColor = { 1, 1, 1, 0.5f };
