@@ -19,20 +19,22 @@ void Boss::Init(const std::shared_ptr<Player> aPlayer)
 	myPlayerToAttack = aPlayer;
 	myPosition = { 0.5f, 0.5f }; // start pos
 	myPostionsToMoveTo.emplace_back(myPosition);
+
 	myRenderCommand->SetSpritePosition(myPosition);
+
 	myCollider = std::make_shared<Collider>(myPosition, 0.15f, 0.15f);
 	myCollider->SetTag(EColliderTag::KillZone);
 	LoadAnimations();
+
 
 }
 
 void Boss::Update(const float aDt)
 {
-
+	//std::cout << myCollider->GetPosition().x << ", " << myCollider->GetPosition().y << std::endl;
 	if (!myIsDead)
 	{
 		Move(aDt);
-		CheckCollisionWithPlayer();
 		myPosition += myDirection * aDt;
 		myRenderCommand->SetSpritePosition(myPosition);
 		myRenderCommand->Update(myPosition);
@@ -72,17 +74,6 @@ void Boss::Render(Camera& aCamera)
 void Boss::AddForce(const CommonUtilities::Vector2f aForce)
 {
 	myDirection += aForce;
-}
-
-void Boss::CheckCollisionWithPlayer()
-{
-	for (int i = 0; i < myCollider->GetCollidedWith().size(); i++)
-	{
-		if (myCollider->GetCollidedWith()[i]->GetTag() == EColliderTag::Player)
-		{
-		
-		}
-	}
 }
 
 void Boss::ChangeAnimState(const AnimationState aAnimationState)
