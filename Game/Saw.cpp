@@ -7,8 +7,8 @@
 Saw::Saw(Vector2 aStartPoint, bool isFlipped)
 {
 	myPosition = aStartPoint;
-	myAnimationClip = std::make_shared<AnimationClip>("Sprites/obstacles/obstacle_snail.dds", 0, 0);
-	myAnimationClip->Init({ 8,1 }, { 5,1 });
+	myAnimationClip = std::make_shared<AnimationClip>("Sprites/obstacles/obstacle_saw.dds", 0, 0);
+	myAnimationClip->Init({ 4,1 }, { 2,1 });
 	myAnimationClip->PlayAnimLoop();
 	myTravelPoints.push_back(aStartPoint);
 
@@ -20,6 +20,12 @@ Saw::Saw(Vector2 aStartPoint, bool isFlipped)
 
 void Saw::AddPoint(Vector2 aPoint)
 {
+	if (myTravelPoints.size() == 1)
+	{
+		myAnimationClip = std::make_shared<AnimationClip>("Sprites/obstacles/obstacle_snail.dds", 0, 0);
+		myAnimationClip->Init({ 8,1 }, { 5,1 });
+		myAnimationClip->PlayAnimLoop();
+	}
 	myAnimationClip->SetRotation(0);
 	myDownVector = Vector2({ (myTravelPoints[0] - aPoint).myY, (myTravelPoints[0] - aPoint).myX });
 	myTravelPoints.push_back(aPoint);
