@@ -40,7 +40,7 @@ public:
 
 private:
 
-	LevelSelect_SpecificLevelData* mylevelButtondata;
+	LevelSelect_SpecificLevelData* mylevelJsonData;
 
 	std::shared_ptr<Boss> myBoss = {};
 	std::shared_ptr<Camera> myCamera = {};

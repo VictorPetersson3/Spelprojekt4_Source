@@ -21,6 +21,7 @@ public:
 	static bool IsReady();
 
 	static void Update();
+	static void Render();
 
 
 	static void RemoveStateFromTop();

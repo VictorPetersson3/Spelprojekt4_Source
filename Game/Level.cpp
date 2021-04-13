@@ -51,6 +51,7 @@ Level::~Level()
 void Level::OnPushed()
 {
 	AudioManager::GetInstance().StopAllMusic();
+	AudioManager::GetInstance().PlayMusic(mylevelJsonData->mySong.GetString());
 }
 
 void Level::Render()
@@ -76,7 +77,7 @@ void Level::Render()
 	}
 
 
-	myBoss->Render(*myCamera);
+	//myBoss->Render(*myCamera);
 	myPlayer->Render(*myCamera);
 }
 
@@ -243,18 +244,18 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y }, StateManager::GetInstance().GetSelectedCharacter());
 
 	//myPlayer->SetShouldUpdatePhysics(false);
-	myBackground->Init(*(myPlayer.get()), mylevelButtondata->myWorld, mylevelButtondata->myWorldLevelNumber);
+	myBackground->Init(*(myPlayer.get()), mylevelJsonData->myWorld, mylevelJsonData->myWorldLevelNumber);
 
 }
 
 void Level::Load(LevelSelect_SpecificLevelData* someLevelData, const bool aReloadedLevel)
 {
 	LevelLoader levelLoader;
-	mylevelButtondata = someLevelData;
-	myEndOfLevelScreen->SetCurrentLevel(mylevelButtondata->myLevelSelectNumber);
+	mylevelJsonData = someLevelData;
+	myEndOfLevelScreen->SetCurrentLevel(mylevelJsonData->myLevelSelectNumber);
 	//L�gg in att den skall spela en cutscene h�r och att den laddar in den
 
-	Load(levelLoader.LoadLevel(mylevelButtondata), mylevelButtondata);
+	Load(levelLoader.LoadLevel(mylevelJsonData), mylevelJsonData);
 
 	myCameraController->SetAcceleration(someLevelData->myCameraAcceleration);
 	myCameraController->SetMaxBoarderX(someLevelData->myCameraMaxBorderX);
@@ -265,23 +266,24 @@ void Level::Load(LevelSelect_SpecificLevelData* someLevelData, const bool aReloa
 	myCameraController->SetMoveX(someLevelData->myMoveCameraX);
 	myCameraController->SetMoveY(someLevelData->myMoveCameraY);
 
-	if (mylevelButtondata->myHasCutscene && !aReloadedLevel)
+	if (mylevelJsonData->myHasCutscene && !aReloadedLevel)
 	{
-		StateManager::AddAndPlayCutscene(mylevelButtondata->myCutsceneConversation);
+		StateManager::AddAndPlayCutscene(mylevelJsonData->myCutsceneConversation);
+		OnPushed();
 	}
 }
 
 void Level::Restart()
 {
 	LevelLoader levelLoader;
-	Load(mylevelButtondata, true);
+	Load(mylevelJsonData, true);
 	myCameraController->ResetCamera();
 }
 
 void Level::LoadNextLevel()
 {
 	bool amILastLevel = false;
-	StateManager::GetInstance().AddNextLevelOnStack(mylevelButtondata->myLevelSelectNumber);
+	StateManager::GetInstance().AddNextLevelOnStack(mylevelJsonData->myLevelSelectNumber);
 	return;
 }
 

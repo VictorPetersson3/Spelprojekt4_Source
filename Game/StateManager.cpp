@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "StateManager.h"
+#include "AudioManager.h"
 
 #include "MainMenu.h"
 #include "OptionsMenu.h"
@@ -113,7 +114,7 @@ void StateManager::AddLevelOnStack(int aLevelIndex)
 	{
 		myInstance->RemoveDownToState(EStateType::eLevelSelect);
 		myInstance->myGameStates.Push(myInstance->myLevel);
-		myInstance->myLevel.get()->Load(myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex), false);
+		myInstance->myLevel->Load(myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex), false);
 		myInstance->myGameStates.GetTop()->OnPushed();
 	}
 }
@@ -122,7 +123,6 @@ void StateManager::AddNextLevelOnStack(int aCurrentLevelIndex)
 {
 	if (aCurrentLevelIndex + 1 < myInstance->myLevelSelect->GetLevelAmount())
 	{
-		myInstance->myLevelSelect->GetSpecificLevelData(aCurrentLevelIndex + 1)->myIsUnlocked = true;
 		myInstance->AddCharacterSelectOnStack(aCurrentLevelIndex + 1);
 	}
 	else
@@ -157,10 +157,17 @@ void StateManager::AddLastCutscene()
 
 void StateManager::AddCharacterSelectOnStack(const int aLevelIndex)
 {
-	myInstance->myGameStates.Push(myInstance->myCharacterSelection);
-	myInstance->myCharacterSelection->AddCurrentLevelIndex(aLevelIndex);
-	myInstance->myCharacterSelection->UnlockNewWorld(myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex)->myWorld);
-	myInstance->myGameStates.GetTop()->OnPushed();
+	if (myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex)->myIsUnlocked)
+	{
+		myInstance->myGameStates.Push(myInstance->myCharacterSelection);
+		myInstance->myCharacterSelection->AddCurrentLevelIndex(aLevelIndex);
+		myInstance->myCharacterSelection->UnlockNewWorld(myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex)->myWorld);
+		myInstance->myGameStates.GetTop()->OnPushed();
+	}
+	else
+	{
+		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onReturn.mp3");
+	}
 }
 
 EPowerUp StateManager::GetSelectedCharacter()
@@ -171,6 +178,11 @@ EPowerUp StateManager::GetSelectedCharacter()
 void StateManager::Update()
 {
 	myInstance->myGameStates.GetTop()->Update();
+	globalAllocCounter = 0ui32;
+}
+
+void StateManager::Render()
+{
 	//This is to render the layers that are beneath the current game state if they are renderable
 	if (myInstance->myGameStates.GetTop()->GetRenderThrough())
 	{
@@ -183,5 +195,4 @@ void StateManager::Update()
 		}
 	}
 	myInstance->myGameStates.GetTop()->Render();
-	globalAllocCounter = 0ui32;
 }
