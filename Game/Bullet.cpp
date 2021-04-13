@@ -9,7 +9,7 @@ Bullet::Bullet()
 	myAnimationClip = std::make_shared<AnimationClip>("Sprites/obstacles/obstacle_shot.dds", 0, 0);
 	myAnimationClip->Init({ 4,1 }, { 2,1 });
 	myAnimationClip->PlayAnimLoop();
-	myPosition = { 0,0 };
+	myPosition = { 50000,50000 };
 	myDirection = { 0,0 };
 	myCollider = std::make_shared<Collider>(mySize / 2, myPosition);
 	myCollider->SetTag(EColliderTag::KillZone);
@@ -57,4 +57,9 @@ void Bullet::Render(std::shared_ptr<Camera> aCamera)
 		aCamera->RenderSprite(myAnimationClip->GetRenderCommand());
 
 	}
+}
+
+std::shared_ptr<Collider> Bullet::GetCollider()
+{
+	return myCollider;
 }
