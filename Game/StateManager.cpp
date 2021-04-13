@@ -43,7 +43,7 @@ void StateManager::Init()
 	myInstance->myOptionsMenu.get()->Init(EStateType::eOptionsMenu);
 	myInstance->myLevel.get()->Init(EStateType::eGame);
 	myInstance->myLevelSelect->Init(EStateType::eLevelSelect);
-	myInstance->myCutsceneManager->Init(EStateType::eCutsceneManager);
+	myInstance->myCutsceneManager->Init(EStateType::eCutsceneManager, "Json/Cutscenes/Conversations");
 	myInstance->myCharacterSelection->Init(EStateType::eCharacterSelection);
 	myInstance->myEndOfGameCutscene->Init(EStateType::eEndOfGameCutscene);
 	
@@ -145,6 +145,13 @@ void StateManager::AddAndPlayCutscene(int aCutsceneIndex)
 {
 	myInstance->myGameStates.Push(GetInstance().myCutsceneManager);
 	myInstance->myCutsceneManager->PlayCutscene(aCutsceneIndex);
+	myInstance->myGameStates.GetTop()->OnPushed();
+}
+
+void StateManager::AddAndPlayCutscene(int aCutsceneIndex, std::shared_ptr<CutsceneManager> aCutsceneManager)
+{
+	myInstance->myGameStates.Push(aCutsceneManager);
+	aCutsceneManager->PlayCutscene(aCutsceneIndex);
 	myInstance->myGameStates.GetTop()->OnPushed();
 }
 

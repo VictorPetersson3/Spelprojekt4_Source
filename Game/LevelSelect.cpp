@@ -25,8 +25,8 @@ void LevelSelect::Init(const EStateType& aState)
 	{
 		AddButton(std::make_shared<UIButton>());
 		std::string debug = myLevels_LevelData->myLevelSelectLoadData[i]->myMapTile.GetString();
-		GetButtonElement(i)->Init( myLevels_LevelData->myLevelSelectLoadData[i]->myPosition
-		, myLevels_LevelData->myLevelSelectLoadData[i]->myMapTile.GetString(),
+		GetButtonElement(i)->Init( myLevels_LevelData->myLevelSelectLoadData[i]->myPosition, 
+			myLevels_LevelData->myLevelSelectLoadData[i]->myMapTile.GetString(),
 			0, [this](int i) {MapMarkerPress(i); }, i);
 	}
 
@@ -53,7 +53,7 @@ void LevelSelect::Init(const EStateType& aState)
 	myPlayerAvatar.get()->Init({ 0.74f, 0.6f }, "sprites/UI/LevelSelect/LevelSelect_Character.dds", 2);
 	myPlayerAvatar.get()->GetRenderCommand().SetSizeRelativeToImage({ 0.6f, 0.6f });
 	myPlayerAvatar.get()->Activate();
-
+	myPlayerAvatar->ActivatePulse();
 }
 
 void LevelSelect::Update()
@@ -73,25 +73,37 @@ void LevelSelect::Update()
 	if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButtonVertical > 0)
 	{
 		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
+		myPlayerAvatar->Activate();
 		myCurrentHoveredButtonVertical--;
 	}
 	else if (InputManagerS::GetInstance().GetKeyDown(DIK_S) && myCurrentHoveredButtonVertical < 1)
 	{
 		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 		myCurrentHoveredButtonVertical++;
+		myPlayerAvatar->Deactivate();
 	}
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_A) && myCurrentHoveredButtonVertical != 1 && myCurrentHoveredButtonHorizontal > 0)
+
+
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_A) && myCurrentHoveredButtonVertical != 1)
 	{
 		myCharactersPreviousIndex = myCharactersCurrentIndex;
 		myCurrentHoveredButtonHorizontal--;
+		if (myCurrentHoveredButtonHorizontal < 0)
+		{
+			myCurrentHoveredButtonHorizontal = myLevels_LevelData->myLevelSelectLoadData.Size() - 1;
+		}
 		myCharactersCurrentIndex = myCurrentHoveredButtonHorizontal;
 		myCharacterMoveTimer = 0;
 		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 	}
-	else if (InputManagerS::GetInstance().GetKeyDown(DIK_D) && myCurrentHoveredButtonVertical != 1 && myCurrentHoveredButtonHorizontal < myLevels_LevelData->myLevelSelectLoadData.Size() - 1)
+	else if (InputManagerS::GetInstance().GetKeyDown(DIK_D) && myCurrentHoveredButtonVertical != 1)
 	{
 		myCharactersPreviousIndex = myCharactersCurrentIndex;
 		myCurrentHoveredButtonHorizontal++;
+		if (myCurrentHoveredButtonHorizontal == myLevels_LevelData->myLevelSelectLoadData.Size())
+		{
+			myCurrentHoveredButtonHorizontal = 0;
+		}
 		myCharactersCurrentIndex = myCurrentHoveredButtonHorizontal;
 		myCharacterMoveTimer = 0;
 		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");

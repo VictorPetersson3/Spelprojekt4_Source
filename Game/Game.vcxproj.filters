@@ -212,13 +212,12 @@
     <ClInclude Include="Particle.h">
       <Filter>Particles</Filter>
     </ClInclude>
-    <ClInclude Include="Snow.h">
-      <Filter>Particles\ParticleTypes</Filter>
-    </ClInclude>
     <ClInclude Include="EndOfGameCutscene.h">
       <Filter>StateTypes</Filter>
     </ClInclude>
-    <ClInclude Include="Ambient.h" />
+    <ClInclude Include="Ambient.h">
+      <Filter>Particles\ParticleTypes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -356,12 +355,12 @@
     <ClCompile Include="Emitter.cpp">
       <Filter>Particles</Filter>
     </ClCompile>
-    <ClCompile Include="Snow.cpp">
-      <Filter>Particles\ParticleTypes</Filter>
-    </ClCompile>
     <ClCompile Include="EndOfGameCutscene.cpp">
       <Filter>StateTypes</Filter>
     </ClCompile>
-    <ClCompile Include="Ambient.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Ambient.cpp">
+      <Filter>Particles\ParticleTypes</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

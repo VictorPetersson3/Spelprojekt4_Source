@@ -12,14 +12,24 @@ CollapsingTile::CollapsingTile(CommonUtilities::Vector2f aPosition)
 	float posX = aPosition.x / 1280.f;
 	float posY = aPosition.y / 720.f;
 
-	myAnimationClip = std::make_shared<AnimationClip>("Sprites/Tilesets/breakableTileSet_spriteSheets/Tile_06_SpriteSheet.dds", 1, 0);
-	myAnimationClip->Init({ 7,1 }, { 6,1 });
+	float colliderPosX = aPosition.x;
+	float colliderPosY = aPosition.y;
 
-	CommonUtilities::Vector2f colliderPosition = { posX,posY };
+	colliderPosX -= 16.f;
+	colliderPosY -= 16.f;
+
+	colliderPosX /= 1280.f;
+	colliderPosY /= 720.f;
 
 	float width = 32.f / 1280;
 	float height = 32.f / 720 * (16.f / 9.f);
 
+	InitAnimation();
+	
+	myAnimationClip->GetRenderCommand().Update({ posX,posY });
+	
+	CommonUtilities::Vector2f colliderPosition = {colliderPosX,colliderPosY };
+	
 	myCollider = std::make_shared<Collider>(colliderPosition, width/2.f, height/2.f);
 
 }
@@ -29,8 +39,19 @@ CollapsingTile::~CollapsingTile()
 	myCollider->RemoveFromManager();
 }
 
+void CollapsingTile::InitAnimation()
+{
+	myAnimationClip = std::make_shared<AnimationClip>("Sprites/Tilesets/breakableTileSet_spriteSheets/Tile_06_SpriteSheet.dds", 0, 0);
+	myAnimationClip->Init({ 8,1 }, { 8,1 });
+	myAnimationClip->GetRenderCommand().SetSamplerState(ESamplerFilter::ESamplerFilter_Point, ESamplerAddressMode::ESamplerAddressMode_Clamp);
+}
+
+
 void CollapsingTile::Update(float aDeltaTime)
 {
+
+	myAnimationClip->UpdateAnimation(myAnimationClip->GetRenderCommand().GetPosition());
+
 	if (myShouldBeRendered == true)
 	{
 		if (CollisionManager::GetInstance().GetPlayerCollider() != nullptr)
@@ -38,7 +59,7 @@ void CollapsingTile::Update(float aDeltaTime)
 			if (CollisionManager::GetInstance().CheckCollision(myCollider.get(), CollisionManager::GetInstance().GetPlayerCollider()) && myHasBeenHitByPlayer == false)
 			{
 				myHasBeenHitByPlayer = true;
-				myAnimationClip->PlayAnimOnce();
+				myAnimationClip->PlayAnimOnce(0.3f);
 			}
 		}
 		
@@ -55,6 +76,7 @@ void CollapsingTile::Update(float aDeltaTime)
 		}
 	}
 
+
 }
 
 void CollapsingTile::Render(const std::shared_ptr<Camera> aCamera)
@@ -62,7 +84,14 @@ void CollapsingTile::Render(const std::shared_ptr<Camera> aCamera)
 	if (myShouldBeRendered)
 	{
 		aCamera->RenderSprite(myAnimationClip->GetRenderCommand());
-		//myCollider->Draw();
 	}
+}
 
+
+
+std::vector<std::shared_ptr<Collider>> CollapsingTile::GetAllColliders()
+{
+	std::vector<std::shared_ptr<Collider>> returnVector;
+	returnVector.push_back(myCollider);
+	return returnVector;
 }

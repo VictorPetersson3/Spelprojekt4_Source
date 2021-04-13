@@ -17,14 +17,16 @@ public:
     CutsceneManager() = default;
     ~CutsceneManager() = default;
     void Init(const EStateType & aState) final;
+    void Init(const EStateType& aState, const char* aCutsceneDirectory);
     void Update() final;
     void Render() final;
     void OnPushed() final;
     void PlayCutscene(int aLevelIndex);
     void PlayLastCutscene();
+    const int GetAmountOfConversations() const;
 private:
     void LoadCharacters();
-    void LoadCutscenes();
+    void LoadCutscenes(const char* aCutsceneDirectory);
     void Dialogue();
     void ParseAndAddText();
     void ContinuePrint();
@@ -45,6 +47,8 @@ private:
     std::string myCurrentLineToPlay;
     std::string myDialogueToRender;
 
+    std::unique_ptr<UIImage> myBlackBackground;
+    std::shared_ptr<UIImage> myAfterCutsceneImage;
     std::unique_ptr<UIImage> myTextBackgroundGradient;
     std::unique_ptr<UIImage> myTextBackground;
 

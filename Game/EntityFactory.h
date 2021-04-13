@@ -9,6 +9,8 @@ class Saw;
 class MovingPlatform;
 class CollapsingTile;
 class KillZone;
+class Key;
+class Door;
 
 class EntityFactory
 {
@@ -21,6 +23,8 @@ public:
 	std::shared_ptr<KillZone>			LoadKillZone(int aEntityIndex, int aLayerIndex);
 	std::shared_ptr<MovingPlatform>		LoadMovingPlatform	(int aEntityIndex, int aLayerIndex);
 	
+	
+
 private:
 
 	std::vector<std::shared_ptr<Entity>> myEntities;

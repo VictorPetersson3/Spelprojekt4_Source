@@ -8,30 +8,34 @@ namespace Tga2D
 	class CSpriteBatch;
 }
 
+class Camera;
+
 class Emitter
 {
 public:
 	Emitter(EWorldLevel aWorld);
 	~Emitter();
 
-	void Update();
-	void SetParticleType(const ParticleType& aParticleType);
-	void SetPosition(const VECTOR2F& aPosition);
-	void Emit();
-	void UpdateAndEmit();
+	void Init(const CommonUtilities::Vector2f& aPosition, const ParticleType& aParticleType);
 
-	void CallRender();
+	void SetParticleType(const ParticleType& aParticleType);
+	void SetPosition(const CommonUtilities::Vector2f& aPosition);
+
+	void Update(const CommonUtilities::Vector2f& aPosition, Camera& aCamera);
+
+	std::shared_ptr<Tga2D::CSpriteBatch> GetBatch();
 
 private:
+	void Emit();
 	bool myShouldEmit = false;
 
 	std::vector<Particle*> myParticles;
 	ParticleType myParticleType = ParticleType::none;
 
-	VECTOR2F myPosition;
+	CommonUtilities::Vector2f myPosition;
 
-	Tga2D::CSpriteBatch* mySpriteBatch;
-	double myEmissionRate = 0.0045;
+	std::shared_ptr<Tga2D::CSpriteBatch> mySpriteBatch;
+	double myEmissionRate;
 	float myEmissionTimer = 0;
 
 	EWorldLevel myWorld;

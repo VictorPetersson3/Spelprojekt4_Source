@@ -90,6 +90,12 @@ void Saw::SetRepeating(bool aRepeating)
 {
 	myRepeating = aRepeating;
 }
+std::vector<std::shared_ptr<Collider>> Saw::GetAllColliders()
+{
+	std::vector<std::shared_ptr<Collider>> returnVector;
+	returnVector.push_back(myCollider);
+	return returnVector;
+}
 void Saw::Flip()
 {
 	if (myFacingRight)

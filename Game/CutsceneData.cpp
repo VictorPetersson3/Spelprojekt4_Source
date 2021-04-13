@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CutsceneData.h"
+#include "UIImage.h"
 
 CutsceneData::CutsceneData()
 {
@@ -27,6 +28,14 @@ void CutsceneData::AddCharacterMood(const std::string& aMood)
 	myCharacterMoods.Add(aMood);
 }
 
+void CutsceneData::AddAfterImage(const char* aImagePath)
+{
+	myHasAnAfterimage = true;
+	myAfterImage = std::make_shared<UIImage>();
+	myAfterImage->Init({0.5f, 0.5f}, aImagePath, 0);
+	myAfterImage->Deactivate();
+}
+
 const CommonUtilities::GrowingArray<std::pair<std::string, std::shared_ptr<CutsceneCharacter>>>& CutsceneData::GetLines()
 {
 	return myLines;
@@ -45,4 +54,13 @@ std::shared_ptr<CutsceneCharacter> CutsceneData::GetLeftCharacter()
 std::shared_ptr<CutsceneCharacter> CutsceneData::GetRightCharacter()
 {
 	return myRightCharacter;
+}
+
+std::shared_ptr<UIImage> CutsceneData::GetAfterImage()
+{
+	if (myHasAnAfterimage)
+	{
+		return myAfterImage;
+	}
+	return nullptr;
 }

@@ -5,10 +5,15 @@
 #include "StateManager.h"
 #include "InputManager.h"
 #include "Timer.h"
+#include "CutsceneManager.h"
 
 void EndOfGameCutscene::Init(const EStateType& aState)
 {
 	SetStateType(aState);
+
+	myCutsceneManager = std::make_shared<CutsceneManager>();
+	myCutsceneManager->Init(EStateType::eCutsceneManager, "Json/Cutscenes/EndOfGameConversations");
+
 	AddButton(std::make_shared<UIButton>());
 	GetButtonElement(0)->Init({ 0.5f, 0.75f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {BackButtonPress(); });
 	GetButtonElement(0)->SetIsHovered(true);
@@ -30,14 +35,32 @@ void EndOfGameCutscene::Init(const EStateType& aState)
 
 	mySadKiwi = std::make_unique<UIImage>();
 	mySadKiwi->Init({ 0.25f, 0.5f }, "sprites/UI/EndCutsceneSadKiwi.dds", -1);
+	mySadKiwi->ActivatePulse();
+
 }
 
 void EndOfGameCutscene::Update()
 {
+	MenuObject::Update();
 	if (myConversationIsOver)
 	{
+		if (myCurrentConversation < myCutsceneManager->GetAmountOfConversations())
+		{
+			myConversationIsOver = false;
+			StateManager::GetInstance().AddAndPlayCutscene(myCurrentConversation, myCutsceneManager);
+			myCurrentConversation++;
+		}
+		else
+		{
+			myCutsceneIsFinished = true;
+			myCreditsImage->Activate();
+			mySadKiwi->Activate();
+			GetButtonElement(0)->Activate();
+		}
+	}
+	if (myCutsceneIsFinished)
+	{
 		myCreditsImage->Update({ myCreditsImage->GetPosition().x , myCreditsImage->GetPosition().y + (Timer::GetInstance().GetDeltaTime() * 0.25f) });
-		GetButtonElement(0)->Update();
 	}
 }
 
@@ -54,18 +77,24 @@ void EndOfGameCutscene::Render()
 
 void EndOfGameCutscene::OnPushed()
 {
-	StateManager::GetInstance().AddLastCutscene();
-	myCreditsImage->SetPosition({ 0.75f, -0.40f });
 	myConversationIsOver = false;
+	myCutsceneIsFinished = false;
+	myCreditsImage->Deactivate();
+	mySadKiwi->Deactivate();
+	myCurrentConversation = 0;
+	myCreditsImage->SetPosition({ 0.75f, -0.40f });
+	StateManager::GetInstance().AddAndPlayCutscene(myCurrentConversation, myCutsceneManager);
+	myCurrentConversation++;
 }
 
 void EndOfGameCutscene::OnResumed()
 {
 	myConversationIsOver = true;
-	GetButtonElement(0)->Activate();
 }
 
 void EndOfGameCutscene::BackButtonPress()
 {
 	StateManager::RemoveDownToState(EStateType::eMainMenu);
 }
+
+

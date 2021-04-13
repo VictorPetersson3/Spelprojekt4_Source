@@ -1,5 +1,7 @@
 #pragma once
 #include "MenuObject.h"
+
+class CutsceneManager;
 class CCustomShader;
 class UIImage;
 class EndOfGameCutscene :
@@ -17,11 +19,13 @@ private:
     void BackButtonPress();
 
     bool myConversationIsOver = false;
+    bool myCutsceneIsFinished = false;
+    int myCurrentConversation = 0;
 
     std::unique_ptr<UIImage> myBackground;
     std::shared_ptr<Tga2D::CCustomShader> myPanningShader;
     std::unique_ptr<UIImage> myCreditsImage;
     std::unique_ptr<UIImage> mySadKiwi;
-
+    std::shared_ptr<CutsceneManager> myCutsceneManager;
 };
 

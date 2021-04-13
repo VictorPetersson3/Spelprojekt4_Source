@@ -31,7 +31,7 @@ void Shooter::Init(Vector2 aPosition, Shooter::EFireDirection aFireDirection, bo
 	}
 
 	myAnimationClip->SetRotation(std::atan2(myFireDirection.Y, myFireDirection.X) + ((2 * PI) / 4) * 2);
-	
+
 	if (aFlipped)
 	{
 		if (aFireDirection == Shooter::EFireDirection::Right || aFireDirection == Shooter::EFireDirection::Left)
@@ -98,7 +98,26 @@ void Shooter::Shoot()
 		if (!myBullets[i].GetActive())
 		{
 			myBullets[i].Call(myPosition, myFireDirection);
-			break;
+			return;
 		}
 	}
+}
+
+void Shooter::SetFireRate(const float& aFireRate)
+{
+	myFireRate = aFireRate;
+}
+
+std::vector<std::shared_ptr<Collider>> Shooter::GetAllColliders()
+{
+	std::vector<std::shared_ptr<Collider>> returnVector;
+	returnVector.push_back(myCollider);
+
+	for (Bullet& b : myBullets)
+	{
+		returnVector.push_back(b.GetCollider());
+	}
+
+
+	return returnVector;
 }

@@ -29,6 +29,8 @@ static enum class EFireDirection
 	void Update(float aDeltaTime) override;
 	void Render(std::shared_ptr<Camera> aCamera)override;
 	void Shoot();
+	void SetFireRate(const float& aFireRate);
+	std::vector<std::shared_ptr<Collider>> GetAllColliders();
 		
 private:
 	

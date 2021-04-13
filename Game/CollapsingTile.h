@@ -18,6 +18,8 @@ public:
 
 	void Update(float aDeltaTime) override;
 	void Render(const std::shared_ptr<Camera> aCamera) override;
+	void InitAnimation();
+	std::vector<std::shared_ptr<Collider>> GetAllColliders();
 
 private:
 	std::shared_ptr<AnimationClip> myAnimationClip;
