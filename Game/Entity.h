@@ -21,4 +21,5 @@ public:
 
 	virtual void Update(float aDeltaTime) = 0;
 	virtual void Render(const std::shared_ptr<Camera> aCamera) = 0;
+	virtual std::vector<std::shared_ptr<Collider>> GetAllColliders() = 0;
 };

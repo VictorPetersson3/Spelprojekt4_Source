@@ -364,5 +364,6 @@
     <ClCompile Include="EndOfGameCutscene.cpp">
       <Filter>StateTypes</Filter>
     </ClCompile>
+    <ClCompile Include="Entity.cpp" />
   </ItemGroup>
 </Project>

@@ -23,6 +23,7 @@ public:
 	void SetCollider(std::shared_ptr<Collider> aCollider);
 	void SetRepeating(bool aRepeating);
 	void SetSize(Vector2 aRenderSize, float aGridSize);
+	std::vector<std::shared_ptr<Collider>> GetAllColliders();
 
 private:
 	std::shared_ptr<RenderCommand> myRenderCommand;

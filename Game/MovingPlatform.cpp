@@ -64,3 +64,10 @@ void MovingPlatform::SetSize(Vector2 aRenderSize, float aGridSize)
 	myRenderCommand->SetTextureRect(0,0, 1 / (imageSize.X / aRenderSize.X), 1 / (imageSize.Y / aRenderSize.Y));
 	myRenderCommand->SetSizeRelativeToImage({ 1/(imageSize.X / aRenderSize.X), 1/(imageSize.Y / aRenderSize.Y)});
 }
+
+std::vector<std::shared_ptr<Collider>> MovingPlatform::GetAllColliders()
+{
+	std::vector<std::shared_ptr<Collider>> returnVector;
+	returnVector.push_back(myCollider);
+	return returnVector;
+}

@@ -34,3 +34,10 @@ void KillZone::Render(const std::shared_ptr<Camera> aCamera)
 {
 	myCollider->Draw();
 }
+
+std::vector<std::shared_ptr<Collider>> KillZone::GetAllColliders()
+{
+	std::vector<std::shared_ptr<Collider>> returnVector;
+	returnVector.push_back(myCollider);
+	return returnVector;
+}

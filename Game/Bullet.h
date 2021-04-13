@@ -18,6 +18,7 @@ public:
 	bool GetActive();
 	void Update(float aDeltaTime);
 	void Render(std::shared_ptr<Camera> aCamera);
+	std::shared_ptr<Collider> GetCollider();
 
 private:
 
