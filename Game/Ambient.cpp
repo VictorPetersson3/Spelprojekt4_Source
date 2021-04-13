@@ -1,9 +1,13 @@
 #include "stdafx.h"
 #include "Ambient.h"
-
+#include "Timer.h"
+#include "Camera.h"
 #include <tga2d/sprite/sprite.h>
 #include <random>
 #include <cmath>
+
+
+#define DELTA_TIME Timer::GetInstance().GetDeltaTime()
 
 Ambient::Ambient(EWorldLevel aWorld)
 {
@@ -21,7 +25,7 @@ void Ambient::Init()
 	// Emission Values
 	/// Spawn time
 	myContents.myMinTimeBetweenParticleSpawns = 0.001f;
-	myContents.myMaxTimeBetweenParticleSpawns = 0.01f;
+	myContents.myMaxTimeBetweenParticleSpawns = 0.2f;
 	/// Emission time
 	/*myEmitTime = 0.0f;*/
 
@@ -42,11 +46,11 @@ void Ambient::Init()
 	myMaxRotation = 2.0f;
 
 	/// Lifetime
-	myMinLifeTime = 10.0f;
-	myMaxLifeTime = 40.0f;
+	myMinLifeTime = 30.0f;
+	myMaxLifeTime = 60.0f;
 	/// Color
 	myStartColor = { 1, 1, 1, 1.0f };
-	myEndColor = { 1, 1, 1, 0.0f };
+	myEndColor = { 1, 1, 1, 0.5f };
 	/// Acceleration
 	myMinAcceleration = { 0.95f, 0.99f };
 	myMaxAcceleration = { 0.99f, 0.9999f };
@@ -57,7 +61,7 @@ void Ambient::Init()
 	myBlendState = EBlendState::EBlendState_Alphablend;
 
 	/// Sprite
-	mySprite = new Tga2D::CSprite("Sprites/Particles/leaf_particle_red.dds");
+	mySprite = new Tga2D::CSprite("Sprites/Particles/leaf_particle_green.dds");
 	mySprite->SetPivot({ 0.5f, 0.5f });
 	mySprite->SetBlendState(myBlendState);
 
@@ -128,27 +132,32 @@ void Ambient::Reset()
 	myTime = 0;
 }
 
-void Ambient::Update(float aDeltaTime)
+void Ambient::Update(const CommonUtilities::Vector2f& aCamera)
 {
 	// Gör vad fan du vill här, det är ingenting som är "permanent".
 
-	myTime += aDeltaTime;
+	myTime += DELTA_TIME;
 
-	myVelocity.x = powf(myAcceleration.y, aDeltaTime) * myVelocity.x + sinf(myPeriod * myTime) * 0.05f * aDeltaTime;
-	myVelocity.y = powf(myAcceleration.y, aDeltaTime) * myVelocity.y + myGravity * aDeltaTime;
+	myVelocity.x = powf(myAcceleration.y, DELTA_TIME) * myVelocity.x + sinf(myPeriod * myTime) * 0.05f * DELTA_TIME;
+	myVelocity.y = powf(myAcceleration.y, DELTA_TIME) * myVelocity.y + myGravity * DELTA_TIME;
 
-	myAngle += myRotation * aDeltaTime;
+	myAngle += myRotation * DELTA_TIME;
 
-	myPosition.x += myVelocity.x * aDeltaTime;
-	myPosition.y += myVelocity.y * aDeltaTime;
+	myPosition.x += myVelocity.x * DELTA_TIME;
+	myPosition.y += myVelocity.y * DELTA_TIME;
 
-	mySprite->SetPosition(myPosition);
+	mySprite->SetPosition({ myPosition.x - aCamera.x, myPosition.y - aCamera.y }); /////
 	mySprite->SetRotation(myAngle);
 
 	float size = myStartScale + (myTime / myLifeTime) * (myEndScale - myStartScale);
 	mySprite->SetSizeRelativeToImage({ size, size });
 	float alpha = myStartColor.myA + (myTime / myLifeTime) * (myEndColor.myA - myStartColor.myA);
 	mySprite->SetColor({ myStartColor.myR, myStartColor.myG, myStartColor.myB, alpha });
+}
+
+void Ambient::SetPosition(CommonUtilities::Vector2f aPosition)
+{
+	myPosition = { aPosition.x + float(rand() % 200 - 100) / 100.0f * myEmissionWidth * 0.5f, aPosition.y };
 }
 
 Tga2D::CSprite* Ambient::GetSprite()

@@ -23,15 +23,17 @@ struct Emission
 	float myEmitTime;
 };
 
+class Camera;
+
 class Particle
 {
 public:
-	virtual void Init() {}
-	virtual void Reset() {}
-	virtual void Update(float aDeltaTime) {}
+	virtual void Init() {};
+	virtual void Reset() {};
+	virtual void Update(const CommonUtilities::Vector2f& aCamera){};
 
 	virtual Tga2D::CSprite* GetSprite() { return nullptr; }
-	virtual void SetPosition(VECTOR2F aPosition) { myPosition = aPosition; }
+	virtual void SetPosition(CommonUtilities::Vector2f aPosition) { myPosition = aPosition; }
 	virtual bool LifeTime() { return myTime >= myLifeTime; }
 	virtual bool& IsActive() { return myIsActive; }
 	virtual const Emission& GetContents() { return myContents; }
@@ -71,8 +73,8 @@ protected:
 	Tga2D::CColor myStartColor;
 	Tga2D::CColor myEndColor;
 
-	Tga2D::Vector2f myMinAcceleration;
-	Tga2D::Vector2f myMaxAcceleration;
+	CommonUtilities::Vector2f myMinAcceleration;
+	CommonUtilities::Vector2f myMaxAcceleration;
 
 	// Lägg eventuellt till värden här, exempelvis hur brett den ska emittas.
 	//CommonUtilities::Vector2f myEmissionSize;
@@ -82,7 +84,7 @@ protected:
 	EBlendState myBlendState = EBlendState::EBlendState_Disabled;
 
 
-	Tga2D::Vector2f myVelocity;
-	Tga2D::Vector2f myPosition;
+	CommonUtilities::Vector2f myVelocity;
+	CommonUtilities::Vector2f myPosition;
 };
 

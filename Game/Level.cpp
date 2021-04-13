@@ -19,6 +19,7 @@
 #include "Saw.h"
 #include "TerrainTile.h"
 #include "Boss.h"
+#include "Emitter.h"
 
 #include "UIImage.h"
 
@@ -157,6 +158,7 @@ void Level::Update()
 		}
 	}
 
+	if (myAmbientParticles != nullptr) myAmbientParticles->Update({ myCamera->GetPosition().x + 0.5f, mylevelJsonData->myCameraMinBorderY - 0.3f }, *myCamera);
 }
 
 void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData* someLevelData)
@@ -217,6 +219,7 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 	keyList.clear();
 	doorList.clear();
 
+	mySpriteBatches.Add(myAmbientParticles->GetBatch());
 
 	for (int i = 0; i < aData->GetSpriteBatches().Size(); i++)
 	{
@@ -255,7 +258,11 @@ void Level::Load(LevelSelect_SpecificLevelData* someLevelData, const bool aReloa
 	myEndOfLevelScreen->SetCurrentLevel(mylevelJsonData->myLevelSelectNumber);
 	//L�gg in att den skall spela en cutscene h�r och att den laddar in den
 
+	myAmbientParticles = std::make_shared<Emitter>(mylevelJsonData->myWorld);
+	myAmbientParticles->Init({myCamera->GetPosition().x, mylevelJsonData->myCameraMinBorderY - 0.3f }, ParticleType::Ambient);
+
 	Load(levelLoader.LoadLevel(mylevelJsonData), mylevelJsonData);
+
 
 	myCameraController->SetAcceleration(someLevelData->myCameraAcceleration);
 	myCameraController->SetMaxBoarderX(someLevelData->myCameraMaxBorderX);
