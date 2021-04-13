@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "Collider.h"
 #include "JsonParser.h"
+#include "AnimationClip.h"
 
 #include <iostream>
 #include <CommonUtilities/Random.h>
@@ -21,6 +22,7 @@ void Boss::Init(const std::shared_ptr<Player> aPlayer)
 	myRenderCommand->SetSpritePosition(myPosition);
 	myCollider = std::make_shared<Collider>(myPosition, 0.15f, 0.15f);
 	myCollider->SetTag(EColliderTag::KillZone);
+	LoadAnimations();
 
 }
 
@@ -36,6 +38,15 @@ void Boss::Update(const float aDt)
 		myRenderCommand->Update(myPosition);
 		myCollider->Update();
 		myCollider->UpdateCollider(myPosition);
+		
+		if (myDirection.x < 0)
+		{
+			myAnimations[(int)myAnimationState]->UpdateAnimation(myPosition);
+		}
+		else 
+		{
+			myAnimations[(int)myAnimationState + 1]->UpdateAnimation(myPosition);
+		}
 		myDirection = CommonUtilities::Vector2f::Zero();
 	}
 }
@@ -43,7 +54,18 @@ void Boss::Update(const float aDt)
 void Boss::Render(Camera& aCamera)
 {
 	if (!myIsDead)
+	{
+		if (myDirection.x < 0)
+		{
+			myAnimations[(int)myAnimationState]->Render();
+		}
+		else
+		{
+			myAnimations[(int)myAnimationState + 1]->Render();
+		}
+		
 		aCamera.RenderSprite(*myRenderCommand);
+	}
 }
 
 void Boss::AddForce(const CommonUtilities::Vector2f aForce)
@@ -62,6 +84,17 @@ void Boss::CheckCollisionWithPlayer()
 	}
 }
 
+void Boss::ChangeAnimState(const AnimationState aAnimationState)
+{
+	myAnimationState = aAnimationState;
+}
+
+void Boss::PickAnimationSide()
+{
+	
+
+}
+
 void Boss::Move(const float aDt)
 {
 	PickNewPosition(aDt);
@@ -69,8 +102,37 @@ void Boss::Move(const float aDt)
 	if (dist > 0.01f)
 	{
 		const float maxSpeed = mySpeed * 2;
+		ChangeAnimState(AnimationState::eDashL);
 		CommonUtilities::Vector2f direction = myPostionsToMoveTo[myPositionIndex] - myPosition;
 		AddForce((direction.Clamp(-maxSpeed, maxSpeed) * mySpeed));
+		return;
+	}
+	ChangeAnimState(AnimationState::eIdleL);
+
+}
+
+void Boss::LoadAnimations()
+{
+	myAnimations.emplace_back(std::make_shared<AnimationClip>("sprites/boss/boss_idle_L", 2, 0));
+	myAnimations.emplace_back(std::make_shared<AnimationClip>("sprites/boss/boss_idle_R", 2, 1));
+
+	myAnimations.emplace_back(std::make_shared<AnimationClip>("sprites/boss/boss_tell_L", 2, 2));
+	myAnimations.emplace_back(std::make_shared<AnimationClip>("sprites/boss/boss_tell_R", 2, 3));
+
+	myAnimations.emplace_back(std::make_shared<AnimationClip>("sprites/boss/boss_dash_L", 2, 4));
+	myAnimations.emplace_back(std::make_shared<AnimationClip>("sprites/boss/boss_dash_R", 2, 5));
+
+	for (int i = 0; i < myAnimations.size(); ++i) 
+	{
+		if (i > 3)
+		{
+			myAnimations[i]->Init({ 4, 1 }, { 3, 1 });
+		}
+		else 
+		{
+			myAnimations[i]->Init({ 4, 1 }, { 4, 1 });
+		}
+		myAnimations[i]->PlayAnimLoop();
 	}
 }
 
