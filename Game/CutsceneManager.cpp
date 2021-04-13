@@ -26,8 +26,7 @@
 void CutsceneManager::Init(const EStateType& aState)
 {
 	SetStateType(aState);
-	LoadCharacters();
-	LoadCutscenes();
+	
 
 	AddButton(std::make_shared<UIButton>());
 	GetButtonElement(0)->Init({ 0.875f, 0.85f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {ContinuePrint(); });
@@ -52,6 +51,12 @@ void CutsceneManager::Init(const EStateType& aState)
 	myTextToPrint->SetColor({ 0,0,0,1 });
 	myTextToPrint->SetPosition({ 0.21f, 0.79f });
 	myHasReachedEndOfSentence = false;
+}
+void CutsceneManager::Init(const EStateType& aState, const char* aCutsceneDirectory)
+{
+	LoadCharacters();
+	LoadCutscenes(aCutsceneDirectory);
+	Init(aState);
 }
 
 void CutsceneManager::Update()
@@ -120,8 +125,8 @@ void CutsceneManager::PlayCutscene(int aLevelIndex)
 
 	//Print the name of the speaking Character
 	std::string characterName = myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->GetName().GetString();
+	characterName.append("  ");
 	myDialogueToRender.append(characterName.c_str());
-	myDialogueToRender.push_back('   ');
 
 	//printf("\n%s: ", myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->GetName().GetString());
 	myCurrentLineIndexToPlay++;
@@ -133,20 +138,22 @@ void CutsceneManager::PlayCutscene(int aLevelIndex)
 
 void CutsceneManager::PlayLastCutscene() { PlayCutscene(myLevelCharacterDialogues.Size() - 1); }
 
-void CutsceneManager::LoadCutscenes()
+const int CutsceneManager::GetAmountOfConversations() const { return myLevelCharacterDialogues.Size(); }
+
+void CutsceneManager::LoadCutscenes(const char* aCutsceneDirectory)
 {
 	std::vector<std::string> cutscenePaths;
-	std::string directory = "Json/Cutscenes/Conversations";
+	std::string directory = aCutsceneDirectory; // Json/Cutscenes/Conversations  / Json/Cutscenes/EndOfGameConversations
 	int iterator = 0;
-	for (const auto& entry : std::filesystem::directory_iterator(directory))
+	for (const auto& entry : std::filesystem::directory_iterator(aCutsceneDirectory))
 	{
 		if (entry.path().extension().string() == ".json")
 		{
 
 			auto file = entry.path().string();
-
-			std::string type = file.substr(29);
-			std::string levelPathStitched = "Json/Cutscenes/Conversations/";
+			int length = directory.length();
+			std::string type = file.substr(length + 1);
+			std::string levelPathStitched = directory + "/";
 			levelPathStitched.append(type);
 			cutscenePaths.push_back(levelPathStitched);
 		}
@@ -311,8 +318,8 @@ void CutsceneManager::ParseAndAddText()
 				//Print the name of the speaking Character
 				myDialogueToRender.push_back('\n');
 				std::string characterName = myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->GetName().GetString();
+				characterName.append("  ");
 				myDialogueToRender.append(characterName.c_str());
-				myDialogueToRender.push_back('   ');
 				if (myLevelCharacterDialogues[mySceneToPlay]->GetCharacterMoods()[myCurrentLineIndexToPlay] != "default")
 				{
 					myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->MakeAngry(true);

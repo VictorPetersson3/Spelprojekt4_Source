@@ -36,6 +36,7 @@ public:
 	static void UnlockNextlevel(int aCurrentLevelIndex);
 
 	static void AddAndPlayCutscene(int aCutsceneIndex);
+	static void AddAndPlayCutscene(int aCutsceneIndex, std::shared_ptr<CutsceneManager> aCutsceneManager);
 	static void AddLastCutscene();
 
 	static void AddCharacterSelectOnStack(const int aLevelIndex);

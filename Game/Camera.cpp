@@ -40,7 +40,7 @@ void Camera::Update()
 	myPosition += myCameraShakePosition;
 }
 
-void Camera::RenderSprite(Tga2D::CSprite aSprite)
+void Camera::RenderSprite(Tga2D::CSprite& aSprite)
 {
 	const float boundMax = 1.20f / myZoomFactor;
 	const float boundMin = -0.20f / myZoomFactor;
@@ -54,6 +54,11 @@ void Camera::RenderSprite(Tga2D::CSprite aSprite)
 		spritePos.y *= myZoomFactor;
 		aSprite.SetSizeRelativeToImage({1 * myZoomFactor, 1 * myZoomFactor});
 		aSprite.SetPosition({ spritePos.x, spritePos.y });
+		aSprite.SetShouldRender(true);
+	}
+	else
+	{
+		aSprite.SetShouldRender(false);
 	}
 }
 
