@@ -15,7 +15,7 @@ void Background::Init(Player& aPlayer, EWorldLevel aWorld, const int aLevelIndex
 	JsonParser parser;
 	auto worldDoc = parser.GetDocument("Json/Levels.json");
 
-	if (worldDoc["Worlds"][(int)aWorld]["levels"][aLevelIndex]["cameraAcceleration"].GetFloat())
+	if (worldDoc["Worlds"][(int)aWorld]["levels"][aLevelIndex]["moveX"].GetBool())
 		mySpeed = { &(aPlayer.GetCurrentVelocity().x), &(aPlayer.GetCurrentVelocity().y) };
 
 	CommonUtilities::Vector2f position = { 0.0f, worldDoc["Worlds"][(int)aWorld]["levels"][aLevelIndex]["cameraMaxBorderY"].GetFloat() + 0.5f };

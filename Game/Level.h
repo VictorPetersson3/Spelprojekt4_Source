@@ -6,6 +6,7 @@
 #include "CommonUtilities/GrowingArray.hpp"
 class Boss;
 class Entity;
+class Emitter;
 class Player;
 class Background;
 class Camera;
@@ -67,5 +68,7 @@ private:
 	float myPlayerPhysicsUpdateCountdown = 0.2f;
 
 	bool myPlayerHasDied = false;
+
+	std::shared_ptr<Emitter> myAmbientParticles;
 };
 

@@ -19,7 +19,7 @@ void Bullet::Call(Vector2 aPosition, Vector2 aDirection)
 {
 	myIsActive = true;
 	myRemainingLifetime = myMaxLifetime;
-	myPosition = aPosition;
+	myPosition = aPosition + (aDirection * mySize);
 	myDirection = aDirection;
 	myAnimationClip->SetRotation(std::atan2(myDirection.Y, myDirection.X) + ((2 * PI) / 4) * 2);
 }
@@ -43,7 +43,7 @@ void Bullet::Update(float aDeltaTime)
 		myAnimationClip->UpdateAnimation(myPosition);
 		myRemainingLifetime -= aDeltaTime;
 
-		if (myRemainingLifetime <= 0)
+		if (myRemainingLifetime <= 0 || myCollider->HasCollided())
 		{
 			Return();
 		}
