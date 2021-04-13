@@ -1,4 +1,6 @@
 #pragma once
+#include "CommonUtilities/Vector2.hpp"
+#include "Enums.h"
 
 namespace Tga2D
 {
@@ -6,19 +8,11 @@ namespace Tga2D
 	class CColor;
 }
 
-namespace CommonUtilities
-{
-	class Vector2;
-}
-
 enum class ParticleType
 {
 	none,
 	Smoke,
-	FireRing,
-	Explosion,
-	Magic,
-	Snow
+	Ambient
 };
 
 struct Emission
@@ -35,7 +29,7 @@ public:
 	virtual void Init() {}
 	virtual void Reset() {}
 	virtual void Update(float aDeltaTime) {}
-	virtual void Render() {}
+
 	virtual Tga2D::CSprite* GetSprite() { return nullptr; }
 	virtual void SetPosition(VECTOR2F aPosition) { myPosition = aPosition; }
 	virtual bool LifeTime() { return myTime >= myLifeTime; }
@@ -81,10 +75,12 @@ protected:
 	Tga2D::Vector2f myMaxAcceleration;
 
 	// Lägg eventuellt till värden här, exempelvis hur brett den ska emittas.
+	//CommonUtilities::Vector2f myEmissionSize;
 
 	// <\Ranges>
 
 	EBlendState myBlendState = EBlendState::EBlendState_Disabled;
+
 
 	Tga2D::Vector2f myVelocity;
 	Tga2D::Vector2f myPosition;
