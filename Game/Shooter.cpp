@@ -102,3 +102,17 @@ void Shooter::Shoot()
 		}
 	}
 }
+
+std::vector<std::shared_ptr<Collider>> Shooter::GetAllColliders()
+{
+	std::vector<std::shared_ptr<Collider>> returnVector;
+	returnVector.push_back(myCollider);
+
+	for (Bullet& b : myBullets)
+	{
+		returnVector.push_back(b.GetCollider());
+	}
+
+
+	return returnVector;
+}

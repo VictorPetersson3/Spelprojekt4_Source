@@ -1,21 +1,22 @@
 #include "stdafx.h"
-#include "Snow.h"
+#include "Ambient.h"
 
 #include <tga2d/sprite/sprite.h>
 #include <random>
 #include <cmath>
 
-Snow::Snow()
+Ambient::Ambient(EWorldLevel aWorld)
 {
+	myWorld = aWorld;
 }
 
-Snow::~Snow()
+Ambient::~Ambient()
 {
 	delete mySprite;
 	mySprite = nullptr;
 }
 
-void Snow::Init()
+void Ambient::Init()
 {
 	// Emission Values
 	/// Spawn time
@@ -35,7 +36,7 @@ void Snow::Init()
 	/// Start Speed
 	myMinStartSpeed = 0.1f;
 	myMaxStartSpeed = 0.3f;
-	
+
 	/// Angle
 	myMinRotation = -2.0f;
 	myMaxRotation = 2.0f;
@@ -56,7 +57,7 @@ void Snow::Init()
 	myBlendState = EBlendState::EBlendState_Alphablend;
 
 	/// Sprite
-	mySprite = new Tga2D::CSprite("Sprites/snowflake6.dds");
+	mySprite = new Tga2D::CSprite("Sprites/Particles/leaf_particle_red.dds");
 	mySprite->SetPivot({ 0.5f, 0.5f });
 	mySprite->SetBlendState(myBlendState);
 
@@ -75,7 +76,7 @@ void Snow::Init()
 }
 
 
-void Snow::Reset()
+void Ambient::Reset()
 {
 	std::random_device rd;
 	std::mt19937 randomInt(rd());
@@ -127,7 +128,7 @@ void Snow::Reset()
 	myTime = 0;
 }
 
-void Snow::Update(float aDeltaTime)
+void Ambient::Update(float aDeltaTime)
 {
 	// Gör vad fan du vill här, det är ingenting som är "permanent".
 
@@ -140,7 +141,7 @@ void Snow::Update(float aDeltaTime)
 
 	myPosition.x += myVelocity.x * aDeltaTime;
 	myPosition.y += myVelocity.y * aDeltaTime;
-	
+
 	mySprite->SetPosition(myPosition);
 	mySprite->SetRotation(myAngle);
 
@@ -150,7 +151,7 @@ void Snow::Update(float aDeltaTime)
 	mySprite->SetColor({ myStartColor.myR, myStartColor.myG, myStartColor.myB, alpha });
 }
 
-Tga2D::CSprite* Snow::GetSprite()
+Tga2D::CSprite* Ambient::GetSprite()
 {
 	return mySprite;
 }

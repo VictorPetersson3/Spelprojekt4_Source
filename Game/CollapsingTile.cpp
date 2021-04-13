@@ -66,3 +66,10 @@ void CollapsingTile::Render(const std::shared_ptr<Camera> aCamera)
 	}
 
 }
+
+std::vector<std::shared_ptr<Collider>> CollapsingTile::GetAllColliders()
+{
+	std::vector<std::shared_ptr<Collider>> returnVector;
+	returnVector.push_back(myCollider);
+	return returnVector;
+}

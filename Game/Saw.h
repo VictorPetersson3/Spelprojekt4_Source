@@ -24,6 +24,7 @@ public:
 	void Render(const std::shared_ptr<Camera> aCamera) override;
 	void SetCollider(std::shared_ptr<Collider> aCollider);
 	void SetRepeating(bool aRepeating);
+	std::vector<std::shared_ptr<Collider>> GetAllColliders();
 
 private:
 

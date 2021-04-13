@@ -218,6 +218,7 @@
     <ClInclude Include="EndOfGameCutscene.h">
       <Filter>StateTypes</Filter>
     </ClInclude>
+    <ClInclude Include="Ambient.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -352,9 +353,6 @@
       <Filter>Utility</Filter>
     </ClCompile>
     <ClCompile Include="Boss.cpp" />
-    <ClCompile Include="Particle.cpp">
-      <Filter>Particles</Filter>
-    </ClCompile>
     <ClCompile Include="Emitter.cpp">
       <Filter>Particles</Filter>
     </ClCompile>
@@ -364,5 +362,7 @@
     <ClCompile Include="EndOfGameCutscene.cpp">
       <Filter>StateTypes</Filter>
     </ClCompile>
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Ambient.cpp" />
   </ItemGroup>
 </Project>

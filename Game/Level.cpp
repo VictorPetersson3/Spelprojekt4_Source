@@ -229,7 +229,10 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 	}
 	for (auto& e : myEntities)
 	{
-		e->myCollider->AddToManager();
+		for (std::shared_ptr<Collider> ec : e->GetAllColliders())
+		{
+			ec->AddToManager();
+		}
 	}
 
 	if (myLevelEndCollider != nullptr)

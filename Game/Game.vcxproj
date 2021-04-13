@@ -134,6 +134,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Ambient.h" />
     <ClInclude Include="Boss.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="AnimationClip.h" />
@@ -195,6 +196,7 @@
     <ClInclude Include="XController.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Ambient.cpp" />
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="AnimationClip.cpp" />
@@ -212,8 +214,9 @@
     <ClCompile Include="CutsceneData.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="EndOfGameCutscene.cpp" />
-    <ClCompile Include="Emitter.cpp"/>
+    <ClCompile Include="Emitter.cpp" />
     <ClCompile Include="EndOfLevelScreen.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="KillZone.cpp" />
@@ -235,7 +238,6 @@
     <ClCompile Include="OptionsMenu.cpp" />
     <ClCompile Include="JsonParser.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
-    <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Saw.cpp" />
     <ClCompile Include="RenderCommand.cpp" />

@@ -25,6 +25,10 @@ void Saw::AddPoint(Vector2 aPoint)
 		myAnimationClip = std::make_shared<AnimationClip>("Sprites/obstacles/obstacle_snail.dds", 0, 0);
 		myAnimationClip->Init({ 8,1 }, { 5,1 });
 		myAnimationClip->PlayAnimLoop();
+		if (myFacingRight)
+		{
+			myAnimationClip->SetScaleRelativeToFrame({ -1, 1 });
+		}
 	}
 	myAnimationClip->SetRotation(0);
 	myDownVector = Vector2({ (myTravelPoints[0] - aPoint).myY, (myTravelPoints[0] - aPoint).myX });
@@ -47,11 +51,7 @@ void Saw::Update(float aDeltatime)
 				myDirection *= -1;
 				float floatDirection = myDirection;
 				myNextPointIndex += myDirection * 2;
-
-				if (myDownVector.x < 0 || myDownVector.y > 0)
-				{
-					Flip();
-				}
+				Flip();
 			}
 			else
 			{
@@ -89,6 +89,12 @@ void Saw::SetCollider(std::shared_ptr<Collider> aCollider)
 void Saw::SetRepeating(bool aRepeating)
 {
 	myRepeating = aRepeating;
+}
+std::vector<std::shared_ptr<Collider>> Saw::GetAllColliders()
+{
+	std::vector<std::shared_ptr<Collider>> returnVector;
+	returnVector.push_back(myCollider);
+	return returnVector;
 }
 void Saw::Flip()
 {

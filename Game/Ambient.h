@@ -1,10 +1,10 @@
 #pragma once
 #include "Particle.h"
-class Snow :  public Particle
+class Ambient : public Particle
 {
 public:
-	Snow();
-	~Snow();
+	Ambient(EWorldLevel aWorld);
+	~Ambient();
 
 	void Init() override;
 	void Reset() override;
@@ -16,5 +16,7 @@ private:
 	Tga2D::CSprite* mySprite = nullptr;
 	float myGravity = 0.5f;
 	float myPeriod = 1.0f;
+	float myEmissionWidth = 1.0f;
+	EWorldLevel myWorld;
 };
 
