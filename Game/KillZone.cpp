@@ -32,7 +32,6 @@ void KillZone::Update(float aDeltaTime)
 }
 void KillZone::Render(const std::shared_ptr<Camera> aCamera)
 {
-	myCollider->Draw();
 }
 
 std::vector<std::shared_ptr<Collider>> KillZone::GetAllColliders()

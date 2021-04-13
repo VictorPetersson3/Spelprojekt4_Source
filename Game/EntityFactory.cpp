@@ -6,6 +6,8 @@
 #include "JsonParser.h"
 #include "CollapsingTile.h"
 #include "KillZone.h"
+#include "Key.h"
+#include "Door.h"
 
 std::vector<std::shared_ptr<Entity>> EntityFactory::LoadEntities(const char* aPath)
 {
@@ -52,6 +54,14 @@ std::vector<std::shared_ptr<Entity>> EntityFactory::LoadEntities(const char* aPa
 				{
 					myEntities.push_back(LoadKillZone(i, j));
 				}
+				
+				
+				
+				
+				
+				
+				
+				
 			}
 		}
 	}

@@ -1,7 +1,8 @@
 #pragma once
-#include "Entity.h"
 #include <memory>
 #include <CommonUtilities/Vector2.hpp>
+#include "Entity.h"
+
 class Player;
 class RenderCommand;
 class Camera;
@@ -9,12 +10,12 @@ class Camera;
 class Key : public Entity
 {
 public:
-	Key() = default;
+	Key();
 	~Key() = default;
 
 	void Init(std::shared_ptr<Player> aPlayer);
-	void Update();
-	void Render(std::shared_ptr<Camera> aCamera);
+	void Update(float aDeltaTime) override;
+	void Render(std::shared_ptr<Camera> aCamera) override;
 	bool CheckState();
 	inline bool GetKeyState() const 
 	{
@@ -27,6 +28,10 @@ public:
 	inline int GetIndex() const 
 	{
 		return myIndex;
+	}
+	inline void SetIndex(const int aIndex)
+	{
+		myIndex = aIndex;
 	}
 private:
 

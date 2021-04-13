@@ -78,7 +78,7 @@ void Level::Render()
 	}
 
 
-	//myBoss->Render(*myCamera);
+	myBoss->Render(*myCamera);
 	myPlayer->Render(*myCamera);
 }
 
