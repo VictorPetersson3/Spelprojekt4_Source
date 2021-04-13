@@ -17,11 +17,9 @@ public:
     void OnResumed() final;
 private:
     void BackButtonPress();
-    void ContinueConversationPress();
 
     bool myConversationIsOver = false;
     bool myCutsceneIsFinished = false;
-    bool myImageHasBeenSeen = false;
     int myCurrentConversation = 0;
 
     std::unique_ptr<UIImage> myBackground;

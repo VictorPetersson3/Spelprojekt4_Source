@@ -18,10 +18,6 @@ void EndOfGameCutscene::Init(const EStateType& aState)
 	GetButtonElement(0)->Init({ 0.5f, 0.75f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {BackButtonPress(); });
 	GetButtonElement(0)->SetIsHovered(true);
 	GetButtonElement(0)->Deactivate();
-	AddButton(std::make_shared<UIButton>());
-	GetButtonElement(1)->Init({ 0.5f, 0.75f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {ContinueConversationPress(); });
-	GetButtonElement(1)->SetIsHovered(true);
-	GetButtonElement(1)->Deactivate();
 
 	myPanningShader = std::make_shared<Tga2D::CCustomShader>();
 	myPanningShader->Init("shaders/sprite_shader_panning_vs.fx", "shaders/sprite_shader_ps.fx");
@@ -39,28 +35,32 @@ void EndOfGameCutscene::Init(const EStateType& aState)
 
 	mySadKiwi = std::make_unique<UIImage>();
 	mySadKiwi->Init({ 0.25f, 0.5f }, "sprites/UI/EndCutsceneSadKiwi.dds", -1);
+	mySadKiwi->ActivatePulse();
+
 }
 
 void EndOfGameCutscene::Update()
 {
+	MenuObject::Update();
 	if (myConversationIsOver)
 	{
-		if (myCurrentConversation + 1 != myCutsceneManager->GetAmountOfConversations())
+		if (myCurrentConversation < myCutsceneManager->GetAmountOfConversations())
 		{
-			myCurrentConversation++;
 			myConversationIsOver = false;
 			StateManager::GetInstance().AddAndPlayCutscene(myCurrentConversation, myCutsceneManager);
+			myCurrentConversation++;
 		}
 		else
 		{
 			myCutsceneIsFinished = true;
+			myCreditsImage->Activate();
+			mySadKiwi->Activate();
+			GetButtonElement(0)->Activate();
 		}
 	}
 	if (myCutsceneIsFinished)
 	{
-		GetButtonElement(0)->Activate();
 		myCreditsImage->Update({ myCreditsImage->GetPosition().x , myCreditsImage->GetPosition().y + (Timer::GetInstance().GetDeltaTime() * 0.25f) });
-		GetButtonElement(0)->Update();
 	}
 }
 
@@ -79,10 +79,12 @@ void EndOfGameCutscene::OnPushed()
 {
 	myConversationIsOver = false;
 	myCutsceneIsFinished = false;
-	myImageHasBeenSeen = false;
+	myCreditsImage->Deactivate();
+	mySadKiwi->Deactivate();
 	myCurrentConversation = 0;
 	myCreditsImage->SetPosition({ 0.75f, -0.40f });
 	StateManager::GetInstance().AddAndPlayCutscene(myCurrentConversation, myCutsceneManager);
+	myCurrentConversation++;
 }
 
 void EndOfGameCutscene::OnResumed()
@@ -95,7 +97,4 @@ void EndOfGameCutscene::BackButtonPress()
 	StateManager::RemoveDownToState(EStateType::eMainMenu);
 }
 
-void EndOfGameCutscene::ContinueConversationPress()
-{
-	myImageHasBeenSeen = true;
-}
+

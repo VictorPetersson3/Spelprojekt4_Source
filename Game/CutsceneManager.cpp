@@ -51,6 +51,12 @@ void CutsceneManager::Init(const EStateType& aState)
 	myTextToPrint->SetColor({ 0,0,0,1 });
 	myTextToPrint->SetPosition({ 0.21f, 0.79f });
 	myHasReachedEndOfSentence = false;
+	myBlackBackground = std::make_unique<UIImage>();
+	myBlackBackground->Init({ 0.5f, 0.5f }, "sprites/Cutscenes/AlphaGradient.dds", -1);
+	myBlackBackground->GetRenderCommand().SetPivot({ 0.5f, 1.0f });
+	myBlackBackground->GetRenderCommand().SetSpritePosition({ 0.5f, 1.0f });
+	myBlackBackground->GetRenderCommand().SetSizeRelativeToImage({ 5.0f, 5.0f });
+	myBlackBackground->GetRenderCommand().SetColor(Tga2D::CColor{ 0.0f, 0.0f, 0.0f, 0.8f });
 }
 void CutsceneManager::Init(const EStateType& aState, const char* aCutsceneDirectory)
 {
@@ -87,6 +93,11 @@ void CutsceneManager::Render()
 	myTextBackground->Render();
 	myTextToPrint->SetText(myDialogueToRender);
 	myTextToPrint->Render();
+	if (myAfterCutsceneImage != nullptr && myAfterCutsceneImage->GetIsActive())
+	{
+		myBlackBackground->Render();
+		myAfterCutsceneImage->Render();
+	}
 	MenuObject::Render();
 }
 
@@ -133,7 +144,15 @@ void CutsceneManager::PlayCutscene(int aLevelIndex)
 	GetButtonElement(0)->Activate();
 	GetButtonElement(1)->Deactivate();
 
-
+	if (myLevelCharacterDialogues[mySceneToPlay]->GetAfterImage() != nullptr)
+	{
+		myAfterCutsceneImage = myLevelCharacterDialogues[mySceneToPlay]->GetAfterImage();
+		myAfterCutsceneImage->Deactivate();
+	}
+	else
+	{
+		myAfterCutsceneImage = nullptr;
+	}
 }
 
 void CutsceneManager::PlayLastCutscene() { PlayCutscene(myLevelCharacterDialogues.Size() - 1); }
@@ -201,6 +220,11 @@ void CutsceneManager::LoadCutscenes(const char* aCutsceneDirectory)
 			std::string mood = lines[i]["mood"].GetString();
 			currentSceneData->AddCharacterMood(mood.c_str());
 		}
+		if (document.HasMember("AfterConversationImage") && document["AfterConversationImage"].IsString())
+		{
+			currentSceneData->AddAfterImage(document["AfterConversationImage"].GetString());
+		}
+
 		myLevelCharacterDialogues.Add(currentSceneData);
 	}
 }
@@ -339,6 +363,10 @@ void CutsceneManager::ParseAndAddText()
 		{
 			myCurrentLineIndexToPlay = 0;
 			myIsPrinting = false;
+			if (myAfterCutsceneImage != nullptr)
+			{
+				myAfterCutsceneImage->Activate();
+			}
 		}
 	}
 }

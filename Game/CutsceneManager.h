@@ -47,6 +47,8 @@ private:
     std::string myCurrentLineToPlay;
     std::string myDialogueToRender;
 
+    std::unique_ptr<UIImage> myBlackBackground;
+    std::shared_ptr<UIImage> myAfterCutsceneImage;
     std::unique_ptr<UIImage> myTextBackgroundGradient;
     std::unique_ptr<UIImage> myTextBackground;
 

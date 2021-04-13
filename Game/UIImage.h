@@ -12,7 +12,7 @@ public:
     void Update(const CommonUtilities::Vector2f& aPos);
     void Render();
     void SetShader(Tga2D::CCustomShader& aShader);
-    void ActivatePulse(const float aSizeTimer, const float aMinSize, const float aMaxSize);
+    void ActivatePulse(const float aSizeTimer = 1.0f, const float aMinSize = 0.9f, const float aMaxSize = 1.1f);
 private:
     void Pulsing();
     bool myIsPulsing = false;
