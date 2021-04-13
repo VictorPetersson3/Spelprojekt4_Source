@@ -39,7 +39,7 @@ void Background::Init(Player& aPlayer, EWorldLevel aWorld, const int aLevelIndex
 	{
 		for (auto& layer : mySets[i])
 		{
-			layer.mySprite.SetPivot({ 0, 1.0f });
+			layer.mySprite.SetPivot({ 0, 0.75f });
 			layer.mySprite.SetSizeRelativeToImage({ 1, 1 });
 			layer.myPosition = { position.x + i * 0.8f, position.y };
 		}
