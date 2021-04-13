@@ -35,10 +35,10 @@ void LevelSelectLoadData::CreateLevelSelectButtonData()
 			break;
 		}
 	}
-	for (size_t i = 0; i < myLevelSelectLoadData.Size(); i++)
-	{
-		std::string debugPath = myLevelSelectLoadData[i]->myMapTile.GetString();
-	}
+	//for (size_t i = 0; i < myLevelSelectLoadData.Size(); i++)
+	//{
+	//	std::string debugPath = myLevelSelectLoadData[i]->myMapTile.GetString();
+	//}
 }
 
 void LevelSelectLoadData::FillData(rapidjson::Value& aJsonValue, int& aLevelIterator, EWorldLevel aWorld)
@@ -71,6 +71,23 @@ void LevelSelectLoadData::FillData(rapidjson::Value& aJsonValue, int& aLevelIter
 			myLevelSelectLoadData[aLevelIterator]->myCutsceneConversation = aJsonValue[i]["cutSceneConversationNumber"].GetInt();
 		}
 		myLevelSelectLoadData[aLevelIterator]->myWorld = aWorld;
+		switch (aWorld)
+		{
+		case EWorldLevel::eWorld1:
+			myLevelSelectLoadData[aLevelIterator]->mySong = World1Song;
+			break;
+		case EWorldLevel::eWorld2:
+			myLevelSelectLoadData[aLevelIterator]->mySong = World2Song;
+			break;
+		case EWorldLevel::eWorld3:
+			myLevelSelectLoadData[aLevelIterator]->mySong = World3Song;
+			break;
+		case EWorldLevel::eWorld4:
+			myLevelSelectLoadData[aLevelIterator]->mySong = World4Song;
+			break;
+		default:
+			break;
+		}
 		aLevelIterator++;
 	}
 }

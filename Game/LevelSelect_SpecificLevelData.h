@@ -10,6 +10,7 @@ struct LevelSelect_SpecificLevelData
 	LinkString myPropsTileSheetPath;
 	LinkString myBackgroundTilesTileSheetPath;
 	LinkString myMapTile;
+	LinkString mySong;
 	EWorldLevel myWorld;
 	CommonUtilities::Vector2f myPosition;
 	CommonUtilities::Vector2f myCameraPosition;

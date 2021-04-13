@@ -165,6 +165,27 @@ const int LevelSelect::GetLevelAmount() const
 	return myLevels_LevelData->myLevelSelectLoadData.Size();
 }
 
+const LinkString& LevelSelect::GetWorldSong(const int aWorldIndex) const
+{
+	switch (aWorldIndex)
+	{
+	case 1:
+		return myLevels_LevelData->World1Song;
+		break;
+	case 2:
+		return myLevels_LevelData->World2Song;
+		break;
+	case 3:
+		return myLevels_LevelData->World3Song;
+		break;
+	case 4:
+		return myLevels_LevelData->World4Song;
+		break;
+	default:
+		break;
+	}
+}
+
 
 void LevelSelect::LoadLevelButtons()
 {

@@ -28,10 +28,8 @@ void EndOfGameCutscene::Init(const EStateType& aState)
 	myCreditsImage->Init({ 0.75f, -0.40f }, "sprites/UI/Credits.dds", -1);
 	myCreditsImage->ActivatePulse(3.0f, 0.9f, 1.1f);
 
-
 	mySadKiwi = std::make_unique<UIImage>();
 	mySadKiwi->Init({ 0.25f, 0.5f }, "sprites/UI/EndCutsceneSadKiwi.dds", -1);
-
 }
 
 void EndOfGameCutscene::Update()
