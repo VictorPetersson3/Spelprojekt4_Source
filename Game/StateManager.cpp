@@ -129,7 +129,6 @@ void StateManager::AddNextLevelOnStack(int aCurrentLevelIndex)
 	{
 		myInstance->RemoveDownToState(EStateType::eLevelSelect);
 		myInstance->AddStateOnStack(myInstance->myEndOfGameCutscene);
-		//Play Game over stuff and final cutscenes
 	}
 }
 

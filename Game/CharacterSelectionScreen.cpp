@@ -245,7 +245,7 @@ void CharacterSelectionScreen::CharacterChoicePress()
 		sucessfulPress = true;
 		break;
 	case 1:
-		if (myCurrentUnlockedWorld > 2)
+		if (myCurrentUnlockedWorld > 1)
 		{
 			// Load Level with this character
 			myDoubleJumpCharacter;
@@ -258,7 +258,7 @@ void CharacterSelectionScreen::CharacterChoicePress()
 		}
 		break;
 	case 2:
-		if (myCurrentUnlockedWorld > 1)
+		if (myCurrentUnlockedWorld > 2)
 		{
 			// Load Level with this character
 			myGlideCharacter;
