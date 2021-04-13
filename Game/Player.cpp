@@ -24,6 +24,8 @@ Player::~Player() {}
 
 void Player::Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower)
 {
+	if (myController == nullptr) myController = std::make_shared<XController>(1);
+
 	myAnimations.clear();
 
 	myCurrentPower = aPower;
@@ -304,6 +306,7 @@ void Player::Action(EAnimationState anAnimState)
 void Player::Update(Camera& aCamera)
 {
 	//Sleep(1);
+
 	ChangeInput();
 
 	UpdateJumping();
@@ -403,7 +406,7 @@ void Player::ChangeInput()
 		inputType = EInputType::ArrowKeys;
 	else if (INPUT.GetKey(DIK_W) || INPUT.GetKey(DIK_A) || INPUT.GetKey(DIK_S) || INPUT.GetKey(DIK_D) || INPUT.GetKey(DIK_SPACE) || INPUT.GetKey(DIK_LSHIFT))
 		inputType = EInputType::WASD;
-	else if (myController != nullptr && (INPUT.GetKey(XINPUT_GAMEPAD_DPAD_UP) || INPUT.GetKey(XINPUT_GAMEPAD_DPAD_LEFT) || INPUT.GetKey(XINPUT_GAMEPAD_DPAD_DOWN) || INPUT.GetKey(XINPUT_GAMEPAD_DPAD_RIGHT) || INPUT.GetKey(XINPUT_GAMEPAD_A) || INPUT.GetKey(XINPUT_GAMEPAD_B) || INPUT.GetKey(XINPUT_GAMEPAD_X) || myController->GetLeftTumbStick().x != 0 || myController->GetLeftTumbStick().y != 0))
+	else if (myController != nullptr && (Input(XINPUT_GAMEPAD_DPAD_UP) || Input(XINPUT_GAMEPAD_DPAD_LEFT) || Input(XINPUT_GAMEPAD_DPAD_DOWN) || Input(XINPUT_GAMEPAD_DPAD_RIGHT) || Input(XINPUT_GAMEPAD_A) || Input(XINPUT_GAMEPAD_B) || Input(XINPUT_GAMEPAD_X) /*|| myController->GetLeftTumbStick().x != 0 || myController->GetLeftTumbStick().y != 0*/))
 		inputType = EInputType::Controller;
 
 	switch (inputType)
@@ -816,7 +819,7 @@ void Player::Ledge()
 		return;
 	}
 
-	if (INPUT.GetKey(myLeft) != INPUT.GetKey(myRight))
+	if (Input(myLeft) != Input(myRight))
 	{
 		if (myCurrentVelocity.y == 0) myCurrentAnimation = EAnimationState::W_Idle;
 		else if (myCurrentVelocity.y > 0) myCurrentAnimation = EAnimationState::W_Down;
