@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "StateManager.h"
+#include "AudioManager.h"
 
 #include "MainMenu.h"
 #include "OptionsMenu.h"
@@ -7,6 +8,7 @@
 #include "Level.h"
 #include "LevelSelect.h"
 #include "CutsceneManager.h"
+#include "EndOfGameCutscene.h"
 
 #include "LevelSelect_SpecificLevelData.h"
 
@@ -24,7 +26,7 @@ void* operator new(size_t aSize)
 
 void StateManager::Init()
 {
-	assert(myInstance == nullptr && "Input Manager have already been Created");
+	assert(myInstance == nullptr && "State Manager have already been Created");
 	myInstance = new StateManager;
 
 	myInstance->myMainMenu = std::make_shared<MainMenu>();
@@ -33,6 +35,7 @@ void StateManager::Init()
 	myInstance->myLevelSelect = std::make_shared<LevelSelect>();
 	myInstance->myCutsceneManager = std::make_shared<CutsceneManager>();
 	myInstance->myCharacterSelection = std::make_shared<CharacterSelectionScreen>();
+	myInstance->myEndOfGameCutscene = std::make_shared<EndOfGameCutscene>();
 
 
 	//Init the states you made here, rest will work automagically,
@@ -42,7 +45,7 @@ void StateManager::Init()
 	myInstance->myLevelSelect->Init(EStateType::eLevelSelect);
 	myInstance->myCutsceneManager->Init(EStateType::eCutsceneManager);
 	myInstance->myCharacterSelection->Init(EStateType::eCharacterSelection);
-
+	myInstance->myEndOfGameCutscene->Init(EStateType::eEndOfGameCutscene);
 	
 	//Main Menu is the default beginning state
 	myInstance->myGameStates.Push(GetInstance().myMainMenu);
@@ -56,14 +59,14 @@ void StateManager::Init()
 
 void StateManager::Destroy()
 {
-	assert(myInstance != nullptr && "Input Manager have already been destroyed");
+	assert(myInstance != nullptr && "State Manager have already been destroyed");
 	delete myInstance;
 	myInstance = nullptr;
 }
 
 StateManager& StateManager::GetInstance()
 {
-	assert(myInstance != nullptr && "Input Manager is Nullptr");
+	assert(myInstance != nullptr && "State Manager is Nullptr");
 	return *myInstance;
 }
 
@@ -75,6 +78,7 @@ bool StateManager::IsReady()
 void StateManager::RemoveStateFromTop()
 {
 	myInstance->myGameStates.RemoveTop();
+	myInstance->myGameStates.GetTop()->OnResumed();
 }
 
 void StateManager::RemoveDownToState(const EStateType& aStateType)
@@ -110,7 +114,7 @@ void StateManager::AddLevelOnStack(int aLevelIndex)
 	{
 		myInstance->RemoveDownToState(EStateType::eLevelSelect);
 		myInstance->myGameStates.Push(myInstance->myLevel);
-		myInstance->myLevel.get()->Load(myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex));
+		myInstance->myLevel->Load(myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex), false);
 		myInstance->myGameStates.GetTop()->OnPushed();
 	}
 }
@@ -119,13 +123,12 @@ void StateManager::AddNextLevelOnStack(int aCurrentLevelIndex)
 {
 	if (aCurrentLevelIndex + 1 < myInstance->myLevelSelect->GetLevelAmount())
 	{
-		myInstance->myLevelSelect->GetSpecificLevelData(aCurrentLevelIndex + 1)->myIsUnlocked = true;
 		myInstance->AddCharacterSelectOnStack(aCurrentLevelIndex + 1);
 	}
 	else
 	{
 		myInstance->RemoveDownToState(EStateType::eLevelSelect);
-		//Play Game over stuff and final cutscenes
+		myInstance->AddStateOnStack(myInstance->myEndOfGameCutscene);
 	}
 }
 
@@ -145,12 +148,26 @@ void StateManager::AddAndPlayCutscene(int aCutsceneIndex)
 	myInstance->myGameStates.GetTop()->OnPushed();
 }
 
+void StateManager::AddLastCutscene()
+{
+	myInstance->myGameStates.Push(GetInstance().myCutsceneManager);
+	myInstance->myCutsceneManager->PlayLastCutscene();
+	myInstance->myGameStates.GetTop()->OnPushed();
+}
+
 void StateManager::AddCharacterSelectOnStack(const int aLevelIndex)
 {
-	myInstance->myGameStates.Push(myInstance->myCharacterSelection);
-	myInstance->myCharacterSelection->AddCurrentLevelIndex(aLevelIndex);
-	myInstance->myCharacterSelection->UnlockNewWorld(myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex)->myWorld);
-	myInstance->myGameStates.GetTop()->OnPushed();
+	if (myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex)->myIsUnlocked)
+	{
+		myInstance->myGameStates.Push(myInstance->myCharacterSelection);
+		myInstance->myCharacterSelection->AddCurrentLevelIndex(aLevelIndex);
+		myInstance->myCharacterSelection->UnlockNewWorld(myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex)->myWorld);
+		myInstance->myGameStates.GetTop()->OnPushed();
+	}
+	else
+	{
+		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onReturn.mp3");
+	}
 }
 
 EPowerUp StateManager::GetSelectedCharacter()
@@ -161,6 +178,11 @@ EPowerUp StateManager::GetSelectedCharacter()
 void StateManager::Update()
 {
 	myInstance->myGameStates.GetTop()->Update();
+	globalAllocCounter = 0ui32;
+}
+
+void StateManager::Render()
+{
 	//This is to render the layers that are beneath the current game state if they are renderable
 	if (myInstance->myGameStates.GetTop()->GetRenderThrough())
 	{
@@ -173,6 +195,4 @@ void StateManager::Update()
 		}
 	}
 	myInstance->myGameStates.GetTop()->Render();
-	globalAllocCounter = 0ui32;
-
 }

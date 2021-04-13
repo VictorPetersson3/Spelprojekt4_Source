@@ -18,29 +18,30 @@ void CharacterSelectionScreen::Init(const EStateType& aState)
 
 	myBackground = std::make_unique<UIImage>();
 	myBackground->Init({0.5f, 0.5f}, "sprites/ui/OptionsMenu/settings_MenuBoard.dds", 2);
+	myBackground->GetRenderCommand().SetSizeRelativeToImage({0.75f, 0.75f});
 
-	myNormalCharacter = std::make_unique<AnimationClip>("Sprites/Player/State1/player_idle_R.dds", 0, 0);
-	myNormalCharacter->Init({ 8, 1 }, {7, 1});
-	myNormalCharacter->GetRenderCommand().Update({ 0.4f, 0.75f });
-	myNormalCharacter->PlayAnimLoop();
+	myNormalCharacter = std::make_unique<UIImage>();
+	myNormalCharacter->Init({ 0.4f, 0.75f }, "Sprites/ui/CharacterSelect/B_CharacterSelect1.dds", 0);
+	myNormalCharacter->ActivatePulse(2.0f, 0.9f, 1.0f);
+	myNormalCharacter->Deactivate();
 
-	myDoubleJumpCharacter = std::make_unique<AnimationClip>("Sprites/Player/State2/player_idle_R.dds", 0, 0);
-	myDoubleJumpCharacter->Init({ 8, 1 }, { 7, 1 });
-	myDoubleJumpCharacter->PlayAnimLoop();
-	myDoubleJumpCharacter->GetRenderCommand().Update({ 0.5f, 0.75f });
+	myDoubleJumpCharacter = std::make_unique<UIImage>();
+	myDoubleJumpCharacter->Init({ 0.5f, 0.55f }, "Sprites/ui/CharacterSelect/B_CharacterSelect2.dds", 0);
 	myDoubleJumpCharacter->GetRenderCommand().SetColor(Tga2D::CColor{ 0.50f, 0.50f, 0.50f, 1.0f });
+	myDoubleJumpCharacter->ActivatePulse(2.0f, 0.9f, 1.0f);
+	myDoubleJumpCharacter->Deactivate();
 
-	myGlideCharacter = std::make_unique<AnimationClip>("Sprites/Player/State3/player_idle_R.dds", 0, 0);
-	myGlideCharacter->Init({ 8, 1 }, { 7, 1 });
-	myGlideCharacter->PlayAnimLoop();
-	myGlideCharacter->GetRenderCommand().Update({ 0.6f, 0.75f });
+	myGlideCharacter = std::make_unique<UIImage>();
+	myGlideCharacter->Init({ 0.6f, 0.75f }, "Sprites/ui/CharacterSelect/B_CharacterSelect3.dds", 0);
 	myGlideCharacter->GetRenderCommand().SetColor(Tga2D::CColor{ 0.50f, 0.50f, 0.50f, 1.0f });
+	myGlideCharacter->ActivatePulse(2.0f, 0.9f, 1.0f);
+	myGlideCharacter->Deactivate();
 
-	myCharacterDescription = std::make_unique<Tga2D::CText>("Text/Tomodachy.otf", Tga2D::EFontSize_18);
-	myCharacterDescription->SetPosition({ 0.3f, 0.6f });
+	myCharacterDescription = std::make_unique<Tga2D::CText>("Text/Tomodachy.otf", Tga2D::EFontSize_12);
+	myCharacterDescription->SetPosition({ 0.37f, 0.4f });
 	myCharacterDescription->SetColor(Tga2D::CColor{0.0f, 0.0f, 0.0f, 1.0f});
-	myTitle = std::make_unique<Tga2D::CText>("Text/Tomodachy.otf", Tga2D::EFontSize_30);
-	myTitle->SetPosition({ 0.3f, 0.5f });
+	myTitle = std::make_unique<Tga2D::CText>("Text/Tomodachy.otf", Tga2D::EFontSize_24);
+	myTitle->SetPosition({ 0.37f, 0.35f });
 	myTitle->SetColor(Tga2D::CColor{ 0.0f, 0.0f, 0.0f, 1.0f });
 
 	myNormalCharacterTitle = "Default :";
@@ -66,10 +67,12 @@ void CharacterSelectionScreen::Update()
 	if (InputManagerS::GetInstance().GetKeyDown(DIK_S) && myCurrentHoveredButton > 0)
 	{
 		myCurrentHoveredButton--;
+		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 	}
 	else if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButton < GetUIButtonElementsSize())
 	{
 		myCurrentHoveredButton++;
+		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 	}
 
 	//If hovering characters
@@ -87,61 +90,68 @@ void CharacterSelectionScreen::Update()
 		switch (myCurrentHoveredCharacter)
 		{
 		case 0:
-			myNormalCharacter->Activate();
-			myNormalCharacter->SetScaleRelativeToFrame({ 1.2f, 1.2f });
-			myGlideCharacter->SetScaleRelativeToFrame({ -1.0f, 1.0f });
-			myDoubleJumpCharacter->SetScaleRelativeToFrame({ -1.0f, 1.0f });
-			myGlideCharacter->Deactivate();
-			myDoubleJumpCharacter->Deactivate();
-			myTitle->SetText(myNormalCharacterTitle);
-			myCharacterDescription->SetText(myNormalCharacterDescription);
+			if (!myNormalCharacter->GetIsActive())
+			{
+				myNormalCharacter->Activate();
+				myNormalCharacter->GetRenderCommand().SetSizeRelativeToImage({ 1.0f, 1.0f });
+				myGlideCharacter->GetRenderCommand().SetSizeRelativeToImage({ -0.8f, 0.8f });
+				myDoubleJumpCharacter->GetRenderCommand().SetSizeRelativeToImage({ -0.8f, 0.8f });
+				myGlideCharacter->Deactivate();
+				myDoubleJumpCharacter->Deactivate();
+				myTitle->SetText(myNormalCharacterTitle);
+				myCharacterDescription->SetText(myNormalCharacterDescription);
+			}
 
 			break;
 		case 1:
-			if (myCurrentUnlockedWorld > 1)
+			if (!myDoubleJumpCharacter->GetIsActive())
 			{
-				myDoubleJumpCharacter->Activate();
+				if (myCurrentUnlockedWorld > 1)
+				{
+					myDoubleJumpCharacter->Activate();
+				}
+				else
+				{
+					myDoubleJumpCharacter->GetRenderCommand().SetColor(Tga2D::CColor{ 0.50f, 0.50f, 0.50f, 1.0f });
+				}
+				myNormalCharacter->GetRenderCommand().SetSizeRelativeToImage({ -0.8f, 0.8f });
+				myGlideCharacter->GetRenderCommand().SetSizeRelativeToImage({ -0.8f, 0.8f });
+				myDoubleJumpCharacter->GetRenderCommand().SetSizeRelativeToImage({ 1.0f, 1.0f });
+				myNormalCharacter->Deactivate();
+				myGlideCharacter->Deactivate();
+				
+				myTitle->SetText(myDoubleJumpCharacterTitle);
+				myCharacterDescription->SetText(myDoubleJumpCharacterDescription);
 			}
-			else
-			{
-				myDoubleJumpCharacter->GetRenderCommand().SetColor(Tga2D::CColor{ 0.50f, 0.50f, 0.50f, 1.0f });
-			}
-			myNormalCharacter->SetScaleRelativeToFrame({ -1.0f, 1.0f });
-			myGlideCharacter->SetScaleRelativeToFrame({ -1.0f, 1.0f });
-			myDoubleJumpCharacter->SetScaleRelativeToFrame({ 1.2f, 1.2f });
-			myNormalCharacter->Deactivate();
-			myGlideCharacter->Deactivate();
-			myTitle->SetText(myDoubleJumpCharacterTitle);
-			myCharacterDescription->SetText(myDoubleJumpCharacterDescription);
-
 			break;
 		case 2:
-			if (myCurrentUnlockedWorld > 2)
+			if (!myGlideCharacter->GetIsActive())
 			{
-				myGlideCharacter->Activate();
-			}
-			else
-			{
-				myGlideCharacter->GetRenderCommand().SetColor(Tga2D::CColor{ 0.50f, 0.50f, 0.50f, 1.0f });
-			}
-			myNormalCharacter->SetScaleRelativeToFrame({ -1.0f, 1.0f });
-			myGlideCharacter->SetScaleRelativeToFrame({ 1.2f, 1.2f });
-			myDoubleJumpCharacter->SetScaleRelativeToFrame({ -1.0f, 1.0f });
+				if (myCurrentUnlockedWorld > 2)
+				{
+					myGlideCharacter->Activate();
+				}
+				else
+				{
+					myGlideCharacter->GetRenderCommand().SetColor(Tga2D::CColor{ 0.50f, 0.50f, 0.50f, 1.0f });
+				}
+				myNormalCharacter->GetRenderCommand().SetSizeRelativeToImage({ -0.8f, 0.8f });
+				myGlideCharacter->GetRenderCommand().SetSizeRelativeToImage({ 1.0f, 1.0f });
+				myDoubleJumpCharacter->GetRenderCommand().SetSizeRelativeToImage({ -0.8f, 0.8f });
 
-			myTitle->SetText(myGlideCharacterTitle);
-			myCharacterDescription->SetText(myGlideCharacterDescription);
-			myNormalCharacter->Deactivate();
-			myDoubleJumpCharacter->Deactivate();
+				myTitle->SetText(myGlideCharacterTitle);
+				myCharacterDescription->SetText(myGlideCharacterDescription);
+				myNormalCharacter->Deactivate();
+				myDoubleJumpCharacter->Deactivate();
+			}
 			break;
 		default:
 			break;
 		}
-
 		if (InputManagerS::GetInstance().GetKeyDown(DIK_RETURN))
 		{
 			CharacterChoicePress();
 		}
-
 	}
 	else
 	{
@@ -149,7 +159,7 @@ void CharacterSelectionScreen::Update()
 		myGlideCharacter->Deactivate();
 		myDoubleJumpCharacter->Deactivate();
 	}
-	// UPdating Buttons
+	// Updating Buttons
 	for (int i = 0; i < GetUIButtonElementsSize(); i++)
 	{
 		if (i == myCurrentHoveredButton)
@@ -163,9 +173,9 @@ void CharacterSelectionScreen::Update()
 		GetButtonElement(i)->Update();
 	}
 
-	myNormalCharacter->UpdateAnimation(myNormalCharacter->GetRenderCommand().GetPosition());
-	myGlideCharacter->UpdateAnimation(myGlideCharacter->GetRenderCommand().GetPosition());
-	myDoubleJumpCharacter->UpdateAnimation(myDoubleJumpCharacter->GetRenderCommand().GetPosition());
+	myNormalCharacter->Update();
+	myGlideCharacter->Update();
+	myDoubleJumpCharacter->Update();
 }
 
 void CharacterSelectionScreen::Render()
@@ -235,7 +245,7 @@ void CharacterSelectionScreen::CharacterChoicePress()
 		sucessfulPress = true;
 		break;
 	case 1:
-		if (myCurrentUnlockedWorld > 2)
+		if (myCurrentUnlockedWorld > 1)
 		{
 			// Load Level with this character
 			myDoubleJumpCharacter;
@@ -244,10 +254,11 @@ void CharacterSelectionScreen::CharacterChoicePress()
 		else
 		{
 			// Play nono sounds
+			AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onReturn.mp3");
 		}
 		break;
 	case 2:
-		if (myCurrentUnlockedWorld > 1)
+		if (myCurrentUnlockedWorld > 2)
 		{
 			// Load Level with this character
 			myGlideCharacter;
@@ -256,6 +267,7 @@ void CharacterSelectionScreen::CharacterChoicePress()
 		else
 		{
 			// Play nono sounds not unlocked
+			AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onReturn.mp3");
 		}
 		break;
 	default:

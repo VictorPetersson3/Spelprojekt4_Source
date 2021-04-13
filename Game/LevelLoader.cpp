@@ -97,6 +97,24 @@ std::shared_ptr<LevelData> LevelLoader::LoadLevel(LevelSelect_SpecificLevelData*
 				}
 				levelToPushBack->AddSpriteBatch(spriteBatch);
 			}
+			else if (layerIdentifier == "BackgroundTiles" || layerIdentifier == "backgroundTiles" || layerIdentifier == "backgroundtiles")
+			{
+				int tilesArrayLenght = static_cast<int>(myDocument["levels"][0]["layerInstances"][j]["gridTiles"].Capacity());
+
+				std::shared_ptr<Tga2D::CSpriteBatch> spriteBatch = std::make_shared<Tga2D::CSpriteBatch>(false);
+
+
+				const char* TileSheetPath = someLevelData->myBackgroundTilesTileSheetPath.GetString();
+
+				spriteBatch->Init(TileSheetPath);
+
+				for (int i = 0; i < tilesArrayLenght; i++)
+				{
+					levelToPushBack->AddTile(LoadTileMap(TileSheetPath, gridSize, j, i, spriteBatch));
+				}
+
+				levelToPushBack->AddSpriteBatch(spriteBatch);
+			}
 			else
 			{
 				int tilesArrayLenght = static_cast<int>(myDocument["levels"][0]["layerInstances"][j]["gridTiles"].Capacity());
@@ -186,8 +204,9 @@ std::shared_ptr<TerrainTile> LevelLoader::LoadTileMap(const char* aImagePath, in
 
 	aSpriteBatch->AddObject(tempRenderCommand.mySprite.get());
 
-	std::string layerIdentifier = myDocument["levels"][0]["layerInstances"][aLayerIndex]["__identifier"].GetString();	
-	if (layerIdentifier != "Background" && layerIdentifier != "background" && layerIdentifier != "Props" && layerIdentifier != "props")
+	std::string layerIdentifier = myDocument["levels"][0]["layerInstances"][aLayerIndex]["__identifier"].GetString();
+
+	if (layerIdentifier != "Background" && layerIdentifier != "background" && layerIdentifier != "Props" && layerIdentifier != "props" && layerIdentifier != "backGroundTiles" && layerIdentifier != "BackgroundTiles")
 	{
 		CommonUtilities::Vector2f aColliderPosition = { tempRenderCommand.GetPosition().x, tempRenderCommand.GetPosition().y };
 

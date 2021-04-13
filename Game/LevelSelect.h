@@ -1,5 +1,6 @@
 #pragma once
 #include "MenuObject.h"
+#include "LinkString.h"
 
 class LevelSelectLoadData;
 class LevelSelect_SpecificLevelData;
@@ -20,6 +21,7 @@ public:
     void OnPushed() final;
     LevelSelect_SpecificLevelData* GetSpecificLevelData(const int aIndex) const;
     const int GetLevelAmount() const;
+    const LinkString& GetWorldSong(const int aWorldIndex) const;
 
 private:
     void LoadLevelButtons();

@@ -35,10 +35,10 @@ void LevelSelectLoadData::CreateLevelSelectButtonData()
 			break;
 		}
 	}
-	for (size_t i = 0; i < myLevelSelectLoadData.Size(); i++)
-	{
-		std::string debugPath = myLevelSelectLoadData[i]->myMapTile.GetString();
-	}
+	//for (size_t i = 0; i < myLevelSelectLoadData.Size(); i++)
+	//{
+	//	std::string debugPath = myLevelSelectLoadData[i]->myMapTile.GetString();
+	//}
 }
 
 void LevelSelectLoadData::FillData(rapidjson::Value& aJsonValue, int& aLevelIterator, EWorldLevel aWorld)
@@ -46,10 +46,12 @@ void LevelSelectLoadData::FillData(rapidjson::Value& aJsonValue, int& aLevelIter
 	for (rapidjson::SizeType i = 0; i < aJsonValue.Size(); i++)
 	{
 		myLevelSelectLoadData.Add(std::make_shared<LevelSelect_SpecificLevelData>());
-		myLevelSelectLoadData[aLevelIterator]->myLevelNumber = aLevelIterator;
+		myLevelSelectLoadData[aLevelIterator]->myWorldLevelNumber = i;
+		myLevelSelectLoadData[aLevelIterator]->myLevelSelectNumber = aLevelIterator;
 		myLevelSelectLoadData[aLevelIterator]->myLevelPath = aJsonValue[i]["path"].GetString();
 		myLevelSelectLoadData[aLevelIterator]->myTileSheetPath = aJsonValue[i]["gameplayAreaTileSheetPath"].GetString();
 		myLevelSelectLoadData[aLevelIterator]->myPropsTileSheetPath = aJsonValue[i]["propsTileSheetPath"].GetString();
+		myLevelSelectLoadData[aLevelIterator]->myBackgroundTilesTileSheetPath = aJsonValue[i]["backgroundTileSheetPath"].GetString();
 		myLevelSelectLoadData[aLevelIterator]->myMapTile = aJsonValue[i]["mapTilePath"].GetString();
 		myLevelSelectLoadData[aLevelIterator]->myPosition.x = aJsonValue[i]["positionX"].GetFloat() / 1920;
 		myLevelSelectLoadData[aLevelIterator]->myPosition.y = aJsonValue[i]["positionY"].GetFloat() / 1080;
@@ -60,6 +62,8 @@ void LevelSelectLoadData::FillData(rapidjson::Value& aJsonValue, int& aLevelIter
 		myLevelSelectLoadData[aLevelIterator]->myCameraMaxBorderY = aJsonValue[i]["cameraMaxBorderY"].GetFloat();
 		myLevelSelectLoadData[aLevelIterator]->myCameraPosition.x = aJsonValue[i]["cameraPosition"][0].GetFloat();
 		myLevelSelectLoadData[aLevelIterator]->myCameraPosition.y = aJsonValue[i]["cameraPosition"][1].GetFloat();
+		myLevelSelectLoadData[aLevelIterator]->myMoveCameraX = aJsonValue[i]["moveX"].GetBool();
+		myLevelSelectLoadData[aLevelIterator]->myMoveCameraY = aJsonValue[i]["moveY"].GetBool();
 
 		if (aJsonValue[i]["hasCutscene"].GetBool())
 		{
@@ -67,6 +71,23 @@ void LevelSelectLoadData::FillData(rapidjson::Value& aJsonValue, int& aLevelIter
 			myLevelSelectLoadData[aLevelIterator]->myCutsceneConversation = aJsonValue[i]["cutSceneConversationNumber"].GetInt();
 		}
 		myLevelSelectLoadData[aLevelIterator]->myWorld = aWorld;
+		switch (aWorld)
+		{
+		case EWorldLevel::eWorld1:
+			myLevelSelectLoadData[aLevelIterator]->mySong = World1Song;
+			break;
+		case EWorldLevel::eWorld2:
+			myLevelSelectLoadData[aLevelIterator]->mySong = World2Song;
+			break;
+		case EWorldLevel::eWorld3:
+			myLevelSelectLoadData[aLevelIterator]->mySong = World3Song;
+			break;
+		case EWorldLevel::eWorld4:
+			myLevelSelectLoadData[aLevelIterator]->mySong = World4Song;
+			break;
+		default:
+			break;
+		}
 		aLevelIterator++;
 	}
 }

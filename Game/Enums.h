@@ -11,7 +11,8 @@ enum class EStateType
 	eResolutionMenu,
 	eGame,
 	eCutsceneManager,
-	eCharacterSelection
+	eCharacterSelection,
+	eEndOfGameCutscene
 };
 enum class EWorldLevel
 {

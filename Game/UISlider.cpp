@@ -15,6 +15,7 @@ UISlider::UISlider()
 	mySlideSpeed = 2.0f;
 	myMinSliderX = 0;
 	myMaxSliderX = 0;
+	mySlideSoundTimer = 0;
 	mySliderPosX = myMaxSliderX;
 }
 
@@ -47,14 +48,24 @@ void UISlider::SetIsHovered(const bool aHoverStatus)
 void UISlider::SlideSlider()
 {
 	float sliderDirection = 0;
-	if (InputManagerS::GetInstance().GetKey(DIK_A))
+	if (InputManagerS::GetInstance().GetKey(DIK_A) && mySliderPosX != 0)
 	{
 		sliderDirection = -1;
+		if (mySlideSoundTimer > 0.1f)
+		{
+			AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSlide.mp3");
+			mySlideSoundTimer = 0;
+		}
 		//AddSoundHere
 	}
-	if (InputManagerS::GetInstance().GetKey(DIK_D))
+	if (InputManagerS::GetInstance().GetKey(DIK_D) && mySliderPosX != 1)
 	{
 		sliderDirection = 1;
+		if (mySlideSoundTimer > 0.1f)
+		{
+			AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSlide.mp3");
+			mySlideSoundTimer = 0;
+		}
 		//AddSoundHere
 	}
 	
@@ -72,6 +83,7 @@ void UISlider::SlideSlider()
 
 void UISlider::OnHover()
 {
+	mySlideSoundTimer += Timer::GetInstance().GetDeltaTime();
 	const Tga2D::CColor hoverColor{ 1.25f, 1.25f, 1.25f, 1.0f };
 	if (myIsHovered)
 	{

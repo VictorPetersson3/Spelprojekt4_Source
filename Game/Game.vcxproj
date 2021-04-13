@@ -134,6 +134,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Ambient.h" />
     <ClInclude Include="Boss.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="AnimationClip.h" />
@@ -150,6 +151,8 @@
     <ClInclude Include="CutsceneCharacter.h" />
     <ClInclude Include="CutsceneData.h" />
     <ClInclude Include="Door.h" />
+    <ClInclude Include="EndOfGameCutscene.h" />
+    <ClInclude Include="Emitter.h" />
     <ClInclude Include="EndOfLevelScreen.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityFactory.h" />
@@ -175,10 +178,12 @@
     <ClInclude Include="OptionsMenu.h" />
     <ClInclude Include="JsonParser.h" />
     <ClInclude Include="LevelLoader.h" />
+    <ClInclude Include="Particle.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RenderCommand.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Saw.h" />
+    <ClInclude Include="Snow.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -191,6 +196,7 @@
     <ClInclude Include="XController.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Ambient.cpp" />
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="AnimationClip.cpp" />
@@ -207,6 +213,8 @@
     <ClCompile Include="CutsceneCharacter.cpp" />
     <ClCompile Include="CutsceneData.cpp" />
     <ClCompile Include="Door.cpp" />
+    <ClCompile Include="EndOfGameCutscene.cpp" />
+    <ClCompile Include="Emitter.cpp" />
     <ClCompile Include="EndOfLevelScreen.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -232,6 +240,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Saw.cpp" />
     <ClCompile Include="RenderCommand.cpp" />
+    <ClCompile Include="Snow.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

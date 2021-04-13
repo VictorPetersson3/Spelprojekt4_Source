@@ -16,6 +16,7 @@ class EndOfLevelScreen;
 class CameraBehavoir;
 struct LevelSelect_SpecificLevelData;
 struct TerrainTile;
+
 namespace Tga2D
 {
 	class CSpriteBatch;
@@ -31,7 +32,7 @@ public:
 	virtual void Render() override;
 	virtual void Update() override;
 	void Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData* someLevelData);
-	void Load(LevelSelect_SpecificLevelData* someLevelData);
+	void Load(LevelSelect_SpecificLevelData* someLevelData, const bool aReloadedLevel);
 	void Restart();
 	void LoadNextLevel();
 
@@ -39,7 +40,7 @@ public:
 
 private:
 
-	LevelSelect_SpecificLevelData* mylevelButtondata;
+	LevelSelect_SpecificLevelData* mylevelJsonData;
 
 	std::shared_ptr<Boss> myBoss = {};
 	std::shared_ptr<Camera> myCamera = {};

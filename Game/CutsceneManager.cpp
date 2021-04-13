@@ -57,18 +57,6 @@ void CutsceneManager::Init(const EStateType& aState)
 void CutsceneManager::Update()
 {
 	MenuObject::Update();
-	if (InputManagerS::GetInstance().GetKeyUp(DIK_ESCAPE))
-	{
-		if (myIsPrinting)
-		{
-			ContinuePrint();
-		}
-		else
-		{
-			OnExit();
-		}
-		return;
-	}
 	if (myIsPrinting)
 	{
 		Dialogue();
@@ -77,10 +65,11 @@ void CutsceneManager::Update()
 	{
 		GetButtonElement(1)->SetIsHovered(true);
 		GetButtonElement(1)->Activate();
-		if (InputManagerS::GetInstance().GetKeyUp(DIK_ESCAPE))
-		{
-			OnExit();
-		}
+	}
+	if (InputManagerS::GetInstance().GetKeyUp(DIK_ESCAPE) && !myPrintEverything)
+	{
+		printf("I will print Everything!!!\n");
+		PrintEverything();
 	}
 	
 }
@@ -103,6 +92,8 @@ void CutsceneManager::OnPushed()
 
 void CutsceneManager::PlayCutscene(int aLevelIndex)
 {
+	myCurrentLineToPlay.clear();
+	myDialogueToRender.clear();
 	mySceneToPlay = aLevelIndex;
 	myIsPrinting = true;
 	myPrintEverything = false;
@@ -118,11 +109,20 @@ void CutsceneManager::PlayCutscene(int aLevelIndex)
 	//Getting the first line and activating the speakin character
 	myCurrentLineToPlay = myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].first;
 	myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->SetActive(true);
+	if (myLevelCharacterDialogues[mySceneToPlay]->GetCharacterMoods()[myCurrentLineIndexToPlay] != "default")
+	{
+		myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->MakeAngry(true);
+	}
+	else
+	{
+		myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->MakeAngry(false);
+	}
 
 	//Print the name of the speaking Character
 	std::string characterName = myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->GetName().GetString();
 	myDialogueToRender.append(characterName.c_str());
 	myDialogueToRender.push_back('   ');
+
 	//printf("\n%s: ", myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->GetName().GetString());
 	myCurrentLineIndexToPlay++;
 	GetButtonElement(0)->Activate();
@@ -130,6 +130,8 @@ void CutsceneManager::PlayCutscene(int aLevelIndex)
 
 
 }
+
+void CutsceneManager::PlayLastCutscene() { PlayCutscene(myLevelCharacterDialogues.Size() - 1); }
 
 void CutsceneManager::LoadCutscenes()
 {
@@ -189,6 +191,8 @@ void CutsceneManager::LoadCutscenes()
 				std::pair<std::string, std::shared_ptr<CutsceneCharacter>> line = std::make_pair(lines[i]["line"].GetString(), currentSceneData->GetRightCharacter());
 				currentSceneData->AddLine(line);
 			}
+			std::string mood = lines[i]["mood"].GetString();
+			currentSceneData->AddCharacterMood(mood.c_str());
 		}
 		myLevelCharacterDialogues.Add(currentSceneData);
 	}
@@ -225,12 +229,20 @@ void CutsceneManager::LoadCharacters()
 	for (int i = 0; i < iterator; i++)
 	{
 		rapidjson::Document document = parser.GetDocument(characterPaths[i].c_str());
-		
-
+		std::string characterMood;
 		std::string imagePath = document["imagepath"].GetString();
 		std::string name = document["name"].GetString();
+		if (!document["angryImagePath"].IsNull())
+		{
+			characterMood = document["angryImagePath"].GetString();
+		}
+		else
+		{
+			characterMood = imagePath;
+		}
 		//printf("Character path : %s name : %s \n", imagePath.c_str(), name.c_str());
 		myCharacters.Add(std::make_shared<CutsceneCharacter>(imagePath.c_str(), name.c_str(), CommonUtilities::Vector2f{ 0.5f, 0.5f }));
+		myCharacters[i]->InitAngrySprite(characterMood.c_str());
 	}
 }
 
@@ -301,7 +313,14 @@ void CutsceneManager::ParseAndAddText()
 				std::string characterName = myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->GetName().GetString();
 				myDialogueToRender.append(characterName.c_str());
 				myDialogueToRender.push_back('   ');
-
+				if (myLevelCharacterDialogues[mySceneToPlay]->GetCharacterMoods()[myCurrentLineIndexToPlay] != "default")
+				{
+					myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->MakeAngry(true);
+				}
+				else
+				{
+					myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->MakeAngry(false);
+				}
 
 				//printf("\n%s: ", myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->GetName().GetString());
 				myCurrentLineIndexToPlay++;
@@ -324,19 +343,19 @@ void CutsceneManager::ContinuePrint()
 		GetButtonElement(0)->SetIsHovered(false);
 		myHasResumed = true;
 	}
-	else
-	{
-		myPrintEverything = true;
-		GetButtonElement(0)->SetIsHovered(false);
-		GetButtonElement(0)->Deactivate();
-		// Here we play a sound for ending conversation
-	}
+}
+
+void CutsceneManager::PrintEverything()
+{
+	myPrintEverything = true;
+	myHasResumed = true;
+	GetButtonElement(0)->SetIsHovered(false);
+	GetButtonElement(0)->Deactivate();
+	AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onReturn.mp3");
 }
 
 void CutsceneManager::OnExit()
 {
 	printf("On Exit");
-	myCurrentLineToPlay.clear(); 
-	myDialogueToRender.clear();
 	StateManager::GetInstance().RemoveStateFromTop();
 }

@@ -13,6 +13,7 @@ public:
 	virtual void Update() = 0;
 	virtual void Render() = 0;
 	virtual void OnPushed();
+	virtual void OnResumed();
 	//By default RenderThrough is false
 	void SetRenderThrough(const bool aRenderThroughState);
 	const bool GetRenderThrough() const;

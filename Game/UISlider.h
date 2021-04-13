@@ -18,12 +18,15 @@ private:
     float myHoverCurrentScale;
     float myHoverMinScale;
     float myHoverEndScale;
-    callback_function_slider mySliderFunction;
 
     float mySlideSpeed;
     float mySliderPosX;
     float myMinSliderX;
     float myMaxSliderX;
+    float mySlideSoundTimer;
+
+    callback_function_slider mySliderFunction;
+
     void SlideSlider();
     void OnHover();
 };

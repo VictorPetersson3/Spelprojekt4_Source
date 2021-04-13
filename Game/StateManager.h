@@ -9,6 +9,7 @@ class Level;
 class LevelSelect;
 class CutsceneManager;
 class CharacterSelectionScreen;
+class EndOfGameCutscene;
 
 class StateManager
 {
@@ -20,6 +21,7 @@ public:
 	static bool IsReady();
 
 	static void Update();
+	static void Render();
 
 
 	static void RemoveStateFromTop();
@@ -34,6 +36,7 @@ public:
 	static void UnlockNextlevel(int aCurrentLevelIndex);
 
 	static void AddAndPlayCutscene(int aCutsceneIndex);
+	static void AddLastCutscene();
 
 	static void AddCharacterSelectOnStack(const int aLevelIndex);
 	static EPowerUp GetSelectedCharacter();
@@ -48,6 +51,7 @@ private:
 	std::shared_ptr<Level> myLevel;
 	std::shared_ptr<CutsceneManager> myCutsceneManager;
 	std::shared_ptr<CharacterSelectionScreen> myCharacterSelection;
+	std::shared_ptr<EndOfGameCutscene> myEndOfGameCutscene;
 	//Add States here as an object, 1 per state, Init the states after in Init
 
 
