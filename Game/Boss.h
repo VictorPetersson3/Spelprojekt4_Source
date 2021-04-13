@@ -12,10 +12,10 @@ enum class AnimationState
 {
 	eIdleL,
 	eIdleR,
-	eDashL,
-	eDashR,
 	eTellL,
-	eTellR
+	eTellR,
+	eDashL,
+	eDashR
 };
 
 class Boss
@@ -42,8 +42,6 @@ private:
 	void PickNewPosition(const float aDt);
 	void CheckCollisionWithPlayer();
 	void ChangeAnimState(const AnimationState aAnimationState);
-	void PickAnimationSide();
-
 
 private:
 
@@ -52,10 +50,11 @@ private:
 	float myMoveTimer = 0.f,
 		myMoveTime = 2.f,
 		myMoveTimerMax = 4.f,
-		myMoveTimerMin = 2.f;
+		myMoveTimerMin = 2.f,
+		mySpeed = 1.5f;
 
-	float mySpeed = 1.5f;
 
+	bool myPlayDash = true;
 	bool myIsDead = false;
 
 	AnimationState myAnimationState = AnimationState::eIdleL;

@@ -6,10 +6,10 @@
 #include "Collider.h"
 #include "JsonParser.h"
 #include "AnimationClip.h"
-
+#include <string>
 #include <iostream>
 #include <CommonUtilities/Random.h>
-void Boss::Init(const std::shared_ptr<Player> aPlayer) 
+void Boss::Init(const std::shared_ptr<Player> aPlayer)
 {
 
 	myRenderCommand = std::make_shared<RenderCommand>("sprites/HästfanDDS.dds", 1, true);
@@ -31,23 +31,24 @@ void Boss::Update(const float aDt)
 
 	if (!myIsDead)
 	{
-		Move(aDt);		
+		Move(aDt);
 		CheckCollisionWithPlayer();
 		myPosition += myDirection * aDt;
 		myRenderCommand->SetSpritePosition(myPosition);
 		myRenderCommand->Update(myPosition);
 		myCollider->Update();
 		myCollider->UpdateCollider(myPosition);
-		
-		if (myDirection.x < 0)
+
+		if (myDirection.Length() < 0.1f)
 		{
-			myAnimations[(int)myAnimationState]->UpdateAnimation(myPosition);
+			ChangeAnimState(AnimationState::eIdleL);
 		}
-		else 
+		for (int i = 0; i < myAnimations.size(); i++)
 		{
-			myAnimations[(int)myAnimationState + 1]->UpdateAnimation(myPosition);
+			myAnimations[i]->UpdateAnimation(myPosition);
 		}
 		myDirection = CommonUtilities::Vector2f::Zero();
+		
 	}
 }
 
@@ -55,16 +56,16 @@ void Boss::Render(Camera& aCamera)
 {
 	if (!myIsDead)
 	{
-		if (myDirection.x < 0)
+		if (myPlayerToAttack->GetPosition().x < myPosition.x)
 		{
+			aCamera.RenderSprite(myAnimations[(int)myAnimationState]->GetRenderCommand());
 			myAnimations[(int)myAnimationState]->Render();
 		}
 		else
 		{
+			aCamera.RenderSprite(myAnimations[(int)myAnimationState + 1]->GetRenderCommand());
 			myAnimations[(int)myAnimationState + 1]->Render();
 		}
-		
-		aCamera.RenderSprite(*myRenderCommand);
 	}
 }
 
@@ -79,7 +80,7 @@ void Boss::CheckCollisionWithPlayer()
 	{
 		if (myCollider->GetCollidedWith()[i]->GetTag() == EColliderTag::Player)
 		{
-			std::cout << "Kill the player\n";
+		
 		}
 	}
 }
@@ -89,49 +90,43 @@ void Boss::ChangeAnimState(const AnimationState aAnimationState)
 	myAnimationState = aAnimationState;
 }
 
-void Boss::PickAnimationSide()
-{
-	
-
-}
 
 void Boss::Move(const float aDt)
 {
 	PickNewPosition(aDt);
-	const float dist = CommonUtilities::Vector2f::Distance(myPostionsToMoveTo[myPositionIndex], myPlayerToAttack->GetPosition());	
-	if (dist > 0.01f)
+	const float dist = CommonUtilities::Vector2f::Distance(myPostionsToMoveTo[myPositionIndex], myPlayerToAttack->GetPosition());
+	if (dist > 0.05f)
 	{
 		const float maxSpeed = mySpeed * 2;
-		ChangeAnimState(AnimationState::eDashL);
+		if (myPlayDash)
+		{
+			ChangeAnimState(AnimationState::eDashL);
+			myPlayDash = false;
+		}
 		CommonUtilities::Vector2f direction = myPostionsToMoveTo[myPositionIndex] - myPosition;
 		AddForce((direction.Clamp(-maxSpeed, maxSpeed) * mySpeed));
 		return;
 	}
-	ChangeAnimState(AnimationState::eIdleL);
-
 }
 
 void Boss::LoadAnimations()
 {
-	myAnimations.emplace_back(std::make_shared<AnimationClip>("sprites/boss/boss_idle_L", 2, 0));
-	myAnimations.emplace_back(std::make_shared<AnimationClip>("sprites/boss/boss_idle_R", 2, 1));
+	myAnimations.emplace_back(std::make_shared<AnimationClip>("Sprites/boss/boss_idle_L.dds", 2, 0));
+	myAnimations.emplace_back(std::make_shared<AnimationClip>("Sprites/boss/boss_idle_R.dds", 2, 1));
 
-	myAnimations.emplace_back(std::make_shared<AnimationClip>("sprites/boss/boss_tell_L", 2, 2));
-	myAnimations.emplace_back(std::make_shared<AnimationClip>("sprites/boss/boss_tell_R", 2, 3));
+	myAnimations.emplace_back(std::make_shared<AnimationClip>("Sprites/boss/boss_tell_L.dds", 2, 2));
+	myAnimations.emplace_back(std::make_shared<AnimationClip>("Sprites/boss/boss_tell_R.dds", 2, 3));
 
-	myAnimations.emplace_back(std::make_shared<AnimationClip>("sprites/boss/boss_dash_L", 2, 4));
-	myAnimations.emplace_back(std::make_shared<AnimationClip>("sprites/boss/boss_dash_R", 2, 5));
+	myAnimations.emplace_back(std::make_shared<AnimationClip>("Sprites/boss/boss_dash_L.dds", 2, 4));
+	myAnimations.emplace_back(std::make_shared<AnimationClip>("Sprites/boss/boss_dash_R.dds", 2, 5));
 
-	for (int i = 0; i < myAnimations.size(); ++i) 
+	for (int i = 0; i < myAnimations.size(); ++i)
 	{
 		if (i > 3)
-		{
 			myAnimations[i]->Init({ 4, 1 }, { 3, 1 });
-		}
-		else 
-		{
+		else
 			myAnimations[i]->Init({ 4, 1 }, { 4, 1 });
-		}
+		
 		myAnimations[i]->PlayAnimLoop();
 	}
 }
@@ -140,13 +135,13 @@ void Boss::LoadJson()
 {
 	JsonParser parser;
 	auto doc = parser.GetDocument("Json/Boss.json");
-	
+
 	myMoveTimerMax = doc["MoveTimerMax"].GetFloat();
 	myMoveTimerMin = doc["MoveTimerMin"].GetFloat();
 
 	myPosition.x = doc["Position"]["X"].GetFloat();
 	myPosition.x = doc["Position"]["Y"].GetFloat();
-	
+
 	mySpeed = doc["Speed"].GetFloat();
 }
 
@@ -156,13 +151,13 @@ int Boss::PickPosition()
 	float dist = 0, closestDist = 0;
 	for (int i = 0; i < myPostionsToMoveTo.size(); ++i)
 	{
-		dist = CommonUtilities::Vector2f::Distance(myPostionsToMoveTo[i], myPlayerToAttack->GetPosition());	
+		dist = CommonUtilities::Vector2f::Distance(myPostionsToMoveTo[i], myPlayerToAttack->GetPosition());
 		if (dist < closestDist || closestDist == 0)
 		{
 			closestDist = dist;
 			index = i;
 		}
-	}	
+	}
 	return index;
 }
 
@@ -171,9 +166,11 @@ void Boss::PickNewPosition(const float aDt)
 	if (myMoveTimer >= myMoveTime)
 	{
 		myPositionIndex = PickPosition();
+		myPlayDash = true;
 		myMoveTimer = 0;
 		myMoveTime = CommonUtilities::GetRandomFloat(myMoveTimerMin, myMoveTimerMax);
 		return;
 	}
+	
 	myMoveTimer += aDt;
 }
