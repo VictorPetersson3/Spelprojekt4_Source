@@ -108,6 +108,13 @@ std::shared_ptr<Shooter> EntityFactory::LoadShooter(int aEntityIndex, int aLayer
 	float yPosition = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / renderSizeY * gridSize;
 	bool isFlipped = false;
 
+	std::shared_ptr<Collider> collider = std::make_shared<Collider>(16 / renderSizeX, CommonUtilities::Vector2f{ myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / renderSizeX * gridSize,
+													myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / renderSizeY * gridSize });
+
+	collider->SetTag(EColliderTag::Terrain);
+
+	shooterToPushBack.myCollider = collider;
+
 	if (myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"].Capacity() > 1)
 
 	{
