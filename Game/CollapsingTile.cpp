@@ -32,7 +32,7 @@ CollapsingTile::CollapsingTile(CommonUtilities::Vector2f aPosition)
 	
 	CommonUtilities::Vector2f colliderPosition = {colliderPosX,colliderPosY };
 	
-	myCollider = std::make_shared<Collider>(colliderPosition, width/2.f, height/2.f);
+	myCollider = std::make_shared<Collider>(colliderPosition, width, height/2.f);
 
 	JsonParser jsonParser;
 
@@ -40,6 +40,8 @@ CollapsingTile::CollapsingTile(CommonUtilities::Vector2f aPosition)
 
 	myCooldownTime = document["collapsingTileTimer"].GetFloat();
 
+	std::cout << myAnimationClip->GetRenderCommand().GetPosition().myX << std::endl;
+	std::cout << myCollider->GetAABB().myLowerLeft.myX << std::endl;
 }
 
 CollapsingTile::~CollapsingTile()
