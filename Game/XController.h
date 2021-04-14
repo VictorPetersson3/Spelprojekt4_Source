@@ -15,6 +15,8 @@ public:
 	void Vibrate(float leftVib, float rightVib);
 	bool IsConnected();
 	
+	void UpdateController();
+
 	// Input Checks
 	CommonUtilities::Vector2f GetLeftTumbStick();
 	CommonUtilities::Vector2f GetRightTumbStick();
@@ -22,9 +24,34 @@ public:
 
 	inline const bool IsButtonDown(const int aIndex) 
 	{
+		myPressed = true;
 		return this->GetControllerState().Gamepad.wButtons & aIndex;
 	}
-		 
+	
+	inline const bool IsButtonPressed(const int aIndex)
+	{
+		if (!myPressed)
+		{
+			if (IsButtonDown(aIndex))
+			{
+				myPressed = true;
+				return this->GetControllerState().Gamepad.wButtons & aIndex;
+			}
+		}
+	}
+	inline const bool IsButtonReleased(const int aIndex)
+	{
+		if (myPressed) 
+		{
+			if (IsButtonDown(aIndex))
+			{
+				myPressed = false;
+				return this->GetControllerState().Gamepad.wButtons & aIndex;
+			}
+		}
+	}
+
+
 	// Basic buttons
 	const bool IsButton_A_Pressed();
 	const bool IsButton_B_Pressed();
@@ -50,7 +77,7 @@ private:
 	const bool IsDPadDown_Pressed();
 
 private:
-
+	bool myPressed = false;
 	int myJoystickDeadZone = {};
 	short myControllerNumber = {};
 	XINPUT_STATE myControllerState;
