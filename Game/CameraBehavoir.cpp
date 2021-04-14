@@ -23,7 +23,7 @@ void CameraBehavoir::Update(const float aDt)
 
 void CameraBehavoir::ResetCamera()
 {
-	myPosition = CommonUtilities::Vector2f(.5f, .5f);
+	//myPosition = CommonUtilities::Vector2f(.5f, .5f);
 }
 
 void CameraBehavoir::AddForce(const CommonUtilities::Vector2f aForceToAdd)
