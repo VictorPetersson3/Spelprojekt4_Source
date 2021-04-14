@@ -23,14 +23,14 @@ void LevelSelect::Init(const EStateType& aState)
 	myLevels_LevelData->myLevelSelectLoadData[0]->myIsUnlocked = true;
 	for (int i = 0; i < myLevels_LevelData->myLevelSelectLoadData.Size(); i++)
 	{
-		AddButton(std::make_shared<UIButton>());
+		AddButton(std::make_shared<UIButton>(myController));
 		std::string debug = myLevels_LevelData->myLevelSelectLoadData[i]->myMapTile.GetString();
 		GetButtonElement(i)->Init( myLevels_LevelData->myLevelSelectLoadData[i]->myPosition, 
 			myLevels_LevelData->myLevelSelectLoadData[i]->myMapTile.GetString(),
 			0, [this](int i) {MapMarkerPress(i); }, i);
 	}
 
-	AddButton(std::make_shared<UIButton>());
+	AddButton(std::make_shared<UIButton>(myController));
 	GetButtonElement(myLevels_LevelData->myLevelSelectLoadData.Size())->Init({ 0.5f, 0.94f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {BackButtonPress(); });
 
 	myBackground = std::make_unique<UIImage>();
@@ -58,6 +58,7 @@ void LevelSelect::Init(const EStateType& aState)
 
 void LevelSelect::Update()
 {
+	MenuObject::UpdateInput();
 	myBackground->Update(); 
 	myPanningBackground->Update();
 	
@@ -66,17 +67,17 @@ void LevelSelect::Update()
 		myCharacterMoveTimer += Timer::GetInstance().GetDeltaTime() * 2.5f;
 	}
 
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_ESCAPE))
+	if (GetInputExit())
 	{
 		BackButtonPress();
 	}
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButtonVertical > 0)
+	if (GetInputVertical() < 0 && myCurrentHoveredButtonVertical > 0)
 	{
-		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
+		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3"); 
 		myPlayerAvatar->Activate();
 		myCurrentHoveredButtonVertical--;
 	}
-	else if (InputManagerS::GetInstance().GetKeyDown(DIK_S) && myCurrentHoveredButtonVertical < 1)
+	else if (GetInputVertical() > 0 && myCurrentHoveredButtonVertical < 1)
 	{
 		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 		myCurrentHoveredButtonVertical++;
@@ -84,7 +85,7 @@ void LevelSelect::Update()
 	}
 
 
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_A) && myCurrentHoveredButtonVertical != 1)
+	if (GetInputHorizontal() < 0 && myCurrentHoveredButtonVertical != 1)
 	{
 		myCharactersPreviousIndex = myCharactersCurrentIndex;
 		myCurrentHoveredButtonHorizontal--;
@@ -96,7 +97,7 @@ void LevelSelect::Update()
 		myCharacterMoveTimer = 0;
 		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 	}
-	else if (InputManagerS::GetInstance().GetKeyDown(DIK_D) && myCurrentHoveredButtonVertical != 1)
+	else if (GetInputHorizontal() > 0 && myCurrentHoveredButtonVertical != 1)
 	{
 		myCharactersPreviousIndex = myCharactersCurrentIndex;
 		myCurrentHoveredButtonHorizontal++;
@@ -146,6 +147,8 @@ void LevelSelect::Update()
 			GetButtonElement(i)->GetRenderCommand().SetColor(Tga2D::CColor{ 0.50f, 0.50f, 0.50f, 1.0f });
 		}
 	}
+
+	// Remove cheat key here
 	if (InputManagerS::GetInstance().GetKeyDown(DIK_L))
 	{
 		for (int i = 0; i < myLevels_LevelData->myLevelSelectLoadData.Size(); i++)

@@ -11,7 +11,7 @@ namespace Tga2D
 class MainMenu : public MenuObject
 {
 public:
-	MainMenu() = default;
+	MainMenu(XController* aControllerPointer) : MenuObject(aControllerPointer) {}
 	~MainMenu() = default;
 	void Init(const EStateType& aState) final;
 	void Update() final;

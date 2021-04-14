@@ -4,8 +4,10 @@
 #include "AudioManager.h"
 #include "CommonUtilities/Math.h"
 #include "Timer.h"
+#include "XController.h"
+#include "CommonUtilities/Math.h"
 
-UISlider::UISlider()
+UISlider::UISlider(XController* aControllerPointer) : myController(aControllerPointer)
 {
 	mySliderFunction = nullptr;
 	myIsHovered = false;
@@ -45,10 +47,40 @@ void UISlider::SetIsHovered(const bool aHoverStatus)
 	myIsHovered = aHoverStatus;
 }
 
+int UISlider::Input()
+{
+	int rInput = 0;
+	int lInput = 0;
+	bool controllerConnected = myController->IsConnected();
+	if (controllerConnected && myController->GetDPadInput().x > 0 || myController->GetLeftTumbStick().x > 0.45f)
+	{
+		rInput += 1;
+	}
+	if (InputManagerS::GetInstance().GetKey(DIK_D) || InputManagerS::GetInstance().GetKey(DIK_RIGHT))
+	{
+		if (rInput == 0)
+		{
+			rInput += 1;
+		}
+	}
+	if (InputManagerS::GetInstance().GetKey(DIK_A) || InputManagerS::GetInstance().GetKey(DIK_LEFT))
+	{
+		lInput -= 1;
+	}
+	if (controllerConnected && myController->GetDPadInput().x < 0 || myController->GetLeftTumbStick().x < -0.45f)
+	{
+		if (lInput == 0)
+		{
+			lInput -= 1;
+		}
+	}
+	return rInput + lInput;
+}
+
 void UISlider::SlideSlider()
 {
 	float sliderDirection = 0;
-	if (InputManagerS::GetInstance().GetKey(DIK_A) && mySliderPosX != 0)
+	if (Input() < 0 && mySliderPosX != 0)
 	{
 		sliderDirection = -1;
 		if (mySlideSoundTimer > 0.1f)
@@ -58,7 +90,7 @@ void UISlider::SlideSlider()
 		}
 		//AddSoundHere
 	}
-	if (InputManagerS::GetInstance().GetKey(DIK_D) && mySliderPosX != 1)
+	if (Input() > 0 && mySliderPosX != 1)
 	{
 		sliderDirection = 1;
 		if (mySlideSoundTimer > 0.1f)

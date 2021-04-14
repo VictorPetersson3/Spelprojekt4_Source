@@ -3,6 +3,7 @@
 #include "State.h"
 #include "Enums.h"
 
+class XController;
 class MainMenu;
 class OptionsMenu;
 class Level;
@@ -16,7 +17,7 @@ class StateManager
 {
 public:
 	~StateManager() = default;
-	static void Init();
+	static void Init(XController* aControllerPointer);
 	static void Destroy();
 	static StateManager& GetInstance();
 	static bool IsReady();

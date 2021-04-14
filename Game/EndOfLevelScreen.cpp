@@ -11,7 +11,7 @@
 #include "Level.h"
 
 
-EndOfLevelScreen::EndOfLevelScreen(Level* aLevelPointer)
+EndOfLevelScreen::EndOfLevelScreen(Level* aLevelPointer, XController* aControllerPointer) : MenuObject(aControllerPointer)
 {
 	myLevelPointer = aLevelPointer;
 }
@@ -19,9 +19,9 @@ EndOfLevelScreen::EndOfLevelScreen(Level* aLevelPointer)
 void EndOfLevelScreen::Init(const EStateType& aState)
 {
 	SetStateType(aState);
-	AddButton(std::make_shared<UIButton>());
+	AddButton(std::make_shared<UIButton>(myController));
 	GetButtonElement(0)->Init({ 0.5f, 0.7f }, "sprites/UI/PauseMenu/B_LevelSelect.dds", 0, [this]() {BackToMainButton(); });
-	AddButton(std::make_shared<UIButton>());
+	AddButton(std::make_shared<UIButton>(myController));
 	GetButtonElement(1)->Init({ 0.5f, 0.5f }, "sprites/UI/PauseMenu/B_NextLevel.dds", 0, [this]() {NextLevelPress(); });
 	myCurrentHoveredButton = 1;
 
@@ -32,16 +32,17 @@ void EndOfLevelScreen::Init(const EStateType& aState)
 
 void EndOfLevelScreen::Update()
 {
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_ESCAPE))
+	MenuObject::UpdateInput();
+	if (GetInputExit())
 	{
 		NextLevelPress();
 	}
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_S) && myCurrentHoveredButton > 0)
+	if (GetInputVertical() < 0 && myCurrentHoveredButton > 0)
 	{
 		myCurrentHoveredButton--;
 		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 	}
-	else if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButton < GetUIButtonElementsSize() - 1)
+	else if (GetInputVertical() > 0 && myCurrentHoveredButton < GetUIButtonElementsSize() - 1)
 	{
 		myCurrentHoveredButton++;
 		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");

@@ -12,7 +12,7 @@ class CharacterSelectionScreen :
     public MenuObject
 {
 public:
-    CharacterSelectionScreen() = default;
+    CharacterSelectionScreen(XController* aControllerPointer) : MenuObject(aControllerPointer) {}
     ~CharacterSelectionScreen() = default;
     void Init(const EStateType & aState) final;
     void Update() final;

@@ -10,7 +10,15 @@ class OptionsMenu :
     public MenuObject
 {
 public:
-    OptionsMenu() = default;
+    OptionsMenu(XController* aControllerPointer) : MenuObject(aControllerPointer) {
+        myBackground = nullptr;
+        mySliderBackground = nullptr;
+        mySliderMusic = nullptr;
+        mySliderEffects = nullptr;
+        mySliderSounds = nullptr;
+        myControllerLayout = nullptr;
+        myResolutionMenu = nullptr;
+    }
     ~OptionsMenu() = default;
     void Init(const EStateType& aState) final;
     void Update() final;

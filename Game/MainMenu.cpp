@@ -45,7 +45,7 @@ void MainMenu::Init(const EStateType& aState)
 	"sprites/UI/MainMenu/B_Quit.dds" };
 	for (int i = 0; i < 4; i++)
 	{
-		AddButton(std::make_shared<UIButton>());
+		AddButton(std::make_shared<UIButton>(myController));
 	}
 	GetButtonElement(0)->Init({ 0.7f, 0.5f + 0.13f }, tempImagePaths[0].GetString(), 0, [this]() {PlayButtonPress(); });
 	GetButtonElement(1)->Init({ 0.74f, 0.65f + 0.07f * 1 }, tempImagePaths[1].GetString(), 0, [this](int index) {TestMe(index); }, 0);
@@ -107,19 +107,20 @@ void MainMenu::Init(const EStateType& aState)
 
 void MainMenu::Update()
 {
+	MenuObject::UpdateInput();
 	myBackground->Update();
 
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_ESCAPE))
+	if (GetInputExit())
 	{
 		ExitButtonPress();
 		return;
 	}
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButton > 0)
+	if (GetInputVertical() > 0 && myCurrentHoveredButton > 0)
 	{
 		myCurrentHoveredButton--;
 		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 	}
-	else if (InputManagerS::GetInstance().GetKeyDown(DIK_S) && myCurrentHoveredButton < 3)
+	else if (GetInputVertical() < 0 && myCurrentHoveredButton < 3)
 	{
 		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 		myCurrentHoveredButton++;

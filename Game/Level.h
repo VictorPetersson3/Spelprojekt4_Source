@@ -4,6 +4,7 @@
 #include "Enums.h"
 #include <memory>
 #include "CommonUtilities/GrowingArray.hpp"
+class XController;
 class Boss;
 class Entity;
 class Emitter;
@@ -26,7 +27,7 @@ namespace Tga2D
 class Level : public State
 {
 public:
-	Level();
+	Level(XController* aControllerPointer);
 	~Level();
 
 	void OnPushed() override;

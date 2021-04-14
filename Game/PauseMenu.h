@@ -7,7 +7,7 @@ class PauseMenu :
     public MenuObject
 {
 public:
-    PauseMenu() = default;
+    PauseMenu(XController* aControllerPointer) : MenuObject(aControllerPointer) {}
     ~PauseMenu() = default;
     void Init(const EStateType & aState) final;
     void Update() final;

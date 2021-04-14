@@ -13,7 +13,7 @@ void CharacterSelectionScreen::Init(const EStateType& aState)
 {
 	SetStateType(aState);
 
-	AddButton(std::make_shared<UIButton>());
+	AddButton(std::make_shared<UIButton>(myController));
 	GetButtonElement(0)->Init({ 0.5f, 0.83f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {BackToLevelSelectPress(); });
 
 	myBackground = std::make_unique<UIImage>();
@@ -59,17 +59,18 @@ void CharacterSelectionScreen::Init(const EStateType& aState)
 
 void CharacterSelectionScreen::Update()
 {
+	MenuObject::UpdateInput();
 	//Logik för att hovera över 
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_ESCAPE))
+	if (GetInputExit())
 	{
 		BackToLevelSelectPress();
 	}
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_S) && myCurrentHoveredButton > 0)
+	if (GetInputVertical() < 0 && myCurrentHoveredButton > 0)
 	{
 		myCurrentHoveredButton--;
 		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 	}
-	else if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButton < GetUIButtonElementsSize())
+	else if (GetInputVertical() > 0 && myCurrentHoveredButton < GetUIButtonElementsSize())
 	{
 		myCurrentHoveredButton++;
 		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
@@ -78,11 +79,11 @@ void CharacterSelectionScreen::Update()
 	//If hovering characters
 	if (myCurrentHoveredButton == GetUIButtonElementsSize())
 	{
-		if (InputManagerS::GetInstance().GetKeyDown(DIK_A) && myCurrentHoveredCharacter > 0)
+		if (GetInputHorizontal() < 0 && myCurrentHoveredCharacter > 0)
 		{
 			myCurrentHoveredCharacter--;
 		}
-		else if (InputManagerS::GetInstance().GetKeyDown(DIK_D) && myCurrentHoveredCharacter < 2)
+		else if (GetInputHorizontal() > 0 && myCurrentHoveredCharacter < 2)
 		{
 			myCurrentHoveredCharacter++;
 		}
@@ -148,7 +149,7 @@ void CharacterSelectionScreen::Update()
 		default:
 			break;
 		}
-		if (InputManagerS::GetInstance().GetKeyDown(DIK_RETURN))
+		if (GetInputContinue())
 		{
 			CharacterChoicePress();
 		}

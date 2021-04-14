@@ -29,16 +29,18 @@
 #include "EndOfLevelScreen.h"
 #include "LevelSelect_SpecificLevelData.h"
 
-Level::Level()
+#include "XController.h"
+
+Level::Level(XController* aControllerPointer)
 {
 	myPlayer = std::make_shared<Player>();
 	mySpriteBatches.Init(10);
 
 	myBoss = std::make_shared<Boss>();
 
-	myPauseMenu = std::make_shared<PauseMenu>();
+	myPauseMenu = std::make_shared<PauseMenu>(aControllerPointer);
 	myPauseMenu->Init(EStateType::ePauseMenu);
-	myEndOfLevelScreen = std::make_shared<EndOfLevelScreen>(this);
+	myEndOfLevelScreen = std::make_shared<EndOfLevelScreen>(this, aControllerPointer);
 	myEndOfLevelScreen->Init(EStateType::eEndOfLevelScreen);
 
 	myBackground = std::make_unique<Background>();

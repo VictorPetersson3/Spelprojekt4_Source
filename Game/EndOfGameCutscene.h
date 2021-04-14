@@ -8,7 +8,7 @@ class EndOfGameCutscene :
     public MenuObject
 {
 public:
-    EndOfGameCutscene() = default;
+    EndOfGameCutscene(XController* aControllerPointer) : MenuObject(aControllerPointer) {}
     ~EndOfGameCutscene() = default;
     void Init(const EStateType & aState) final;
     void Update() final;

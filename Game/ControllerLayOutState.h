@@ -6,7 +6,7 @@ class ControllerLayOutState :
     public MenuObject
 {
 public:
-    ControllerLayOutState() = default;
+    ControllerLayOutState(XController* aControllerPointer) : MenuObject(aControllerPointer) {}
     ~ControllerLayOutState() = default;
     void Init(const EStateType& aState) final;
     void Update() final;

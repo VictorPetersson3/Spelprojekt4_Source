@@ -13,7 +13,7 @@ class LevelSelect :
     public MenuObject
 {
 public:
-    LevelSelect() = default;
+    LevelSelect(XController* aControllerPointer) : MenuObject(aControllerPointer) {}
     ~LevelSelect() = default;
     void Init(const EStateType & aState) final;
     void Update() final;
@@ -28,9 +28,9 @@ private:
     void BackButtonPress();
     void MapMarkerPress(int aVal);
 
-    float myCharacterMoveTimer;
-    int myCharactersPreviousIndex;
-    int myCharactersCurrentIndex;
+    float myCharacterMoveTimer = 0;
+    int myCharactersPreviousIndex = 0;
+    int myCharactersCurrentIndex = 0;
 
     int myCurrentHoveredButtonVertical = 0;
     int myCurrentHoveredButtonHorizontal = 0;

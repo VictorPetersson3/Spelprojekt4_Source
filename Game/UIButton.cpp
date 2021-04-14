@@ -4,8 +4,9 @@
 #include "InputManager.h"
 #include "AudioManager.h"
 #include "CommonUtilities/Math.h"
+#include "XController.h"
 
-UIButton::UIButton() 
+UIButton::UIButton(XController* aControllerPointer): myController(aControllerPointer)
 {
 	myOnPressIndexIndex = -1;
 	myOnPressFunction = nullptr;
@@ -23,7 +24,7 @@ void UIButton::Update()
 	{
 		ChangeSize();
 		UIElement::Update();
-		if (InputManagerS::GetInstance().GetKeyUp(DIK_RETURN) && myIsHovered)
+		if (myIsHovered && Input())
 		{
 			if (myOnPressFunction != nullptr)
 			{
@@ -65,6 +66,19 @@ void UIButton::SetButtonScales(const float aMinScale, const float aMaxScale)
 {
 	myHoverMinScale = aMinScale;
 	myHoverMaxScale = aMaxScale;
+}
+
+bool UIButton::Input()
+{
+	bool input = InputManagerS::GetInstance().GetKeyUp(DIK_RETURN);
+	if (!input)
+	{
+		if (myController->IsConnected() && myController->IsButtonDown(XINPUT_GAMEPAD_A))
+		{
+			input = true;
+		}
+	}
+	return input;
 }
 
 

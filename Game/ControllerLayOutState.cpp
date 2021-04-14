@@ -8,7 +8,7 @@
 void ControllerLayOutState::Init(const EStateType& aState)
 {
 	SetStateType(aState);
-	AddButton(std::make_shared<UIButton>());
+	AddButton(std::make_shared<UIButton>(myController));
 	GetButtonElement(0)->Init({ 0.5f, 0.75f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {BackButtonPress(); });
 	GetButtonElement(0)->SetIsHovered(true);
 
@@ -21,7 +21,8 @@ void ControllerLayOutState::Init(const EStateType& aState)
 
 void ControllerLayOutState::Update()
 {
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_ESCAPE))
+	MenuObject::UpdateInput();
+	if (GetInputExit())
 	{
 		BackButtonPress();
 	}

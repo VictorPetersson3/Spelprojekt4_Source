@@ -11,12 +11,12 @@
 void OptionsMenu::Init(const EStateType& aState)
 {
 	SetStateType(aState);
-	AddButton(std::make_shared<UIButton>());
+	AddButton(std::make_shared<UIButton>(myController));
 	GetButtonElement(0)->Init({ 0.5f, 0.78f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {BackButtonPress(); });
-	AddButton(std::make_shared<UIButton>());
+	AddButton(std::make_shared<UIButton>(myController));
 	GetButtonElement(1)->Init({ 0.5f, 0.68f }, "sprites/UI/OptionsMenu/B_controls.dds", 0, [this]() {ControllerButtonFunction(); });
 
-	AddButton(std::make_shared<UIButton>());
+	AddButton(std::make_shared<UIButton>(myController));
 	GetButtonElement(2)->Init({ 0.5f, 0.58f }, "sprites/UI/OptionsMenu/B_Resolution.dds", 0, [this]() {ResolutionButtonFunction(); });
 
 
@@ -30,31 +30,32 @@ void OptionsMenu::Init(const EStateType& aState)
 	myBackground.get()->GetRenderCommand().SetSizeRelativeToImage({ 0.6f, 0.6f });
 	myBackground.get()->Activate();
 
-	mySliderMusic = std::make_unique<UISlider>();
+	mySliderMusic = std::make_unique<UISlider>(myController);
 	mySliderMusic.get()->Init({ 0.5f, 0.486f }, "sprites/UI/OptionsMenu/B_VolumeSlider.dds", 2, 0.483f, 0.582f, [this](float aValue) {EffectSliderFunction(aValue); });
-	mySliderEffects = std::make_unique<UISlider>();
+	mySliderEffects = std::make_unique<UISlider>(myController);
 	mySliderEffects.get()->Init({ 0.5f, 0.457f }, "sprites/UI/OptionsMenu/B_VolumeSlider.dds", 2, 0.483f, 0.582f, [this](float aValue) {MusicSliderFunction(aValue); });
-	mySliderSounds = std::make_unique<UISlider>();
+	mySliderSounds = std::make_unique<UISlider>(myController);
 	mySliderSounds.get()->Init({ 0.5f, 0.426f }, "sprites/UI/OptionsMenu/B_VolumeSlider.dds", 2, 0.419f, 0.582f, [this](float aValue) {SoundSliderFunction(aValue); });
-	myControllerLayout = std::make_shared<ControllerLayOutState>();
+	myControllerLayout = std::make_shared<ControllerLayOutState>(myController);
 	myControllerLayout->Init(EStateType::eControllerLayout);
 
-	myResolutionMenu = std::make_shared<ResolutionMenu>();
+	myResolutionMenu = std::make_shared<ResolutionMenu>(myController);
 	myResolutionMenu->Init(EStateType::eResolutionMenu);
 }
 
 void OptionsMenu::Update()
 {
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_ESCAPE))
+	MenuObject::UpdateInput();
+	if (GetInputExit())
 	{
 		BackButtonPress();
 	}
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_S) && myCurrentHoveredButton > 0)
+	if (GetInputVertical() < 0 && myCurrentHoveredButton > 0)
 	{
 		myCurrentHoveredButton--;
 		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 	}
-	else if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButton < 5)
+	else if (GetInputVertical() > 0 && myCurrentHoveredButton < 5)
 	{
 		myCurrentHoveredButton++;
 		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");

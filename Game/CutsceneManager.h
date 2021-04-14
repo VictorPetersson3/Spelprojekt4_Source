@@ -14,7 +14,7 @@ class CutsceneManager :
     public MenuObject
 {
 public:
-    CutsceneManager() = default;
+    CutsceneManager(XController* aControllerPointer) : MenuObject(aControllerPointer){}
     ~CutsceneManager() = default;
     void Init(const EStateType & aState) final;
     void Init(const EStateType& aState, const char* aCutsceneDirectory);

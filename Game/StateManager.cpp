@@ -11,7 +11,7 @@
 #include "EndOfGameCutscene.h"
 #include "FadeInImage.h"
 #include "LevelSelect_SpecificLevelData.h"
-
+#include "XController.h"
 
 StateManager* StateManager::myInstance = nullptr;
 
@@ -24,18 +24,18 @@ void* operator new(size_t aSize)
 
 
 
-void StateManager::Init()
+void StateManager::Init(XController* aControllerPointer)
 {
 	assert(myInstance == nullptr && "State Manager have already been Created");
 	myInstance = new StateManager;
 
-	myInstance->myMainMenu = std::make_shared<MainMenu>();
-	myInstance->myOptionsMenu = std::make_shared<OptionsMenu>();
-	myInstance->myLevel = std::make_shared<Level>();
-	myInstance->myLevelSelect = std::make_shared<LevelSelect>();
-	myInstance->myCutsceneManager = std::make_shared<CutsceneManager>();
-	myInstance->myCharacterSelection = std::make_shared<CharacterSelectionScreen>();
-	myInstance->myEndOfGameCutscene = std::make_shared<EndOfGameCutscene>();
+	myInstance->myMainMenu = std::make_shared<MainMenu>(aControllerPointer);
+	myInstance->myOptionsMenu = std::make_shared<OptionsMenu>(aControllerPointer);
+	myInstance->myLevel = std::make_shared<Level>(aControllerPointer);
+	myInstance->myLevelSelect = std::make_shared<LevelSelect>(aControllerPointer);
+	myInstance->myCutsceneManager = std::make_shared<CutsceneManager>(aControllerPointer);
+	myInstance->myCharacterSelection = std::make_shared<CharacterSelectionScreen>(aControllerPointer);
+	myInstance->myEndOfGameCutscene = std::make_shared<EndOfGameCutscene>(aControllerPointer);
 	myInstance->myFadeInImage = std::make_shared<FadeInImage>();
 
 	//Init the states you made here, rest will work automagically,

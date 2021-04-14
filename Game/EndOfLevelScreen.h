@@ -3,12 +3,12 @@
 
 class UIImage;
 class Level;
-
+class XController;
 class EndOfLevelScreen :
     public MenuObject
 {
 public:
-    EndOfLevelScreen(Level* aLevelPointer);
+    EndOfLevelScreen(Level* aLevelPointer, XController* aControllerPointer);
     ~EndOfLevelScreen() = default;
     void Init(const EStateType & aState) final;
     void Update() final;

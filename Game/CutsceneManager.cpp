@@ -28,15 +28,16 @@ void CutsceneManager::Init(const EStateType& aState)
 	SetStateType(aState);
 	
 
-	AddButton(std::make_shared<UIButton>());
+	AddButton(std::make_shared<UIButton>(myController));
 	GetButtonElement(0)->Init({ 0.875f, 0.85f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {ContinuePrint(); });
 	GetButtonElement(0)->SetIsHovered(false);
 	GetButtonElement(0)->SetButtonScales(0.7f, 0.9f);
-	AddButton(std::make_shared<UIButton>());
+	AddButton(std::make_shared<UIButton>(myController));
 	GetButtonElement(1)->Init({ 0.875f, 0.85f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {OnExit(); });
 	GetButtonElement(1)->SetIsHovered(false);
 	GetButtonElement(1)->Deactivate();
 	GetButtonElement(1)->SetButtonScales(0.7f, 0.9f);
+
 	myTextBackground = std::make_unique<UIImage>();
 	myTextBackground->Init({ 0.5f, 0.85f }, "sprites/Cutscenes/TextFrame.dds", -1);
 	myTextBackground->GetRenderCommand().SetSizeRelativeToImage({ 0.60f, 0.60f });
@@ -67,6 +68,7 @@ void CutsceneManager::Init(const EStateType& aState, const char* aCutsceneDirect
 
 void CutsceneManager::Update()
 {
+	MenuObject::UpdateInput();
 	MenuObject::Update();
 	if (myIsPrinting)
 	{
@@ -77,7 +79,7 @@ void CutsceneManager::Update()
 		GetButtonElement(1)->SetIsHovered(true);
 		GetButtonElement(1)->Activate();
 	}
-	if (InputManagerS::GetInstance().GetKeyUp(DIK_ESCAPE) && !myPrintEverything)
+	if (GetInputExit() && !myPrintEverything)
 	{
 		printf("I will print Everything!!!\n");
 		PrintEverything();

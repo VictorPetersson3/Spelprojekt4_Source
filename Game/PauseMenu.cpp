@@ -11,12 +11,12 @@
 void PauseMenu::Init(const EStateType& aState)
 {
 	SetStateType(aState);
-	AddButton(std::make_shared<UIButton>());
+	AddButton(std::make_shared<UIButton>(myController));
 	GetButtonElement(0)->Init({ 0.5f, 0.4f }, "sprites/UI/PauseMenu/B_Resume.dds", 0, [this]() {BackButtonPress(); });
-	AddButton(std::make_shared<UIButton>());
+	AddButton(std::make_shared<UIButton>(myController));
 	GetButtonElement(1)->Init({ 0.5f, 0.55f }, "sprites/UI/PauseMenu/B_Settings2.dds", 0, [this]() {PressSettingsButton(); });
 	GetButtonElement(1)->GetRenderCommand().SetSizeRelativeToImage({ 0.6f, 0.6f });
-	AddButton(std::make_shared<UIButton>());
+	AddButton(std::make_shared<UIButton>(myController));
 	GetButtonElement(2)->Init({ 0.5f, 0.7f }, "sprites/UI/PauseMenu/B_LevelSelect.dds", 0, [this]() {PressGoToMainMenu(); });
 
 	myBackground = std::make_unique<UIImage>();
@@ -26,16 +26,17 @@ void PauseMenu::Init(const EStateType& aState)
 
 void PauseMenu::Update()
 {
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_ESCAPE))
+	MenuObject::UpdateInput();
+	if (GetInputExit())
 	{
 		BackButtonPress();
 	}
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_S) && myCurrentHoveredButton < GetUIButtonElementsSize())
+	if (GetInputVertical() < 0 && myCurrentHoveredButton < GetUIButtonElementsSize())
 	{
 		myCurrentHoveredButton++;
 		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 	}
-	else if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButton > 0)
+	else if (GetInputVertical() > 0 && myCurrentHoveredButton > 0)
 	{
 		myCurrentHoveredButton--;
 		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");

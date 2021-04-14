@@ -26,17 +26,9 @@ CGameWorld::~CGameWorld()
 
 void CGameWorld::Init()
 {
-	CollisionManager::Init();
-	StateManager::Init();
-	myPlayer = std::make_shared<Player>();
-	 
-	myCamera = std::make_unique<Camera>();
 	myController = std::make_shared<XController>(1);
-	//myCollider = new Collider({ 0.5f, 0.9f }, 1.0f, 0.2f);
-	myCamera = std::make_shared<Camera>();
-	myCameraController = std::make_shared<CameraBehavoir>();
-	myCameraController->Init(myCamera, myPlayer);
-	//myPlayer->Init();
+	CollisionManager::Init();
+	StateManager::Init(myController.get());
 }
 
 void CGameWorld::Update(float /*aTimeDelta*/)

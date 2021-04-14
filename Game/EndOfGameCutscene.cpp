@@ -11,10 +11,10 @@ void EndOfGameCutscene::Init(const EStateType& aState)
 {
 	SetStateType(aState);
 
-	myCutsceneManager = std::make_shared<CutsceneManager>();
+	myCutsceneManager = std::make_shared<CutsceneManager>(myController);
 	myCutsceneManager->Init(EStateType::eCutsceneManager, "Json/Cutscenes/EndOfGameConversations");
 
-	AddButton(std::make_shared<UIButton>());
+	AddButton(std::make_shared<UIButton>(myController));
 	GetButtonElement(0)->Init({ 0.5f, 0.75f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {BackButtonPress(); });
 	GetButtonElement(0)->SetIsHovered(true);
 	GetButtonElement(0)->Deactivate();

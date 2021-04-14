@@ -10,7 +10,7 @@
 #include "AudioManager.h"
 #include "Timer.h"
 
-ResolutionMenu::ResolutionMenu()
+ResolutionMenu::ResolutionMenu(XController* aControllerPointer) : MenuObject(aControllerPointer)
 {
 	myHoverCurrentScale = 0.55f;
 	myHoverEndScale = 0.62f;
@@ -40,11 +40,11 @@ void ResolutionMenu::Init(const EStateType& aState)
 	myResolutions[5]->Init({ 0.5f, 0.5f }, "sprites/UI/OptionsMenu/R_1440.dds", 2);
 	
 
-	AddButton(std::make_shared<UIButton>());
+	AddButton(std::make_shared<UIButton>(myController));
 	GetButtonElement(0)->Init({ 0.5f, 0.78f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {BackButtonPress(); });
-	AddButton(std::make_shared<UIButton>());
+	AddButton(std::make_shared<UIButton>(myController));
 	GetButtonElement(1)->Init({ 0.5f, 0.69f }, "sprites/UI/OptionsMenu/B_Fullscreen.dds", 0, [this]() {PressFullScreenButton(); });
-	AddButton(std::make_shared<UIButton>());
+	AddButton(std::make_shared<UIButton>(myController));
 	GetButtonElement(2)->Init({ 0.5f, 0.6f }, "sprites/UI/OptionsMenu/B_Apply.dds", 0, [this]() {PressApplyResolutionButton(); });
 	myBackground = std::make_unique<UIImage>();
 	myBackground.get()->Init({ 0.5f, 0.5f }, "sprites/UI/OptionsMenu/settings_MenuBoard.dds", 2);
@@ -55,16 +55,17 @@ void ResolutionMenu::Init(const EStateType& aState)
 
 void ResolutionMenu::Update()
 {
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_ESCAPE))
+	MenuObject::UpdateInput();
+	if (GetInputExit())
 	{
 		BackButtonPress();
 	}
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_S) && myCurrentHoveredButton > 0)
+	if (GetInputVertical() < 0 && myCurrentHoveredButton > 0)
 	{
 		myCurrentHoveredButton--;
 		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 	}
-	else if (InputManagerS::GetInstance().GetKeyDown(DIK_W) && myCurrentHoveredButton < GetUIButtonElementsSize())
+	else if (GetInputVertical() > 0 && myCurrentHoveredButton < GetUIButtonElementsSize())
 	{
 		myCurrentHoveredButton++;
 		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
@@ -83,12 +84,12 @@ void ResolutionMenu::Update()
 	}
 	if (myCurrentHoveredButton == GetUIButtonElementsSize())
 	{
-		if (InputManagerS::GetInstance().GetKeyDown(DIK_D) && myCurrentHoveredResolution < static_cast<int>(eResolutions::eEnd) - 1)
+		if (GetInputHorizontal() < 0 && myCurrentHoveredResolution < static_cast<int>(eResolutions::eEnd) - 1)
 		{
 			myCurrentHoveredResolution++;
 			AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 		}
-		else if (InputManagerS::GetInstance().GetKeyDown(DIK_A) && myCurrentHoveredResolution > 0)
+		else if (GetInputHorizontal() < 0 && myCurrentHoveredResolution > 0)
 		{
 			myCurrentHoveredResolution--;
 			AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");

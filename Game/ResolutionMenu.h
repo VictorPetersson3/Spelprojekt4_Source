@@ -18,7 +18,7 @@ class ResolutionMenu :
     public MenuObject
 {
 public:
-    ResolutionMenu();
+    ResolutionMenu(XController* aControllerPointer);
     ~ResolutionMenu() = default;
     void Init(const EStateType & aState) final;
     void Update() final;
