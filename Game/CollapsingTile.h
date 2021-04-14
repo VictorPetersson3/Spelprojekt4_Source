@@ -25,10 +25,14 @@ private:
 	std::shared_ptr<AnimationClip> myAnimationClip;
 
 	float myTimer = 0.f;
-	float myCooldownTime = 2.5f;
+	float myCooldownTime = 0.8f;
+	float myAnimtionTime = 0.7f;
+
+
 
 	bool myHasBeenHitByPlayer = false;
 	bool myShouldBeRendered = true;
+	bool myIsAnimating = false;
 
 };
 

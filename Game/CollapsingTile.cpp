@@ -6,6 +6,8 @@
 #include <iostream>
 #include "AnimationClip.h"
 #include "Camera.h"
+#include "JsonParser.h"
+
 
 CollapsingTile::CollapsingTile(CommonUtilities::Vector2f aPosition)
 {
@@ -31,6 +33,12 @@ CollapsingTile::CollapsingTile(CommonUtilities::Vector2f aPosition)
 	CommonUtilities::Vector2f colliderPosition = {colliderPosX,colliderPosY };
 	
 	myCollider = std::make_shared<Collider>(colliderPosition, width/2.f, height/2.f);
+
+	JsonParser jsonParser;
+
+	rapidjson::Document document = jsonParser.GetDocument("Json/CollapsingTileProperties.json");
+
+	myCooldownTime = document["collapsingTileTimer"].GetFloat();
 
 }
 
@@ -59,19 +67,29 @@ void CollapsingTile::Update(float aDeltaTime)
 			if (CollisionManager::GetInstance().CheckCollision(myCollider.get(), CollisionManager::GetInstance().GetPlayerCollider()) && myHasBeenHitByPlayer == false)
 			{
 				myHasBeenHitByPlayer = true;
-				myAnimationClip->PlayAnimOnce(0.3f);
 			}
 		}
 		
-		if (myHasBeenHitByPlayer)
+		if (myHasBeenHitByPlayer && !myIsAnimating)
 		{
 			myTimer += aDeltaTime;
 			
 			if (myTimer >= myCooldownTime)
 			{
 				myCollider->SetTag(EColliderTag::IgnoreCollision);
-				myShouldBeRendered = false;
+				//myShouldBeRendered = false;
+				myAnimationClip->PlayAnimOnce();
+				myIsAnimating = true;
 				myCollider->RemoveFromManager();
+				myTimer = 0;
+			}
+		}
+
+		if (myIsAnimating)
+		{
+			if (myTimer >= myAnimtionTime)
+			{
+				myShouldBeRendered = false;
 			}
 		}
 	}
