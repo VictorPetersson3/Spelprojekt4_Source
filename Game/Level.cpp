@@ -181,6 +181,8 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 		mySpriteBatches[i]->ClearAll();
 	}
 
+	mySpriteBatches.RemoveAll();
+
 	if (myPlayer->GetCollider().get() != nullptr)
 	{
 		myPlayer.get()->GetCollider().get()->RemoveFromManager();
@@ -203,34 +205,6 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 
 	myTerrain = aData->GetTiles();
 	myEntities = aData->GetEntities();
-
-	std::vector<std::shared_ptr<Key>> keyList = {};
-	std::vector<Door*> doorList = {};
-	for (int i = 0; i < myEntities.size(); i++)
-	{
-		if (Key* key = dynamic_cast<Key*>(myEntities[i].get()))
-		{
-			keyList.emplace_back(dynamic_cast<Key*>(myEntities[i].get()));
-			key->Init(myPlayer);
-		}
-		if (Door* door = dynamic_cast<Door*>(myEntities[i].get()))
-		{
-			doorList.emplace_back(dynamic_cast<Door*>(myEntities[i].get()));
-		}
-	}
-	for (int i = 0; i < doorList.size(); i++)
-	{
-		for (int j = 0; j < keyList.size(); j++)
-		{
-			if (doorList[i]->GetIndex() == keyList[j]->GetIndex())
-			{
-				doorList[i]->Init(keyList[j]);
-			}
-		}
-	}
-
-	keyList.clear();
-	doorList.clear();
 
 	mySpriteBatches.Add(myAmbientParticles->GetBatch());
 
