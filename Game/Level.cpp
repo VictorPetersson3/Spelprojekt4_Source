@@ -274,15 +274,6 @@ void Level::Load(LevelSelect_SpecificLevelData* someLevelData, const bool aReloa
 	myCameraController->SetMoveY(someLevelData->myMoveCameraY);
 
 	myBoss->Init(myPlayer);
-
-	for (float i = 0; i < 10; i += 2.5f)
-	{
-		for (float j = 0; j < 10; j += 2.5f)
-		{
-			myBoss->AddDashPosition({ i / 10, j / 10 });
-		}
-	}
-
 	if (mylevelJsonData->myHasCutscene && !aReloadedLevel)
 	{
 		StateManager::AddAndPlayCutscene(mylevelJsonData->myCutsceneConversation);

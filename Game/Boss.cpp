@@ -24,8 +24,8 @@ void Boss::Init(const std::shared_ptr<Player> aPlayer)
 
 	myCollider = std::make_shared<Collider>(myPosition, 0.15f, 0.15f);
 	myCollider->SetTag(EColliderTag::KillZone);
+	LoadJson();
 	LoadAnimations();
-
 
 }
 
@@ -119,6 +119,7 @@ void Boss::LoadAnimations()
 			myAnimations[i]->Init({ 4, 1 }, { 4, 1 });
 		
 		myAnimations[i]->PlayAnimLoop();
+		myAnimations[i]->SetScaleRelativeToFrame({ 1.5f,1.5f });
 	}
 }
 
@@ -133,7 +134,13 @@ void Boss::LoadJson()
 	myPosition.x = doc["Position"]["X"].GetFloat();
 	myPosition.x = doc["Position"]["Y"].GetFloat();
 
+
 	mySpeed = doc["Speed"].GetFloat();
+
+	for (int i = 0; i < doc["BossPositions"].Size(); i++)
+	{
+		AddDashPosition({ doc["BossPositions"][i]["X"].GetFloat() , doc["BossPositions"][i]["Y"].GetFloat() });
+	}
 }
 
 int Boss::PickPosition()
