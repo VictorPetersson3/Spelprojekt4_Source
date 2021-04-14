@@ -163,6 +163,8 @@ void Level::Update()
 
 void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData* someLevelData)
 {
+	myBoss.reset();
+
 	for (int i = 0; i < mySpriteBatches.Size(); i++)
 	{
 		mySpriteBatches[i]->ClearAll();
@@ -245,7 +247,8 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 
 
 	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y }, StateManager::GetInstance().GetSelectedCharacter());
-
+	myBoss = std::make_shared<Boss>();
+	//myBoss->Init(myPlayer);
 	//myPlayer->SetShouldUpdatePhysics(false);
 	myBackground->Init(*(myPlayer.get()), mylevelJsonData->myWorld, mylevelJsonData->myWorldLevelNumber);
 
