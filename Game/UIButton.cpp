@@ -73,7 +73,7 @@ bool UIButton::Input()
 	bool input = InputManagerS::GetInstance().GetKeyUp(DIK_RETURN);
 	if (!input)
 	{
-		if (myController->IsConnected() && myController->IsButtonDown(XINPUT_GAMEPAD_A))
+		if (myController->IsConnected() && myController->IsButtonPressed(XINPUT_GAMEPAD_A))
 		{
 			input = true;
 		}

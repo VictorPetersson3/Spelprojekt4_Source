@@ -71,5 +71,6 @@ private:
 	bool myPlayerHasDied = false;
 
 	std::shared_ptr<Emitter> myAmbientParticles;
+	XController* myController;
 };
 

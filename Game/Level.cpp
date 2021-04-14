@@ -31,7 +31,7 @@
 
 #include "XController.h"
 
-Level::Level(XController* aControllerPointer)
+Level::Level(XController* aControllerPointer) : myController(aControllerPointer)
 {
 	myPlayer = std::make_shared<Player>();
 	mySpriteBatches.Init(10);
@@ -110,7 +110,7 @@ void Level::Update()
 		
 	}
 	//Pause Menu
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_ESCAPE))
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_ESCAPE) || myController->IsButtonDown(XINPUT_GAMEPAD_START))
 	{
 		StateManager::AddStateOnStack(myPauseMenu);
 	}
@@ -120,10 +120,6 @@ void Level::Update()
 		entity.get()->Update(deltaTime);
 	}
 
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_F5))
-	{
-		Restart();
-	}
 		
 	if (myPlayer != nullptr)
 	{
@@ -148,6 +144,12 @@ void Level::Update()
 	}
 	myCameraController->Update(Timer::GetInstance().GetDeltaTime());
 	myCamera->Update();	
+
+	// Remove before handing in
+	if (InputManagerS::GetInstance().GetKeyDown(DIK_F5))
+	{
+		Restart();
+	}
 	if (InputManagerS::GetInstance().GetKey(DIK_I))
 	{
 		myCamera->ShakeCamera(1, 0.5f);
@@ -156,6 +158,8 @@ void Level::Update()
 	{
 		StateManager::AddStateOnStack(myEndOfLevelScreen);
 	}
+	/////////////////////
+
 	if (myLevelEndCollider != nullptr && myPlayer.get() != nullptr)
 	{
 		if (CollisionManager::GetInstance().CheckCollision(myPlayer->GetCollider().get(), myLevelEndCollider.get()))
