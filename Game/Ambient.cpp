@@ -47,7 +47,7 @@ void Ambient::Init()
 
 	/// Lifetime
 	myMinLifeTime = 20.0f;
-	myMaxLifeTime = 40.0f;
+	myMaxLifeTime = 30.0f;
 	/// Color
 	myStartColor = { 1, 1, 1, 1.0f };
 	myEndColor = { 1, 1, 1, 0.5f };
