@@ -7,14 +7,13 @@
 #include <tga2d/sprite/sprite.h>
 #include <WinUser.h>
 #include <iostream>
-#include <random>
+#include <random>s
 
 #define DELTA_TIME Timer::GetInstance().GetDeltaTime()
 
 Emitter::Emitter(EWorldLevel aWorld)
 {
 	mySpriteBatch = nullptr;
-	//mySpriteBatch->Init();
 	myWorld = aWorld;
 }
 
@@ -67,26 +66,26 @@ std::shared_ptr<Tga2D::CSpriteBatch> Emitter::GetBatch()
 
 void Emitter::Init(const CommonUtilities::Vector2f& aPosition, const ParticleType& aParticleType)
 {
-	SetParticleType(aParticleType);
 	SetPosition(aPosition);
-	float a = 20.0f / DELTA_TIME;
-	int b = 0;
+	SetParticleType(aParticleType);
 
-	std::random_device rd;
-	std::mt19937 randomInt(rd());
-	std::uniform_real_distribution<> eRateDistr(myParticles[0]->GetContents().myMinTimeBetweenParticleSpawns, myParticles[0]->GetContents().myMaxTimeBetweenParticleSpawns);
-	myEmissionRate = eRateDistr(randomInt);
-
-	for (int i = 0; i < 20.0f / DELTA_TIME; i++)
+	if (myWorld == EWorldLevel::eWorld1 || myWorld == EWorldLevel::eWorld2)
 	{
-		myEmissionTimer += DELTA_TIME;
-		Emit();
-		for (auto& particle : myParticles)
+		std::random_device rd;
+		std::mt19937 randomInt(rd());
+		std::uniform_real_distribution<> eRateDistr(myParticles[0]->GetContents().myMinTimeBetweenParticleSpawns, myParticles[0]->GetContents().myMaxTimeBetweenParticleSpawns);
+		myEmissionRate = eRateDistr(randomInt);
+
+		for (int i = 0; i < 20.0f / DELTA_TIME; i++)
 		{
-			if (particle->IsActive())
+			myEmissionTimer += DELTA_TIME;
+			Emit();
+			for (auto& particle : myParticles)
 			{
-				particle->Update({ 0, 0 });
-				b++;
+				if (particle->IsActive())
+				{
+					particle->Update({ 0, 0 });
+				}
 			}
 		}
 	}
@@ -97,8 +96,26 @@ void Emitter::SetParticleType(const ParticleType& aParticleType)
 	switch (aParticleType)
 	{
 	case ParticleType::Ambient:
-		mySpriteBatch = std::make_shared<Tga2D::CSpriteBatch>("Sprites/Particles/leaf_particle_green.dds");
-		mySpriteBatch->Init("Sprites/Particles/leaf_particle_green.dds");
+		switch (myWorld)
+		{
+		case EWorldLevel::eWorld1:
+			mySpriteBatch = std::make_shared<Tga2D::CSpriteBatch>("Sprites/Particles/leaf_particle_green.dds");
+			mySpriteBatch->Init("Sprites/Particles/leaf_particle_green.dds");
+			break;
+		case EWorldLevel::eWorld2:
+			mySpriteBatch = std::make_shared<Tga2D::CSpriteBatch>("Sprites/Particles/leaf_particle_red.dds");
+			mySpriteBatch->Init("Sprites/Particles/leaf_particle_red.dds");
+			break;
+		case EWorldLevel::eWorld3:
+			mySpriteBatch = std::make_shared<Tga2D::CSpriteBatch>("Sprites/Particles/drop_particle.dds");
+			mySpriteBatch->Init("Sprites/Particles/drop_particle.dds");
+			break;
+		case EWorldLevel::eWorld4:
+			mySpriteBatch = std::make_shared<Tga2D::CSpriteBatch>("Sprites/Particles/bubble_particle.dds");
+			mySpriteBatch->Init("Sprites/Particles/bubble_particle.dds");
+			break;
+		}
+
 		mySpriteBatch->SetBlendState(EBlendState::EBlendState_Alphablend);
 		myParticleType = ParticleType::Ambient;
 		for (auto& particle : myParticles)
@@ -115,12 +132,17 @@ void Emitter::SetParticleType(const ParticleType& aParticleType)
 			mySpriteBatch->AddObject(myParticles[i]->GetSprite());
 		}
 		break;
+
 	}
 }
 
 void Emitter::SetPosition(const CommonUtilities::Vector2f& aPosition)
 {
-	myPosition = aPosition;
+	auto pos = aPosition;
+
+	if (myWorld == EWorldLevel::eWorld3 || myWorld == EWorldLevel::eWorld4) pos.y += 1.0f;
+
+	myPosition = pos;
 }
 
 //Separate Emit function, use Update() for non-specific uses.

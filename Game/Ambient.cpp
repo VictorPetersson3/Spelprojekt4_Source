@@ -22,59 +22,35 @@ Ambient::~Ambient()
 
 void Ambient::Init()
 {
-	// Emission Values
-	/// Spawn time
-	myContents.myMinTimeBetweenParticleSpawns = 0.001f;
-	myContents.myMaxTimeBetweenParticleSpawns = 0.2f;
-	/// Emission time
-	/*myEmitTime = 0.0f;*/
+	switch (myWorld)
+	{
+	case EWorldLevel::eWorld1:
+		InitLeavesG();
+		break;
+	case EWorldLevel::eWorld2:
+		InitLeavesR();
+		break;
+	case EWorldLevel::eWorld3:
+		InitDroplets();
+		break;
+	case EWorldLevel::eWorld4:
+		InitBubbles();
+		break;
+	}
 
-	// Local Ranges 
-	/// Scale
-	myMinStartScale = 1.0f;
-	myMaxStartScale = 1.5f;
-
-	//myStartScale = 1.0f;
-	myEndScale = 0.4f;
-
-	/// Start Speed
-	myMinStartSpeed = 0.1f;
-	myMaxStartSpeed = 0.3f;
-
-	/// Angle
-	myMinRotation = -2.0f;
-	myMaxRotation = 2.0f;
-
-	/// Lifetime
-	myMinLifeTime = 20.0f;
-	myMaxLifeTime = 30.0f;
-	/// Color
-	myStartColor = { 1, 1, 1, 1.0f };
-	myEndColor = { 1, 1, 1, 0.5f };
-	/// Acceleration
-	myMinAcceleration = { 0.95f, 0.99f };
-	myMaxAcceleration = { 0.99f, 0.9999f };
-	myGravity = 0.01f;
-
-	// Setting values
-	/// Blend State
-	myBlendState = EBlendState::EBlendState_Alphablend;
-
-	/// Sprite
-	mySprite = new Tga2D::CSprite("Sprites/Particles/leaf_particle_green.dds");
 	mySprite->SetPivot({ 0.5f, 0.5f });
 	mySprite->SetBlendState(myBlendState);
 
-	std::random_device rd;
-	std::mt19937 randomInt(rd());
-	std::uniform_real_distribution<> BWBalance(0.5f, 1.0f);
-	float color = BWBalance(randomInt);
-	myStartColor.myR *= color;
-	myStartColor.myG *= color;
-	myStartColor.myB *= color;
-	myEndColor.myR *= color;
-	myEndColor.myG *= color;
-	myEndColor.myB *= color;
+	//std::random_device rd;
+	//std::mt19937 randomInt(rd());
+	//std::uniform_real_distribution<> BWBalance(1.0f, 1.0f);
+	//float color = BWBalance(randomInt);
+	//myStartColor.myR *= color;
+	//myStartColor.myG *= color;
+	//myStartColor.myB *= color;
+	//myEndColor.myR *= color;
+	//myEndColor.myG *= color;
+	//myEndColor.myB *= color;
 
 	Reset();
 }
@@ -117,16 +93,16 @@ void Ambient::Reset()
 	myVelocity.x *= 9.0f / 16.0f;
 	//myVelocity.y = 0;
 	myVelocity *= mySpeed;
-
+	//if (myWorld == EWorldLevel::eWorld3) myVelocity.x = 0;
 	/// Lifetime
 	std::uniform_real_distribution<> LTDist(myMinLifeTime, myMaxLifeTime);
 	myLifeTime = LTDist(randomInt);
 
 	/// Acceleration
-	std::uniform_real_distribution<> accelerationDist(myMinAcceleration.x, myMinAcceleration.x);
+	std::uniform_real_distribution<> accelerationDist(myMinAcceleration.x, myMaxAcceleration.x);
 	myAcceleration.x = accelerationDist(randomInt);
-	std::uniform_real_distribution<>(myMinAcceleration.y, myMinAcceleration.y);
-	myAcceleration.y = accelerationDist(randomInt);
+	std::uniform_real_distribution<> acceleration(myMinAcceleration.y, myMaxAcceleration.y);
+	myAcceleration.y = acceleration(randomInt);
 
 	/// Time
 	myTime = 0;
@@ -134,11 +110,16 @@ void Ambient::Reset()
 
 void Ambient::Update(const CommonUtilities::Vector2f& aCamera)
 {
+	if (myPosition.y > 2.0f)
+	{ 
+		myIsActive = false; 
+		return; 
+	}
+	
 	// Gör vad fan du vill här, det är ingenting som är "permanent".
-
 	myTime += DELTA_TIME;
 
-	myVelocity.x = powf(myAcceleration.y, DELTA_TIME) * myVelocity.x + sinf(myPeriod * myTime) * 0.05f * DELTA_TIME;
+	myVelocity.x = powf(myAcceleration.x, DELTA_TIME) * myVelocity.x + sinf(myPeriod * myTime) * 0.05f * DELTA_TIME;
 	myVelocity.y = powf(myAcceleration.y, DELTA_TIME) * myVelocity.y + myGravity * DELTA_TIME;
 
 	myAngle += myRotation * DELTA_TIME;
@@ -157,10 +138,186 @@ void Ambient::Update(const CommonUtilities::Vector2f& aCamera)
 
 void Ambient::SetPosition(CommonUtilities::Vector2f aPosition)
 {
-	myPosition = { aPosition.x + float(rand() % 200 - 100) / 100.0f * myEmissionWidth * 0.5f, aPosition.y };
+	myPosition = { aPosition.x + float(rand() % 200 - 100) / 100.0f * myEmissionWidth.x * 0.5f, aPosition.y + float(rand() % 200 - 100) / 100.0f * myEmissionWidth.y * 0.5f };
 }
 
 Tga2D::CSprite* Ambient::GetSprite()
 {
 	return mySprite;
+}
+
+void Ambient::InitLeavesG()
+{
+	// Emission Values
+	/// Spawn time
+	myContents.myMinTimeBetweenParticleSpawns = 0.001f;
+	myContents.myMaxTimeBetweenParticleSpawns = 0.2f;
+	/// Emission time
+	/*myEmitTime = 0.0f;*/
+
+	// Local Ranges 
+	/// Scale
+	myMinStartScale = 1.0f;
+	myMaxStartScale = 1.5f;
+
+	//myStartScale = 1.0f;
+	myEndScale = 0.4f;
+
+	/// Start Speed
+	myMinStartSpeed = 0.1f;
+	myMaxStartSpeed = 0.3f;
+
+	/// Angle
+	myMinRotation = -2.0f;
+	myMaxRotation = 2.0f;
+
+	/// Lifetime
+	myMinLifeTime = 20.0f;
+	myMaxLifeTime = 30.0f;
+	/// Color
+	myStartColor = { 1, 1, 1, 1.0f };
+	myEndColor = { 1, 1, 1, 0.5f };
+	/// Acceleration
+	myMinAcceleration = { 0.95f, 0.99f };
+	myMaxAcceleration = { 0.99f, 0.9999f };
+	myGravity = 0.01f;
+
+	// Setting values
+	/// Blend State
+	myBlendState = EBlendState::EBlendState_Alphablend;
+
+	/// Sprite
+	mySprite = new Tga2D::CSprite("Sprites/Particles/leaf_particle_green.dds");
+}
+
+void Ambient::InitLeavesR()
+{
+	// Emission Values
+	/// Spawn time
+	myContents.myMinTimeBetweenParticleSpawns = 0.001f;
+	myContents.myMaxTimeBetweenParticleSpawns = 0.2f;
+	/// Emission time
+	/*myEmitTime = 0.0f;*/
+
+	// Local Ranges 
+	/// Scale
+	myMinStartScale = 1.0f;
+	myMaxStartScale = 1.5f;
+
+	//myStartScale = 1.0f;
+	myEndScale = 0.4f;
+
+	/// Start Speed
+	myMinStartSpeed = 0.1f;
+	myMaxStartSpeed = 0.3f;
+
+	/// Angle
+	myMinRotation = -2.0f;
+	myMaxRotation = 2.0f;
+
+	/// Lifetime
+	myMinLifeTime = 20.0f;
+	myMaxLifeTime = 30.0f;
+	/// Color
+	myStartColor = { 1, 1, 1, 1.0f };
+	myEndColor = { 1, 1, 1, 0.5f };
+	/// Acceleration
+	myMinAcceleration = { 0.95f, 0.99f };
+	myMaxAcceleration = { 0.99f, 0.9999f };
+	myGravity = 0.01f;
+
+	// Setting values
+	/// Blend State
+	myBlendState = EBlendState::EBlendState_Alphablend;
+
+	/// Sprite
+	mySprite = new Tga2D::CSprite("Sprites/Particles/leaf_particle_red.dds");
+}
+
+void Ambient::InitDroplets()
+{
+	// Emission Values
+	/// Spawn time
+	myContents.myMinTimeBetweenParticleSpawns = 0.01f;
+	myContents.myMaxTimeBetweenParticleSpawns = 0.6f;
+	/// Emission range
+	myEmissionWidth = { 1.0f, 1.0f };
+
+	// Local Ranges 
+	/// Scale
+	myMinStartScale = 1.0f;
+	myMaxStartScale = 1.5f;
+
+	//myStartScale = 1.0f;
+	myEndScale = 1.0f;
+
+	/// Start Speed
+	myMinStartSpeed = 0.1f;
+	myMaxStartSpeed = 0.3f;
+
+	/// Angle
+	myMinRotation = 0;
+	myMaxRotation = 0;
+
+	/// Lifetime
+	myMinLifeTime = 6.0f;
+	myMaxLifeTime = 6.0f;
+	/// Color
+	myStartColor = { 1, 1, 1, 0.7f };
+	myEndColor = { 1, 1, 1, 1.0f };
+	/// Acceleration
+	myMinAcceleration = { 0, 0.99f };
+	myMaxAcceleration = { 0, 0.9999f };
+	myGravity = 0.3f;
+
+	// Setting values
+	/// Blend State
+	myBlendState = EBlendState::EBlendState_Alphablend;
+
+	/// Sprite
+	mySprite = new Tga2D::CSprite("Sprites/Particles/drop_particle.dds");
+}
+
+void Ambient::InitBubbles()
+{
+	// Emission Values
+	/// Spawn time
+	myContents.myMinTimeBetweenParticleSpawns = 0.001f;
+	myContents.myMaxTimeBetweenParticleSpawns = 0.2f;
+	/// Emission range
+	myEmissionWidth = { 1.0f, 1.0f };
+
+	// Local Ranges 
+	/// Scale
+	myMinStartScale = 1.0f;
+	myMaxStartScale = 1.0f;
+
+	//myStartScale = 1.0f;
+	myEndScale = 1.0f;
+
+	/// Start Speed
+	myMinStartSpeed = 0.1f;
+	myMaxStartSpeed = 0.3f;
+
+	/// Angle
+	myMinRotation = -2.0f;
+	myMaxRotation = 2.0f;
+
+	/// Lifetime
+	myMinLifeTime = 5.0f;
+	myMaxLifeTime = 15.0f;
+	/// Color
+	myStartColor = { 1, 1, 1, 0.4f };
+	myEndColor = { 1, 1, 1, 0.7f };
+	/// Acceleration
+	myMinAcceleration = { 0.95f, 0.99f };
+	myMaxAcceleration = { 0.99f, 0.9999f };
+	myGravity = -0.01f;
+
+	// Setting values
+	/// Blend State
+	myBlendState = EBlendState::EBlendState_Alphablend;
+
+	/// Sprite
+	mySprite = new Tga2D::CSprite("Sprites/Particles/bubble_particle.dds");
 }

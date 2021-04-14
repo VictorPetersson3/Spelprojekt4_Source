@@ -141,7 +141,7 @@ void Level::Update()
 	// Background
 	//if (myBackground != nullptr)
 	{
-		myBackground->Update();
+		myBackground->Update(*myCamera);
 	}
 	myCamera->Update();	
 
@@ -242,7 +242,7 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 
 	//myBoss->Init(myPlayer);
 	//myPlayer->SetShouldUpdatePhysics(false);
-	myBackground->Init(*(myPlayer.get()), mylevelJsonData->myWorld, mylevelJsonData->myWorldLevelNumber);
+	myBackground->Init(*myCamera, mylevelJsonData->myWorld, mylevelJsonData->myWorldLevelNumber);
 
 }
 

@@ -17,10 +17,15 @@ public:
 	Tga2D::CSprite* GetSprite() override;
 
 private:
+	void InitLeavesG();
+	void InitLeavesR();
+	void InitDroplets();
+	void InitBubbles();
+
 	Tga2D::CSprite* mySprite = nullptr;
 	float myGravity = 0.5f;
 	float myPeriod = 1.0f;
-	float myEmissionWidth = 1.0f;
+	CommonUtilities::Vector2f myEmissionWidth = { 1.0f, 0.0f };
 	EWorldLevel myWorld;
 };
 
