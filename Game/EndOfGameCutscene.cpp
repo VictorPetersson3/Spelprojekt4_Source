@@ -35,7 +35,9 @@ void EndOfGameCutscene::Init(const EStateType& aState)
 
 	mySadKiwi = std::make_unique<UIImage>();
 	mySadKiwi->Init({ 0.25f, 0.5f }, "sprites/UI/EndCutsceneSadKiwi.dds", -1);
-	mySadKiwi->ActivatePulse();
+	mySadKiwi->GetRenderCommand().SetPivot({ 0.5f, 1.0f });
+	mySadKiwi->SetPosition({ 0.25f, 0.95f });
+	mySadKiwi->ActivatePulse(3.0f, 0.68f, 0.71f);
 
 }
 

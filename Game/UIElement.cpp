@@ -43,6 +43,7 @@ RenderCommand& UIElement::GetRenderCommand()
 
 void UIElement::SetPosition(const CommonUtilities::Vector2f& aPos)
 {
+	myRenderCommand->SetSpritePosition(aPos);
 	myPosition = aPos;
 }
 

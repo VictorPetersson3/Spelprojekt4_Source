@@ -33,6 +33,7 @@ void CutsceneData::AddAfterImage(const char* aImagePath)
 	myHasAnAfterimage = true;
 	myAfterImage = std::make_shared<UIImage>();
 	myAfterImage->Init({0.5f, 0.5f}, aImagePath, 0);
+	myAfterImage->GetRenderCommand().SetSizeRelativeToImage({ 0.5f, 0.5f });
 	myAfterImage->Deactivate();
 }
 
