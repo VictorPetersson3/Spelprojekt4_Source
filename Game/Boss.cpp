@@ -15,24 +15,27 @@ void Boss::Init(const std::shared_ptr<Player> aPlayer)
 	myRenderCommand = std::make_shared<RenderCommand>("sprites/HästfanDDS.dds", 1, true);
 	myRenderCommand->SetSizeRelativeToImage({ 3.f,3.f });
 	myRenderCommand->SetPivot({ 0.5f,0.5f });
+	myRenderCommand->SetSamplerState(ESamplerFilter_Point, ESamplerAddressMode_Clamp);
 
 	myPlayerToAttack = aPlayer;
 	myPosition = { 0.5f, 0.5f }; // start pos
 	myPostionsToMoveTo.emplace_back(myPosition);
+
 	myRenderCommand->SetSpritePosition(myPosition);
+
 	myCollider = std::make_shared<Collider>(myPosition, 0.15f, 0.15f);
 	myCollider->SetTag(EColliderTag::KillZone);
+	LoadJson();
 	LoadAnimations();
 
 }
 
 void Boss::Update(const float aDt)
 {
-
+	//std::cout << myCollider->GetPosition().x << ", " << myCollider->GetPosition().y << std::endl;
 	if (!myIsDead)
 	{
 		Move(aDt);
-		CheckCollisionWithPlayer();
 		myPosition += myDirection * aDt;
 		myRenderCommand->SetSpritePosition(myPosition);
 		myRenderCommand->Update(myPosition);
@@ -74,17 +77,6 @@ void Boss::AddForce(const CommonUtilities::Vector2f aForce)
 	myDirection += aForce;
 }
 
-void Boss::CheckCollisionWithPlayer()
-{
-	for (int i = 0; i < myCollider->GetCollidedWith().size(); i++)
-	{
-		if (myCollider->GetCollidedWith()[i]->GetTag() == EColliderTag::Player)
-		{
-		
-		}
-	}
-}
-
 void Boss::ChangeAnimState(const AnimationState aAnimationState)
 {
 	myAnimationState = aAnimationState;
@@ -122,12 +114,15 @@ void Boss::LoadAnimations()
 
 	for (int i = 0; i < myAnimations.size(); ++i)
 	{
+		myAnimations[i]->GetRenderCommand().SetSamplerState(ESamplerFilter_Point, ESamplerAddressMode_Clamp);
+
 		if (i > 3)
 			myAnimations[i]->Init({ 4, 1 }, { 3, 1 });
 		else
 			myAnimations[i]->Init({ 4, 1 }, { 4, 1 });
 		
 		myAnimations[i]->PlayAnimLoop();
+		myAnimations[i]->SetScaleRelativeToFrame({ 1.5f,1.5f });
 	}
 }
 
@@ -142,7 +137,13 @@ void Boss::LoadJson()
 	myPosition.x = doc["Position"]["X"].GetFloat();
 	myPosition.x = doc["Position"]["Y"].GetFloat();
 
+
 	mySpeed = doc["Speed"].GetFloat();
+
+	for (int i = 0; i < doc["BossPositions"].Size(); i++)
+	{
+		AddDashPosition({ doc["BossPositions"][i]["X"].GetFloat() , doc["BossPositions"][i]["Y"].GetFloat() });
+	}
 }
 
 int Boss::PickPosition()

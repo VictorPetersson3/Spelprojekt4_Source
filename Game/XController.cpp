@@ -37,6 +37,7 @@ bool XController::IsConnected()
     return false;
 }
 
+
 // max value for vibration is "1" where min is "0";
 void XController::Vibrate(float leftVib, float rightVib)
 {

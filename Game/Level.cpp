@@ -36,7 +36,7 @@ Level::Level(XController* aControllerPointer)
 	myPlayer = std::make_shared<Player>();
 	mySpriteBatches.Init(10);
 
-	myBoss = std::make_shared<Boss>();
+	//myBoss = std::make_shared<Boss>();
 
 	myPauseMenu = std::make_shared<PauseMenu>(aControllerPointer);
 	myPauseMenu->Init(EStateType::ePauseMenu);
@@ -79,8 +79,10 @@ void Level::Render()
 		entity->Render(myCamera);
 	}
 
-
-	myBoss->Render(*myCamera);
+	if (myBoss != nullptr)
+	{
+		myBoss->Render(*myCamera);
+	}
 	myPlayer->Render(*myCamera);
 }
 
@@ -90,7 +92,10 @@ void Level::Render()
 void Level::Update()
 {
 	const float deltaTime = Timer::GetInstance().GetDeltaTime();
-	myBoss->Update(deltaTime);
+	if (myBoss != nullptr)
+	{
+		myBoss->Update(deltaTime);
+	}
 	if (myPlayerHasDied == true)
 	{
 		myPlayer->SetShouldUpdatePhysics(false);
@@ -165,6 +170,8 @@ void Level::Update()
 
 void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData* someLevelData)
 {
+	myBoss.reset();
+
 	for (int i = 0; i < mySpriteBatches.Size(); i++)
 	{
 		mySpriteBatches[i]->ClearAll();
@@ -248,6 +255,13 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 
 	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y }, StateManager::GetInstance().GetSelectedCharacter());
 
+	if (someLevelData->myHasBoss)
+	{
+		myBoss = std::make_shared<Boss>();
+		myBoss->Init(myPlayer);
+	}
+
+	//myBoss->Init(myPlayer);
 	//myPlayer->SetShouldUpdatePhysics(false);
 	myBackground->Init(*(myPlayer.get()), mylevelJsonData->myWorld, mylevelJsonData->myWorldLevelNumber);
 
@@ -274,6 +288,7 @@ void Level::Load(LevelSelect_SpecificLevelData* someLevelData, const bool aReloa
 	myCameraController->SetPosition(someLevelData->myCameraPosition);
 	myCameraController->SetMoveX(someLevelData->myMoveCameraX);
 	myCameraController->SetMoveY(someLevelData->myMoveCameraY);
+
 
 	if (mylevelJsonData->myHasCutscene && !aReloadedLevel)
 	{
@@ -304,13 +319,5 @@ void Level::Init(const EStateType& aState)
 	myCameraController = std::make_shared<CameraBehavoir>();
 	myCameraController->Init(myCamera, myPlayer);
 	
-	myBoss->Init(myPlayer);
 
-	for (float i = 0; i < 10; i += 2.5f)
-	{
-		for (float j = 0; j < 10; j += 2.5f)
-		{
-			myBoss->AddDashPosition({ i / 10, j / 10 });
-		}
-	}
 }
