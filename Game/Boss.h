@@ -40,8 +40,9 @@ private:
 	void Move(const float aDt);
 	void AddForce(const CommonUtilities::Vector2f aForce);
 	void PickNewPosition(const float aDt);
-	void CheckCollisionWithPlayer();
 	void ChangeAnimState(const AnimationState aAnimationState);
+	
+
 
 private:
 
@@ -54,8 +55,8 @@ private:
 		mySpeed = 1.5f;
 
 
-	bool myPlayDash = true;
-	bool myIsDead = false;
+	bool myPlayDash = true,
+		 myIsDead = false;
 
 	AnimationState myAnimationState = AnimationState::eIdleL;
 	std::vector<std::shared_ptr<AnimationClip>> myAnimations;

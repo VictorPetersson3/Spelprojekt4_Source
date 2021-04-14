@@ -273,6 +273,7 @@ void Level::Load(LevelSelect_SpecificLevelData* someLevelData, const bool aReloa
 	myCameraController->SetMoveX(someLevelData->myMoveCameraX);
 	myCameraController->SetMoveY(someLevelData->myMoveCameraY);
 
+	myBoss->Init(myPlayer);
 	if (mylevelJsonData->myHasCutscene && !aReloadedLevel)
 	{
 		StateManager::AddAndPlayCutscene(mylevelJsonData->myCutsceneConversation);
@@ -302,13 +303,5 @@ void Level::Init(const EStateType& aState)
 	myCameraController = std::make_shared<CameraBehavoir>();
 	myCameraController->Init(myCamera, myPlayer);
 	
-	myBoss->Init(myPlayer);
 
-	for (float i = 0; i < 10; i += 2.5f)
-	{
-		for (float j = 0; j < 10; j += 2.5f)
-		{
-			myBoss->AddDashPosition({ i / 10, j / 10 });
-		}
-	}
 }
