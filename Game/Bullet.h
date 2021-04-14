@@ -27,7 +27,7 @@ private:
 	Vector2 myDirection;
 	std::shared_ptr<Collider> myCollider;
 	float mySpeed = 0.0001f;
-	float myMaxLifetime = 20;
+	float myMaxLifetime = 10;
 	float mySize = 0.001;
 	float myRemainingLifetime;
 	bool myIsActive;	
