@@ -39,9 +39,6 @@ CollapsingTile::CollapsingTile(CommonUtilities::Vector2f aPosition)
 	rapidjson::Document document = jsonParser.GetDocument("Json/CollapsingTileProperties.json");
 
 	myCooldownTime = document["collapsingTileTimer"].GetFloat();
-
-	std::cout << myAnimationClip->GetRenderCommand().GetPosition().myX << std::endl;
-	std::cout << myCollider->GetAABB().myLowerLeft.myX << std::endl;
 }
 
 CollapsingTile::~CollapsingTile()
