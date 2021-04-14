@@ -10,7 +10,7 @@
 CollapsingTile::CollapsingTile(CommonUtilities::Vector2f aPosition)
 {
 	float posX = aPosition.x / 1280.f;
-	float posY = (aPosition.y+32) / 720.f;
+	float posY = (aPosition.y+48) / 720.f;
 
 	float colliderPosX = aPosition.x;
 	float colliderPosY = aPosition.y;
