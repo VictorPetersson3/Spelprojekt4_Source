@@ -70,6 +70,7 @@ void EndOfLevelScreen::Render()
 void EndOfLevelScreen::OnPushed()
 {
 	SetRenderThrough(true);
+	AudioManager::GetInstance().RemoveAllAudioFromEffectEngine();
 	StateManager::GetInstance().UnlockNextlevel(myCurrentLevel);
 }
 

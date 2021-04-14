@@ -59,6 +59,7 @@ void Level::OnPushed()
 
 void Level::Render()
 {
+	myCameraController->Update(Timer::GetInstance().GetDeltaTime());
 	myBackground->Render(*myCamera);
 	for (auto t : myTerrain)
 	{
@@ -142,7 +143,6 @@ void Level::Update()
 	{
 		myBackground->Update();
 	}
-	myCameraController->Update(Timer::GetInstance().GetDeltaTime());
 	myCamera->Update();	
 
 	// Remove before handing in
@@ -259,6 +259,7 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 
 	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y }, StateManager::GetInstance().GetSelectedCharacter());
 
+
 	if (someLevelData->myHasBoss)
 	{
 		myBoss = std::make_shared<Boss>();
@@ -292,7 +293,7 @@ void Level::Load(LevelSelect_SpecificLevelData* someLevelData, const bool aReloa
 	myCameraController->SetPosition(someLevelData->myCameraPosition);
 	myCameraController->SetMoveX(someLevelData->myMoveCameraX);
 	myCameraController->SetMoveY(someLevelData->myMoveCameraY);
-
+	myCameraController->Update(Timer::GetInstance().GetDeltaTime());
 
 	if (mylevelJsonData->myHasCutscene && !aReloadedLevel)
 	{
