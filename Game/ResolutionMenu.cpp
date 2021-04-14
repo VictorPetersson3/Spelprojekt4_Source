@@ -84,7 +84,7 @@ void ResolutionMenu::Update()
 	}
 	if (myCurrentHoveredButton == GetUIButtonElementsSize())
 	{
-		if (GetInputHorizontal() < 0 && myCurrentHoveredResolution < static_cast<int>(eResolutions::eEnd) - 1)
+		if (GetInputHorizontal() > 0 && myCurrentHoveredResolution < static_cast<int>(eResolutions::eEnd) - 1)
 		{
 			myCurrentHoveredResolution++;
 			AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
