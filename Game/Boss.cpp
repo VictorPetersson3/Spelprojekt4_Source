@@ -15,6 +15,7 @@ void Boss::Init(const std::shared_ptr<Player> aPlayer)
 	myRenderCommand = std::make_shared<RenderCommand>("sprites/HästfanDDS.dds", 1, true);
 	myRenderCommand->SetSizeRelativeToImage({ 3.f,3.f });
 	myRenderCommand->SetPivot({ 0.5f,0.5f });
+	myRenderCommand->SetSamplerState(ESamplerFilter_Point, ESamplerAddressMode_Clamp);
 
 	myPlayerToAttack = aPlayer;
 	myPosition = { 0.5f, 0.5f }; // start pos
@@ -113,6 +114,8 @@ void Boss::LoadAnimations()
 
 	for (int i = 0; i < myAnimations.size(); ++i)
 	{
+		myAnimations[i]->GetRenderCommand().SetSamplerState(ESamplerFilter_Point, ESamplerAddressMode_Clamp);
+
 		if (i > 3)
 			myAnimations[i]->Init({ 4, 1 }, { 3, 1 });
 		else
