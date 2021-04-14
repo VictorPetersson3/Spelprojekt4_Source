@@ -104,7 +104,7 @@ void MenuObject::UpdateInputHorizontal()
 	int rInput = 0;
 	int lInput = 0;
 	bool controllerConnected = myController->IsConnected();
-	if (controllerConnected && myController->GetDPadInput().x > 0 || myController->GetLeftTumbStick().x > 0.45f)
+	if (controllerConnected && myController->GetDPadInput().x > 0 || myController->GetLeftTumbStick().x > 0.75f)
 	{
 		rInput += 1;
 	}
@@ -119,7 +119,7 @@ void MenuObject::UpdateInputHorizontal()
 	{
 		lInput -= 1;
 	}
-	if (controllerConnected && myController->GetDPadInput().x < 0 || myController->GetLeftTumbStick().x < -0.45f)
+	if (controllerConnected && myController->GetDPadInput().x < 0 || myController->GetLeftTumbStick().x < -0.75f)
 	{
 		if (lInput == 0)
 		{
@@ -143,7 +143,7 @@ void MenuObject::UpdateInputVertical()
 	int uInput = 0;
 	int dInput = 0;
 	bool controllerConnected = myController->IsConnected();
-	if (controllerConnected && myController->GetDPadInput().y > 0 || myController->GetLeftTumbStick().y > 0.45f)
+	if (controllerConnected && myController->GetDPadInput().y > 0 || myController->GetLeftTumbStick().y > 0.75f)
 	{
 		uInput += 1;
 	}
@@ -158,7 +158,7 @@ void MenuObject::UpdateInputVertical()
 	{
 		dInput -= 1;
 	}
-	if (controllerConnected && myController->GetDPadInput().y < 0 || myController->GetLeftTumbStick().y < -0.45f)
+	if (controllerConnected && myController->GetDPadInput().y < 0 || myController->GetLeftTumbStick().y < -0.75f)
 	{
 		if (dInput == 0)
 		{
