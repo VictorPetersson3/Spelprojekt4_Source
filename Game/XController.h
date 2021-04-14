@@ -42,7 +42,7 @@ public:
 	}
 	inline const bool IsButtonReleased(const int aIndex)
 	{
-		if (myPressed)
+		if (myPressed) 
 		{
 			if (IsButtonDown(aIndex))
 			{
