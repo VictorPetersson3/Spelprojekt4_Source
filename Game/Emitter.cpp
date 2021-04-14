@@ -71,7 +71,7 @@ void Emitter::Init(const CommonUtilities::Vector2f& aPosition, const ParticleTyp
 	SetPosition(aPosition);
 	float a = 20.0f / DELTA_TIME;
 	int b = 0;
-	printf("%f\n", a);
+
 	std::random_device rd;
 	std::mt19937 randomInt(rd());
 	std::uniform_real_distribution<> eRateDistr(myParticles[0]->GetContents().myMinTimeBetweenParticleSpawns, myParticles[0]->GetContents().myMaxTimeBetweenParticleSpawns);
@@ -90,7 +90,6 @@ void Emitter::Init(const CommonUtilities::Vector2f& aPosition, const ParticleTyp
 			}
 		}
 	}
-	printf("%d\n", b);
 }
 
 void Emitter::SetParticleType(const ParticleType& aParticleType)
