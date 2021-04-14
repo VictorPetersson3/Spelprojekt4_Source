@@ -40,7 +40,7 @@ bool MenuObject::GetInputExit()
 	bool input = InputManagerS::GetInstance().GetKeyUp(DIK_ESCAPE);
 	if (!input)
 	{
-		if (myController->IsConnected() && myController->IsButtonPressed(XINPUT_GAMEPAD_B))
+		if (myController->IsConnected() && myController->IsButtonDown(XINPUT_GAMEPAD_B))
 		{
 			input = true;
 		}
@@ -53,7 +53,7 @@ bool MenuObject::GetInputContinue()
 	bool input = InputManagerS::GetInstance().GetKeyUp(DIK_RETURN);
 	if (!input)
 	{
-		if (myController->IsConnected() && myController->IsButtonPressed(XINPUT_GAMEPAD_A))
+		if (myController->IsConnected() && myController->IsButtonDown(XINPUT_GAMEPAD_A))
 		{
 			input = true;
 		}

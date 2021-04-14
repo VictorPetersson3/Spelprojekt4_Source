@@ -71,13 +71,13 @@ void LevelSelect::Update()
 	{
 		BackButtonPress();
 	}
-	if (GetInputVertical() < 0 && myCurrentHoveredButtonVertical > 0)
+	if (GetInputVertical() > 0 && myCurrentHoveredButtonVertical > 0)
 	{
 		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3"); 
 		myPlayerAvatar->Activate();
 		myCurrentHoveredButtonVertical--;
 	}
-	else if (GetInputVertical() > 0 && myCurrentHoveredButtonVertical < 1)
+	else if (GetInputVertical() < 0 && myCurrentHoveredButtonVertical < 1)
 	{
 		AudioManager::GetInstance().PlayEffect("Audio/UI/Button/UI_onSelect.mp3");
 		myCurrentHoveredButtonVertical++;

@@ -110,7 +110,7 @@ void Level::Update()
 		
 	}
 	//Pause Menu
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_ESCAPE) || myController->IsButtonDown(XINPUT_GAMEPAD_START))
+	if (InputManagerS::GetInstance().GetKeyUp(DIK_ESCAPE) || myController->IsButtonReleased(XINPUT_GAMEPAD_START))
 	{
 		StateManager::AddStateOnStack(myPauseMenu);
 	}

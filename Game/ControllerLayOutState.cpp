@@ -9,14 +9,18 @@ void ControllerLayOutState::Init(const EStateType& aState)
 {
 	SetStateType(aState);
 	AddButton(std::make_shared<UIButton>(myController));
-	GetButtonElement(0)->Init({ 0.5f, 0.75f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {BackButtonPress(); });
+	GetButtonElement(0)->Init({ 0.5f, 0.78f }, "sprites/UI/OptionsMenu/B_BackArrow.dds", 0, [this]() {BackButtonPress(); });
 	GetButtonElement(0)->SetIsHovered(true);
 
 
 	myBackground = std::make_unique<UIImage>();
-	myBackground.get()->Init({ 0.5f, 0.5f }, "sprites/UI/OptionsMenu/ControllerLayout.dds", 2);
-	myBackground.get()->GetRenderCommand().SetSizeRelativeToImage({1.0f, 1.0f});
-	myBackground.get()->Activate();
+	myBackground->Init({ 0.5f, 0.5f }, "sprites/BlackSprite.dds", 2);
+	myBackground->GetRenderCommand().SetSizeRelativeToImage({500.0f, 500.0f});
+	myBackground->GetRenderCommand().SetColor(Tga2D::CColor{1.0f, 1.0f, 1.0f, 0.75f});
+
+	myControllerLayout = std::make_unique<UIImage>();
+	myControllerLayout->Init({ 0.5f, 0.5f }, "sprites/UI/OptionsMenu/ControlKeys.dds", 2);
+	myControllerLayout->GetRenderCommand().SetSizeRelativeToImage({ 0.5f, 0.5f });
 }
 
 void ControllerLayOutState::Update()
@@ -31,7 +35,8 @@ void ControllerLayOutState::Update()
 
 void ControllerLayOutState::Render()
 {
-	myBackground.get()->Render();
+	myBackground->Render();
+	myControllerLayout->Render();
 	MenuObject::Render();
 }
 

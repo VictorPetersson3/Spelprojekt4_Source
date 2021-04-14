@@ -15,5 +15,6 @@ public:
 private:
     void BackButtonPress();
     std::unique_ptr<UIImage> myBackground;
+    std::unique_ptr<UIImage> myControllerLayout;
 };
 
