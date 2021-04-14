@@ -38,7 +38,7 @@ void Bullet::Update(float aDeltaTime)
 {
 	if (myIsActive)
 	{
-		myPosition = myPosition + (myDirection.GetNormalized()) * mySpeed;
+		myPosition = myPosition + (myDirection.GetNormalized()) * mySpeed * aDeltaTime;
 		myCollider->UpdateCollider(myPosition);
 		myAnimationClip->UpdateAnimation(myPosition);
 		myRemainingLifetime -= aDeltaTime;
