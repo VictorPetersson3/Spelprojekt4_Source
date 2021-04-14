@@ -18,6 +18,7 @@ struct LevelSelect_SpecificLevelData
 	bool myIsUnlocked = false;
 	bool myMoveCameraX = false;
 	bool myMoveCameraY = false;
+	bool myHasBoss = true;
 	int myCutsceneConversation = INFINITY;
 	int myLevelSelectNumber;
 	int myWorldLevelNumber;

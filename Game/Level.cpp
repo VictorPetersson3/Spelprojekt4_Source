@@ -34,7 +34,7 @@ Level::Level()
 	myPlayer = std::make_shared<Player>();
 	mySpriteBatches.Init(10);
 
-	myBoss = std::make_shared<Boss>();
+	//myBoss = std::make_shared<Boss>();
 
 	myPauseMenu = std::make_shared<PauseMenu>();
 	myPauseMenu->Init(EStateType::ePauseMenu);
@@ -77,8 +77,10 @@ void Level::Render()
 		entity->Render(myCamera);
 	}
 
-
-	myBoss->Render(*myCamera);
+	if (myBoss != nullptr)
+	{
+		myBoss->Render(*myCamera);
+	}
 	myPlayer->Render(*myCamera);
 }
 
@@ -88,7 +90,10 @@ void Level::Render()
 void Level::Update()
 {
 	const float deltaTime = Timer::GetInstance().GetDeltaTime();
-	myBoss->Update(deltaTime);
+	if (myBoss != nullptr)
+	{
+		myBoss->Update(deltaTime);
+	}
 	if (myPlayerHasDied == true)
 	{
 		myPlayer->SetShouldUpdatePhysics(false);
@@ -247,7 +252,13 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 
 
 	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y }, StateManager::GetInstance().GetSelectedCharacter());
-	myBoss = std::make_shared<Boss>();
+
+	if (someLevelData->myHasBoss)
+	{
+		myBoss = std::make_shared<Boss>();
+		myBoss->Init(myPlayer);
+	}
+
 	//myBoss->Init(myPlayer);
 	//myPlayer->SetShouldUpdatePhysics(false);
 	myBackground->Init(*(myPlayer.get()), mylevelJsonData->myWorld, mylevelJsonData->myWorldLevelNumber);
@@ -276,7 +287,7 @@ void Level::Load(LevelSelect_SpecificLevelData* someLevelData, const bool aReloa
 	myCameraController->SetMoveX(someLevelData->myMoveCameraX);
 	myCameraController->SetMoveY(someLevelData->myMoveCameraY);
 
-	myBoss->Init(myPlayer);
+
 	if (mylevelJsonData->myHasCutscene && !aReloadedLevel)
 	{
 		StateManager::AddAndPlayCutscene(mylevelJsonData->myCutsceneConversation);
