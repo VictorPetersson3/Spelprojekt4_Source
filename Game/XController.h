@@ -24,8 +24,6 @@ public:
 
 	inline const bool IsButtonDown(const int aIndex) 
 	{
-		IsButtonPressed(aIndex);
-		IsButtonPressed(aIndex);
 		return this->GetControllerState().Gamepad.wButtons & aIndex;
 	}
 	
@@ -39,6 +37,7 @@ public:
 				return this->GetControllerState().Gamepad.wButtons & aIndex;
 			}
 		}
+		return false;
 	}
 	inline const bool IsButtonReleased(const int aIndex)
 	{
@@ -50,6 +49,7 @@ public:
 				return this->GetControllerState().Gamepad.wButtons & aIndex;
 			}
 		}
+		return false;
 	}
 
 
