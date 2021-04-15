@@ -224,9 +224,11 @@
     <ClInclude Include="PlayerSprint.h">
       <Filter>Particles\ParticleTypes</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerLand.h" />
     <ClInclude Include="CreditsState.h">
       <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerLand.h">
+      <Filter>Particles\ParticleTypes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -378,9 +380,11 @@
     <ClCompile Include="PlayerSprint.cpp">
       <Filter>Particles\ParticleTypes</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerLand.cpp" />
     <ClCompile Include="CreditsState.cpp">
       <Filter>StateTypes\MenuStates\SubMenuStates</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerLand.cpp">
+      <Filter>Particles\ParticleTypes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

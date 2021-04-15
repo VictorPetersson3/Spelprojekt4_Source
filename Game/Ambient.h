@@ -11,7 +11,7 @@ public:
 
 	void Init() override;
 	void Reset() override;
-	void Update(const CommonUtilities::Vector2f& aCamera) override;
+	void Update(const CommonUtilities::Vector2f& aCamera, const float& aPercentage) override;
 
 	void SetPosition(CommonUtilities::Vector2f aPosition) override;
 	Tga2D::CSprite* GetSprite() override;

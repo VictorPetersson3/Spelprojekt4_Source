@@ -31,7 +31,7 @@ Emitter::~Emitter()
 	mySpriteBatch = nullptr;
 }
 
-void Emitter::Update(const CommonUtilities::Vector2f& aPosition, Camera& aCamera)
+void Emitter::Update(const CommonUtilities::Vector2f& aPosition, Camera& aCamera, const float& aPercentage)
 {
 	UpdateTimer();
 
@@ -39,7 +39,7 @@ void Emitter::Update(const CommonUtilities::Vector2f& aPosition, Camera& aCamera
 
 	Emit();
 
-	SneakyUpdate(aCamera);
+	SneakyUpdate(aCamera, aPercentage);
 }
 
 std::shared_ptr<Tga2D::CSpriteBatch> Emitter::GetBatch()
@@ -69,7 +69,7 @@ void Emitter::Init(const CommonUtilities::Vector2f& aPosition, const ParticleTyp
 			{
 				if (particle->IsActive())
 				{
-					particle->Update({ 0, 0 });
+					particle->Update({ 0, 0 }, 0);
 				}
 			}
 		}
@@ -204,14 +204,14 @@ void Emitter::UpdateTimer()
 	myEmissionTimer += DELTA_TIME;
 }
 
-void Emitter::SneakyUpdate(Camera& aCamera)
+void Emitter::SneakyUpdate(Camera& aCamera, const float& aPercentage)
 {
 	for (auto& particle : myParticles)
 	{
 		if (particle->IsActive())
 		{
-			particle->Update(aCamera.GetPosition());
-
+			particle->Update(aCamera.GetPosition(), aPercentage);
+		
 			if (particle->LifeTime())
 			{
 				particle->IsActive() = false;

@@ -22,10 +22,10 @@ public:
 	void SetParticleType(const ParticleType& aParticleType);
 	void SetPosition(const CommonUtilities::Vector2f& aPosition);
 
-	void Update(const CommonUtilities::Vector2f& aPosition, Camera& aCamera);
+	void Update(const CommonUtilities::Vector2f& aPosition, Camera& aCamera, const float& aPercentage = 1.0f);
 	void Emit();
 	void UpdateTimer();
-	void SneakyUpdate(Camera& aCamera);
+	void SneakyUpdate(Camera& aCamera, const float& aPercentage);
 	
 	std::shared_ptr<Tga2D::CSpriteBatch> GetBatch();
 

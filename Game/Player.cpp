@@ -379,10 +379,12 @@ void Player::HandleParticles(Camera& aCamera)
 {
 	if (myJustLanded) 
 	{
-		myLandingParticle->Update({ myPosition.x, myPosition.y + myAnimations[0]->GetRenderCommand().GetSize().y * 0.5f }, aCamera);
+		myLandingParticle->Update({ myPosition.x, myPosition.y + myAnimations[0]->GetRenderCommand().GetSize().y * 0.5f }, aCamera, myLandingFraction);
 	}
-	else myLandingParticle->SneakyUpdate(aCamera);
-
+	else
+	{
+		myLandingParticle->SneakyUpdate(aCamera, myLandingFraction);
+	}
 	switch (myCurrentAnimation)
 	{
 	case EAnimationState::Sprint:
@@ -392,7 +394,7 @@ void Player::HandleParticles(Camera& aCamera)
 		myRunningParticle->Update({ myPosition.x + myDirection * myAnimations[0]->GetRenderCommand().GetSize().x * 0.25f, myPosition.y }, aCamera);
 		break;
 	default:
-		myRunningParticle->SneakyUpdate(aCamera);
+		myRunningParticle->SneakyUpdate(aCamera, 0);
 		break;
 	}
 }
@@ -571,10 +573,13 @@ void Player::UpdatePhysics(Camera& aCamera)
 		else if (posCorrNormal.y < 0)
 		{
 			myPosition.y += positionCorrection.y + 0.1f / Tga2D::CEngine::GetInstance()->GetRenderSize().y;
-			if (!myWasGrounded && myCurrentVelocity.y >= myMaxAirSpeed)
+			if (!myWasGrounded && myCurrentVelocity.y >= 0.5f)
 			{
-				printf("\n\n\n\n\n BAAAAAAJS");
 				myJustLanded = true;
+				if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eLandL);
+				else PlaySpecificAnimation(EPlayerAnimationClips::eLandR);
+				PlaySpecificAudio(EAnimationState::Land);
+				myLandingFraction = myCurrentVelocity.y / (myMaxVerticalVelocity - 0.5f);
 			}
 			if (myWasGrounded && myCurrentVelocity.y > 0) myCurrentVelocity.y = 0;
 			myIsGrounded = true;
@@ -688,13 +693,6 @@ void Player::ManageStates()
 
 void Player::Idle()
 {
-	if (myJustLanded)
-	{
-		if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eLandL);
-		else PlaySpecificAnimation(EPlayerAnimationClips::eLandR);
-		PlaySpecificAudio(EAnimationState::Land);
-	}
-
 	if (myCurrentVelocity.x > 0) myCurrentVelocity.x -= myWalkDecceleration * DELTA_TIME;
 	if (myCurrentVelocity.x < 0) myCurrentVelocity.x += myWalkDecceleration * DELTA_TIME;
 	if (myCurrentVelocity.x <= myWalkDecceleration * DELTA_TIME && myCurrentVelocity.x >= -myWalkDecceleration * DELTA_TIME) myCurrentVelocity.x = 0;

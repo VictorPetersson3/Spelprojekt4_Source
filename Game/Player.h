@@ -142,6 +142,7 @@ protected:
 	//======================================//
 
 	float myDeathTimer;
+	float myLandingFraction;
 
 	int    myUp = 0x11;
 	int  myLeft = 0x1E;
