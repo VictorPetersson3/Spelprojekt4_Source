@@ -55,7 +55,7 @@ void PlayerSprint::Init(EWorldLevel aWorld)
 	switch (myWorld)
 	{
 	case EWorldLevel::eWorld1:
-		myStartColor = { 0.37890625f, 0.609375f, 0.76171875f, 0.9f };
+		myStartColor = { 0.8f, 0.91015625f, 1.0f, 0.9f };
 		myEndColor = { 0.171875f, 0.25390625f, 0.4453125f, 0.7f };
 		break;
 	case EWorldLevel::eWorld2:
