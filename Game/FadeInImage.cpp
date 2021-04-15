@@ -21,8 +21,8 @@ void FadeInImage::Init(const EStateType& aState)
 	myTga2DBackground->GetRenderCommand().SetSizeRelativeToImage({ 1.0f, 1.0f });
 
 	myGameLogoBackground = std::make_unique<UIImage>();
-	myGameLogoBackground->Init({ 0.5f, 0.5f }, "sprites/HästfanDDS.dds", 2);
-	myGameLogoBackground->GetRenderCommand().SetSizeRelativeToImage({ 1.0f, 1.0f });
+	myGameLogoBackground->Init({ 0.5f, 0.5f }, "sprites/UI/GroupLogo_Colour.dds", 2);
+	myGameLogoBackground->GetRenderCommand().SetSizeRelativeToImage({ 0.5f, 0.5f });
 }
 
 void FadeInImage::Update()

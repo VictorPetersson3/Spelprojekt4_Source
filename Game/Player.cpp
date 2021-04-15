@@ -186,10 +186,10 @@ void Player::InitAnimations()
 		myAnimations[21]->PlayAnimLoop();
 		break;
 	}
-	for (int i = 0; i < myAnimations.size(); i++)
+	/*for (int i = 0; i < myAnimations.size(); i++)
 	{
 		myAnimations[i]->GetRenderCommand().SetSamplerState(ESamplerFilter::ESamplerFilter_Point, ESamplerAddressMode::ESamplerAddressMode_Clamp);
-	}
+	}*/
 }
 
 void Player::InitCollider()
@@ -384,7 +384,7 @@ void Player::HandleParticles(Camera& aCamera)
 {
 	if (myJustLanded) 
 	{
-		myLandingParticle->Update({ myPosition.x, myPosition.y + myAnimations[0]->GetRenderCommand().GetSize().y * 0.5f }, aCamera, myLandingFraction);
+		myLandingParticle->Update({ myPosition.x, myPosition.y + myAnimations[0]->GetRenderCommand().GetSize().y * 0.3f }, aCamera, myLandingFraction);
 	}
 	else
 	{
