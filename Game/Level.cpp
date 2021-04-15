@@ -36,8 +36,6 @@ Level::Level(XController* aControllerPointer) : myController(aControllerPointer)
 	myPlayer = std::make_shared<Player>();
 	mySpriteBatches.Init(10);
 
-	//myBoss = std::make_shared<Boss>();
-
 	myPauseMenu = std::make_shared<PauseMenu>(aControllerPointer);
 	myPauseMenu->Init(EStateType::ePauseMenu);
 	myEndOfLevelScreen = std::make_shared<EndOfLevelScreen>(this, aControllerPointer);
@@ -74,11 +72,6 @@ void Level::Render()
 	{
 		mySpriteBatches[i]->Render();
 	}
-
-	/*for (auto& tile : myTerrain)
-	{
-		tile->myCollider->Draw();
-	}*/
 
 	for (auto entity : myEntities)
 	{
@@ -140,10 +133,6 @@ void Level::Update()
 		}
 	}
 
-	if (myLevelEndCollider != nullptr)
-	{
-		//myLevelEndCollider->Draw();
-	}
 	// Background
 	//if (myBackground != nullptr)
 	{
@@ -151,18 +140,6 @@ void Level::Update()
 	}
 
 	// Remove before handing in
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_F5))
-	{
-		Restart();
-	}
-	if (InputManagerS::GetInstance().GetKey(DIK_I))
-	{
-		myCamera->ShakeCamera(1, 0.5f);
-	}
-	if (InputManagerS::GetInstance().GetKey(DIK_K))
-	{
-		StateManager::AddStateOnStack(myEndOfLevelScreen);
-	}
 	/////////////////////
 
 	if (myLevelEndCollider != nullptr && myPlayer.get() != nullptr)
