@@ -329,6 +329,11 @@ void Player::Update(Camera& aCamera)
 	HandleAnimations();
 
 	HandleAudio();
+
+	if (myPosition.y > 6)
+	{
+		Die();
+	}
 }
 
 void Player::HandleAnimations()
