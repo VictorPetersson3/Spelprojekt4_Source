@@ -6,6 +6,7 @@
 #include "InputManager.h"
 #include "Timer.h"
 #include "CutsceneManager.h"
+#include "AudioManager.h"
 
 void EndOfGameCutscene::Init(const EStateType& aState)
 {
@@ -87,6 +88,9 @@ void EndOfGameCutscene::OnPushed()
 	myCreditsImage->SetPosition({ 0.75f, -0.40f });
 	StateManager::GetInstance().AddAndPlayCutscene(myCurrentConversation, myCutsceneManager);
 	myCurrentConversation++;
+	AudioManager::GetInstance().StopAllMusic();
+	AudioManager::GetInstance().PlayMusic("Audio/music/Credit_Song.mp3", true, 0.15f);
+
 }
 
 void EndOfGameCutscene::OnResumed()

@@ -303,8 +303,6 @@ void Level::AddEndOfLevelOnStack()
 
 void Level::Init(const EStateType& aState)
 {
-	std::cout << "level inited\n";
-	//Creating a camera and then a renderer for the camera
 	myCamera = std::make_shared<Camera>();
 	myCameraController = std::make_shared<CameraBehavoir>();
 	myCameraController->Init(myCamera, myPlayer);

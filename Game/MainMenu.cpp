@@ -159,5 +159,5 @@ void MainMenu::Render()
 void MainMenu::OnPushed()
 {
 	AudioManager::GetInstance().StopAllMusic();
-	AudioManager::GetInstance().PlayMusic("Audio/music/Hell_Clown_Core.mp3", true, 0.15f);
+	AudioManager::GetInstance().PlayMusic("Audio/music/Menu_Song.mp3", true, 0.15f);
 }
