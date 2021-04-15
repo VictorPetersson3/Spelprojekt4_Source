@@ -59,16 +59,16 @@ void PlayerLand::Init(EWorldLevel aWorld)
 		myEndColor = { 0.171875f, 0.25390625f, 0.4453125f, 0.5f };
 		break;
 	case EWorldLevel::eWorld2:
-		myStartColor = { 0.41796875f, 0.359375f, 0.375f, 0.9f };
-		myEndColor = { 0.234375f, 0.1875f, 0.1875f, 0.5f };
+		myStartColor = { 0.80078125f, 0.68359375f, 0.6484375f, 0.9f };
+		myEndColor = { 0.234375f, 0.1875f, 0.1875f, 0.7f };
 		break;
 	case EWorldLevel::eWorld3:
-		myStartColor = { 0.49609375f, 0.4296875f, 0.43359375f, 0.9f };
-		myEndColor = { 0.2265625f, 0.203125f, 0.21484375f, 0.5f };
+		myStartColor = { 0.87109375f, 0.3203125f, 0.6171875f, 0.9f };
+		myEndColor = { 0.578125f, 0.234375f, 0.6484375f, 0.5f };
 		break;
 	case EWorldLevel::eWorld4:
 		myStartColor = { 0.87109375f, 0.3203125f, 0.6171875f, 0.9f };
-		myEndColor = { 0.578125f, 0.234375f, 0.6484375f, 0.5f };
+		myEndColor = { 0.578125f, 0.234375f, 0.6484375f, 0.7f };
 		break;
 	}
 
