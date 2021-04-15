@@ -109,22 +109,25 @@ void CutsceneManager::OnPushed()
 	SetRenderThrough(true);
 }
 
-void CutsceneManager::PlayCutscene(int aLevelIndex)
+void CutsceneManager::PlayCutscene(const int aLevelIndex, const bool aEndOfMapCutscene)
 {
+	//clearing and resetting all data
 	myCurrentLineToPlay.clear();
 	myDialogueToRender.clear();
 	mySceneToPlay = aLevelIndex;
 	myIsPrinting = true;
 	myPrintEverything = false;
 	myHasReachedEndOfSentence = false;
+	myCurrentLineIndexToPlay = 0;
+	myCurrentLetterInLineToPlay = 0;
+	myCurrentLineEnd = 0;
+	myPlayingEndCutscene = aEndOfMapCutscene;
 
 	//Setting the current speaking characters
 	myLeftCharacter = myLevelCharacterDialogues[aLevelIndex]->GetLeftCharacter();
 	myLeftCharacter->SetPosition({ 0.25f, 0.55f });
 	myRightCharacter = myLevelCharacterDialogues[aLevelIndex]->GetRightCharacter();
 	myRightCharacter->SetPosition({ 0.75f, 0.55f });
-	myCurrentLineIndexToPlay = 0;
-	myCurrentLetterInLineToPlay = 0;
 	//Getting the first line and activating the speakin character
 	myCurrentLineToPlay = myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].first;
 	myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->SetActive(true);
@@ -139,7 +142,7 @@ void CutsceneManager::PlayCutscene(int aLevelIndex)
 
 	//Print the name of the speaking Character
 	std::string characterName = myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->GetName().GetString();
-	characterName.append("  ");
+	characterName.append(" : ");
 	myDialogueToRender.append(characterName.c_str());
 
 	//printf("\n%s: ", myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->GetName().GetString());
@@ -306,9 +309,22 @@ void CutsceneManager::ParseAndAddText()
 	if (myCurrentLetterInLineToPlay < myCurrentLineToPlay.size())
 	{
 		if (!myHasReachedEndOfSentence)
-		{
-			//printf("%c", myCurrentLineToPlay.at(myCurrentLetterInLineToPlay));
-			myDialogueToRender.push_back(myCurrentLineToPlay.at(myCurrentLetterInLineToPlay));
+		{			
+			if (myCurrentLineEnd == 5)
+			{
+				myDialogueToRender.clear();
+				myCurrentLineEnd = 0;
+			}
+			if (myCurrentLineToPlay.at(myCurrentLetterInLineToPlay) == '|')
+			{
+				std::string newLine("\n");
+				myDialogueToRender.append(newLine.c_str());
+				myCurrentLineEnd++;
+			}
+			else
+			{
+				myDialogueToRender.push_back(myCurrentLineToPlay.at(myCurrentLetterInLineToPlay));
+			}
 			myCurrentLetterInLineToPlay++;
 			if (!myPrintEverything)
 			{
@@ -320,6 +336,7 @@ void CutsceneManager::ParseAndAddText()
 	{
 		if (myCurrentLineIndexToPlay < myLevelCharacterDialogues[mySceneToPlay]->GetLines().Size())
 		{
+		
 			if (!myPrintEverything && !myHasReachedEndOfSentence)
 			{
 				GetButtonElement(0)->SetIsHovered(true);
@@ -328,6 +345,12 @@ void CutsceneManager::ParseAndAddText()
 			}
 			if (myHasResumed)
 			{
+				myCurrentLineEnd++;
+				if (myCurrentLineEnd == 5)
+				{
+					myDialogueToRender.clear();
+					myCurrentLineEnd = 0;
+				}
 				myTextTimer = -0.25f;
 				myCurrentLineToPlay = myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].first;
 
@@ -345,7 +368,7 @@ void CutsceneManager::ParseAndAddText()
 				//Print the name of the speaking Character
 				myDialogueToRender.push_back('\n');
 				std::string characterName = myLevelCharacterDialogues[mySceneToPlay]->GetLines()[myCurrentLineIndexToPlay].second->GetName().GetString();
-				characterName.append("  ");
+				characterName.append(" : ");
 				myDialogueToRender.append(characterName.c_str());
 				if (myLevelCharacterDialogues[mySceneToPlay]->GetCharacterMoods()[myCurrentLineIndexToPlay] != "default")
 				{
@@ -396,4 +419,8 @@ void CutsceneManager::OnExit()
 {
 	printf("On Exit");
 	StateManager::GetInstance().RemoveStateFromTop();
+	if (myPlayingEndCutscene)
+	{
+		StateManager::GetInstance().AddEndOfLevelOnStack();
+	}
 }

@@ -21,7 +21,6 @@ int MenuObject::GetInputHorizontal()
 	{
 		return 0;
 	}
-	printf("Horizontal Input : %i\n", myHorizontalInput);
 	return myHorizontalInput;
 }
 
@@ -31,7 +30,6 @@ int MenuObject::GetInputVertical()
 	{
 		return 0;
 	}
-	printf("Vertical Input : %i\n", myVerticalInput);
 	return myVerticalInput;
 }
 

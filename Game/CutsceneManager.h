@@ -21,7 +21,7 @@ public:
     void Update() final;
     void Render() final;
     void OnPushed() final;
-    void PlayCutscene(int aLevelIndex);
+    void PlayCutscene(const int aLevelIndex, const bool aEndOfMapCutscene = false);
     void PlayLastCutscene();
     const int GetAmountOfConversations() const;
 private:
@@ -40,9 +40,11 @@ private:
     bool myHasReachedEndOfSentence = false;
     bool myPrintEverything = false;
     bool myHasResumed = false;
+    bool myPlayingEndCutscene = false;
 
     unsigned int myCurrentLineIndexToPlay = 0;
     unsigned int myCurrentLetterInLineToPlay = 0;
+    unsigned int myCurrentLineEnd = 0;
 
     std::string myCurrentLineToPlay;
     std::string myDialogueToRender;

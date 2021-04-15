@@ -147,18 +147,23 @@ void StateManager::UnlockNextlevel(int aCurrentLevelIndex)
 }
 
 
-void StateManager::AddAndPlayCutscene(int aCutsceneIndex)
+void StateManager::AddAndPlayCutscene(int aCutsceneIndex, const bool aEndOfMapCutscene)
 {
 	myInstance->myGameStates.Push(GetInstance().myCutsceneManager);
-	myInstance->myCutsceneManager->PlayCutscene(aCutsceneIndex);
+	myInstance->myCutsceneManager->PlayCutscene(aCutsceneIndex, aEndOfMapCutscene);
 	myInstance->myGameStates.GetTop()->OnPushed();
 }
 
-void StateManager::AddAndPlayCutscene(int aCutsceneIndex, std::shared_ptr<CutsceneManager> aCutsceneManager)
+void StateManager::AddAndPlayCutscene(int aCutsceneIndex, std::shared_ptr<CutsceneManager> aCutsceneManager, const bool aEndOfMapCutscene)
 {
 	myInstance->myGameStates.Push(aCutsceneManager);
-	aCutsceneManager->PlayCutscene(aCutsceneIndex);
+	aCutsceneManager->PlayCutscene(aCutsceneIndex, aEndOfMapCutscene);
 	myInstance->myGameStates.GetTop()->OnPushed();
+}
+
+void StateManager::AddEndOfLevelOnStack()
+{
+	myInstance->myLevel->AddEndOfLevelOnStack();
 }
 
 void StateManager::AddLastCutscene()
