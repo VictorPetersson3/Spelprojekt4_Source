@@ -112,7 +112,7 @@ void Level::Update()
 		
 	}
 	//Pause Menu
-	if (InputManagerS::GetInstance().GetKeyUp(DIK_ESCAPE) || myController->IsButtonReleased(XINPUT_GAMEPAD_START))
+	if (InputManagerS::GetInstance().GetKeyUp(DIK_ESCAPE) || myController->IsButtonPressed(XINPUT_GAMEPAD_START))
 	{
 		StateManager::AddStateOnStack(myPauseMenu);
 	}
@@ -142,7 +142,7 @@ void Level::Update()
 	// Background
 	//if (myBackground != nullptr)
 	{
-		myBackground->Update();
+		myBackground->Update(*myCamera);
 	}
 
 	// Remove before handing in
@@ -248,7 +248,7 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 
 	//myBoss->Init(myPlayer);
 	//myPlayer->SetShouldUpdatePhysics(false);
-	myBackground->Init(*(myPlayer.get()), mylevelJsonData->myWorld, mylevelJsonData->myWorldLevelNumber);
+	myBackground->Init(*myCamera, mylevelJsonData->myWorld, mylevelJsonData->myWorldLevelNumber);
 
 }
 

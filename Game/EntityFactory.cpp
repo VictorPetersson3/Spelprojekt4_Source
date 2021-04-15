@@ -18,8 +18,8 @@ std::vector<std::shared_ptr<Entity>> EntityFactory::LoadEntities(const char* aPa
 	gridSize = myDocument["defs"]["layers"][0]["gridSize"].GetFloat();
 
 
-	renderSizeX = Tga2D::CEngine::GetInstance()->GetRenderSize().myX;
-	renderSizeY = Tga2D::CEngine::GetInstance()->GetRenderSize().myY;
+	renderSizeX = Tga2D::CEngine::GetInstance()->GetTargetSize().myX;
+	renderSizeY = Tga2D::CEngine::GetInstance()->GetTargetSize().myY;
 
 
 	for (int j = 0; j < myDocument["levels"][0]["layerInstances"].Capacity(); j++)
