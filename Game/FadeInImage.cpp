@@ -43,6 +43,7 @@ void FadeInImage::Update()
 			{
 				myHasReachedApex = true;
 			}
+			myFadeTimer = 1;
 			myFadeTimer += Timer::GetInstance().GetDeltaTime() * 0.8f;
 		}
 		if (myFadeTimer < 0)

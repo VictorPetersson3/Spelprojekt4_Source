@@ -114,6 +114,7 @@ void Level::Update()
 	{
 		StateManager::AddStateOnStack(myPauseMenu);
 	}
+	
 	//Player
 	for (auto entity : myEntities)
 	{
@@ -134,7 +135,7 @@ void Level::Update()
 	}
 
 	// Background
-	//if (myBackground != nullptr)
+	if (myBackground != nullptr)
 	{
 		myBackground->Update(*myCamera);
 	}

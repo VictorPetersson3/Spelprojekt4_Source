@@ -22,17 +22,6 @@ void Camera::Init(const CommonUtilities::Vector2f& aPos)
 //Here the logic for following the player will be or whatever we will follow or the rules we have
 void Camera::Update()
 {
-	//if (InputManagerS::GetInstance().GetKey(DIK_I))
-	//{
-	//	myZoomFactor += myMovementSpeed * Timer::GetInstance().GetDeltaTime();
-	//	myPosition *= myZoomFactor;
-	//}
-	//
-	//if (InputManagerS::GetInstance().GetKey(DIK_K))
-	//{
-	//	myZoomFactor -= myMovementSpeed * Timer::GetInstance().GetDeltaTime();
-	//	myPosition *= myZoomFactor;
-	//}
 	//ImGui::Begin("Camera Zoom");
 	//ImGui::DragFloat("Camera Zoom", &myZoomFactor);
 	//ImGui::End();

@@ -45,13 +45,13 @@ void CharacterSelectionScreen::Init(const EStateType& aState)
 	myTitle->SetColor(Tga2D::CColor{ 0.0f, 0.0f, 0.0f, 1.0f });
 
 	myNormalCharacterTitle = "Default :";
-	myNormalCharacterDescription = "A normal character with nothing\n special about it.";
+	myNormalCharacterDescription = "Morty just being his special self.";
 
 	myGlideCharacterTitle = "Glide :";
-	myGlideCharacterDescription = "A character that glides to where he\n pleases.";
+	myGlideCharacterDescription = "Morty with some new shiny gliders.";
 
 	myDoubleJumpCharacterTitle = "Double Jump :";
-	myDoubleJumpCharacterDescription = "A character that does twice the\n amounts of jumps as a normal character.";
+	myDoubleJumpCharacterDescription = "Morty finally got his wings, now he \ncan jump twice as high.";
 
 	myCurrentHoveredButton = GetUIButtonElementsSize();
 
