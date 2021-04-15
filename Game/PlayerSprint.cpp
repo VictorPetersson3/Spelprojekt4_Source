@@ -154,7 +154,7 @@ void PlayerSprint::Reset()
 	myTime = 0;
 }
 
-void PlayerSprint::Update(const CommonUtilities::Vector2f& aCamera)
+void PlayerSprint::Update(const CommonUtilities::Vector2f& aCamera, const float& aPercentage)
 {
 	// Gör vad fan du vill här, det är ingenting som är "permanent".
 	myTime += DELTA_TIME;

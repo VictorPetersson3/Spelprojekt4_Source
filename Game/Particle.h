@@ -33,7 +33,7 @@ public:
 	virtual void Init() {}
 	virtual void Init(EWorldLevel aWorld){}
 	virtual void Reset() {};
-	virtual void Update(const CommonUtilities::Vector2f& aCamera){};
+	virtual void Update(const CommonUtilities::Vector2f& aCamera, const float& aPercentage){};
 
 	virtual Tga2D::CSprite* GetSprite() = 0;
 	virtual void SetPosition(CommonUtilities::Vector2f aPosition) { myPosition = aPosition; }

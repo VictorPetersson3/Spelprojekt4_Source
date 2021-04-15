@@ -95,7 +95,7 @@ void Ambient::Reset()
 	myTime = 0;
 }
 
-void Ambient::Update(const CommonUtilities::Vector2f& aCamera)
+void Ambient::Update(const CommonUtilities::Vector2f& aCamera, const float& aPercentage)
 {
 	if (myPosition.y > 2.0f)
 	{ 

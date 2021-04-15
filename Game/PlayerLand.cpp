@@ -107,6 +107,8 @@ void PlayerLand::Init(EWorldLevel aWorld)
 
 void PlayerLand::Reset()
 {
+	myHasYeeted = false;
+
 	std::random_device rd;
 	std::mt19937 randomInt(rd());
 
@@ -154,15 +156,15 @@ void PlayerLand::Reset()
 	myTime = 0;
 }
 
-void PlayerLand::Update(const CommonUtilities::Vector2f& aCamera)
+void PlayerLand::Update(const CommonUtilities::Vector2f& aCamera, const float& aPercentage)
 {
-	//if (myPosition.y > 2.0f)
-	//{
-	//	myIsActive = false;
-	//	return;
-	//}
-
 	// Gör vad fan du vill här, det är ingenting som är "permanent".
+	if (!myHasYeeted)
+	{
+		myVelocity *= aPercentage;
+		myHasYeeted = true;
+	}
+
 	myTime += DELTA_TIME;
 
 	myVelocity.x = powf(myAcceleration.x, DELTA_TIME) * myVelocity.x/* + sinf(myPeriod * myTime) * 0.05f * DELTA_TIME*/;
@@ -176,8 +178,6 @@ void PlayerLand::Update(const CommonUtilities::Vector2f& aCamera)
 	mySprite->SetPosition({ myPosition.x - aCamera.x, myPosition.y - aCamera.y });
 	mySprite->SetRotation(myAngle);
 
-	//float size = myStartScale + (myTime / myLifeTime) * (myEndScale - myStartScale);
-	//mySprite->SetSizeRelativeToImage({ size, size });
 	float alpha = myStartColor.myA + (myTime / myLifeTime) * (myEndColor.myA - myStartColor.myA);
 	mySprite->SetColor({ myStartColor.myR, myStartColor.myG, myStartColor.myB, alpha });
 }
