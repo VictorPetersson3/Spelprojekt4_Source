@@ -6,11 +6,12 @@
 #include <tga2d/shaders/customshader.h>
 #include "LinkString.h"
 #include "AudioManager.h"
+#include "CreditsState.h"
 
-void MainMenu::TestMe(int aVal)
+void MainMenu::CreditsButtonPress(int aVal)
 {
-	StateManager::GetInstance().AddAndPlayCutscene(aVal);
-	printf("Hello World %i\n", aVal);
+	StateManager::GetInstance().AddStateOnStack(myCredits);
+	//printf("Hello World %i\n", aVal);
 }
 
 
@@ -48,7 +49,7 @@ void MainMenu::Init(const EStateType& aState)
 		AddButton(std::make_shared<UIButton>(myController));
 	}
 	GetButtonElement(0)->Init({ 0.7f, 0.5f + 0.13f }, tempImagePaths[0].GetString(), 0, [this]() {PlayButtonPress(); });
-	GetButtonElement(1)->Init({ 0.74f, 0.65f + 0.07f * 1 }, tempImagePaths[1].GetString(), 0, [this](int index) {TestMe(index); }, 0);
+	GetButtonElement(1)->Init({ 0.74f, 0.65f + 0.07f * 1 }, tempImagePaths[1].GetString(), 0, [this](int index) {CreditsButtonPress(index); }, 0);
 	GetButtonElement(2)->Init({ 0.74f, 0.65f + 0.07f * 2 }, tempImagePaths[2].GetString(), 0, [this]() { OptionsButtonPress(); });
 	GetButtonElement(3)->Init({ 0.74f, 0.65f + 0.07f * 3 }, tempImagePaths[3].GetString(), 0, [this]() { ExitButtonPress();});
 
@@ -103,6 +104,8 @@ void MainMenu::Init(const EStateType& aState)
 	myLogoHeart4->SetShader(*myBeatingShader.get());
 	myLogoHeart4->ActivatePulse(1.9, 0.5f, 0.9f);
 
+	myCredits = std::make_shared<CreditsState>(myController);
+	myCredits->Init(EStateType::eCredits);
 }
 
 void MainMenu::Update()

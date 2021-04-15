@@ -13,7 +13,8 @@ enum class EStateType
 	eCutsceneManager,
 	eCharacterSelection,
 	eEndOfGameCutscene,
-	eFadeIn
+	eFadeIn,
+	eCredits
 };
 enum class EWorldLevel
 {

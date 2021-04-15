@@ -147,6 +147,7 @@
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ControllerLayOutState.h" />
+    <ClInclude Include="CreditsState.h" />
     <ClInclude Include="CutsceneManager.h" />
     <ClInclude Include="CutsceneCharacter.h" />
     <ClInclude Include="CutsceneData.h" />
@@ -211,6 +212,7 @@
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ControllerLayOutState.cpp" />
+    <ClCompile Include="CreditsState.cpp" />
     <ClCompile Include="CutsceneManager.cpp" />
     <ClCompile Include="CutsceneCharacter.cpp" />
     <ClCompile Include="CutsceneData.cpp" />

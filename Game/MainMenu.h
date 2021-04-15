@@ -7,7 +7,7 @@ namespace Tga2D
 {
 	class CCustomShader;
 }
-
+class CreditsState;
 class MainMenu : public MenuObject
 {
 public:
@@ -18,7 +18,7 @@ public:
 	void Render() final;
 	void OnPushed() override;
 private:
-	void TestMe(int aVal);
+	void CreditsButtonPress(int aVal);
 	void OptionsButtonPress();
 	void ExitButtonPress();
 	void PlayButtonPress();
@@ -31,6 +31,7 @@ private:
 	std::unique_ptr<UIImage> myLogoHeart4;
 	std::shared_ptr<Tga2D::CCustomShader> myPanningShader;
 	std::shared_ptr<Tga2D::CCustomShader> myBeatingShader;
+	std::shared_ptr<CreditsState> myCredits;
 	int myCurrentHoveredButton = 0;
 };
 

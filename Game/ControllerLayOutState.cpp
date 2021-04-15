@@ -42,7 +42,6 @@ void ControllerLayOutState::Render()
 
 void ControllerLayOutState::OnPushed()
 {
-	printf("Added controller layout on top of Stack");
 	SetRenderThrough(true);
 }
 
