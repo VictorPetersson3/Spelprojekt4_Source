@@ -33,11 +33,8 @@ void Boss::Init(const std::shared_ptr<Player> aPlayer)
 
 void Boss::Update(const float aDt)
 {
-	//std::cout << myCollider->GetPosition().x << ", " << myCollider->GetPosition().y << std::endl;
 	if (!myIsDead)
 	{
-
-		std::cout <<"X: " << myPlayerToAttack->GetPosition().x << " Y: " << myPlayerToAttack->GetPosition().y << std::endl;
 		Move(aDt);
 		myPosition += myDirection * aDt;
 		myRenderCommand->SetSpritePosition(myPosition);
@@ -65,12 +62,10 @@ void Boss::Render(Camera& aCamera)
 		if (myPlayerToAttack->GetPosition().x < myPosition.x)
 		{
 			aCamera.RenderSprite(myAnimations[(int)myAnimationState]->GetRenderCommand());
-			myAnimations[(int)myAnimationState]->Render();
 		}
 		else
 		{
 			aCamera.RenderSprite(myAnimations[(int)myAnimationState + 1]->GetRenderCommand());
-			myAnimations[(int)myAnimationState + 1]->Render();
 		}
 	}
 }
@@ -118,7 +113,6 @@ void Boss::LoadAnimations()
 	for (int i = 0; i < myAnimations.size(); ++i)
 	{
 		myAnimations[i]->GetRenderCommand().SetSamplerState(ESamplerFilter_Point, ESamplerAddressMode_Clamp);
-
 		if (i > 3)
 			myAnimations[i]->Init({ 4, 1 }, { 3, 1 });
 		else
