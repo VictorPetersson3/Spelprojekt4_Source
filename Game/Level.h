@@ -37,6 +37,7 @@ public:
 	void Load(LevelSelect_SpecificLevelData* someLevelData, const bool aReloadedLevel);
 	void Restart();
 	void LoadNextLevel();
+	void AddEndOfLevelOnStack();
 
 	virtual void Init(const EStateType& aState) override;
 

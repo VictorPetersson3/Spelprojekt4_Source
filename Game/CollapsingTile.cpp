@@ -86,6 +86,9 @@ void CollapsingTile::Update(float aDeltaTime)
 
 		if (myIsAnimating)
 		{
+			myTimer += aDeltaTime;
+
+
 			if (myTimer >= myAnimtionTime)
 			{
 				myShouldBeRendered = false;

@@ -54,12 +54,12 @@ Level::~Level()
 void Level::OnPushed()
 {
 	AudioManager::GetInstance().StopAllMusic();
-	AudioManager::GetInstance().PlayMusic(mylevelJsonData->mySong.GetString());
+	AudioManager::GetInstance().PlayMusic(mylevelJsonData->mySong.GetString(), true, 1.0f);
 }
 
 void Level::Render()
 {
-	myCameraController->Update(Timer::GetInstance().GetDeltaTime());
+	myCamera->Update();
 	myBackground->Render(*myCamera);
 	for (auto t : myTerrain)
 	{
@@ -92,6 +92,7 @@ void Level::Render()
 
 void Level::Update()
 {
+	myCameraController->Update(Timer::GetInstance().GetDeltaTime());
 	const float deltaTime = Timer::GetInstance().GetDeltaTime();
 	if (myBoss != nullptr)
 	{
@@ -111,7 +112,7 @@ void Level::Update()
 		
 	}
 	//Pause Menu
-	if (InputManagerS::GetInstance().GetKeyUp(DIK_ESCAPE) || myController->IsButtonReleased(XINPUT_GAMEPAD_START))
+	if (InputManagerS::GetInstance().GetKeyUp(DIK_ESCAPE) || myController->IsButtonPressed(XINPUT_GAMEPAD_START))
 	{
 		StateManager::AddStateOnStack(myPauseMenu);
 	}
@@ -143,7 +144,6 @@ void Level::Update()
 	{
 		myBackground->Update(*myCamera);
 	}
-	myCamera->Update();	
 
 	// Remove before handing in
 	if (InputManagerS::GetInstance().GetKeyDown(DIK_F5))
@@ -164,8 +164,14 @@ void Level::Update()
 	{
 		if (CollisionManager::GetInstance().CheckCollision(myPlayer->GetCollider().get(), myLevelEndCollider.get()))
 		{
-			StateManager::AddStateOnStack(myEndOfLevelScreen);
-			std::cout << "Level ended" << std::endl;
+			if (mylevelJsonData->myHasEndCutscene)
+			{
+				StateManager::AddAndPlayCutscene(mylevelJsonData->myEndCutsceneConversation, true);
+			}
+			else
+			{
+				StateManager::AddStateOnStack(myEndOfLevelScreen);
+			}
 		}
 	}
 
@@ -288,6 +294,11 @@ void Level::LoadNextLevel()
 	bool amILastLevel = false;
 	StateManager::GetInstance().AddNextLevelOnStack(mylevelJsonData->myLevelSelectNumber);
 	return;
+}
+
+void Level::AddEndOfLevelOnStack()
+{
+	StateManager::AddStateOnStack(myEndOfLevelScreen);
 }
 
 void Level::Init(const EStateType& aState)

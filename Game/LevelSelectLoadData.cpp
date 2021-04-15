@@ -71,6 +71,13 @@ void LevelSelectLoadData::FillData(rapidjson::Value& aJsonValue, int& aLevelIter
 			myLevelSelectLoadData[aLevelIterator]->myHasCutscene = true;
 			myLevelSelectLoadData[aLevelIterator]->myCutsceneConversation = aJsonValue[i]["cutSceneConversationNumber"].GetInt();
 		}
+		if (aJsonValue[i].HasMember("hasEndCutscene") && aJsonValue[i]["hasEndCutscene"].GetBool())
+		{
+			myLevelSelectLoadData[aLevelIterator]->myHasEndCutscene = true;
+			myLevelSelectLoadData[aLevelIterator]->myEndCutsceneConversation = aJsonValue[i]["EndCutsceneConversationNumber"].GetInt();
+		}
+
+
 		myLevelSelectLoadData[aLevelIterator]->myWorld = aWorld;
 		switch (aWorld)
 		{
