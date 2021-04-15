@@ -33,9 +33,9 @@ void Camera::Update()
 	//	myZoomFactor -= myMovementSpeed * Timer::GetInstance().GetDeltaTime();
 	//	myPosition *= myZoomFactor;
 	//}
-	ImGui::Begin("Camera Zoom");
-	ImGui::DragFloat("Camera Zoom", &myZoomFactor);
-	ImGui::End();
+	//ImGui::Begin("Camera Zoom");
+	//ImGui::DragFloat("Camera Zoom", &myZoomFactor);
+	//ImGui::End();
 	CameraShakingFunctionality();
 	myPosition += myCameraShakePosition;
 }

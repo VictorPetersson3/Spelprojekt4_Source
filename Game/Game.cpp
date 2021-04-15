@@ -68,14 +68,15 @@ bool CGame::Init(const std::wstring& aVersion, HWND /*aHWND*/)
 	createParameters.myApplicationName = L"TGA 2D " + BUILD_NAME + L"[" + aVersion + L"] ";
 	createParameters.myPreferedMultiSamplingQuality = Tga2D::EMultiSamplingQuality_High;
 	createParameters.myClearColor = Tga2D::CColor({1,0,0,1});
-	//createParameters.myStartInFullScreen = true;
+	createParameters.myStartInFullScreen = true;
 	createParameters.myActivateDebugSystems = Tga2D::eDebugFeature_Fps |
 		Tga2D::eDebugFeature_Mem |
 		Tga2D::eDebugFeature_Drawcalls |
 		Tga2D::eDebugFeature_Cpu |
 		Tga2D::eDebugFeature_Filewatcher |
 		Tga2D::eDebugFeature_OptimiceWarnings;
-
+	createParameters.myRenderHeight = 1080;
+	createParameters.myRenderWidth = 1920;
 	if (!Tga2D::CEngine::Start(createParameters))
 	{
 		ERROR_PRINT("Fatal error! Engine could not start!");
