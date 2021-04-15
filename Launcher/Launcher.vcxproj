@@ -150,7 +150,7 @@
     <ResourceCompile Include="Launcher.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="tga.ico" />
+    <Image Include="BirbBoy.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
