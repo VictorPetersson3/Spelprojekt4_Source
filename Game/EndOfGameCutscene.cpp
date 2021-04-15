@@ -31,8 +31,8 @@ void EndOfGameCutscene::Init(const EStateType& aState)
 	myBackground->SetShader(*myPanningShader.get());
 
 	myCreditsImage = std::make_unique<UIImage>();
-	myCreditsImage->Init({ 0.75f, -0.40f }, "sprites/UI/Credits.dds", -1);
-	myCreditsImage->ActivatePulse(3.0f, 0.9f, 1.1f);
+	myCreditsImage->Init({ 0.75f, 1.50f }, "sprites/UI/Credits.dds", -1);
+	myCreditsImage->ActivatePulse(3.0f, 0.9f, 0.95f);
 
 	mySadKiwi = std::make_unique<UIImage>();
 	mySadKiwi->Init({ 0.25f, 0.5f }, "sprites/UI/EndCutsceneSadKiwi.dds", -1);
@@ -57,13 +57,17 @@ void EndOfGameCutscene::Update()
 		{
 			myCutsceneIsFinished = true;
 			myCreditsImage->Activate();
-			mySadKiwi->Activate();
-			GetButtonElement(0)->Activate();
+			mySadKiwi->Activate();			
 		}
 	}
 	if (myCutsceneIsFinished)
 	{
-		myCreditsImage->Update({ myCreditsImage->GetPosition().x , myCreditsImage->GetPosition().y + (Timer::GetInstance().GetDeltaTime() * 0.25f) });
+		myCreditsImage->Update({ myCreditsImage->GetPosition().x , myCreditsImage->GetPosition().y - (Timer::GetInstance().GetDeltaTime() * 0.2f) });
+		myButtonTimer += Timer::GetInstance().GetDeltaTime();
+		if (!GetButtonElement(0)->GetIsActive() && myButtonTimer > 6.5f )
+		{
+			GetButtonElement(0)->Activate();
+		}
 	}
 }
 
@@ -85,7 +89,8 @@ void EndOfGameCutscene::OnPushed()
 	myCreditsImage->Deactivate();
 	mySadKiwi->Deactivate();
 	myCurrentConversation = 0;
-	myCreditsImage->SetPosition({ 0.75f, -0.40f });
+	myButtonTimer = 0;
+	myCreditsImage->SetPosition({ 0.75f, 1.80f });
 	StateManager::GetInstance().AddAndPlayCutscene(myCurrentConversation, myCutsceneManager);
 	myCurrentConversation++;
 	AudioManager::GetInstance().StopAllMusic();

@@ -21,6 +21,7 @@ private:
     bool myConversationIsOver = false;
     bool myCutsceneIsFinished = false;
     int myCurrentConversation = 0;
+    float myButtonTimer = 0;
 
     std::unique_ptr<UIImage> myBackground;
     std::shared_ptr<Tga2D::CCustomShader> myPanningShader;
