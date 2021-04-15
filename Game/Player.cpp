@@ -6,11 +6,13 @@
 #include "Camera.h"
 #include "Collider.h"
 #include "CollisionManager.h"
+#include "Emitter.h"
 #include "InputManager.h"
 #include "JsonParser.h"
 #include "RenderCommand.h"
 #include "Timer.h"
 #include "XController.h"
+#include <tga2d/sprite/sprite_batch.h>
 
 #define INPUT InputManagerS::GetInstance() 
 #define DELTA_TIME Timer::GetInstance().GetDeltaTime()
@@ -22,7 +24,7 @@ Player::Player(std::shared_ptr<XController> aController, EPowerUp aPowerup) :
 }
 Player::~Player() {}
 
-void Player::Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower)
+void Player::Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower, EWorldLevel aWorld)
 {
 	if (myController == nullptr) myController = std::make_shared<XController>(1);
 
@@ -37,6 +39,9 @@ void Player::Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower)
 
 	myCurrentVelocity = { 0, 0 };
 
+	if (myRunningParticle == nullptr) myRunningParticle = std::make_shared<Emitter>();
+	myRunningParticle->Init(myPosition, ParticleType::P_Sprint, aWorld);
+
 	InitJSON();
 
 	InitAnimations();
@@ -48,6 +53,8 @@ void Player::Render(Camera& aCamera)
 {
 	int thing = (int)myCurrentAnimation * 2 + (myDirection < 0);
 	aCamera.RenderSprite(myAnimations[thing]->GetRenderCommand());
+	myRunningParticle->GetBatch()->Render();
+
 }
 
 void Player::InitJSON()
@@ -315,6 +322,8 @@ void Player::Update(Camera& aCamera)
 
 	UpdatePhysics(aCamera);
 
+	HandleParticles(aCamera);
+
 	HandleAnimations();
 
 	HandleAudio();
@@ -361,6 +370,19 @@ void Player::HandleAudio()
 		{
 			AudioManager::GetInstance().StopEffectSound(mySounds[i].c_str());
 		}
+	}
+}
+
+void Player::HandleParticles(Camera& aCamera)
+{
+	switch (myCurrentAnimation)
+	{
+	case EAnimationState::Sprint:
+		myRunningParticle->Update({ myPosition.x - myDirection * myAnimations[0]->GetRenderCommand().GetSize().x * 0.5f, myPosition.y + myAnimations[0]->GetRenderCommand().GetSize().y * 0.25f }, aCamera);
+		break;
+	default:
+		myRunningParticle->SneakyUpdate({ myPosition.x - myDirection * myAnimations[0]->GetRenderCommand().GetSize().x * 0.5f, myPosition.y + myAnimations[0]->GetRenderCommand().GetSize().y * 0.25f }, aCamera);
+		break;
 	}
 }
 

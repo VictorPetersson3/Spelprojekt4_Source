@@ -14,6 +14,7 @@ namespace Tga2D
 class AnimationClip;
 class Camera;
 class Collider;
+class Emitter;
 //class XController;
 
 enum class EPlayerState
@@ -53,7 +54,7 @@ public:
 	Player(std::shared_ptr<XController> aController = nullptr, EPowerUp aPowerup = EPowerUp::Default);
 	~Player();
 
-	virtual void Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower = EPowerUp::Default);
+	virtual void Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower, EWorldLevel aWorld);
 	virtual void Update(Camera& aCamera);
 	void Render(Camera& aCamera);
 
@@ -78,6 +79,7 @@ protected:
 	void UpdateJumping();
 	void HandleAnimations();
 	void HandleAudio();
+	void HandleParticles(Camera& aCamera);
 	void CacheCurrentValues();
 
 	void ChangeInput();
@@ -156,6 +158,8 @@ protected:
 
 
 	int myDirection = 1;
+
+	std::shared_ptr<Emitter> myRunningParticle;
 
 	EPlayerState myMoveState = EPlayerState::Idle;
 	EAnimationState myCurrentAnimation = EAnimationState::Idle;

@@ -319,5 +319,19 @@ void Ambient::InitBubbles()
 	myBlendState = EBlendState::EBlendState_Alphablend;
 
 	/// Sprite
-	mySprite = new Tga2D::CSprite("Sprites/Particles/bubble_particle.dds");
+	switch (rand() % 4)
+	{
+	case 0:
+		mySprite = new Tga2D::CSprite("Sprites/Particles/small_bubble_particle.dds");
+		break;
+	case 1:
+		mySprite = new Tga2D::CSprite("Sprites/Particles/bubble_particle.dds");
+		break;
+	case 2:
+		mySprite = new Tga2D::CSprite("Sprites/Particles/big_bubble_particle.dds");
+		break;
+	case 3:
+		mySprite = new Tga2D::CSprite("Sprites/Particles/mega_bubble_particle.dds");
+		break;
+	}
 }

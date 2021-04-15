@@ -9,27 +9,32 @@ namespace Tga2D
 }
 
 class Camera;
+class RenderCommand;
 
 class Emitter
 {
 public:
-	Emitter(EWorldLevel aWorld);
+	Emitter(EWorldLevel aWorld = EWorldLevel::eWorld1);
 	~Emitter();
 
-	void Init(const CommonUtilities::Vector2f& aPosition, const ParticleType& aParticleType);
+	void Init(const CommonUtilities::Vector2f& aPosition, const ParticleType& aParticleType, const EWorldLevel& aWorld);
 
 	void SetParticleType(const ParticleType& aParticleType);
 	void SetPosition(const CommonUtilities::Vector2f& aPosition);
 
 	void Update(const CommonUtilities::Vector2f& aPosition, Camera& aCamera);
-
+	void Emit();
+	void UpdateTimer();
+	void SneakyUpdate(const CommonUtilities::Vector2f& aPosition, Camera& aCamera);
+	
 	std::shared_ptr<Tga2D::CSpriteBatch> GetBatch();
 
 private:
-	void Emit();
 	bool myShouldEmit = false;
 
 	std::vector<Particle*> myParticles;
+	std::vector<RenderCommand*> myRenderCommands;
+	
 	ParticleType myParticleType = ParticleType::none;
 
 	CommonUtilities::Vector2f myPosition;

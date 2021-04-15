@@ -231,7 +231,7 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 	}
 
 
-	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y }, StateManager::GetInstance().GetSelectedCharacter());
+	myPlayer.get()->Init({ aData.get()->GetPlayerStart().x, aData.get()->GetPlayerStart().y }, StateManager::GetInstance().GetSelectedCharacter(), mylevelJsonData->myWorld);
 
 
 	if (someLevelData->myHasBoss)
@@ -254,7 +254,7 @@ void Level::Load(LevelSelect_SpecificLevelData* someLevelData, const bool aReloa
 	//L�gg in att den skall spela en cutscene h�r och att den laddar in den
 
 	myAmbientParticles = std::make_shared<Emitter>(mylevelJsonData->myWorld);
-	myAmbientParticles->Init({myCamera->GetPosition().x, mylevelJsonData->myCameraMinBorderY - 0.3f }, ParticleType::Ambient);
+	myAmbientParticles->Init({myCamera->GetPosition().x, mylevelJsonData->myCameraMinBorderY - 0.3f }, ParticleType::Ambient, mylevelJsonData->myWorld);
 
 	Load(levelLoader.LoadLevel(mylevelJsonData), mylevelJsonData);
 
