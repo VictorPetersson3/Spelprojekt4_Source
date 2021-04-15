@@ -203,7 +203,7 @@ std::shared_ptr<LevelEnd> EntityFactory::LoadLevelEnd(int aEntityIndex, int aLay
 	Vector2 size = {	myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["width"].GetFloat(),
 						myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["height"].GetFloat() };
 
-	const char* aImagePath;
+	const char* aImagePath = "/../..Sprites/props/door_Sprite.dds";
 
 	for (int i = 0; i < myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"].Capacity(); i++)
 	{
