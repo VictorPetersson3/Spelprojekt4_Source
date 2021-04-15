@@ -59,7 +59,7 @@ void Level::OnPushed()
 
 void Level::Render()
 {
-	myCameraController->Update(Timer::GetInstance().GetDeltaTime());
+	myCamera->Update();
 	myBackground->Render(*myCamera);
 	for (auto t : myTerrain)
 	{
@@ -92,7 +92,7 @@ void Level::Render()
 
 void Level::Update()
 {
-	myCamera->Update();
+	myCameraController->Update(Timer::GetInstance().GetDeltaTime());
 	const float deltaTime = Timer::GetInstance().GetDeltaTime();
 	if (myBoss != nullptr)
 	{
