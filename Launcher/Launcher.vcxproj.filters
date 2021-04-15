@@ -33,7 +33,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="tga.ico">
+    <Image Include="BirbBoy.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

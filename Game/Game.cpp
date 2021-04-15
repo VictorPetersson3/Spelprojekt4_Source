@@ -65,7 +65,7 @@ bool CGame::Init(const std::wstring& aVersion, HWND /*aHWND*/)
 	createParameters.myInitFunctionToCall = [this] {InitCallBack(); };
 	createParameters.myWinProcCallback = [this](HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {return WinProc(hWnd, message, wParam, lParam); };
 	createParameters.myUpdateFunctionToCall = [this] {UpdateCallBack(); };
-	createParameters.myApplicationName = L"TGA 2D " + BUILD_NAME + L"[" + aVersion + L"] ";
+	createParameters.myApplicationName = L"Birb Boy";
 	createParameters.myPreferedMultiSamplingQuality = Tga2D::EMultiSamplingQuality_High;
 	createParameters.myClearColor = Tga2D::CColor({0,0,0,1});
 	createParameters.myStartInFullScreen = true;
