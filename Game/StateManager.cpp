@@ -120,7 +120,8 @@ void StateManager::AddLevelOnStack(int aLevelIndex)
 	{
 		myInstance->RemoveDownToState(EStateType::eLevelSelect);
 		myInstance->myGameStates.Push(myInstance->myLevel);
-		myInstance->myLevel->Load(myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex), false);
+		bool lastLevel = (aLevelIndex == myInstance->myLevelSelect->GetLevelAmount() - 1) ? true : false;
+		myInstance->myLevel->Load(myInstance->myLevelSelect->GetSpecificLevelData(aLevelIndex), false, lastLevel);
 		myInstance->myGameStates.GetTop()->OnPushed();
 	}
 }

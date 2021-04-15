@@ -34,7 +34,7 @@ public:
 	virtual void Render() override;
 	virtual void Update() override;
 	void Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData* someLevelData);
-	void Load(LevelSelect_SpecificLevelData* someLevelData, const bool aReloadedLevel);
+	void Load(LevelSelect_SpecificLevelData* someLevelData, const bool aReloadedLevel, const bool aLastLevel);
 	void Restart();
 	void LoadNextLevel();
 	void AddEndOfLevelOnStack();
@@ -70,6 +70,7 @@ private:
 	float myPlayerPhysicsUpdateCountdown = 0.2f;
 
 	bool myPlayerHasDied = false;
+	bool myIsLastLevel = false;
 
 	std::shared_ptr<Emitter> myAmbientParticles;
 	XController* myController;

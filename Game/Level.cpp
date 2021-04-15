@@ -55,6 +55,11 @@ void Level::OnPushed()
 {
 	AudioManager::GetInstance().StopAllMusic();
 	AudioManager::GetInstance().PlayMusic(mylevelJsonData->mySong.GetString(), true, 1.0f);
+	if (myIsLastLevel)
+	{
+		AudioManager::GetInstance().StopAllMusic();
+		AudioManager::GetInstance().PlayMusic("Audio/music/Boss_Song.mp3", true, 1.0f);
+	}
 }
 
 void Level::Render()
@@ -252,11 +257,12 @@ void Level::Load(std::shared_ptr<LevelData> aData, LevelSelect_SpecificLevelData
 
 }
 
-void Level::Load(LevelSelect_SpecificLevelData* someLevelData, const bool aReloadedLevel)
+void Level::Load(LevelSelect_SpecificLevelData* someLevelData, const bool aReloadedLevel, const bool aLastLevel)
 {
 	LevelLoader levelLoader;
 	mylevelJsonData = someLevelData;
 	myEndOfLevelScreen->SetCurrentLevel(mylevelJsonData->myLevelSelectNumber);
+	myIsLastLevel = aLastLevel;
 	//L�gg in att den skall spela en cutscene h�r och att den laddar in den
 
 	myAmbientParticles = std::make_shared<Emitter>(mylevelJsonData->myWorld);
@@ -285,7 +291,7 @@ void Level::Load(LevelSelect_SpecificLevelData* someLevelData, const bool aReloa
 void Level::Restart()
 {
 	LevelLoader levelLoader;
-	Load(mylevelJsonData, true);
+	Load(mylevelJsonData, true, myIsLastLevel);
 	myCameraController->ResetCamera();
 }
 
