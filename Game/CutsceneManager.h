@@ -41,6 +41,7 @@ private:
     bool myPrintEverything = false;
     bool myHasResumed = false;
     bool myPlayingEndCutscene = false;
+    bool myHasImageShown = false;
 
     unsigned int myCurrentLineIndexToPlay = 0;
     unsigned int myCurrentLetterInLineToPlay = 0;

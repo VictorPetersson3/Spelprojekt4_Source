@@ -85,8 +85,18 @@ void CutsceneManager::Update()
 	}
 	else
 	{
-		GetButtonElement(1)->SetIsHovered(true);
-		GetButtonElement(1)->Activate();
+		if (myHasAfterImageShown)
+		{
+			if (GetInputExit())
+			{
+				myHasAfterImageShown = false;
+			}
+		}
+		else
+		{
+			GetButtonElement(1)->SetIsHovered(true);
+			GetButtonElement(1)->Activate();
+		}
 	}
 	if (GetInputExit() && !myPrintEverything)
 	{
@@ -164,9 +174,11 @@ void CutsceneManager::PlayCutscene(const int aLevelIndex, const bool aEndOfMapCu
 	{
 		myAfterCutsceneImage = myLevelCharacterDialogues[mySceneToPlay]->GetAfterImage();
 		myAfterCutsceneImage->Deactivate();
+		myHasAfterImageShown = true;
 	}
 	else
 	{
+		myHasAfterImageShown = false;
 		myAfterCutsceneImage = nullptr;
 	}
 }
@@ -403,6 +415,7 @@ void CutsceneManager::ParseAndAddText()
 			if (myAfterCutsceneImage != nullptr)
 			{
 				myAfterCutsceneImage->Activate();
+				myHasAfterImageShown = true;
 			}
 		}
 	}
