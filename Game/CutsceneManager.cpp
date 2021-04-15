@@ -23,6 +23,14 @@
 #include "tga2d/text/text.h"
 
 
+CutsceneManager::CutsceneManager(XController* aControllerPointer) : MenuObject(aControllerPointer)
+{
+	std::string emptyCharPath("Sprites/Cutscenes/CharacterPortraits/c_empty.dds");
+	std::string emptyName("Empty");
+	myNullCharacter = std::make_shared<CutsceneCharacter>(emptyCharPath.c_str(), emptyName.c_str(), CommonUtilities::Vector2f{ 0.5f, 0.5f });
+	myNullCharacter->InitAngrySprite("Sprites/Cutscenes/CharacterPortraits/c_empty.dds");
+}
+
 void CutsceneManager::Init(const EStateType& aState)
 {
 	SetStateType(aState);
@@ -58,6 +66,7 @@ void CutsceneManager::Init(const EStateType& aState)
 	myBlackBackground->GetRenderCommand().SetSpritePosition({ 0.5f, 1.0f });
 	myBlackBackground->GetRenderCommand().SetSizeRelativeToImage({ 5.0f, 5.0f });
 	myBlackBackground->GetRenderCommand().SetColor(Tga2D::CColor{ 0.0f, 0.0f, 0.0f, 0.8f });
+
 }
 void CutsceneManager::Init(const EStateType& aState, const char* aCutsceneDirectory)
 {
@@ -209,6 +218,11 @@ void CutsceneManager::LoadCutscenes(const char* aCutsceneDirectory)
 			{
 				currentSceneData->AddRightCharacter(myCharacters[i]);
 			}
+		}
+		LinkString null("Null");
+		if (null == document["characterRight"].GetString())
+		{
+			currentSceneData->AddRightCharacter(myNullCharacter);
 		}
 		auto lines = document["dialogue"].GetArray();
 		for (rapidjson::SizeType i = 0; i < lines.Size(); i++)

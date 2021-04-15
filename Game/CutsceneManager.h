@@ -14,7 +14,7 @@ class CutsceneManager :
     public MenuObject
 {
 public:
-    CutsceneManager(XController* aControllerPointer) : MenuObject(aControllerPointer){}
+    CutsceneManager(XController* aControllerPointer);
     ~CutsceneManager() = default;
     void Init(const EStateType & aState) final;
     void Init(const EStateType& aState, const char* aCutsceneDirectory);
@@ -57,6 +57,7 @@ private:
     std::shared_ptr<Tga2D::CText> myTextToPrint;
     std::shared_ptr<CutsceneCharacter> myLeftCharacter;
     std::shared_ptr<CutsceneCharacter> myRightCharacter;
+    std::shared_ptr<CutsceneCharacter> myNullCharacter;
 
     CommonUtilities::GrowingArray < std::shared_ptr<CutsceneData> > myLevelCharacterDialogues;
     CommonUtilities::GrowingArray<std::shared_ptr<CutsceneCharacter>> myCharacters;
