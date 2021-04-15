@@ -5,6 +5,7 @@
 #include "MovingPlatform.h"
 #include "JsonParser.h"
 #include "CollapsingTile.h"
+#include "LevelEnd.h"
 #include "KillZone.h"
 #include "Key.h"
 #include "Door.h"
@@ -54,14 +55,10 @@ std::vector<std::shared_ptr<Entity>> EntityFactory::LoadEntities(const char* aPa
 				{
 					myEntities.push_back(LoadKillZone(i, j));
 				}
-				
-				
-				
-				
-				
-				
-				
-				
+				if (entityType == "LevelEnd")
+				{
+					myEntities.push_back(LoadLevelEnd(i, j));
+				}
 			}
 		}
 	}
@@ -195,6 +192,30 @@ std::shared_ptr<MovingPlatform> EntityFactory::LoadMovingPlatform(int aEntityInd
 
 	return std::make_shared<MovingPlatform>(aPlatformToPushBack);
 
+}
+std::shared_ptr<LevelEnd> EntityFactory::LoadLevelEnd(int aEntityIndex, int aLayerIndex)
+{
+	std::shared_ptr<LevelEnd> aLevelEndToPushBack = std::make_shared<LevelEnd>();
+
+	Vector2 position = {	myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][0].GetFloat() / renderSizeX * gridSize,
+							myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["__grid"][1].GetFloat() / renderSizeY * gridSize - ((1.0f * gridSize) / renderSizeY)};
+
+	Vector2 size = {	myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["width"].GetFloat(),
+						myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["height"].GetFloat() };
+
+	const char* aImagePath;
+
+	for (int i = 0; i < myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"].Capacity(); i++)
+	{
+		if (myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][i]["__value"].IsString())
+		{
+			aImagePath = myDocument["levels"][0]["layerInstances"][aLayerIndex]["entityInstances"][aEntityIndex]["fieldInstances"][i]["__value"].GetString();	
+			break;
+		}
+	}
+
+	aLevelEndToPushBack->Init(position, size, aImagePath);
+	return aLevelEndToPushBack;
 }
 std::shared_ptr<CollapsingTile> EntityFactory::LoadCollapsingTile(int aEntityIndex, int aLayerindex)
 {
