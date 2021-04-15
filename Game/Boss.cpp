@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "Collider.h"
 #include "JsonParser.h"
+#include "AudioManager.h"
 #include "AnimationClip.h"
 #include <string>
 #include <iostream>
@@ -35,6 +36,8 @@ void Boss::Update(const float aDt)
 	//std::cout << myCollider->GetPosition().x << ", " << myCollider->GetPosition().y << std::endl;
 	if (!myIsDead)
 	{
+
+		std::cout <<"X: " << myPlayerToAttack->GetPosition().x << " Y: " << myPlayerToAttack->GetPosition().y << std::endl;
 		Move(aDt);
 		myPosition += myDirection * aDt;
 		myRenderCommand->SetSpritePosition(myPosition);
@@ -166,6 +169,15 @@ void Boss::PickNewPosition(const float aDt)
 {
 	if (myMoveTimer >= myMoveTime)
 	{
+		const int rnd = rand() % 10000;
+		if (rnd > 5000)
+		{
+			AudioManager::GetInstance().PlayEffect("Audio/Boss/swoosh.waw");
+		}
+		else
+		{
+			AudioManager::GetInstance().PlayEffect("Audio/Boss/swoosh.waw");
+		}
 		myPositionIndex = PickPosition();
 		myPlayDash = true;
 		myMoveTimer = 0;
