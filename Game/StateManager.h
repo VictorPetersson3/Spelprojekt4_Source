@@ -39,9 +39,10 @@ public:
 	static void AddNextLevelOnStack(int aLevelIndex);
 	static void UnlockNextlevel(int aCurrentLevelIndex);
 
-	static void AddAndPlayCutscene(int aCutsceneIndex);
-	static void AddAndPlayCutscene(int aCutsceneIndex, std::shared_ptr<CutsceneManager> aCutsceneManager);
+	static void AddAndPlayCutscene(int aCutsceneIndex, const bool aEndOfMapCutscene = false);
+	static void AddAndPlayCutscene(int aCutsceneIndex, std::shared_ptr<CutsceneManager> aCutsceneManager, const bool aEndOfMapCutscene = false);
 	static void AddLastCutscene();
+	static void AddEndOfLevelOnStack();
 
 	static void AddCharacterSelectOnStack(const int aLevelIndex);
 	static EPowerUp GetSelectedCharacter();

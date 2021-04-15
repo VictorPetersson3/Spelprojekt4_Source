@@ -15,11 +15,13 @@ struct LevelSelect_SpecificLevelData
 	CommonUtilities::Vector2f myPosition;
 	CommonUtilities::Vector2f myCameraPosition;
 	bool myHasCutscene = false;
+	bool myHasEndCutscene = false;
 	bool myIsUnlocked = false;
 	bool myMoveCameraX = false;
 	bool myMoveCameraY = false;
 	bool myHasBoss = true;
 	int myCutsceneConversation = INFINITY;
+	int myEndCutsceneConversation = INFINITY;
 	int myLevelSelectNumber;
 	int myWorldLevelNumber;
 	float myCameraAcceleration;

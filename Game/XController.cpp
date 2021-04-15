@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "XController.h"
-
+#include "Timer.h"
 XController::XController(const int aPlayerNumber)
 {
     myControllerNumber = aPlayerNumber - 1;
@@ -35,6 +35,17 @@ bool XController::IsConnected()
     if (result == ERROR_SUCCESS) return true;
     
     return false;
+}
+
+void XController::UpdateController()
+{
+    if (myTimer >= myTime)
+    {
+        myPressed = false;
+        myTimer = 0;
+        return;
+    }
+    myTimer += Timer::GetInstance().GetDeltaTime();
 }
 
 

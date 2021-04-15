@@ -10,11 +10,11 @@ class XController
 {
 public:
 	XController(const int);
-	XController(const int , const float);
-	XINPUT_STATE GetControllerState();	
+	XController(const int, const float);
+	XINPUT_STATE GetControllerState();
 	void Vibrate(float leftVib, float rightVib);
 	bool IsConnected();
-	
+
 	void UpdateController();
 
 	// Input Checks
@@ -22,36 +22,24 @@ public:
 	CommonUtilities::Vector2f GetRightTumbStick();
 	CommonUtilities::Vector2f GetDPadInput();
 
-	inline const bool IsButtonDown(const int aIndex) 
+	inline const bool IsButtonDown(const int aIndex)
 	{
 		return this->GetControllerState().Gamepad.wButtons & aIndex;
 	}
+
 	
-	inline const bool IsButtonPressed(const int aIndex)
+	const bool IsButtonPressed(const int aIndex)
 	{
-		if (!myPressed)
+		if (IsButtonDown(aIndex))
 		{
-			if (IsButtonDown(aIndex))
+			if (!myPressed)
 			{
 				myPressed = true;
-				return this->GetControllerState().Gamepad.wButtons & aIndex;
+				return true;
 			}
 		}
 		return false;
 	}
-	inline const bool IsButtonReleased(const int aIndex)
-	{
-		if (myPressed) 
-		{
-			if (IsButtonDown(aIndex))
-			{
-				myPressed = false;
-				return this->GetControllerState().Gamepad.wButtons & aIndex;
-			}
-		}
-		return false;
-	}
-
 
 	// Basic buttons
 	const bool IsButton_A_Pressed();
@@ -70,7 +58,7 @@ public:
 	const bool IsButton_Back_Pressed();
 
 private:
-	
+
 	// DPad buttons
 	const bool IsDPadLeft_Pressed();
 	const bool IsDPadRight_Pressed();
@@ -78,11 +66,13 @@ private:
 	const bool IsDPadDown_Pressed();
 
 private:
+	float myTimer = 0;
+	float myTime = 1.f;
 	bool myPressed = false;
 	int myJoystickDeadZone = {};
 	short myControllerNumber = {};
 	XINPUT_STATE myControllerState;
-	
+
 
 };
 

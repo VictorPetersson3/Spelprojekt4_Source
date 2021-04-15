@@ -27,12 +27,14 @@ CGameWorld::~CGameWorld()
 void CGameWorld::Init()
 {
 	myController = std::make_shared<XController>(1);
+
 	CollisionManager::Init();
 	StateManager::Init(myController.get());
 }
 
 void CGameWorld::Update(float /*aTimeDelta*/)
 {
+	myController->UpdateController();
 	StateManager::GetInstance().Update();
 	CollisionManager::GetInstance().Update();
 }
