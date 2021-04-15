@@ -149,13 +149,13 @@ void LevelSelect::Update()
 	}
 
 	// Remove cheat key here
-	if (InputManagerS::GetInstance().GetKeyDown(DIK_L))
-	{
-		for (int i = 0; i < myLevels_LevelData->myLevelSelectLoadData.Size(); i++)
-		{
-			myLevels_LevelData->myLevelSelectLoadData[i]->myIsUnlocked = true;
-		}
-	}
+	//if (InputManagerS::GetInstance().GetKeyDown(DIK_L))
+	//{
+	//	for (int i = 0; i < myLevels_LevelData->myLevelSelectLoadData.Size(); i++)
+	//	{
+	//		myLevels_LevelData->myLevelSelectLoadData[i]->myIsUnlocked = true;
+	//	}
+	//}
 }
 
 void LevelSelect::Render()
