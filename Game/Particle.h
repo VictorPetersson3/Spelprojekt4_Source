@@ -13,6 +13,7 @@ enum class ParticleType
 {
 	none,
 	P_Sprint,
+	P_Land,
 	Ambient
 };
 

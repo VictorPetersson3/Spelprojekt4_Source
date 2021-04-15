@@ -25,7 +25,7 @@ public:
 	void Update(const CommonUtilities::Vector2f& aPosition, Camera& aCamera);
 	void Emit();
 	void UpdateTimer();
-	void SneakyUpdate(const CommonUtilities::Vector2f& aPosition, Camera& aCamera);
+	void SneakyUpdate(Camera& aCamera);
 	
 	std::shared_ptr<Tga2D::CSpriteBatch> GetBatch();
 

@@ -38,19 +38,9 @@ void Ambient::Init()
 		break;
 	}
 
+	mySprite->SetSamplerState(ESamplerFilter::ESamplerFilter_Point, ESamplerAddressMode::ESamplerAddressMode_Clamp);
 	mySprite->SetPivot({ 0.5f, 0.5f });
 	mySprite->SetBlendState(myBlendState);
-
-	//std::random_device rd;
-	//std::mt19937 randomInt(rd());
-	//std::uniform_real_distribution<> BWBalance(1.0f, 1.0f);
-	//float color = BWBalance(randomInt);
-	//myStartColor.myR *= color;
-	//myStartColor.myG *= color;
-	//myStartColor.myB *= color;
-	//myEndColor.myR *= color;
-	//myEndColor.myG *= color;
-	//myEndColor.myB *= color;
 
 	Reset();
 }
@@ -88,12 +78,9 @@ void Ambient::Reset()
 	myVelocity.y = velocityDist(randomInt) / 200.0f;
 	if (!myVelocity.x) myVelocity.x += 0.001f;
 	if (!myVelocity.y) myVelocity.y += 0.001f;
-	//if (myVelocity.y > 0) myVelocity.y *= -1;
-	//myVelocity.Normalize();
 	myVelocity.x *= 9.0f / 16.0f;
-	//myVelocity.y = 0;
 	myVelocity *= mySpeed;
-	//if (myWorld == EWorldLevel::eWorld3) myVelocity.x = 0;
+
 	/// Lifetime
 	std::uniform_real_distribution<> LTDist(myMinLifeTime, myMaxLifeTime);
 	myLifeTime = LTDist(randomInt);
@@ -196,8 +183,6 @@ void Ambient::InitLeavesR()
 	/// Spawn time
 	myContents.myMinTimeBetweenParticleSpawns = 0.001f;
 	myContents.myMaxTimeBetweenParticleSpawns = 0.2f;
-	/// Emission time
-	/*myEmitTime = 0.0f;*/
 
 	// Local Ranges 
 	/// Scale

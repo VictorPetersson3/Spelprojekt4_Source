@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "PlayerSprint.h"
+#include "PlayerLand.h"
 #include "Timer.h"
 #include "Camera.h"
 #include <tga2d/sprite/sprite.h>
@@ -10,38 +10,38 @@
 
 #define DELTA_TIME Timer::GetInstance().GetDeltaTime()
 
-PlayerSprint::PlayerSprint()
+PlayerLand::PlayerLand()
 {
 }
 
-PlayerSprint::~PlayerSprint()
+PlayerLand::~PlayerLand()
 {
 	delete mySprite;
 	mySprite = nullptr;
 }
 
-void PlayerSprint::Init(EWorldLevel aWorld)
+void PlayerLand::Init(EWorldLevel aWorld)
 {
 	myWorld = aWorld;
 
 	// Emission Values
 	/// Spawn time
-	myContents.myMinTimeBetweenParticleSpawns = 0.02f;
-	myContents.myMaxTimeBetweenParticleSpawns = 0.06f;
+	myContents.myMinTimeBetweenParticleSpawns = 0.0f;
+	myContents.myMaxTimeBetweenParticleSpawns = 0.0f;
 	/// Emission time
 	/*myEmitTime = 0.0f;*/
 
 	// Local Ranges 
 	/// Scale
-	myMinStartScale = 1.0f;
+	myMinStartScale = 0.0f;
 	myMaxStartScale = 1.0f;
 
 	//myStartScale = 1.0f;
 	myEndScale = 1.0f;
 
 	/// Start Speed
-	myMinStartSpeed = 0.01f;
-	myMaxStartSpeed = 0.02f;
+	myMinStartSpeed = 0.1f;
+	myMaxStartSpeed = 0.5f;
 
 	/// Angle
 	myMinRotation = -2.0f;
@@ -56,25 +56,25 @@ void PlayerSprint::Init(EWorldLevel aWorld)
 	{
 	case EWorldLevel::eWorld1:
 		myStartColor = { 0.37890625f, 0.609375f, 0.76171875f, 0.9f };
-		myEndColor = { 0.171875f, 0.25390625f, 0.4453125f, 0.7f };
+		myEndColor = { 0.171875f, 0.25390625f, 0.4453125f, 0.5f };
 		break;
 	case EWorldLevel::eWorld2:
 		myStartColor = { 0.41796875f, 0.359375f, 0.375f, 0.9f };
-		myEndColor = { 0.234375f, 0.1875f, 0.1875f, 0.7f };
+		myEndColor = { 0.234375f, 0.1875f, 0.1875f, 0.5f };
 		break;
 	case EWorldLevel::eWorld3:
 		myStartColor = { 0.49609375f, 0.4296875f, 0.43359375f, 0.9f };
-		myEndColor = { 0.2265625f, 0.203125f, 0.21484375f, 0.7f };
+		myEndColor = { 0.2265625f, 0.203125f, 0.21484375f, 0.5f };
 		break;
 	case EWorldLevel::eWorld4:
 		myStartColor = { 0.87109375f, 0.3203125f, 0.6171875f, 0.9f };
-		myEndColor = { 0.578125f, 0.234375f, 0.6484375f, 0.7f };
+		myEndColor = { 0.578125f, 0.234375f, 0.6484375f, 0.5f };
 		break;
 	}
 
 	/// Acceleration
-	myMinAcceleration = { 0.99f, 0.99f };
-	myMaxAcceleration = { 0.9999f, 0.9999f };
+	myMinAcceleration = { 0.99f, 0.80f };
+	myMaxAcceleration = { 0.9999f, 0.85f };
 	myGravity = 0.01f;
 
 	// Setting values
@@ -82,7 +82,6 @@ void PlayerSprint::Init(EWorldLevel aWorld)
 	myBlendState = EBlendState::EBlendState_Alphablend;
 
 	/// Sprite
-	//mySprite = new Tga2D::CSprite("Sprites/Particles/big_player_run_particle_w.dds");
 	switch (rand() % 4)
 	{
 	case 0:
@@ -106,7 +105,7 @@ void PlayerSprint::Init(EWorldLevel aWorld)
 }
 
 
-void PlayerSprint::Reset()
+void PlayerLand::Reset()
 {
 	std::random_device rd;
 	std::mt19937 randomInt(rd());
@@ -135,11 +134,12 @@ void PlayerSprint::Reset()
 	/// Velocity
 	std::uniform_real_distribution<> velocityDist(-100, 100);
 	myVelocity.x = velocityDist(randomInt) / 100.0f;
-	myVelocity.y = velocityDist(randomInt) / 200.0f;
+	myVelocity.y = velocityDist(randomInt) / 800.0f;
 	if (!myVelocity.x) myVelocity.x += 0.001f;
 	if (!myVelocity.y) myVelocity.y += 0.001f;
 	myVelocity.x *= 9.0f / 16.0f;
 	myVelocity *= mySpeed;
+
 	/// Lifetime
 	std::uniform_real_distribution<> LTDist(myMinLifeTime, myMaxLifeTime);
 	myLifeTime = LTDist(randomInt);
@@ -154,8 +154,14 @@ void PlayerSprint::Reset()
 	myTime = 0;
 }
 
-void PlayerSprint::Update(const CommonUtilities::Vector2f& aCamera)
+void PlayerLand::Update(const CommonUtilities::Vector2f& aCamera)
 {
+	//if (myPosition.y > 2.0f)
+	//{
+	//	myIsActive = false;
+	//	return;
+	//}
+
 	// Gör vad fan du vill här, det är ingenting som är "permanent".
 	myTime += DELTA_TIME;
 
@@ -170,16 +176,18 @@ void PlayerSprint::Update(const CommonUtilities::Vector2f& aCamera)
 	mySprite->SetPosition({ myPosition.x - aCamera.x, myPosition.y - aCamera.y });
 	mySprite->SetRotation(myAngle);
 
+	//float size = myStartScale + (myTime / myLifeTime) * (myEndScale - myStartScale);
+	//mySprite->SetSizeRelativeToImage({ size, size });
 	float alpha = myStartColor.myA + (myTime / myLifeTime) * (myEndColor.myA - myStartColor.myA);
 	mySprite->SetColor({ myStartColor.myR, myStartColor.myG, myStartColor.myB, alpha });
 }
 
-void PlayerSprint::SetPosition(CommonUtilities::Vector2f aPosition)
+void PlayerLand::SetPosition(CommonUtilities::Vector2f aPosition)
 {
 	myPosition = aPosition;
 }
 
-Tga2D::CSprite* PlayerSprint::GetSprite()
+Tga2D::CSprite* PlayerLand::GetSprite()
 {
 	return mySprite;
 }

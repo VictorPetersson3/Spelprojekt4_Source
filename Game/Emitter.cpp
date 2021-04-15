@@ -2,6 +2,7 @@
 #include "Emitter.h"
 #include "Ambient.h"
 #include "PlayerSprint.h"
+#include "PlayerLand.h"
 #include "Camera.h"
 #include "Timer.h"
 #include <tga2d/sprite/sprite_batch.h>
@@ -38,7 +39,7 @@ void Emitter::Update(const CommonUtilities::Vector2f& aPosition, Camera& aCamera
 
 	Emit();
 
-	SneakyUpdate(aPosition, aCamera);
+	SneakyUpdate(aCamera);
 }
 
 std::shared_ptr<Tga2D::CSpriteBatch> Emitter::GetBatch()
@@ -140,6 +141,26 @@ void Emitter::SetParticleType(const ParticleType& aParticleType)
 			mySpriteBatch->AddObject(myParticles[i]->GetSprite());
 		}
 		break;
+	case ParticleType::P_Land:
+		mySpriteBatch = std::make_shared<Tga2D::CSpriteBatch>("Sprites/Particles/big_player_run_particle_w.dds");
+		mySpriteBatch->Init("Sprites/Particles/big_player_run_particle_w.dds");
+
+		mySpriteBatch->SetBlendState(EBlendState::EBlendState_Alphablend);
+
+		for (auto& particle : myParticles)
+		{
+			delete particle;
+			particle = nullptr;
+		}
+		myParticles.clear();
+		for (int i = 0; i < 50; i++)
+		{
+			myParticles.push_back(new PlayerLand());
+			myParticles[i]->Init(myWorld);
+			myParticles[i]->IsActive() = false;
+			mySpriteBatch->AddObject(myParticles[i]->GetSprite());
+		}
+		break;
 	}
 }
 
@@ -157,12 +178,11 @@ void Emitter::Emit()
 {
 	if (myEmissionTimer >= myEmissionRate)
 	{
-		//printf("%f\n", myEmissionTimer);
 		myEmissionTimer = 0;
 
 		for (auto& particle : myParticles)
 		{
-			if (!particle->IsActive())
+			if (!particle->IsActive() || myParticleType == ParticleType::P_Land)
 			{
 				particle->IsActive() = true;
 				particle->Reset();
@@ -173,7 +193,7 @@ void Emitter::Emit()
 				std::mt19937 randomInt(rd());
 				std::uniform_real_distribution<> eRateDistr(myParticles[0]->GetContents().myMinTimeBetweenParticleSpawns, myParticles[0]->GetContents().myMaxTimeBetweenParticleSpawns);
 				myEmissionRate = eRateDistr(randomInt);
-				return;
+				if (myParticleType != ParticleType::P_Land) return;
 			}
 		}
 	}
@@ -184,7 +204,7 @@ void Emitter::UpdateTimer()
 	myEmissionTimer += DELTA_TIME;
 }
 
-void Emitter::SneakyUpdate(const CommonUtilities::Vector2f& aPosition, Camera& aCamera)
+void Emitter::SneakyUpdate(Camera& aCamera)
 {
 	for (auto& particle : myParticles)
 	{

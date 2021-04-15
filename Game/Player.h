@@ -155,11 +155,12 @@ protected:
 	bool myIsGliding = false;
 	bool myCanGlide = true;
 	bool myShouldUpdatePhysics = true;
-
+	bool myJustLanded = false;
 
 	int myDirection = 1;
 
 	std::shared_ptr<Emitter> myRunningParticle;
+	std::shared_ptr<Emitter> myLandingParticle;
 
 	EPlayerState myMoveState = EPlayerState::Idle;
 	EAnimationState myCurrentAnimation = EAnimationState::Idle;

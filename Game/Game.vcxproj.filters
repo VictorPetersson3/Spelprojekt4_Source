@@ -224,6 +224,7 @@
     <ClInclude Include="PlayerSprint.h">
       <Filter>Particles\ParticleTypes</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerLand.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -374,5 +375,6 @@
     <ClCompile Include="PlayerSprint.cpp">
       <Filter>Particles\ParticleTypes</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerLand.cpp" />
   </ItemGroup>
 </Project>
