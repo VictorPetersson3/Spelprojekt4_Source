@@ -147,7 +147,7 @@ void Emitter::SetPosition(const CommonUtilities::Vector2f& aPosition)
 {
 	auto pos = aPosition;
 
-	if (myWorld == EWorldLevel::eWorld3 || myWorld == EWorldLevel::eWorld4) pos.y += 1.0f;
+	if (myParticleType == ParticleType::Ambient && (myWorld == EWorldLevel::eWorld3 || myWorld == EWorldLevel::eWorld4)) pos.y += 1.0f;
 
 	myPosition = pos;
 }

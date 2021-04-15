@@ -55,20 +55,20 @@ void PlayerSprint::Init(EWorldLevel aWorld)
 	switch (myWorld)
 	{
 	case EWorldLevel::eWorld1:
-		myStartColor = { 0.171875f, 0.25390625f, 0.4453125f, 0.9f };
-		myEndColor = { 0.37890625f, 0.609375f, 0.76171875f, 0.7f };
+		myStartColor = { 0.37890625f, 0.609375f, 0.76171875f, 0.7f };
+		myEndColor = { 0.171875f, 0.25390625f, 0.4453125f, 0.9f };
 		break;
 	case EWorldLevel::eWorld2:
-		myStartColor = { 0.234375f, 0.1875f, 0.1875f, 0.9f };
-		myEndColor = { 0.41796875f, 0.359375f, 0.375f, 0.7f };
+		myStartColor = { 0.41796875f, 0.359375f, 0.375f, 0.7f };
+		myEndColor = { 0.234375f, 0.1875f, 0.1875f, 0.9f };
 		break;
 	case EWorldLevel::eWorld3:
-		myStartColor = { 0.2265625f, 0.203125f, 0.21484375f, 0.9f };
-		myEndColor = { 0.49609375f, 0.4296875f, 0.43359375f, 0.7f };
+		myStartColor = { 0.49609375f, 0.4296875f, 0.43359375f, 0.7f };
+		myEndColor = { 0.2265625f, 0.203125f, 0.21484375f, 0.9f };
 		break;
 	case EWorldLevel::eWorld4:
-		myStartColor = { 0.578125f, 0.234375f, 0.6484375f, 0.9f };
-		myEndColor = { 0.87109375f, 0.3203125f, 0.6171875f, 0.7f };
+		myStartColor = { 0.87109375f, 0.3203125f, 0.6171875f, 0.7f };
+		myEndColor = { 0.578125f, 0.234375f, 0.6484375f, 0.9f };
 		break;
 	}
 
@@ -124,7 +124,7 @@ void PlayerSprint::Reset()
 
 	// Setting values
 	/// Color
-	//mySprite->SetColor({ myStartColor });
+	mySprite->SetColor({ myStartColor });
 
 	/// Scale
 	std::uniform_real_distribution<> scaleDist(myMinStartScale, myMaxStartScale);
@@ -171,11 +171,11 @@ void PlayerSprint::Reset()
 
 void PlayerSprint::Update(const CommonUtilities::Vector2f& aCamera)
 {
-	if (myPosition.y > 2.0f)
-	{
-		myIsActive = false;
-		return;
-	}
+	//if (myPosition.y > 2.0f)
+	//{
+	//	myIsActive = false;
+	//	return;
+	//}
 
 	// Gör vad fan du vill här, det är ingenting som är "permanent".
 	myTime += DELTA_TIME;
