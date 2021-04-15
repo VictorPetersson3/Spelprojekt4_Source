@@ -170,6 +170,12 @@ void LevelSelect::OnPushed()
 {
 }
 
+void LevelSelect::OnResumed()
+{
+	AudioManager::GetInstance().StopAllMusic();
+	AudioManager::GetInstance().PlayMusic("Audio/music/Menu_Song.mp3", true, 0.5f);
+}
+
 LevelSelect_SpecificLevelData* LevelSelect::GetSpecificLevelData(const int aIndex) const
 {
 	return myLevels_LevelData->myLevelSelectLoadData[aIndex].get();

@@ -87,7 +87,7 @@ void StateManager::RemoveDownToState(const EStateType& aStateType)
 	{
 		myInstance->myGameStates.RemoveTop();
 	}
-	myInstance->myGameStates.GetTop()->OnPushed();
+	myInstance->myGameStates.GetTop()->OnResumed();
 }
 
 void StateManager::AddStateOnStack(std::shared_ptr<State> aState)

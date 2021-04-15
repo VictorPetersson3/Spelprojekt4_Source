@@ -19,6 +19,7 @@ public:
     void Update() final;
     void Render() final;
     void OnPushed() final;
+    void OnResumed() final;
     LevelSelect_SpecificLevelData* GetSpecificLevelData(const int aIndex) const;
     const int GetLevelAmount() const;
     const LinkString& GetWorldSong(const int aWorldIndex) const;

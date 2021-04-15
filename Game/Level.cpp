@@ -52,11 +52,11 @@ Level::~Level()
 void Level::OnPushed()
 {
 	AudioManager::GetInstance().StopAllMusic();
-	AudioManager::GetInstance().PlayMusic(mylevelJsonData->mySong.GetString(), true, 1.0f);
+	AudioManager::GetInstance().PlayMusic(mylevelJsonData->mySong.GetString(), true, 0.5f);
 	if (myIsLastLevel)
 	{
 		AudioManager::GetInstance().StopAllMusic();
-		AudioManager::GetInstance().PlayMusic("Audio/music/Boss_Song.mp3", true, 1.0f);
+		AudioManager::GetInstance().PlayMusic("Audio/music/Boss_Song.mp3", true, 0.5f);
 	}
 }
 

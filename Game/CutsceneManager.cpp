@@ -116,6 +116,7 @@ void CutsceneManager::Render()
 void CutsceneManager::OnPushed()
 {
 	SetRenderThrough(true);
+	AudioManager::GetInstance().StopAllEffects();
 }
 
 void CutsceneManager::PlayCutscene(const int aLevelIndex, const bool aEndOfMapCutscene)
@@ -270,10 +271,6 @@ void CutsceneManager::LoadCharacters()
 		iterator++;
 	}
 	std::sort(characterPaths.begin(), characterPaths.end());
-	//for (int i = 0; i < iterator; i++)
-	//{
-	//	printf("My Character Path: %s\n", characterPaths[i].c_str());
-	//}
 
 	JsonParser parser;
 
