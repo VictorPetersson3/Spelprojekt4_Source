@@ -221,6 +221,10 @@
     <ClInclude Include="FadeInImage.h">
       <Filter>StateTypes</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerSprint.h">
+      <Filter>Particles\ParticleTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerLand.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -368,5 +372,9 @@
     <ClCompile Include="FadeInImage.cpp">
       <Filter>StateTypes</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerSprint.cpp">
+      <Filter>Particles\ParticleTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerLand.cpp" />
   </ItemGroup>
 </Project>

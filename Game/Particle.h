@@ -1,6 +1,7 @@
 #pragma once
 #include "CommonUtilities/Vector2.hpp"
 #include "Enums.h"
+#include "RenderCommand.h"
 
 namespace Tga2D
 {
@@ -11,7 +12,8 @@ namespace Tga2D
 enum class ParticleType
 {
 	none,
-	Smoke,
+	P_Sprint,
+	P_Land,
 	Ambient
 };
 
@@ -28,11 +30,12 @@ class Camera;
 class Particle
 {
 public:
-	virtual void Init() {};
+	virtual void Init() {}
+	virtual void Init(EWorldLevel aWorld){}
 	virtual void Reset() {};
 	virtual void Update(const CommonUtilities::Vector2f& aCamera){};
 
-	virtual Tga2D::CSprite* GetSprite() { return nullptr; }
+	virtual Tga2D::CSprite* GetSprite() = 0;
 	virtual void SetPosition(CommonUtilities::Vector2f aPosition) { myPosition = aPosition; }
 	virtual bool LifeTime() { return myTime >= myLifeTime; }
 	virtual bool& IsActive() { return myIsActive; }

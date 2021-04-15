@@ -162,6 +162,8 @@
     <ClInclude Include="MovingPlatform.h" />
     <ClInclude Include="LevelSelectLoadData.h" />
     <ClInclude Include="LevelSelect_SpecificLevelData.h" />
+    <ClInclude Include="PlayerLand.h" />
+    <ClInclude Include="PlayerSprint.h" />
     <ClInclude Include="Shooter.h" />
     <ClInclude Include="Sprite_Renderer.h" />
     <ClInclude Include="Key.h" />
@@ -223,6 +225,8 @@
     <ClCompile Include="KillZone.cpp" />
     <ClCompile Include="MovingPlatform.cpp" />
     <ClCompile Include="LevelSelectLoadData.cpp" />
+    <ClCompile Include="PlayerLand.cpp" />
+    <ClCompile Include="PlayerSprint.cpp" />
     <ClCompile Include="Shooter.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="LevelSelect.cpp" />

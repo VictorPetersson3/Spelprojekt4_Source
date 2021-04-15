@@ -1,0 +1,193 @@
+#include "stdafx.h"
+#include "PlayerLand.h"
+#include "Timer.h"
+#include "Camera.h"
+#include <tga2d/sprite/sprite.h>
+#include "AnimationClip.h"
+#include "RenderCommand.h"
+#include <random>
+#include <cmath>
+
+#define DELTA_TIME Timer::GetInstance().GetDeltaTime()
+
+PlayerLand::PlayerLand()
+{
+}
+
+PlayerLand::~PlayerLand()
+{
+	delete mySprite;
+	mySprite = nullptr;
+}
+
+void PlayerLand::Init(EWorldLevel aWorld)
+{
+	myWorld = aWorld;
+
+	// Emission Values
+	/// Spawn time
+	myContents.myMinTimeBetweenParticleSpawns = 0.0f;
+	myContents.myMaxTimeBetweenParticleSpawns = 0.0f;
+	/// Emission time
+	/*myEmitTime = 0.0f;*/
+
+	// Local Ranges 
+	/// Scale
+	myMinStartScale = 0.0f;
+	myMaxStartScale = 1.0f;
+
+	//myStartScale = 1.0f;
+	myEndScale = 1.0f;
+
+	/// Start Speed
+	myMinStartSpeed = 0.1f;
+	myMaxStartSpeed = 0.5f;
+
+	/// Angle
+	myMinRotation = -2.0f;
+	myMaxRotation = 2.0f;
+
+	/// Lifetime
+	myMinLifeTime = 0.2f;
+	myMaxLifeTime = 0.5f;
+
+	/// Color
+	switch (myWorld)
+	{
+	case EWorldLevel::eWorld1:
+		myStartColor = { 0.37890625f, 0.609375f, 0.76171875f, 0.9f };
+		myEndColor = { 0.171875f, 0.25390625f, 0.4453125f, 0.5f };
+		break;
+	case EWorldLevel::eWorld2:
+		myStartColor = { 0.41796875f, 0.359375f, 0.375f, 0.9f };
+		myEndColor = { 0.234375f, 0.1875f, 0.1875f, 0.5f };
+		break;
+	case EWorldLevel::eWorld3:
+		myStartColor = { 0.49609375f, 0.4296875f, 0.43359375f, 0.9f };
+		myEndColor = { 0.2265625f, 0.203125f, 0.21484375f, 0.5f };
+		break;
+	case EWorldLevel::eWorld4:
+		myStartColor = { 0.87109375f, 0.3203125f, 0.6171875f, 0.9f };
+		myEndColor = { 0.578125f, 0.234375f, 0.6484375f, 0.5f };
+		break;
+	}
+
+	/// Acceleration
+	myMinAcceleration = { 0.99f, 0.80f };
+	myMaxAcceleration = { 0.9999f, 0.85f };
+	myGravity = 0.01f;
+
+	// Setting values
+	/// Blend State
+	myBlendState = EBlendState::EBlendState_Alphablend;
+
+	/// Sprite
+	switch (rand() % 4)
+	{
+	case 0:
+		mySprite = new Tga2D::CSprite("Sprites/Particles/tiny_player_run_particle_w.dds");
+		break;
+	case 1:
+		mySprite = new Tga2D::CSprite("Sprites/Particles/small_player_run_particle_w.dds");
+		break;
+	case 2:
+		mySprite = new Tga2D::CSprite("Sprites/Particles/medium_player_run_particle_w.dds");
+		break;
+	case 3:
+		mySprite = new Tga2D::CSprite("Sprites/Particles/big_player_run_particle_w.dds");
+		break;
+	}
+	mySprite->SetSamplerState(ESamplerFilter::ESamplerFilter_Point, ESamplerAddressMode::ESamplerAddressMode_Clamp);
+	mySprite->SetPivot({ 0.5f, 0.5f });
+	mySprite->SetBlendState(myBlendState);
+
+	Reset();
+}
+
+
+void PlayerLand::Reset()
+{
+	std::random_device rd;
+	std::mt19937 randomInt(rd());
+
+	// Setting values
+	/// Color
+	mySprite->SetColor({ myStartColor });
+
+	/// Scale
+	std::uniform_real_distribution<> scaleDist(myMinStartScale, myMaxStartScale);
+	myStartScale = scaleDist(randomInt);
+
+	/// Angle
+	std::uniform_real_distribution<> rotationDist(myMinRotation, myMaxRotation);
+	myRotation = rotationDist(randomInt);
+
+	/// Sprite
+	mySprite->SetSizeRelativeToImage({ myStartScale, myStartScale });
+
+	/// Speed
+	std::uniform_real_distribution<> speedDist(myMinStartSpeed, myMaxStartSpeed);
+	mySpeed = speedDist(randomInt);
+	std::uniform_real_distribution<> periodDist(0.5f, 3.0f);
+	myPeriod = periodDist(randomInt);
+
+	/// Velocity
+	std::uniform_real_distribution<> velocityDist(-100, 100);
+	myVelocity.x = velocityDist(randomInt) / 100.0f;
+	myVelocity.y = velocityDist(randomInt) / 800.0f;
+	if (!myVelocity.x) myVelocity.x += 0.001f;
+	if (!myVelocity.y) myVelocity.y += 0.001f;
+	myVelocity.x *= 9.0f / 16.0f;
+	myVelocity *= mySpeed;
+
+	/// Lifetime
+	std::uniform_real_distribution<> LTDist(myMinLifeTime, myMaxLifeTime);
+	myLifeTime = LTDist(randomInt);
+
+	/// Acceleration
+	std::uniform_real_distribution<> accelerationDist(myMinAcceleration.x, myMaxAcceleration.x);
+	myAcceleration.x = accelerationDist(randomInt);
+	std::uniform_real_distribution<> acceleration(myMinAcceleration.y, myMaxAcceleration.y);
+	myAcceleration.y = acceleration(randomInt);
+
+	/// Time
+	myTime = 0;
+}
+
+void PlayerLand::Update(const CommonUtilities::Vector2f& aCamera)
+{
+	//if (myPosition.y > 2.0f)
+	//{
+	//	myIsActive = false;
+	//	return;
+	//}
+
+	// Gör vad fan du vill här, det är ingenting som är "permanent".
+	myTime += DELTA_TIME;
+
+	myVelocity.x = powf(myAcceleration.x, DELTA_TIME) * myVelocity.x/* + sinf(myPeriod * myTime) * 0.05f * DELTA_TIME*/;
+	myVelocity.y = powf(myAcceleration.y, DELTA_TIME) * myVelocity.y + myGravity * DELTA_TIME;
+
+	myAngle += myRotation * DELTA_TIME;
+
+	myPosition.x += myVelocity.x * DELTA_TIME;
+	myPosition.y += myVelocity.y * DELTA_TIME;
+
+	mySprite->SetPosition({ myPosition.x - aCamera.x, myPosition.y - aCamera.y });
+	mySprite->SetRotation(myAngle);
+
+	//float size = myStartScale + (myTime / myLifeTime) * (myEndScale - myStartScale);
+	//mySprite->SetSizeRelativeToImage({ size, size });
+	float alpha = myStartColor.myA + (myTime / myLifeTime) * (myEndColor.myA - myStartColor.myA);
+	mySprite->SetColor({ myStartColor.myR, myStartColor.myG, myStartColor.myB, alpha });
+}
+
+void PlayerLand::SetPosition(CommonUtilities::Vector2f aPosition)
+{
+	myPosition = aPosition;
+}
+
+Tga2D::CSprite* PlayerLand::GetSprite()
+{
+	return mySprite;
+}

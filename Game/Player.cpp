@@ -6,11 +6,13 @@
 #include "Camera.h"
 #include "Collider.h"
 #include "CollisionManager.h"
+#include "Emitter.h"
 #include "InputManager.h"
 #include "JsonParser.h"
 #include "RenderCommand.h"
 #include "Timer.h"
 #include "XController.h"
+#include <tga2d/sprite/sprite_batch.h>
 
 #define INPUT InputManagerS::GetInstance() 
 #define DELTA_TIME Timer::GetInstance().GetDeltaTime()
@@ -22,7 +24,7 @@ Player::Player(std::shared_ptr<XController> aController, EPowerUp aPowerup) :
 }
 Player::~Player() {}
 
-void Player::Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower)
+void Player::Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower, EWorldLevel aWorld)
 {
 	if (myController == nullptr) myController = std::make_shared<XController>(1);
 
@@ -37,6 +39,11 @@ void Player::Init(CommonUtilities::Vector2f aPosition, EPowerUp aPower)
 
 	myCurrentVelocity = { 0, 0 };
 
+	if (myRunningParticle == nullptr) myRunningParticle = std::make_shared<Emitter>();
+	myRunningParticle->Init(myPosition, ParticleType::P_Sprint, aWorld);
+	if (myLandingParticle == nullptr) myLandingParticle = std::make_shared<Emitter>();
+	myLandingParticle->Init(myPosition, ParticleType::P_Land, aWorld);
+
 	InitJSON();
 
 	InitAnimations();
@@ -48,6 +55,8 @@ void Player::Render(Camera& aCamera)
 {
 	int thing = (int)myCurrentAnimation * 2 + (myDirection < 0);
 	aCamera.RenderSprite(myAnimations[thing]->GetRenderCommand());
+	myRunningParticle->GetBatch()->Render();
+	myLandingParticle->GetBatch()->Render();
 }
 
 void Player::InitJSON()
@@ -315,6 +324,8 @@ void Player::Update(Camera& aCamera)
 
 	UpdatePhysics(aCamera);
 
+	HandleParticles(aCamera);
+
 	HandleAnimations();
 
 	HandleAudio();
@@ -361,6 +372,28 @@ void Player::HandleAudio()
 		{
 			AudioManager::GetInstance().StopEffectSound(mySounds[i].c_str());
 		}
+	}
+}
+
+void Player::HandleParticles(Camera& aCamera)
+{
+	if (myJustLanded) 
+	{
+		myLandingParticle->Update({ myPosition.x, myPosition.y + myAnimations[0]->GetRenderCommand().GetSize().y * 0.5f }, aCamera);
+	}
+	else myLandingParticle->SneakyUpdate(aCamera);
+
+	switch (myCurrentAnimation)
+	{
+	case EAnimationState::Sprint:
+		myRunningParticle->Update({ myPosition.x - myDirection * myAnimations[0]->GetRenderCommand().GetSize().x * 0.25f, myPosition.y + myAnimations[0]->GetRenderCommand().GetSize().y * 0.25f }, aCamera);
+		break;
+	case EAnimationState::W_Down: case EAnimationState::W_Up:
+		myRunningParticle->Update({ myPosition.x + myDirection * myAnimations[0]->GetRenderCommand().GetSize().x * 0.25f, myPosition.y }, aCamera);
+		break;
+	default:
+		myRunningParticle->SneakyUpdate(aCamera);
+		break;
 	}
 }
 
@@ -538,7 +571,11 @@ void Player::UpdatePhysics(Camera& aCamera)
 		else if (posCorrNormal.y < 0)
 		{
 			myPosition.y += positionCorrection.y + 0.1f / Tga2D::CEngine::GetInstance()->GetRenderSize().y;
-			//if (myWasGrounded && myCurrentVelocity.y >= myMaxVerticalVelocity) aCamera.ShakeCamera(0.2f, 0.2f); //Han når top speed för snabbt för denna
+			if (!myWasGrounded && myCurrentVelocity.y >= myMaxAirSpeed)
+			{
+				printf("\n\n\n\n\n BAAAAAAJS");
+				myJustLanded = true;
+			}
 			if (myWasGrounded && myCurrentVelocity.y > 0) myCurrentVelocity.y = 0;
 			myIsGrounded = true;
 		}
@@ -624,6 +661,7 @@ void Player::CacheCurrentValues()
 	myHuggedLeftWall = myHugsLeftWall;
 	myWasRoofied = myIsRoofied;
 	myWasDead = myIsDead;
+	myJustLanded = false;
 }
 
 void Player::ManageStates()
@@ -650,7 +688,7 @@ void Player::ManageStates()
 
 void Player::Idle()
 {
-	if (!myWasGrounded && myIsGrounded)
+	if (myJustLanded)
 	{
 		if (myDirection < 0) PlaySpecificAnimation(EPlayerAnimationClips::eLandL);
 		else PlaySpecificAnimation(EPlayerAnimationClips::eLandR);
