@@ -12,17 +12,9 @@
 #include <CommonUtilities/Random.h>
 void Boss::Init(const std::shared_ptr<Player> aPlayer)
 {
-
-	myRenderCommand = std::make_shared<RenderCommand>("sprites/HästfanDDS.dds", 1, true);
-	myRenderCommand->SetSizeRelativeToImage({ 3.f,3.f });
-	myRenderCommand->SetPivot({ 0.5f,0.5f });
-	myRenderCommand->SetSamplerState(ESamplerFilter_Point, ESamplerAddressMode_Clamp);
-
 	myPlayerToAttack = aPlayer;
 	myPosition = { 0.5f, 0.5f }; // start pos
 	myPostionsToMoveTo.emplace_back(myPosition);
-
-	myRenderCommand->SetSpritePosition(myPosition);
 
 	myCollider = std::make_shared<Collider>(myPosition, 0.15f, 0.15f);
 	myCollider->SetTag(EColliderTag::KillZone);
@@ -37,8 +29,6 @@ void Boss::Update(const float aDt)
 	{
 		Move(aDt);
 		myPosition += myDirection * aDt;
-		myRenderCommand->SetSpritePosition(myPosition);
-		myRenderCommand->Update(myPosition);
 		myCollider->Update();
 		myCollider->UpdateCollider(myPosition);
 

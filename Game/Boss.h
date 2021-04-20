@@ -65,7 +65,6 @@ private:
 
 	std::shared_ptr<Collider> myCollider = {};
 	std::shared_ptr<Player> myPlayerToAttack = {};
-	std::shared_ptr<RenderCommand> myRenderCommand = {};
 	std::vector<CommonUtilities::Vector2f> myPostionsToMoveTo = {};
 };
 inline void Boss::AddDashPosition(const CommonUtilities::Vector2f aPosition)
